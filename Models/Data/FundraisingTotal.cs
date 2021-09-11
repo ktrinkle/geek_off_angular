@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace GeekOff.Data
 {
-    public class FundraisingTotal
+    public partial class FundraisingTotal
     {
         [Key]
         [MaxLength(6)]

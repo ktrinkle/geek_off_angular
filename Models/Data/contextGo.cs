@@ -11,9 +11,11 @@ namespace GeekOff.Data
         public contextGo(DbContextOptions<contextGo> options)
             : base(options) { }
 
+        public virtual DbSet<CurrentTeam> CurrentTeam { get; set; }
         public virtual DbSet<EventMaster> EventMaster { get; set; }
         public virtual DbSet<FundraisingTotal> FundraisingTotal { get; set; }
         public virtual DbSet<QuestionAns> QuestionAns { get; set; }
+        public virtual DbSet<QuestionSurvey> QuestionSurvey { get; set; }
         public virtual DbSet<Round1score> Round1Score { get; set; }
         public virtual DbSet<Roundresult> Roundresult { get; set; }
         public virtual DbSet<Scoreposs> Scoreposs { get; set; }

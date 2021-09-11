@@ -9,18 +9,21 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Identity.Web;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using GeekOff.Config;
 using GeekOff.Data;
 
 namespace GeekOff
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IWebHostEnvironment environment)
         {
             Configuration = configuration;
+            Environment = environment;
         }
 
         public IConfiguration Configuration { get; }
+        public IWebHostEnvironment Environment { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -72,6 +75,8 @@ namespace GeekOff
             string postgresConn = Configuration["ConnectionStrings:CRDatabase"];
 
             services.AddDbContext<contextGo>(options => options.UseNpgsql(postgresConn));
+
+            services.AddCustomServices(Configuration);
             
             services.AddMicrosoftIdentityWebApiAuthentication(Configuration, "AzureAd");
             services.AddControllers();

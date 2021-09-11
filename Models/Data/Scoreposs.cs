@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GeekOff.Data
 {
-    public class Scoreposs
+    public partial class Scoreposs
     {
         [Key]
         [MaxLength(6)]

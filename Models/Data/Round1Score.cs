@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace GeekOff.Data
 {
-    public class Round1score
+    public partial class Round1score
     {
         [Key]
         [MaxLength(6)]

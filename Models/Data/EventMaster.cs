@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace GeekOff.Data
 {
-    public class EventMaster
+    public partial class EventMaster
     {
         [Key]
         [MaxLength(6)]

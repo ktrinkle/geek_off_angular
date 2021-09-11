@@ -14,6 +14,8 @@ namespace GeekOff.Data
         public int RoundNo { get; set; }
         [Key]
         public int QuestionNo { get; set; }
+        public string QuestionAns { get; set; }
+        public int PlayerNum { get; set; }
         public int? PointAmt { get; set; }
         public int? Round3neg { get; set;}
         public int? FinalJep { get; set; }

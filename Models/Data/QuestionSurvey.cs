@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace GeekOff.Data
 {
-    public partial class QuestionAns
+    public partial class QuestionSurvey
     {
         [Key]
         [MaxLength(6)]
@@ -11,11 +11,9 @@ namespace GeekOff.Data
         public int QuestionNo { get; set; }
         [Key]
         public int? RoundNo { get; set; }
-        public string TextQuestion { get; set; }
+        [Key]
+        public int SurveyOrder { get; set; }
         public string TextAnswer { get; set; }
-        public bool MultipleChoice { get; set; }
-        public string WrongAnswer1 { get; set; }
-        public string WrongAnswer2 { get; set; }
-        public string WrongAnswer3 { get; set; }
+        public int? Ptsposs { get; set; }
     }
 }

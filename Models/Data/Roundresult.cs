@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace GeekOff.Data
 {
-    public class Roundresult
+    public partial class Roundresult
     {
         [Key]
         [MaxLength(6)]
