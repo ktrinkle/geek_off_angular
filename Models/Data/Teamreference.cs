@@ -1,14 +1,14 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GeekOff.Data
 {
+    [Table("team_reference")]
     public class Teamreference
     {
-        [Key]
         [MaxLength(6)]
         public string Yevent { get; set; }
-        [Key]
         public int TeamNo { get; set; }
         public string Teamname { get; set; }
         public string Member1 { get; set; }

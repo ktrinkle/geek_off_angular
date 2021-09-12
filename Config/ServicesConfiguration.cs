@@ -11,6 +11,7 @@ namespace GeekOff.Config
         public static void AddCustomServices(this IServiceCollection services, IConfiguration configuration)
         {
             // Services
+            services.TryAddScoped<IManageEventService, ManageEventService>();
             services.TryAddScoped<IScoreService, ScoreService>();
         }
     }

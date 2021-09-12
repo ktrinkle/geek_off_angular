@@ -1,8 +1,10 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GeekOff.Data
 {
+    [Table("team_user")]
     public class TeamUser
     {
         [Key]

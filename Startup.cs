@@ -72,13 +72,13 @@ namespace GeekOff
 
 #endregion
 
-            string postgresConn = Configuration["ConnectionStrings:CRDatabase"];
+            string postgresConn = Configuration["ConnectionStrings:GeekOff"];
 
             services.AddDbContext<contextGo>(options => options.UseNpgsql(postgresConn));
 
             services.AddCustomServices(Configuration);
             
-            services.AddMicrosoftIdentityWebApiAuthentication(Configuration, "AzureAd");
+            // services.AddMicrosoftIdentityWebApiAuthentication(Configuration, "AzureAd");
             services.AddControllers();
 
             services.AddHttpClient();
@@ -92,6 +92,16 @@ namespace GeekOff
         {
             if (env.IsDevelopment())
             {
+            // Enable middleware to serve generated Swagger as a JSON endpoint.
+                app.UseSwagger();
+
+                // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
+                // specifying the Swagger JSON endpoint.
+                app.UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Computer Reset API");
+                });
+
                 app.UseDeveloperExceptionPage();
             }
             else
@@ -131,6 +141,7 @@ namespace GeekOff
                 if (env.IsDevelopment())
                 {
                     spa.UseAngularCliServer(npmScript: "start");
+                    // spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
                 }
             });
         }
