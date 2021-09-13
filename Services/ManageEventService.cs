@@ -84,18 +84,47 @@ namespace GeekOff.Services
             return "The answer was successfully saved.";
         }
 
-        public Task<string> FinalizeRound(string yEvent)
+        public async Task<string> FinalizeRound(string yEvent)
         {
+            if (yEvent is null)
+            {
+                return "No event was specified.";
+            }
+
+            var totalPoints = await _contextGo.Scoring.Where(s => s.RoundNo == 2 && s.Yevent == yEvent)
+                                .GroupBy(s => s.TeamNo)
+                                .Select(s => new Round2FinalDto()
+                                {
+                                    TeamNo = s.Key,
+                                    FinalScore = s.Sum(s => s.PointAmt)
+                                }).ToListAsync();
+
+            // now we rank and store into the DB. First we remove anything that already exists.
+
+            var scorestoRemove = await _contextGo.Roundresult.Where(r => r.Yevent == yEvent && r.RoundNo == 2).ToListAsync();
+
+            if (!(scorestoRemove is null))
+            {
+                _contextGo.RemoveRange(scorestoRemove);
+                await _contextGo.SaveChangesAsync();
+            }
+
+            // add the new records
+            var scorestoAdd = from s in totalPoints
+            orderby s.FinalScore descending
+            select new Roundresult()
+            {
+                Yevent = yEvent,
+                TeamNo = s.TeamNo,
+                RoundNo = 2,
+                Ptswithbonus = s.FinalScore,
+                rnk = (from r in totalPoints
+                        where r.FinalScore > s.FinalScore
+                        select r).Count() + 1
+            };
+
+            return "Scores have been finalized in the system.";
 
         }
-        /*
-        WITH res AS (SELECT ts.yevent, ts.round_no, ts.team_no, ts.ptswithbonus, 
-		rank() over (ORDER BY ts.ptswithbonus DESC ) AS rnk FROM 
-		totalscore ts, event_name en WHERE ts.round_no =  $round  AND ts.yevent 
-		 = en.yevent AND en.sel_event = 1) INSERT INTO roundresult
-		SELECT res.yevent, res.round_no, res.team_no, res.ptswithbonus, res.rnk
-		FROM res ON CONFLICT (yevent, round_no, team_no) DO UPDATE SET
-		ptswithbonus = excluded.ptswithbonus, rnk = excluded.rnk";
-        */
     }
 }

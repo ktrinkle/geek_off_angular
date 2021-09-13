@@ -42,6 +42,11 @@ namespace GeekOff.Controllers
         [SwaggerOperation(Summary = "Saves the team answer with points")]
         public async Task<ActionResult<string>> SetRound2Answer(string yEvent, int questionNo, int teamNo, int playerNum, string answer, int score)
             => Ok(await _manageEventService.SetRound2Answer(yEvent, questionNo, teamNo, playerNum, answer, score));
+
+        [HttpPut("finalize")]
+        [SwaggerOperation(Summary = "Finalize round 2")]
+        public async Task<ActionResult<string>> FinalizeRound(string yEvent)
+            => Ok(await _manageEventService.FinalizeRound(yEvent));
         
     }
 }
