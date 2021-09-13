@@ -20,18 +20,6 @@ namespace GeekOff.Services
         }
 
         public async Task<List<Round2SurveyList>> GetRound2SurveyMaster(string yEvent)
-
-        /*
-        var result = collection.Parents.GroupBy(c => c.type)
-    .Select(g => new Parent
-                 {
-                     type = g.Key,      
-                     Id = g.Select(p => p.Id).FirstOrDefault(),
-                     Children = g.SelectMany(p => p.Children
-                              .Where(c => c.Status == Status.y)
-                              .OrderByDescending(c => c.Date)).ToList()                           
-                 }).ToList();
-                 */
         {
             var surveyAnswer = await _contextGo.Scoreposs.Where(q => q.Yevent == yEvent && q.RoundNo == 2)
                                         .ToListAsync();
@@ -95,5 +83,19 @@ namespace GeekOff.Services
 
             return "The answer was successfully saved.";
         }
+
+        public Task<string> FinalizeRound(string yEvent)
+        {
+
+        }
+        /*
+        WITH res AS (SELECT ts.yevent, ts.round_no, ts.team_no, ts.ptswithbonus, 
+		rank() over (ORDER BY ts.ptswithbonus DESC ) AS rnk FROM 
+		totalscore ts, event_name en WHERE ts.round_no =  $round  AND ts.yevent 
+		 = en.yevent AND en.sel_event = 1) INSERT INTO roundresult
+		SELECT res.yevent, res.round_no, res.team_no, res.ptswithbonus, res.rnk
+		FROM res ON CONFLICT (yevent, round_no, team_no) DO UPDATE SET
+		ptswithbonus = excluded.ptswithbonus, rnk = excluded.rnk";
+        */
     }
 }
