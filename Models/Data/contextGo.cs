@@ -68,6 +68,10 @@ namespace GeekOff.Data
                 entity.HasKey(k => new {k.Yevent, k.RoundNo, k.TeamNo, k.QuestionNo});
             });
 
+            modelBuilder.CreateEventMasterData();
+            modelBuilder.CreateQuestionAnsData();
+            modelBuilder.CreateScorepossData();
+
         }
     }
 }
