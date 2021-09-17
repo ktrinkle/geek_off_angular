@@ -19,12 +19,12 @@ namespace GeekOff.Services
             _contextGo = context;
         }
 
-        public async Task<Round2BoardDto> GetRound2DisplayBoard(int teamNo)
+        public async Task<Round2BoardDto> GetRound2DisplayBoard(string yEvent, int teamNo)
         {
             // looks up current team from DB for state
             // calculates total and places in DTO
 
-            var currentScore = await _contextGo.Scoring.Where(s => s.RoundNo == 2 && s.TeamNo == teamNo)
+            var currentScore = await _contextGo.Scoring.Where(s => s.RoundNo == 2 && s.TeamNo == teamNo && s.Yevent == yEvent)
                                 .OrderBy(s => s.QuestionNo).OrderBy(s => s.PlayerNum).ToListAsync();
 
             if (currentScore is null)
@@ -112,7 +112,7 @@ namespace GeekOff.Services
             }
 
             return teamList;
-            
+
         }
     }
 }

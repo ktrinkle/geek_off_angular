@@ -38,10 +38,10 @@ namespace GeekOff.Controllers
         public async Task<ActionResult<List<Round2SurveyList>>> GetRound2QuestionList(string yEvent)
             => Ok(await _manageEventService.GetRound2QuestionList(yEvent));
 
-        [HttpGet("bigBoard/{teamNo}")]
+        [HttpGet("bigBoard/{yEvent}/{teamNo}")]
         [SwaggerOperation(Summary = "Returns the big board for round 2")]
-        public async Task<ActionResult<Round2BoardDto>> GetRound2DisplayBoard(int teamNo)
-            => Ok(await _scoreService.GetRound2DisplayBoard(teamNo));
+        public async Task<ActionResult<Round2BoardDto>> GetRound2DisplayBoard(string yEvent, int teamNo)
+            => Ok(await _scoreService.GetRound2DisplayBoard(yEvent, teamNo));
 
         [HttpPost("teamanswer/text")]
         [SwaggerOperation(Summary = "Saves the team answer with points")]
@@ -58,7 +58,7 @@ namespace GeekOff.Controllers
         public async Task<ActionResult<Round23Scores>> GetRound23Scores(string yEvent)
             => Ok(await _scoreService.GetRound23Scores(yEvent, 2));
 
-        [HttpPut("finalize")]
+        [HttpPut("finalize/{yEvent}")]
         [SwaggerOperation(Summary = "Finalize round 2")]
         public async Task<ActionResult<string>> FinalizeRound(string yEvent)
             => Ok(await _manageEventService.FinalizeRound(yEvent));
