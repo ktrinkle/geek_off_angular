@@ -29,21 +29,36 @@ namespace GeekOff.Controllers
         }
 
         [HttpGet("allSurvey/{yEvent}")]
-        [SwaggerOperation(Summary = "Get all of the survey questions for use of the operators.")]
+        [SwaggerOperation(Summary = "Get all of the survey questions and answers for use of the operators.")]
         public async Task<ActionResult<List<Round2SurveyList>>> GetRound2SurveyMaster(string yEvent)
             => Ok(await _manageEventService.GetRound2SurveyMaster(yEvent));
 
-        [HttpGet("bigBoard")]
+        [HttpGet("allQuestions/{yEvent}")]
+        [SwaggerOperation(Summary = "Get all of the survey questions for use of the host.")]
+        public async Task<ActionResult<List<Round2SurveyList>>> GetRound2QuestionList(string yEvent)
+            => Ok(await _manageEventService.GetRound2QuestionList(yEvent));
+
+        [HttpGet("bigBoard/{yEvent}/{teamNo}")]
         [SwaggerOperation(Summary = "Returns the big board for round 2")]
-        public async Task<ActionResult<Round2BoardDto>> GetRound2Scoreboard()
-            => Ok(await _scoreService.GetRound2Scoreboard());
+        public async Task<ActionResult<Round2BoardDto>> GetRound2DisplayBoard(string yEvent, int teamNo)
+            => Ok(await _scoreService.GetRound2DisplayBoard(yEvent, teamNo));
 
-        [HttpPost("teamAnswer")]
+        [HttpPost("teamanswer/text")]
         [SwaggerOperation(Summary = "Saves the team answer with points")]
-        public async Task<ActionResult<string>> SetRound2Answer(string yEvent, int questionNo, int teamNo, int playerNum, string answer, int score)
-            => Ok(await _manageEventService.SetRound2Answer(yEvent, questionNo, teamNo, playerNum, answer, score));
+        public async Task<ActionResult<string>> SetRound2AnswerText(string yEvent, int questionNo, int teamNo, int playerNum, string answer, int score)
+            => Ok(await _manageEventService.SetRound2AnswerText(yEvent, questionNo, teamNo, playerNum, answer, score));
 
-        [HttpPut("finalize")]
+        [HttpPost("teamanswer/survey")]
+        [SwaggerOperation(Summary = "Saves the team answer from a direct match to the survey")]
+        public async Task<ActionResult<string>> SetRound2AnswerSurvey(string yEvent, int questionNo, int teamNo, int playerNum, int answerNum)
+            => Ok(await _manageEventService.SetRound2AnswerSurvey(yEvent, questionNo, teamNo, playerNum, answerNum));
+
+        [HttpGet("scoreboard/{yEvent}")]
+        [SwaggerOperation(Summary = "Returns the scoreboard for round 2")]
+        public async Task<ActionResult<Round23Scores>> GetRound23Scores(string yEvent)
+            => Ok(await _scoreService.GetRound23Scores(yEvent, 2));
+
+        [HttpPut("finalize/{yEvent}")]
         [SwaggerOperation(Summary = "Finalize round 2")]
         public async Task<ActionResult<string>> FinalizeRound(string yEvent)
             => Ok(await _manageEventService.FinalizeRound(yEvent));

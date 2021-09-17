@@ -7,6 +7,7 @@ namespace GeekOff.Services
 {
     public interface IScoreService
     {
-        Task<Round2BoardDto> GetRound2Scoreboard();
+        Task<Round2BoardDto> GetRound2DisplayBoard(string yEvent, int teamNo);
+        Task<List<Round23Scores>> GetRound23Scores(string yEvent, int roundNo);
     }
 }
