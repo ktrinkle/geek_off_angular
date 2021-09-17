@@ -19,19 +19,12 @@ namespace GeekOff.Services
             _contextGo = context;
         }
 
-        public async Task<Round2BoardDto> GetRound2Scoreboard()
+        public async Task<Round2BoardDto> GetRound2DisplayBoard(int teamNo)
         {
             // looks up current team from DB for state
             // calculates total and places in DTO
 
-            var currentTeam = await _contextGo.CurrentTeam.FirstOrDefaultAsync(r => r.RoundNo == 2);
-
-            if (currentTeam is null)
-            {
-                return null;
-            }
-
-            var currentScore = await _contextGo.Scoring.Where(s => s.RoundNo == 2 && s.TeamNo == currentTeam.TeamNo)
+            var currentScore = await _contextGo.Scoring.Where(s => s.RoundNo == 2 && s.TeamNo == teamNo)
                                 .OrderBy(s => s.QuestionNo).OrderBy(s => s.PlayerNum).ToListAsync();
 
             if (currentScore is null)
@@ -39,8 +32,8 @@ namespace GeekOff.Services
                 return null;
             }
 
-            var player1Result = currentScore.Where(s => s.PlayerNum == 1);
-            var player2Result = currentScore.Where(s => s.PlayerNum == 2);
+            var player1Result = currentScore.Where(s => s.PlayerNum == 1).OrderBy(s => s.QuestionNo);
+            var player2Result = currentScore.Where(s => s.PlayerNum == 2).OrderBy(s => s.QuestionNo);
 
             var player1 = new List<Round2Answers>();
             var player2 = new List<Round2Answers>();
@@ -72,13 +65,54 @@ namespace GeekOff.Services
 
             var returnResult = new Round2BoardDto()
             {
-                TeamNo = currentTeam.TeamNo,
+                TeamNo = teamNo,
                 Player1Answers = player1,
                 Player2Answers = player2,
                 FinalScore = totalScore
             };
 
             return returnResult;
+        }
+
+        public async Task<List<Round23Scores>> GetRound23Scores(string yEvent, int roundNo)
+        {
+            if (yEvent == null || roundNo < 2 || roundNo > 3)
+            {
+                return null;
+            }
+
+            var teamList = await (from rr in _contextGo.Roundresult
+                                  join t in _contextGo.Teamreference
+                                  on new {rr.TeamNo, rr.Yevent} equals new {t.TeamNo, t.Yevent}
+                                  where rr.RoundNo == roundNo - 1
+                                  && rr.Yevent == yEvent
+                                  select new Round23Scores()
+                                  {
+                                    TeamName = t.Teamname,
+                                    TeamNo = t.TeamNo
+                                  }).ToListAsync();
+
+            // the join was nasty and required a view, so this way avoids that.
+
+            var returnList = await _contextGo.Scoring.Where(s => s.Yevent == yEvent && s.RoundNo == roundNo)
+                                                    .GroupBy(s => s.TeamNo)
+                                                    .Select(s => new Round23Scores {
+                                                        TeamNo = s.Key,
+                                                        TeamScore = s.Sum(x => (int)x.PointAmt)
+                                                    }).ToListAsync();
+
+            // merge the 2
+            foreach (Round23Scores team in teamList)
+            {
+                var thisTeam = returnList.Find(t => t.TeamNo == team.TeamNo);
+                if (thisTeam is not null)
+                {
+                    team.TeamScore = thisTeam.TeamScore;
+                }
+            }
+
+            return teamList;
+            
         }
     }
 }

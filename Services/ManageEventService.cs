@@ -24,14 +24,8 @@ namespace GeekOff.Services
             var surveyAnswer = await _contextGo.Scoreposs.Where(q => q.Yevent == yEvent && q.RoundNo == 2)
                                         .ToListAsync();
 
-            // elegant way isn't working so this is more brute force
-            var surveyReturn = _contextGo.Scoreposs.Where(q => q.Yevent == yEvent && q.RoundNo == 2)
-                                        .GroupBy(s => s.QuestionNo)
-                                        .Select(q => new Round2SurveyList()
-                                            {
-                                                QuestionNo = q.Key
-                                            })
-                                        .ToList();
+            // get the question text
+            var surveyReturn = await GetRound2QuestionList(yEvent);
 
             foreach (Round2SurveyList survey in surveyReturn)
             {
@@ -47,7 +41,21 @@ namespace GeekOff.Services
             return surveyReturn;            
         }
 
-        public async Task<string> SetRound2Answer(string yEvent, int questionNo, int teamNo, int playerNum, string answer, int score)
+        public async Task<List<Round2SurveyList>> GetRound2QuestionList(string yEvent)
+        {
+            // get the question text
+            var surveyReturn = await _contextGo.QuestionAns.Where(q => q.Yevent == yEvent && q.RoundNo == 2)
+                                        .Select(q => new Round2SurveyList()
+                                            {
+                                                QuestionNo = q.QuestionNo,
+                                                QuestionText = q.TextQuestion
+                                            })
+                                        .ToListAsync();
+
+            return surveyReturn;            
+        }
+
+        public async Task<string> SetRound2AnswerText(string yEvent, int questionNo, int teamNo, int playerNum, string answer, int score)
         {
             // check limits
             if (playerNum < 1 || playerNum > 3)
@@ -75,6 +83,54 @@ namespace GeekOff.Services
                 TeamAnswer = answer,
                 PlayerNum = playerNum,
                 PointAmt = score,
+                Updatetime = DateTime.UtcNow
+            };
+
+            await _contextGo.AddAsync(scoreRecord);
+            await _contextGo.SaveChangesAsync();
+
+            return "The answer was successfully saved.";
+        }
+
+        public async Task<string> SetRound2AnswerSurvey(string yEvent, int questionNo, int teamNo, int playerNum, int answerNum)
+        {
+            // check limits
+            if (playerNum < 1 || playerNum > 3)
+            {
+                var err = "The player number is not valid. Please try again.";
+                return err;
+            }
+
+            if (questionNo < 200 || questionNo > 299)
+            {
+                return "The question is not a valid round 2 question. Please try again.";
+            }
+
+            if (teamNo < 1)
+            {
+                return "A valid team number is required.";
+            }
+
+            if (answerNum < 0 || answerNum > 5)
+            {
+                return "A valid answer number is required.";
+            }
+
+            var answerText = await _contextGo.Scoreposs.SingleOrDefaultAsync(q => q.Yevent == yEvent && q.RoundNo == 2 && q.QuestionNo == questionNo && q.SurveyOrder == answerNum);
+            if (answerText == null)
+            {
+                return "Invalid answer number.";
+            }
+
+            var scoreRecord = new Scoring()
+            {
+                Yevent = yEvent,
+                TeamNo = teamNo,
+                RoundNo = 2,
+                QuestionNo = questionNo,
+                TeamAnswer = answerText.QuestionAnswer.Substring(0,11),
+                PlayerNum = playerNum,
+                PointAmt = answerText.Ptsposs,
                 Updatetime = DateTime.UtcNow
             };
 
