@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using GeekOff.Config;
 using GeekOff.Data;
+using GeekOff.Services;
 
 namespace GeekOff
 {
@@ -77,6 +78,9 @@ namespace GeekOff
             services.AddDbContext<contextGo>(options => options.UseNpgsql(postgresConn));
 
             services.AddCustomServices(Configuration);
+
+            services.AddSignalR()
+                    .AddAzureSignalR();
             
             // services.AddMicrosoftIdentityWebApiAuthentication(Configuration, "AzureAd");
             services.AddControllers();
@@ -126,6 +130,7 @@ namespace GeekOff
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapHub<EventHub>("/events");
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
