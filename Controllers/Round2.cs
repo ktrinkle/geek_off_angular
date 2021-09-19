@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Authorization;
 using Swashbuckle.AspNetCore.Annotations;
+using Microsoft.AspNetCore.SignalR;
 using GeekOff.Services;
 using GeekOff.Models;
 
@@ -20,12 +21,15 @@ namespace GeekOff.Controllers
         private readonly ILogger<Round2Controller> _logger;
         private readonly IScoreService _scoreService;
         private readonly IManageEventService _manageEventService;
+        private readonly IHubContext<EventHub> _eventHub;
 
-        public Round2Controller(ILogger<Round2Controller> logger, IScoreService scoreService, IManageEventService manageEventService)
+        public Round2Controller(ILogger<Round2Controller> logger, IScoreService scoreService, IManageEventService manageEventService,
+                                IHubContext<EventHub> eventHub)
         {
             _logger = logger;
             _scoreService = scoreService;
             _manageEventService = manageEventService;
+            _eventHub = eventHub;
         }
 
         [HttpGet("allSurvey/{yEvent}")]
@@ -46,17 +50,33 @@ namespace GeekOff.Controllers
         [HttpPost("teamanswer/text")]
         [SwaggerOperation(Summary = "Saves the team answer with points")]
         public async Task<ActionResult<string>> SetRound2AnswerText(string yEvent, int questionNo, int teamNo, int playerNum, string answer, int score)
-            => Ok(await _manageEventService.SetRound2AnswerText(yEvent, questionNo, teamNo, playerNum, answer, score));
+        {
+            var returnVar = await _manageEventService.SetRound2AnswerText(yEvent, questionNo, teamNo, playerNum, answer, score);
+            await _eventHub.Clients.All.SendAsync("round2Answer");
+            return Ok(returnVar);
+        }
 
         [HttpPost("teamanswer/survey")]
         [SwaggerOperation(Summary = "Saves the team answer from a direct match to the survey")]
         public async Task<ActionResult<string>> SetRound2AnswerSurvey(string yEvent, int questionNo, int teamNo, int playerNum, int answerNum)
-            => Ok(await _manageEventService.SetRound2AnswerSurvey(yEvent, questionNo, teamNo, playerNum, answerNum));
+        {
+            var returnVar = await _manageEventService.SetRound2AnswerSurvey(yEvent, questionNo, teamNo, playerNum, answerNum);
+            await _eventHub.Clients.All.SendAsync("round2Answer");
+            return Ok(returnVar);
+        }
 
         [HttpGet("scoreboard/{yEvent}")]
         [SwaggerOperation(Summary = "Returns the scoreboard for round 2")]
         public async Task<ActionResult<Round23Scores>> GetRound23Scores(string yEvent)
             => Ok(await _scoreService.GetRound23Scores(yEvent, 2));
+
+        [HttpGet("bigboard/reveal")]
+        [SwaggerOperation(Summary = "Send message to reveal scoreboard")]
+        public async Task<ActionResult> RevealScoreboard()
+        {
+            await _eventHub.Clients.All.SendAsync("round2AnswerShow");
+            return Ok();
+        }
 
         [HttpPut("finalize/{yEvent}")]
         [SwaggerOperation(Summary = "Finalize round 2")]

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from '../../data.service';
-import { round2SurveyQuestions, round2Answers } from '../../data';
+import { round2SurveyQuestions, round2Answers } from '../../data/data';
 
 @Component({
   selector: 'app-round2control',
