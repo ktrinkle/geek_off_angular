@@ -27,4 +27,13 @@ export interface round23Scores
   rnk?: number
 }
 
+export interface round2SurveyList
+{
+  questionNo: number,
+  questionText: string,
+  surveyAnswers: round2Answers[]
+}
+
+
+
 
