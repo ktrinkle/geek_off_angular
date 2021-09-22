@@ -79,8 +79,7 @@ namespace GeekOff
 
             services.AddCustomServices(Configuration);
 
-            services.AddSignalR()
-                    .AddAzureSignalR();
+            services.AddSignalR();
             
             // services.AddMicrosoftIdentityWebApiAuthentication(Configuration, "AzureAd");
             services.AddControllers();
