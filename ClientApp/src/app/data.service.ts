@@ -23,12 +23,12 @@ export class DataService {
     return this.httpClient.get(uri);
   }
 
-  public sendRound2AnswerText(yevent: string, questionNo:number, teamNo:number, playerNum:number, answer:string, score:number): Observable<any> {
+  public sendRound2AnswerText(yevent: string, questionNum:number, teamNum:number, playerNum:number, answer:string, score:number): Observable<any> {
     var uri = this.REST_API_SERVER + '/api/round2/teamanswer/text';
     var postInfo = {
       yevent: yevent,
-      questionNo: questionNo,
-      teamNo: teamNo,
+      questionNum: questionNum,
+      teamNum: teamNum,
       playerNum: playerNum,
       answer: answer,
       score: score

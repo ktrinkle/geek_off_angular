@@ -1,1 +1,21 @@
-<p>round2control works!</p>
+<form [formGroup]="newEventForm" (ngSubmit)="saveUserAnswer()">
+  <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="100%" style="vertical-align: middle; min-height: 75px; padding: 10px;">
+    <label for="answer">Answer</label>
+    <input id="answer" name="answer" formControlName="answer" type="text">
+    <br>
+    <label for="teamNum">Team Number</label>
+    <input id="teamNum" name="teamNum" formControlName="teamNum" type="number">
+    <br>
+    <label for="playerNum">Player Number</label>
+    <input id="playerNum" name="playerNum" formControlName="playerNum" type="number">
+    <br>
+    <label for="questionNum">Question Number</label>
+    <input id="questionNum" name="questionNum" formControlName="questionNum" type="number">
+    <br>
+    <label for="score">Score</label>
+    <input id="score" name="score" formControlName="score" type="number">
+    <br>
+    <button type="submit">Submit</button>
+    {{ apiRespone }}
+  </div>
+</form>
