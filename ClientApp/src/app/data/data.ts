@@ -1,10 +1,10 @@
 export interface round2SurveyQuestions {
-  questionNo: number,
+  questionNum: number,
   surveyAnswers?: round2Answers[]
 }
 
 export interface round2Answers {
-  questionNo: number,
+  questionNum: number,
   answer: string,
   score: number
 }
@@ -25,9 +25,20 @@ export interface round23Scores {
 
 export interface round2SurveyList
 {
-  questionNo: number,
+  questionNum: number,
   questionText: string,
   surveyAnswers: round2Answers[]
+}
+
+export interface round2SubmitAnswer
+{
+  yEvent: string,
+  questionNum: number,
+  teamNum: number,
+  playerNum: number,
+  answerNum?: number,
+  answer?: string,
+  score?: number
 }
 
 

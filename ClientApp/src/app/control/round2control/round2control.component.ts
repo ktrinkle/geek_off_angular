@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from '../../data.service';
-import { round2SurveyQuestions, round2Answers } from '../../data/data';
+import { round2SurveyQuestions, round2SubmitAnswer } from '../../data/data';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 
 @Component({
@@ -45,15 +45,20 @@ export class Round2controlComponent implements OnInit {
 
   // Get user answer and store in DB (see)
   saveUserAnswer() {
-    this.answer = this.newEventForm.value.answer;
-    this.playerNum = this.newEventForm.value.playerNum;
-    this.questionNum = this.newEventForm.value.questionNum;
-    this.teamNum = this.newEventForm.value.teamNum;
-    this.score = this.newEventForm.value.score;
+    console.log(this.newEventForm);
 
-    this._dataService.sendRound2AnswerText(this.yevent, this.questionNum,
-                                            this.teamNum, this.playerNum,
-                                            this.answer, this.score).subscribe((data: string) => {
+    var submitAnswer: round2SubmitAnswer = {
+      yEvent: this.yevent,
+      questionNum: this.newEventForm.value.questionNum,
+      playerNum: this.newEventForm.value.playerNum,
+      teamNum: this.newEventForm.value.teamNum,
+      answer: this.newEventForm.value.answer,
+      score: this.newEventForm.value.score
+    };
+
+    console.log(submitAnswer);
+
+    this._dataService.sendRound2AnswerText(submitAnswer).subscribe((data: string) => {
                                               this.apiRespone = data;
     });
   }
