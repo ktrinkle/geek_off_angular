@@ -55,34 +55,34 @@ namespace GeekOff.Services
             return surveyReturn;            
         }
 
-        public async Task<string> SetRound2AnswerText(string yEvent, int questionNo, int teamNo, int playerNum, string answer, int score)
+        public async Task<string> SetRound2AnswerText(Round2AnswerDto submitAnswer)
         {
             // check limits
-            if (playerNum < 1 || playerNum > 3)
+            if (!(submitAnswer.PlayerNum > 0 && submitAnswer.PlayerNum < 3))
             {
                 var err = "The player number is not valid. Please try again.";
                 return err;
             }
 
-            if (questionNo < 200 || questionNo > 299)
+            if (submitAnswer.QuestionNum < 200 || submitAnswer.QuestionNum > 299)
             {
                 return "The question is not a valid round 2 question. Please try again.";
             }
 
-            if (teamNo < 1)
+            if (submitAnswer.TeamNum < 1)
             {
                 return "A valid team number is required.";
             }
 
             var scoreRecord = new Scoring()
             {
-                Yevent = yEvent,
-                TeamNo = teamNo,
+                Yevent = submitAnswer.YEvent,
+                TeamNo = submitAnswer.TeamNum,
                 RoundNo = 2,
-                QuestionNo = questionNo,
-                TeamAnswer = answer,
-                PlayerNum = playerNum,
-                PointAmt = score,
+                QuestionNo = submitAnswer.QuestionNum,
+                TeamAnswer = submitAnswer.Answer,
+                PlayerNum = submitAnswer.PlayerNum,
+                PointAmt = submitAnswer.Score,
                 Updatetime = DateTime.UtcNow
             };
 
@@ -92,31 +92,31 @@ namespace GeekOff.Services
             return "The answer was successfully saved.";
         }
 
-        public async Task<string> SetRound2AnswerSurvey(string yEvent, int questionNo, int teamNo, int playerNum, int answerNum)
+        public async Task<string> SetRound2AnswerSurvey(Round2AnswerDto submitAnswer)
         {
             // check limits
-            if (playerNum < 1 || playerNum > 3)
+            if (!(submitAnswer.PlayerNum > 0 && submitAnswer.PlayerNum < 3))
             {
                 var err = "The player number is not valid. Please try again.";
                 return err;
             }
 
-            if (questionNo < 200 || questionNo > 299)
+            if (submitAnswer.QuestionNum < 200 || submitAnswer.QuestionNum > 299)
             {
                 return "The question is not a valid round 2 question. Please try again.";
             }
 
-            if (teamNo < 1)
+            if (submitAnswer.TeamNum < 1)
             {
                 return "A valid team number is required.";
             }
 
-            if (answerNum < 0 || answerNum > 5)
+            if (submitAnswer.AnswerNum < 0 || submitAnswer.AnswerNum > 99)
             {
                 return "A valid answer number is required.";
             }
 
-            var answerText = await _contextGo.Scoreposs.SingleOrDefaultAsync(q => q.Yevent == yEvent && q.RoundNo == 2 && q.QuestionNo == questionNo && q.SurveyOrder == answerNum);
+            var answerText = await _contextGo.Scoreposs.SingleOrDefaultAsync(q => q.Yevent == submitAnswer.YEvent && q.RoundNo == 2 && q.QuestionNo == submitAnswer.QuestionNum && q.SurveyOrder == submitAnswer.AnswerNum);
             if (answerText == null)
             {
                 return "Invalid answer number.";
@@ -124,12 +124,12 @@ namespace GeekOff.Services
 
             var scoreRecord = new Scoring()
             {
-                Yevent = yEvent,
-                TeamNo = teamNo,
+                Yevent = submitAnswer.YEvent,
+                TeamNo = submitAnswer.TeamNum,
                 RoundNo = 2,
-                QuestionNo = questionNo,
+                QuestionNo = submitAnswer.QuestionNum,
                 TeamAnswer = answerText.QuestionAnswer.Substring(0,11),
-                PlayerNum = playerNum,
+                PlayerNum = submitAnswer.PlayerNum,
                 PointAmt = answerText.Ptsposs,
                 Updatetime = DateTime.UtcNow
             };

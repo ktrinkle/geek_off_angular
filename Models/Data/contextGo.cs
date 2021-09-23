@@ -71,6 +71,7 @@ namespace GeekOff.Data
             modelBuilder.CreateEventMasterData();
             modelBuilder.CreateQuestionAnsData();
             modelBuilder.CreateScorepossData();
+            modelBuilder.CreateTeamReferenceData();
 
         }
     }

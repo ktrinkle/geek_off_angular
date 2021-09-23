@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { environment } from './../environments/environment';
-import { round2SurveyList } from './data/data';
+import { round2SurveyList, round2SubmitAnswer } from './data/data';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -23,4 +23,8 @@ export class DataService {
     return this.httpClient.get(uri);
   }
 
+  public sendRound2AnswerText(submitAnswer: round2SubmitAnswer): Observable<any> {
+    var uri = this.REST_API_SERVER + '/api/round2/teamanswer/text';
+    return this.httpClient.post(uri, submitAnswer, {responseType: 'text'});
+  }
 }

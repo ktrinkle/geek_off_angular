@@ -3,15 +3,17 @@ using System;
 using GeekOff.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace geek_off_angular.Migrations
 {
     [DbContext(typeof(contextGo))]
-    partial class contextGoModelSnapshot : ModelSnapshot
+    [Migration("20210923211035_TeamReference-InitialData")]
+    partial class TeamReferenceInitialData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -397,19 +399,6 @@ namespace geek_off_angular.Migrations
                     b.HasKey("Yevent", "TeamNo");
 
                     b.ToTable("team_reference");
-
-                    b.HasData(
-                        new
-                        {
-                            Yevent = "e21",
-                            TeamNo = 1,
-                            Dollarraised = 1000m,
-                            Member1 = "Grant Hill",
-                            Member2 = "Brandon Heath",
-                            Teamname = "Go Aggies",
-                            Workgroup1 = "IT",
-                            Workgroup2 = "IT"
-                        });
                 });
 
             modelBuilder.Entity("GeekOff.Data.UserAnswer", b =>

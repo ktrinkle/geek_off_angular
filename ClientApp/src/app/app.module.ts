@@ -17,6 +17,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
 import { EffectsModule } from '@ngrx/effects';
 import { Round2Effects } from './store/round2/round2.effects';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,11 @@ import { Round2Effects } from './store/round2/round2.effects';
     HttpClientModule,
     StoreModule.forRoot(reducers, { metaReducers }),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
-    EffectsModule.forRoot([Round2Effects])
+    EffectsModule.forRoot([Round2Effects]),
+    ReactiveFormsModule
+  ],
+  exports: [
+    FormsModule
   ],
   providers: [DataService],
   bootstrap: [AppComponent]
