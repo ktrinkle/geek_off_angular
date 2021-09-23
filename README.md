@@ -4,12 +4,16 @@ Replacement for round 1 & 2 of the Geek Off at my employer. A work in progress.
 
 # Initial setup
 
+* Run dotnet restore in the root folder to get the Nuget packages
 * Run npm i in the /clientapp folder to get the Angular/Node packages
 * Set up the following user secrets in the root folder:
 
 | User secret | Description |
 |--|--|
 | ConnectionStrings:GeekOff | Postgres database connection |
+
+* Install the required fonts
+* Run the initial database migration
 
 ## Required Fonts
 
@@ -21,6 +25,11 @@ Fonts used in the scoreboard are not included for copyright reasons. These fonts
 | sportstype.ttf | http://tpirepguide.com/qwizx/tpirfonts/sportstype.zip | Round 3 scores | Rename the file from "Sports Type Full.ttf"
 | fast-money-three.ttf | https://fontstruct.com/fontstructions/show/1181116/fast_money_three | Round 2 board | |
 
+## Database creation
+
+Standard EF migration processes are followed. To create the database locally from a blank server, run `dotnet ef database update 0` for the initial creation. Then run `dotnet ef database update` to get the most current version. 
+
+The dotnet CLI tools must be installed for this, and a dotnet restore must be done to ensure all packages are downloaded before migration.
 
 # Running the API
 
