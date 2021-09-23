@@ -9,7 +9,7 @@ import { round2SurveyQuestions, round2Answers } from '../../data/data';
 })
 export class Round2controlComponent implements OnInit {
 
-  public yevent:string = 'e21';
+  public yevent: string = 'e21';
   public surveyMasterList: round2SurveyQuestions[] = [];
 
   constructor(private _dataService: DataService) { }
@@ -18,12 +18,11 @@ export class Round2controlComponent implements OnInit {
     this.getSurveyQuestions(this.yevent);
   }
 
-  getSurveyQuestions(yevent: string)
-  {
-      this._dataService.getAllRound2SurveyQuestion(yevent).subscribe((data: round2SurveyQuestions[]) => {
-        this.surveyMasterList = data;
-      });
-      console.log(this.surveyMasterList);
+  getSurveyQuestions(yevent: string) {
+    this._dataService.getAllRound2SurveyQuestions(yevent).subscribe((data: round2SurveyQuestions[]) => {
+      this.surveyMasterList = data;
+    });
+    console.log(this.surveyMasterList);
   }
 
 }
