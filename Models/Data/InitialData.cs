@@ -78,15 +78,21 @@ namespace GeekOff.Data
                 SurveyOrder = 5,
                 QuestionAnswer = "Dan",
                 Ptsposs = 5
-            },
-            new Scoreposs()
+            }
+        };
+
+        public static readonly List<Teamreference> teamReference = new List<Teamreference>() 
+        {
+            new Teamreference()
             {
                 Yevent = "e21",
-                RoundNo = 2,
-                QuestionNo = 201,
-                SurveyOrder = 6,
-                QuestionAnswer = "Grant",
-                Ptsposs = 5
+                TeamNo = 1,
+                Teamname = "Go Aggies",
+                Member1 = "Grant Hill",
+                Member2 = "Brandon Heath",
+                Dollarraised = 1000,
+                Workgroup1 = "IT",
+                Workgroup2 = "IT"
             }
         };
 
@@ -103,6 +109,11 @@ namespace GeekOff.Data
         public static void CreateQuestionAnsData(this ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<QuestionAns>().HasData(questionAns.ToArray());
+        }
+
+        public static void CreateTeamReferenceData(this ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Teamreference>().HasData(teamReference.ToArray());
         }
     }
 

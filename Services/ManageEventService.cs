@@ -55,21 +55,21 @@ namespace GeekOff.Services
             return surveyReturn;            
         }
 
-        public async Task<string> SetRound2AnswerText(string yEvent, int questionNo, int teamNo, int playerNum, string answer, int score)
+        public async Task<string> SetRound2AnswerText(string yEvent, int questionNum, int teamNum, int playerNum, string answer, int score)
         {
             // check limits
-            if (playerNum < 1 || playerNum > 3)
+            if (!(playerNum > 1 && playerNum < 3))
             {
                 var err = "The player number is not valid. Please try again.";
                 return err;
             }
 
-            if (questionNo < 200 || questionNo > 299)
+            if (questionNum < 200 || questionNum > 299)
             {
                 return "The question is not a valid round 2 question. Please try again.";
             }
 
-            if (teamNo < 1)
+            if (teamNum < 1)
             {
                 return "A valid team number is required.";
             }
@@ -77,9 +77,9 @@ namespace GeekOff.Services
             var scoreRecord = new Scoring()
             {
                 Yevent = yEvent,
-                TeamNo = teamNo,
+                TeamNo = teamNum,
                 RoundNo = 2,
-                QuestionNo = questionNo,
+                QuestionNo = questionNum,
                 TeamAnswer = answer,
                 PlayerNum = playerNum,
                 PointAmt = score,
@@ -92,21 +92,21 @@ namespace GeekOff.Services
             return "The answer was successfully saved.";
         }
 
-        public async Task<string> SetRound2AnswerSurvey(string yEvent, int questionNo, int teamNo, int playerNum, int answerNum)
+        public async Task<string> SetRound2AnswerSurvey(string yEvent, int questionNum, int teamNum, int playerNum, int answerNum)
         {
             // check limits
-            if (playerNum < 1 || playerNum > 3)
+            if (!(playerNum > 1 && playerNum < 3))
             {
                 var err = "The player number is not valid. Please try again.";
                 return err;
             }
 
-            if (questionNo < 200 || questionNo > 299)
+            if (questionNum < 200 || questionNum > 299)
             {
                 return "The question is not a valid round 2 question. Please try again.";
             }
 
-            if (teamNo < 1)
+            if (teamNum < 1)
             {
                 return "A valid team number is required.";
             }
@@ -116,7 +116,7 @@ namespace GeekOff.Services
                 return "A valid answer number is required.";
             }
 
-            var answerText = await _contextGo.Scoreposs.SingleOrDefaultAsync(q => q.Yevent == yEvent && q.RoundNo == 2 && q.QuestionNo == questionNo && q.SurveyOrder == answerNum);
+            var answerText = await _contextGo.Scoreposs.SingleOrDefaultAsync(q => q.Yevent == yEvent && q.RoundNo == 2 && q.QuestionNo == questionNum && q.SurveyOrder == answerNum);
             if (answerText == null)
             {
                 return "Invalid answer number.";
@@ -125,9 +125,9 @@ namespace GeekOff.Services
             var scoreRecord = new Scoring()
             {
                 Yevent = yEvent,
-                TeamNo = teamNo,
+                TeamNo = teamNum,
                 RoundNo = 2,
-                QuestionNo = questionNo,
+                QuestionNo = questionNum,
                 TeamAnswer = answerText.QuestionAnswer.Substring(0,11),
                 PlayerNum = playerNum,
                 PointAmt = answerText.Ptsposs,
