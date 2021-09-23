@@ -49,18 +49,18 @@ namespace GeekOff.Controllers
 
         [HttpPost("teamanswer/text")]
         [SwaggerOperation(Summary = "Saves the team answer with points")]
-        public async Task<ActionResult<string>> SetRound2AnswerText(string yEvent, int questionNo, int teamNo, int playerNum, string answer, int score)
+        public async Task<ActionResult<string>> SetRound2AnswerText(string yEvent, int questionNum, int teamNum, int playerNum, string answer, int score)
         {
-            var returnVar = await _manageEventService.SetRound2AnswerText(yEvent, questionNo, teamNo, playerNum, answer, score);
+            var returnVar = await _manageEventService.SetRound2AnswerText(yEvent, questionNum, teamNum, playerNum, answer, score);
             await _eventHub.Clients.All.SendAsync("round2Answer");
             return Ok(returnVar);
         }
 
         [HttpPost("teamanswer/survey")]
         [SwaggerOperation(Summary = "Saves the team answer from a direct match to the survey")]
-        public async Task<ActionResult<string>> SetRound2AnswerSurvey(string yEvent, int questionNo, int teamNo, int playerNum, int answerNum)
+        public async Task<ActionResult<string>> SetRound2AnswerSurvey(string yEvent, int questionNum, int teamNum, int playerNum, int answerNum)
         {
-            var returnVar = await _manageEventService.SetRound2AnswerSurvey(yEvent, questionNo, teamNo, playerNum, answerNum);
+            var returnVar = await _manageEventService.SetRound2AnswerSurvey(yEvent, questionNum, teamNum, playerNum, answerNum);
             await _eventHub.Clients.All.SendAsync("round2Answer");
             return Ok(returnVar);
         }

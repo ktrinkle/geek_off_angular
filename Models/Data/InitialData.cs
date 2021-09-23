@@ -78,6 +78,15 @@ namespace GeekOff.Data
                 SurveyOrder = 5,
                 QuestionAnswer = "Dan",
                 Ptsposs = 5
+            },
+            new Scoreposs()
+            {
+                Yevent = "e21",
+                RoundNo = 2,
+                QuestionNo = 201,
+                SurveyOrder = 6,
+                QuestionAnswer = "Grant",
+                Ptsposs = 5
             }
         };
 
