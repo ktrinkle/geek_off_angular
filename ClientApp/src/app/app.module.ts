@@ -11,6 +11,10 @@ import { Round2hostComponent } from './host/round2host/round2host.component';
 import { Round2controlComponent } from './control/round2control/round2control.component';
 import { HomeComponent } from './home/home.component';
 import { DataService } from './data.service';
+import { StoreModule } from '@ngrx/store';
+import { reducers, metaReducers } from './store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -24,7 +28,9 @@ import { DataService } from './data.service';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    StoreModule.forRoot(reducers, { metaReducers }),
+    !environment.production ? StoreDevtoolsModule.instrument() : []
   ],
   providers: [DataService],
   bootstrap: [AppComponent]
