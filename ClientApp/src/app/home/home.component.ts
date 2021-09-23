@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { round2AllSurvey } from '../store/round2/round2.actions';
 
 @Component({
   selector: 'app-home',
@@ -7,9 +9,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
-  constructor() { }
+  constructor(private store: Store) { }
 
   ngOnInit(): void {
+    this.store.dispatch(round2AllSurvey({ yEvent: 'e21' }))
   }
 
 }

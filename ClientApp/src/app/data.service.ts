@@ -18,7 +18,7 @@ export class DataService {
     return this.httpClient.get(url);
   }
 
-  public getAllRound2SurveyQuestion(yevent: string): Observable<any> {
+  public getAllRound2SurveyQuestions(yevent: string): Observable<any> {
     var uri = this.REST_API_SERVER + '/api/round2/allSurvey/' + encodeURIComponent(yevent) + '';
     return this.httpClient.get(uri);
   }

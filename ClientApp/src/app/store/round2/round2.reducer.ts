@@ -1,6 +1,6 @@
-import { createReducer, on } from '@ngrx/store';
+import { Action, createReducer, on } from '@ngrx/store';
 import { round2SurveyList } from 'src/app/data/data';
-import { round2AllSurveySuccess } from './round2.actions';
+import { round2AllSurvey, round2AllSurveySuccess } from './round2.actions';
 
 export const round2FeatureKey = 'round2';
 
@@ -14,8 +14,12 @@ export const initialState: State = {
 };
 
 
-export const reducer = createReducer(
+export const round2Reducer = createReducer(
   initialState,
+
+  // on(round2AllSurvey, (state) => ({
+  //   ...state,
+  // })),
 
   on(round2AllSurveySuccess, (state, { allSurvey }) => ({
     ...state,
@@ -23,3 +27,7 @@ export const reducer = createReducer(
   }))
 );
 
+
+export function reducer(state: State | undefined, action: Action): any {
+  return round2Reducer(state, action);
+}

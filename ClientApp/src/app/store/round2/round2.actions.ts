@@ -3,7 +3,7 @@ import { round2SurveyList } from 'src/app/data/data';
 
 export const round2AllSurvey = createAction(
   '[Round2] GetAllSurvey',
-  props<{ payload: { yEvent: string } }>()
+  props<{ yEvent: string }>()
 );
 
 export const round2AllSurveySuccess = createAction(
@@ -11,7 +11,7 @@ export const round2AllSurveySuccess = createAction(
   props<{ allSurvey: round2SurveyList[] }>()
 );
 
-// export const round2Round2sFailure = createAction(
-//   '[Round2] Round2 Round2s Failure',
+// export const round2AllSurveyFailure = createAction(
+//   '[Round2] FailAllSurvey',
 //   props<{ error: any }>()
 // );

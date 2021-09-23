@@ -7,12 +7,12 @@ import { Round2countdownComponent } from './round2/round2countdown/round2countdo
 import { Round2displayComponent } from './round2/round2display/round2display.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'home', pathMatch: 'full'},
-  { path: 'home', component: HomeComponent, pathMatch: 'full'},
-  { path: 'round2/countdown', component: Round2countdownComponent, pathMatch: 'full'},
-  { path: 'round2/display', component: Round2displayComponent, pathMatch: 'full'},
-  { path: 'control/round2', component: Round2controlComponent, pathMatch: 'full'},
-  { path: 'host/round2', component: Round2hostComponent, pathMatch: 'full'},
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
+  { path: 'home', component: HomeComponent, pathMatch: 'full' },
+  { path: 'round2/countdown', component: Round2countdownComponent, pathMatch: 'full' },
+  { path: 'round2/display', component: Round2displayComponent, pathMatch: 'full' },
+  { path: 'control/round2', component: Round2controlComponent, pathMatch: 'full' },
+  { path: 'host/round2', component: Round2hostComponent, pathMatch: 'full' },
 ];
 
 @NgModule({
