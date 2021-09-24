@@ -1,1 +1,16 @@
 <p>round2host works!</p>
+<!-- {{ something | json }} -->
+<!-- <round2host-page></round2host-page> -->
+<form [formGroup]="newEventForm">
+  <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="100%" style="vertical-align: middle; min-height: 75px; padding: 10px;">
+    <label for="teamNum">Team Number</label>
+    <input id="teamNum" name="teamNum" formControlName="teamNum" type="number">
+    <br>
+    <label for="playerNum">Player Number</label>
+    <input id="playerNum" name="playerNum" formControlName="playerNum" type="number">
+    <br>
+    <label for="questionNum">Question Number</label>
+    <input id="questionNum" name="questionNum" formControlName="questionNum" type="number">
+    <br>
+  </div>
+</form>
