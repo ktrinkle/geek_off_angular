@@ -18,6 +18,11 @@ export class DataService {
     return this.httpClient.get(url);
   }
 
+  public getADProfile(): Observable<any> {
+    var uri = 'https://graph.microsoft.com/v1.0/me'
+    return this.httpClient.get(uri);
+  }
+
   public getAllRound2SurveyQuestions(yevent: string): Observable<any> {
     var uri = this.REST_API_SERVER + '/api/round2/allSurvey/' + encodeURIComponent(yevent) + '';
     return this.httpClient.get(uri);

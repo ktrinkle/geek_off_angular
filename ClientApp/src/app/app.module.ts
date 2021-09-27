@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -23,7 +23,8 @@ import { Round2Effects } from './store/round2/round2.effects';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { IPublicClientApplication, PublicClientApplication, InteractionType } from '@azure/msal-browser';
-import { MsalGuard, MsalBroadcastService, MsalModule, MsalService, MSAL_GUARD_CONFIG, MSAL_INSTANCE, MsalGuardConfiguration, MsalRedirectComponent } from '@azure/msal-angular';
+import { MsalGuard, MsalBroadcastService, MsalModule, MsalService, MSAL_GUARD_CONFIG, MSAL_INSTANCE, MsalGuardConfiguration, MsalRedirectComponent, MsalInterceptor, MsalInterceptorConfiguration } from '@azure/msal-angular';
+
 
 // MSAL config
 import { msalConfig } from '../environments/auth-config';
@@ -46,7 +47,19 @@ import { Round1ScoreboardComponent } from './round1/scoreboard/scoreboard.compon
 export function MSALGuardConfigFactory(): MsalGuardConfiguration {
   return {
     interactionType: InteractionType.Redirect,
+    authRequest: {
+      scopes: ['user.read']
+      },
   };
+}
+
+export function MSALInterceptorFactory(): MsalInterceptorConfiguration {
+  return {
+      interactionType: InteractionType.Redirect,
+      protectedResourceMap: new Map([
+          ['https://graph.microsoft.com/v1.0/me', ['user.read']]
+      ])
+  }
 }
 
 @NgModule({
@@ -76,7 +89,11 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
     FormsModule
   ],
   providers: [
-    DataService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useFactory: MSALInterceptorFactory,
+      multi: true
+    },
     {
       provide: MSAL_INSTANCE,
       useFactory: MSALInstanceFactory
@@ -87,7 +104,8 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
     },
     MsalService,
     MsalGuard,
-    MsalBroadcastService
+    MsalBroadcastService,
+    DataService
   ],
   bootstrap: [AppComponent, MsalRedirectComponent]
 })

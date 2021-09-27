@@ -1,4 +1,5 @@
 import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
+import { Router, NavigationStart } from '@angular/router';
 import { MsalService, MsalBroadcastService, MSAL_GUARD_CONFIG, MsalGuardConfiguration } from '@azure/msal-angular';
 import { AuthenticationResult, InteractionStatus, InteractionType, PopupRequest, RedirectRequest } from '@azure/msal-browser';
 import { Subject } from 'rxjs';
@@ -13,12 +14,27 @@ export class AppComponent {
   title = 'Geek Off';
   isIframe = false;
   loginDisplay = false;
+  showLoginBar = true;
+  pagesToShowLogin = [
+    'round1/contestant',
+    'control/round2',
+    'control/round1',
+    'home'
+  ]
   private readonly _destroying$ = new Subject<void>();
 
   constructor(
     @Inject(MSAL_GUARD_CONFIG) private msalGuardConfig: MsalGuardConfiguration,
     private authService: MsalService,
-    private msalBroadcastService: MsalBroadcastService) { }
+    private msalBroadcastService: MsalBroadcastService,
+    private router: Router) {
+      router.events.forEach((event) => {
+        if (event instanceof NavigationStart) {
+          this.showLoginBar = this.pagesToShowLogin.indexOf(event.url) != -1;
+        }
+      })
+
+    }
 
   ngOnInit(): void {
     this.isIframe = window !== window.parent && !window.opener;
