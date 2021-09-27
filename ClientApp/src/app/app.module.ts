@@ -27,6 +27,9 @@ import { MsalGuard, MsalBroadcastService, MsalModule, MsalService, MSAL_GUARD_CO
 
 // MSAL config
 import { msalConfig } from '../environments/auth-config';
+import { Round1IntroComponent } from './round1/intro/intro.component';
+import { Round1DisplayQuestionComponent } from './round1/display-question/display-question.component';
+import { Round1ScoreboardComponent } from './round1/scoreboard/scoreboard.component';
 
 /**
  * Here we pass the configuration parameters to create an MSAL instance.
@@ -54,7 +57,10 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
     Round2hostComponent,
     Round2controlComponent,
     HomeComponent,
-    Round1ContestantComponent
+    Round1ContestantComponent,
+    Round1IntroComponent,
+    Round1DisplayQuestionComponent,
+    Round1ScoreboardComponent
   ],
   imports: [
     BrowserModule,
