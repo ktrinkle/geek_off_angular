@@ -20,7 +20,7 @@ Replacement for round 1 & 2 of the Geek Off at my employer. A work in progress.
 Fonts used in the scoreboard are not included for copyright reasons. These fonts can be found as follows:
 
 | Font name | URL | Use | Changes required |
-|--|--|--|
+|--|--|--|--|
 | eggcrate.ttf | http://tpirepguide.com/qwizx/tpirfonts/eggcrate.zip | Round 1 board | |
 | sportstype.ttf | http://tpirepguide.com/qwizx/tpirfonts/sportstype.zip | Round 3 scores | Rename the file from "Sports Type Full.ttf" |
 | fast-money-three.ttf | https://fontstruct.com/fontstructions/show/1181116/fast_money_three | Round 2 board | |
