@@ -96,6 +96,64 @@ namespace GeekOff.Data
             }
         };
 
+        public static readonly List<TeamUser> teamUser = new List<TeamUser>()
+        {
+            new TeamUser()
+            {
+                Id = 100,
+                Yevent = "e21",
+                TeamNo = 0,
+                BadgeId = "362525",
+                Username = "362525@corpaa.aa.com",
+                AdminFlag = true
+            },
+            new TeamUser()
+            {
+                Id = 101,
+                Yevent = "e21",
+                TeamNo = 0,
+                BadgeId = "446792",
+                Username = "446792@corpaa.aa.com",
+                AdminFlag = true
+            },
+            new TeamUser()
+            {
+                Id = 102,
+                Yevent = "e21",
+                TeamNo = 0,
+                BadgeId = "226250",
+                Username = "226250@corpaa.aa.com",
+                AdminFlag = true
+            },
+            new TeamUser()
+            {
+                Id = 103,
+                Yevent = "e21",
+                TeamNo = 0,
+                BadgeId = "288132",
+                Username = "288132@corpaa.aa.com",
+                AdminFlag = true
+            },
+            new TeamUser()
+            {
+                Id = 104,
+                Yevent = "e21",
+                TeamNo = 0,
+                BadgeId = "285557",
+                Username = "285557@corpaa.aa.com",
+                AdminFlag = true
+            },
+            new TeamUser()
+            {
+                Id = 105,
+                Yevent = "e21",
+                TeamNo = 0,
+                BadgeId = "274798",
+                Username = "274798@corpaa.aa.com",
+                AdminFlag = true
+            },          
+        };
+
         public static void CreateEventMasterData(this ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<EventMaster>().HasData(eventMaster.ToArray());
@@ -114,6 +172,11 @@ namespace GeekOff.Data
         public static void CreateTeamReferenceData(this ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Teamreference>().HasData(teamReference.ToArray());
+        }
+
+        public static void CreateTeamUserData(this ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<TeamUser>().HasData(teamUser.ToArray());
         }
     }
 

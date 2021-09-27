@@ -12,5 +12,6 @@ namespace GeekOff.Services
         Task<string> SetRound2AnswerText(Round2AnswerDto submitAnswer);
         Task<string> SetRound2AnswerSurvey(Round2AnswerDto submitAnswer);
         Task<string> FinalizeRound(string yEvent);
+        Task<List<Round1EnteredAnswers>> ShowRound1TeamEnteredAnswers(string yEvent, int questionId);
     }
 }

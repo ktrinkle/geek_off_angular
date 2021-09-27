@@ -182,5 +182,37 @@ namespace GeekOff.Services
             return "Scores have been finalized in the system.";
 
         }
+
+        #region Round1
+
+        public async Task<List<Round1EnteredAnswers>> ShowRound1TeamEnteredAnswers(string yEvent, int questionId)
+        {
+            var returnDto = new List<Round1EnteredAnswers>();
+
+            var submittedAnswer = await _contextGo.UserAnswer
+                                    .Where(u => u.RoundNo == 1 && u.QuestionNo == questionId && u.Yevent == yEvent)
+                                    .ToListAsync();
+
+            if (submittedAnswer is null)
+            {
+                return null;
+            }
+
+            foreach(var answer in submittedAnswer)
+            {
+                var displayAnswer = new Round1EnteredAnswers()
+                {
+                    TeamNum = answer.TeamNo,
+                    QuestionNum = questionId,
+                    TextAnswer = answer.TextAnswer
+                };
+                returnDto.Add(displayAnswer);
+            }
+
+            return returnDto;
+        }
+
+
+        #endregion
     }
 }

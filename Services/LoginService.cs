@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
+using System.Linq;
 using GeekOff.Data;
 using GeekOff.Models;
 
@@ -18,11 +20,8 @@ namespace GeekOff.Services
             _contextGo = context;
         }
 
-        public async Task<string> Login(string emailAddr)
+        public async Task<UserInfoDto> Login(string emailAddr)
         {
-            // this is not yet fleshed out but will need to take the email and compare against db
-            // ultimately we need a JWT with the tokens for team, player #, role
-
             var loginInfo = await _contextGo.TeamUser.SingleOrDefaultAsync(u => u.Username == emailAddr);
             if (loginInfo is null)
             {
@@ -32,10 +31,32 @@ namespace GeekOff.Services
             if (loginInfo.AdminFlag == true)
             {
                 // we don't care about the team now
-                return "admin";
+                var returnAdmin = new UserInfoDto()
+                {
+                    UserName = loginInfo.Username,
+                    TeamNum = 0,
+                    Roles = new List<string>()
+                    {
+                        "Admin",
+                        "Player"
+                    }
+                };
+
+                return returnAdmin;
             }
 
-            return loginInfo.TeamNo.ToString();
+            var returnUser = new UserInfoDto()
+            {
+                UserName = loginInfo.Username,
+                TeamNum = loginInfo.TeamNo,
+                PlayerNum = loginInfo.PlayerNum,
+                Roles = new List<string>()
+                {
+                    "Player"
+                }
+            };
+
+            return returnUser;
         }
 
     }

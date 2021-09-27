@@ -14,6 +14,7 @@ namespace GeekOff.Data
         public int TeamNo { get; set; }
         public string BadgeId { get; set; }
         public string Username { get; set; }
+        public int? PlayerNum { get; set; }
         public bool AdminFlag { get; set; }
         public DateTime LoginTime { get; set; }
    }
