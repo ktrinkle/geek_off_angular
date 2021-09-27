@@ -32,6 +32,9 @@ import { Round1IntroComponent } from './round1/intro/intro.component';
 import { Round1DisplayQuestionComponent } from './round1/display-question/display-question.component';
 import { Round1ScoreboardComponent } from './round1/scoreboard/scoreboard.component';
 
+// Material
+import { MatToolbarModule } from '@angular/material/toolbar';
+
 /**
  * Here we pass the configuration parameters to create an MSAL instance.
  * For more info, visit: https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-angular/docs/v2-docs/configuration.md
@@ -83,7 +86,8 @@ export function MSALInterceptorFactory(): MsalInterceptorConfiguration {
     !environment.production ? StoreDevtoolsModule.instrument() : [],
     EffectsModule.forRoot([Round2Effects]),
     ReactiveFormsModule,
-    MsalModule
+    MsalModule,
+    MatToolbarModule
   ],
   exports: [
     FormsModule
