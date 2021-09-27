@@ -232,3 +232,6 @@ _Pvt_Extensions
 
 # fonts
 *.ttf
+
+# auth config
+**/ClientApp/src/environments/auth-config.ts
