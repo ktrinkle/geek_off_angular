@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -17,23 +16,30 @@ namespace GeekOff
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration, IWebHostEnvironment environment)
+        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+        public Startup(IConfiguration configuration, IWebHostEnvironment environment, ILogger logger)
         {
             Configuration = configuration;
             Environment = environment;
+            Logger = logger;
         }
 
         public IConfiguration Configuration { get; }
         public IWebHostEnvironment Environment { get; }
+        public ILogger Logger { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            // In production, the Angular files will be served from this directory
-            services.AddSpaStaticFiles(configuration =>
+
+            services.AddCors(options =>
             {
-                configuration.RootPath = "ClientApp/dist";
+                options.AddPolicy(name: MyAllowSpecificOrigins,
+                        builder => builder.AllowAnyOrigin()
+                                    .AllowAnyMethod()
+                                    .AllowAnyHeader()
+                );
             });
 
             #region swagger
@@ -82,9 +88,12 @@ namespace GeekOff
             services.AddSignalR();
             
             // services.AddMicrosoftIdentityWebApiAuthentication(Configuration, "AzureAd");
+
             services.AddControllers();
 
             services.AddHttpClient();
+
+            services.AddLogging();
 
             // services.AddApplicationInsightsTelemetry();
 
@@ -106,6 +115,8 @@ namespace GeekOff
                 });
 
                 app.UseDeveloperExceptionPage();
+
+                app.UseCors(MyAllowSpecificOrigins);
             }
             else
             {
@@ -116,10 +127,6 @@ namespace GeekOff
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-            if (!env.IsDevelopment())
-            {
-                app.UseSpaStaticFiles();
-            }
 
             app.UseRouting();
 
@@ -135,19 +142,8 @@ namespace GeekOff
                     pattern: "{controller}/{action=Index}/{id?}");
             });
 
-            app.UseSpa(spa =>
-            {
-                // To learn more about options for serving an Angular SPA from ASP.NET Core,
-                // see https://go.microsoft.com/fwlink/?linkid=864501
+            app.UseCors(builder => builder.AllowAnyMethod().AllowCredentials());
 
-                spa.Options.SourcePath = "ClientApp";
-
-                if (env.IsDevelopment())
-                {
-                    spa.UseAngularCliServer(npmScript: "start");
-                    // spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
-                }
-            });
         }
     }
 }
