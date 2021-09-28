@@ -18,16 +18,14 @@ namespace GeekOff
     public class Startup
     {
         readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
-        public Startup(IConfiguration configuration, IWebHostEnvironment environment, ILogger logger)
+        public Startup(IConfiguration configuration, IWebHostEnvironment environment)
         {
             Configuration = configuration;
             Environment = environment;
-            Logger = logger;
         }
 
         public IConfiguration Configuration { get; }
         public IWebHostEnvironment Environment { get; }
-        public ILogger Logger { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -52,7 +50,7 @@ namespace GeekOff
             services.AddSwaggerGen(c =>
             {
                 c.EnableAnnotations();
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Computer Reset API", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Geek Off API", Version = "v1" });
                 //future c.TagActionsBy();
         
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
@@ -97,8 +95,6 @@ namespace GeekOff
 
             services.AddHttpClient();
 
-            services.AddLogging();
-
             // services.AddApplicationInsightsTelemetry();
 
         }
@@ -115,7 +111,7 @@ namespace GeekOff
                 // specifying the Swagger JSON endpoint.
                 app.UseSwaggerUI(c =>
                 {
-                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Computer Reset API");
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Geek Off API");
                 });
 
                 app.UseDeveloperExceptionPage();
@@ -124,7 +120,6 @@ namespace GeekOff
             }
             else
             {
-                app.UseExceptionHandler("/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
@@ -145,7 +140,7 @@ namespace GeekOff
                     pattern: "{controller}/{action=Index}/{id?}");
             });
 
-            app.UseCors(builder => builder.AllowAnyMethod().AllowCredentials());
+            app.UseCors(builder => builder.AllowAnyMethod().AllowAnyOrigin().AllowAnyHeader());
 
         }
     }

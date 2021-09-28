@@ -94,7 +94,7 @@ namespace GeekOff.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        [HttpPut("scoreAnswer/{yEvent}/{questionId}")]
+        [HttpPut("showTeamAnswer/{yEvent}/{questionId}")]
         [SwaggerOperation(Summary = "Show entered answers")]
         public async Task<ActionResult<List<Round1EnteredAnswers>>> ShowRound1TeamEnteredAnswers(string yEvent, int questionId)
         {
