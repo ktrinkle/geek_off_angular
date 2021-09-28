@@ -104,7 +104,7 @@ namespace GeekOff.Data
                 Yevent = "e21",
                 TeamNo = 0,
                 BadgeId = "362525",
-                Username = "362525@corpaa.aa.com",
+                Username = "362525@geekoff.onmicrosoft.com",
                 AdminFlag = true
             },
             new TeamUser()
@@ -113,7 +113,7 @@ namespace GeekOff.Data
                 Yevent = "e21",
                 TeamNo = 0,
                 BadgeId = "446792",
-                Username = "446792@corpaa.aa.com",
+                Username = "446792@geekoff.onmicrosoft.com",
                 AdminFlag = true
             },
             new TeamUser()
@@ -122,7 +122,7 @@ namespace GeekOff.Data
                 Yevent = "e21",
                 TeamNo = 0,
                 BadgeId = "226250",
-                Username = "226250@corpaa.aa.com",
+                Username = "226250@geekoff.onmicrosoft.com",
                 AdminFlag = true
             },
             new TeamUser()
@@ -131,7 +131,7 @@ namespace GeekOff.Data
                 Yevent = "e21",
                 TeamNo = 0,
                 BadgeId = "288132",
-                Username = "288132@corpaa.aa.com",
+                Username = "288132@geekoff.onmicrosoft.com",
                 AdminFlag = true
             },
             new TeamUser()
@@ -140,7 +140,7 @@ namespace GeekOff.Data
                 Yevent = "e21",
                 TeamNo = 0,
                 BadgeId = "285557",
-                Username = "285557@corpaa.aa.com",
+                Username = "285557@geekoff.onmicrosoft.com",
                 AdminFlag = true
             },
             new TeamUser()
@@ -149,7 +149,7 @@ namespace GeekOff.Data
                 Yevent = "e21",
                 TeamNo = 0,
                 BadgeId = "274798",
-                Username = "274798@corpaa.aa.com",
+                Username = "274798@geekoff.onmicrosoft.com",
                 AdminFlag = true
             },          
         };

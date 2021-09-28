@@ -1,3 +1,13 @@
+@use '~@angular/material' as mat;
+@include mat.core();
+
+/* ======== Angular material custom themes ======== */
+$go-primary: mat.define-palette(mat.$red-palette);
+$go-accent: mat.define-palette(mat.$green-palette, 100, 500, 700);
+$go-warn: mat.define-palette(mat.$pink-palette);
+
+$go-theme: mat.define-light-theme($go-primary, $go-accent, $go-warn);
+
 @font-face {
   font-family: eggcrate;
   src: url('./assets/eggcrate.ttf');

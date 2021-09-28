@@ -16,9 +16,9 @@ const isIE = window.navigator.userAgent.indexOf("MSIE ") > -1 || window.navigato
  */
 export const msalConfig: Configuration = {
     auth: {
-        clientId: '4e277975-f980-404e-a470-e814e3b61c7d',
-        authority: 'https://login.microsoftonline.com/49793faf-eb3f-4d99-a0cf-aef7cce79dc1',
-        redirectUri: '/', // Points to window.location.origin. You must register this URI on Azure portal/App Registration.
+        clientId: '24a6552b-df31-4aad-ae6f-dfd1ed845a09',
+        authority: 'https://login.microsoftonline.com/abf75bd6-9919-4c8d-b817-906da7b617fb',
+        redirectUri: 'http://localhost:5001', // Points to window.location.origin. You must register this URI on Azure portal/App Registration.
         postLogoutRedirectUri: '/home',
         navigateToLoginRequestUrl: true, // If "true", will navigate back to the original request location before processing the auth code response.
     },
@@ -43,5 +43,5 @@ export const msalConfig: Configuration = {
  */
 export const silentRequest = {
     scopes: ["openid", "profile"],
-    loginHint: "badge@corpaa.aa.com"
+    loginHint: "badge@geekoff.onmicrosoft.com"
 };

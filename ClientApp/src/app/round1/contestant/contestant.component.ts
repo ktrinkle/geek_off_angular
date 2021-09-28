@@ -4,7 +4,7 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 @Component({
   selector: 'app-contestant',
   templateUrl: './contestant.component.html',
-  styleUrls: ['./contestant.component.less']
+  styleUrls: ['./contestant.component.scss']
 })
 export class Round1ContestantComponent implements OnInit {
   // internal management since users won't leave this page

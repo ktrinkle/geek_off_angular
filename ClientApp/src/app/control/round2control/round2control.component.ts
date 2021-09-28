@@ -6,7 +6,7 @@ import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms'
 @Component({
   selector: 'app-round2control',
   templateUrl: './round2control.component.html',
-  styleUrls: ['./round2control.component.less']
+  styleUrls: ['./round2control.component.scss']
 })
 export class Round2controlComponent implements OnInit {
 
