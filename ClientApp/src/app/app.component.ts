@@ -16,10 +16,11 @@ export class AppComponent {
   loginDisplay = false;
   showLoginBar = true;
   pagesToShowLogin = [
-    'round1/contestant',
-    'control/round2',
-    'control/round1',
-    'home'
+    '/round1/contestant',
+    '/control/round2',
+    '/control/round1',
+    '/home',
+    '/'
   ]
   private readonly _destroying$ = new Subject<void>();
 
@@ -30,7 +31,9 @@ export class AppComponent {
     private router: Router) {
       router.events.forEach((event) => {
         if (event instanceof NavigationStart) {
-          this.showLoginBar = this.pagesToShowLogin.indexOf(event.url) != -1;
+          console.log(event.url);
+          console.log(this.pagesToShowLogin.indexOf(event.url));
+          this.showLoginBar = this.pagesToShowLogin.indexOf(event.url) > -1;
         }
       })
 
@@ -50,28 +53,14 @@ export class AppComponent {
   }
 
   login() {
-    if (this.msalGuardConfig.interactionType === InteractionType.Popup) {
-      if (this.msalGuardConfig.authRequest){
-        this.authService.loginPopup({...this.msalGuardConfig.authRequest} as PopupRequest)
-          .subscribe((response: AuthenticationResult) => {
-            this.authService.instance.setActiveAccount(response.account);
-          });
-        } else {
-          this.authService.loginPopup()
-            .subscribe((response: AuthenticationResult) => {
-              this.authService.instance.setActiveAccount(response.account);
-            });
-      }
+    if (this.msalGuardConfig.authRequest){
+      this.authService.loginRedirect({...this.msalGuardConfig.authRequest} as RedirectRequest);
     } else {
-      if (this.msalGuardConfig.authRequest){
-        this.authService.loginRedirect({...this.msalGuardConfig.authRequest} as RedirectRequest);
-      } else {
-        this.authService.loginRedirect();
-      }
+      this.authService.loginRedirect();
     }
   }
 
-  logout() {
+  logout() { // Add log out function here
     this.authService.logout();
   }
 

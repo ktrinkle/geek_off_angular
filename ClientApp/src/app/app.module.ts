@@ -93,11 +93,11 @@ export function MSALInterceptorFactory(): MsalInterceptorConfiguration {
     FormsModule
   ],
   providers: [
-    {
+    /*{
       provide: HTTP_INTERCEPTORS,
       useFactory: MSALInterceptorFactory,
       multi: true
-    },
+    },*/
     {
       provide: MSAL_INSTANCE,
       useFactory: MSALInstanceFactory

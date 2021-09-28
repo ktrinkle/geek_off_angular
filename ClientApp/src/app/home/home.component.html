@@ -1,4 +1,13 @@
-<p>Contestants: <a routerLink="/round1/contestant">Start playing the game!</a></p>
+<div *ngIf="!userIsLoggedIn">
+  <p>Please log in to start the game.</p>
+</div>
+
+<div *ngIf="userIsLoggedIn">
+  <p>You are in the Geek Off!</p>
+  <p><a routerLink="/round1/contestant">Start playing the game!</a></p>
+</div>
+
+
 <p>Below this line will be admin functions once the guards are established.</p>
 <p>Round 1</p>
 <p><a routerLink="/round1/intro/1">Start the intro screens</a></p>

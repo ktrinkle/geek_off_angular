@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { round2AllSurvey } from '../store/round2/round2.actions';
+import { MsalBroadcastService, MsalService } from '@azure/msal-angular';
+import { EventMessage, EventType, InteractionStatus } from '@azure/msal-browser';
+import { filter } from 'rxjs/operators';
+
 
 @Component({
   selector: 'app-home',
@@ -8,11 +10,34 @@ import { round2AllSurvey } from '../store/round2/round2.actions';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
+  userIsLoggedIn: boolean = false;
 
-  constructor(private store: Store) { }
+  constructor(
+    private authService: MsalService,
+    private msalBroadcastService: MsalBroadcastService) { }
 
   ngOnInit(): void {
-    this.store.dispatch(round2AllSurvey({ yEvent: 'e21' }))
+    // authentication handling
+    this.msalBroadcastService.msalSubject$
+    .pipe(
+      filter((msg: EventMessage) => msg.eventType === EventType.LOGIN_SUCCESS),
+    )
+    .subscribe((result: EventMessage) => {
+      console.log(result);
+    });
+
+    this.msalBroadcastService.inProgress$
+    .pipe(
+      filter((status: InteractionStatus) => status === InteractionStatus.None)
+    )
+    .subscribe(() => {
+      this.setHeaderDisplay();
+    })
+  }
+
+  setHeaderDisplay() {
+    this.userIsLoggedIn = this.authService.instance.getAllAccounts().length > 0;
+    console.log(this.userIsLoggedIn);
   }
 
 }

@@ -12,11 +12,15 @@ import { Round1IntroComponent } from './round1/intro/intro.component';
 import { Round1DisplayQuestionComponent } from './round1/display-question/display-question.component';
 import { Round1ScoreboardComponent } from './round1/scoreboard/scoreboard.component';
 
-import { MsalGuard } from '@azure/msal-angular';
+import { MsalGuard, MsalRedirectComponent } from '@azure/msal-angular';
+import { BrowserUtils } from '@azure/msal-browser';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'home', pathMatch: 'full' },
-  { path: 'home', component: HomeComponent, pathMatch: 'full' },
+  {
+    // Dedicated route for redirects
+    path: 'code',
+    component: MsalRedirectComponent
+  },
   // guards for what we see below need to be added
   {
     path: 'round1/contestant',
@@ -46,10 +50,17 @@ const routes: Routes = [
   { path: 'round2/display', component: Round2displayComponent, pathMatch: 'full' },
   { path: 'control/round2', component: Round2controlComponent, pathMatch: 'full' },
   { path: 'host/round2', component: Round2hostComponent, pathMatch: 'full' },
+  { path: 'home', component: HomeComponent, pathMatch: 'full' },
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  imports: [RouterModule.forRoot(routes, {
+    useHash: true,
+    // Don't perform initial navigation in iframes or popups
+    initialNavigation: !BrowserUtils.isInIframe() && !BrowserUtils.isInPopup() ? 'enabled' : 'disabled'
+  })],
+  exports: [RouterModule],
+
 })
 export class AppRoutingModule { }
