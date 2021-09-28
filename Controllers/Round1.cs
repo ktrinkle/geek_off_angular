@@ -22,34 +22,40 @@ namespace GeekOff.Controllers
         private readonly IScoreService _scoreService;
         private readonly IManageEventService _manageEventService;
         private readonly IHubContext<EventHub> _eventHub;
+        private readonly IQuestionService _questionService;
 
         public Round1Controller(ILogger<Round1Controller> logger, IScoreService scoreService, IManageEventService manageEventService,
-                                IHubContext<EventHub> eventHub)
+                                IHubContext<EventHub> eventHub, IQuestionService questionService)
         {
             _logger = logger;
             _scoreService = scoreService;
             _manageEventService = manageEventService;
             _eventHub = eventHub;
+            _questionService = questionService;
         }
 
         [Authorize(Roles = "Player")]
         [HttpGet("getQuestion/{yEvent}/{questionId}")]
         [SwaggerOperation(Summary = "Get all of the survey questions and answers for use of the operators.")]
-        public async Task<ActionResult<string>> GetRound1Question(string yEvent, int questionId)
-            => Ok(await _manageEventService.GetRound2SurveyMaster(yEvent));
+        public async Task<ActionResult<Round1QuestionDto>> GetRound1Question(string yEvent, int questionId)
+            => Ok(await _questionService.GetRound1Question(yEvent, questionId));
 
         [Authorize(Roles = "Player")]
         [HttpGet("getAnswers/{yEvent}/{questionId}")]
         [SwaggerOperation(Summary = "Get all of the survey questions and answers for use of the operators.")]
-        public async Task<ActionResult<List<Round1Answers>>> GetRound1Answers(string yEvent, int questionId)
-            => Ok(await _manageEventService.GetRound2SurveyMaster(yEvent));
+        public async Task<ActionResult<Round1QuestionDto>> GetRound1Answers(string yEvent, int questionId)
+            => Ok(await _questionService.GetRound1QuestionWithAnswer(yEvent, questionId));
 
         [Authorize(Roles = "Player")]
         [HttpPut("submitAnswer/{yEvent}/{questionId}/{answerText}")]
         [SwaggerOperation(Summary = "Player submits the answer to the controlling system")]
         public async Task<ActionResult<string>> SubmitRound1Answer(string yEvent, int questionId, string answerText)
         {
-            var submitAnswer = true;
+            // grab from user claims. TBD
+            int teamNo = 0;
+            string answerUser = "362525";
+            
+            var submitAnswer = await _questionService.SubmitRound1Answer(yEvent, questionId, teamNo, answerText, answerUser);
             await _eventHub.Clients.All.SendAsync("round1PlayerAnswer");
             return Ok(submitAnswer ? "Your answer is in. Good luck!" : "We had a problem. Please try again.");
         }

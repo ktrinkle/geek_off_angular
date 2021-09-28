@@ -234,4 +234,4 @@ _Pvt_Extensions
 *.ttf
 
 # auth config
-**/ClientApp/src/environments/auth-config.ts
+ClientApp/src/environments/auth-config.ts

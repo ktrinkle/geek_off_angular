@@ -16,25 +16,25 @@ namespace GeekOff.Helpers
             _loginService = loginService;
         }
     
-        public async Task<ClaimsPrincipal> TransformAsync(ClaimsPrincipal principal)
+        public async Task<ClaimsPrincipal> TransformAsync(ClaimsPrincipal userPrincipal)
         {
             // Clone current identity
-            var clone = principal.Clone();
-            var newIdentity = (ClaimsIdentity)clone.Identity;
+            var cloneIdentity = userPrincipal.Clone();
+            var newIdentity = (ClaimsIdentity)cloneIdentity.Identity;
     
             // Support AD and local accounts
-            var nameId = principal.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier ||
+            var nameId = userPrincipal.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier ||
                                                             c.Type == ClaimTypes.Name);
             if (nameId == null)
             {
-                return principal;
+                return userPrincipal;
             }
     
             // Get user from database
             var user = await _loginService.Login(nameId.Value);
             if (user == null)
             {
-                return principal;
+                return userPrincipal;
             }
     
             // Add role claims to cloned identity
@@ -44,7 +44,7 @@ namespace GeekOff.Helpers
                 newIdentity.AddClaim(claim);
             }
     
-            return clone;
+            return cloneIdentity;
         }
     }
 }

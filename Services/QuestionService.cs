@@ -19,11 +19,11 @@ namespace GeekOff.Services
             _contextGo = context;
         }
 
-        public async Task<Round1QuestionDto> GetRound1Question(string yEvent, int questionNo, int roundNo)
+        public async Task<Round1QuestionDto> GetRound1Question(string yEvent, int questionNo)
         {
             var question = await _contextGo.QuestionAns.SingleOrDefaultAsync(q => q.QuestionNo == questionNo 
                                                                             && q.Yevent == yEvent
-                                                                            && q.RoundNo == roundNo);
+                                                                            && q.RoundNo == 1);
 
             if (question is null)
             {
@@ -39,11 +39,11 @@ namespace GeekOff.Services
             return questionReturn;
         }
 
-        public async Task<Round1QuestionDto> GetRound1QuestionWithAnswer(string yEvent, int questionNo, int roundNo)
+        public async Task<Round1QuestionDto> GetRound1QuestionWithAnswer(string yEvent, int questionNo)
         {
             var question = await _contextGo.QuestionAns.SingleOrDefaultAsync(q => q.QuestionNo == questionNo 
                                                                             && q.Yevent == yEvent
-                                                                            && q.RoundNo == roundNo);
+                                                                            && q.RoundNo == 1);
 
             if (question is null)
             {
@@ -93,6 +93,43 @@ namespace GeekOff.Services
             }
             
             return questionReturn;
+        }
+
+        public async Task<bool> SubmitRound1Answer(string yEvent, int questionId, int teamNo, string answerText, string answerUser)
+        {
+            // test values
+            if (questionId < 100 || questionId > 199)
+            {
+                return false;
+            }
+
+            if (answerText is null || answerText == "")
+            {
+                return false;
+            }
+
+            var existAnswer = await _contextGo.UserAnswer.Where(u => u.QuestionNo == questionId && u.TeamNo == teamNo && u.Yevent == yEvent).ToListAsync();
+            if (existAnswer is not null)
+            {
+                _contextGo.UserAnswer.RemoveRange(existAnswer);
+                await _contextGo.SaveChangesAsync();
+            }
+
+            var newAnswer = new UserAnswer()
+            {
+                Yevent = yEvent,
+                TeamNo = teamNo,
+                QuestionNo = questionId,
+                TextAnswer = answerText,
+                RoundNo = 1,
+                AnswerTime = DateTime.UtcNow,
+                AnswerUser = answerUser
+            };
+
+            await _contextGo.AddAsync(newAnswer);
+            await _contextGo.SaveChangesAsync();
+
+            return true;
         }
     }
 }
