@@ -8,6 +8,8 @@ $go-warn: mat.define-palette(mat.$pink-palette);
 
 $go-theme: mat.define-light-theme($go-primary, $go-accent, $go-warn);
 
+@include mat.all-component-themes($go-theme);
+
 @font-face {
   font-family: eggcrate;
   src: url('./assets/eggcrate.ttf');
