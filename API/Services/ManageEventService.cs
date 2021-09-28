@@ -86,8 +86,22 @@ namespace GeekOff.Services
                 Updatetime = DateTime.UtcNow
             };
 
-            await _contextGo.AddAsync(scoreRecord);
-            await _contextGo.SaveChangesAsync();
+            // check if score record exists. If so, nuke it.
+            var recordExists = await _contextGo.Scoring.AnyAsync(s => s.Yevent == submitAnswer.YEvent 
+                                                        && s.TeamNo == submitAnswer.TeamNum
+                                                        && s.QuestionNo == submitAnswer.QuestionNum);
+
+            if (recordExists)
+            {
+                _contextGo.Scoring.UpdateRange(scoreRecord);
+                await _contextGo.SaveChangesAsync();
+            }
+
+            if (!recordExists)
+            {
+                await _contextGo.AddAsync(scoreRecord);
+                await _contextGo.SaveChangesAsync();
+            }
 
             return "The answer was successfully saved.";
         }
@@ -134,8 +148,21 @@ namespace GeekOff.Services
                 Updatetime = DateTime.UtcNow
             };
 
-            await _contextGo.AddAsync(scoreRecord);
-            await _contextGo.SaveChangesAsync();
+            var recordExists = await _contextGo.Scoring.AnyAsync(s => s.Yevent == submitAnswer.YEvent 
+                                                        && s.TeamNo == submitAnswer.TeamNum
+                                                        && s.QuestionNo == submitAnswer.QuestionNum);
+
+            if (recordExists)
+            {
+                _contextGo.Scoring.UpdateRange(scoreRecord);
+                await _contextGo.SaveChangesAsync();
+            }
+
+            if (!recordExists)
+            {
+                await _contextGo.AddAsync(scoreRecord);
+                await _contextGo.SaveChangesAsync();
+            }
 
             return "The answer was successfully saved.";
         }
