@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Identity.Web;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using GeekOff.Config;
 using GeekOff.Data;
 using GeekOff.Services;
@@ -31,7 +32,12 @@ namespace GeekOff
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddMicrosoftIdentityWebApi(Configuration);
+
+            services.AddAuthorization();
+            
+            services.AddControllers();
 
             services.AddCors(options =>
             {
@@ -87,8 +93,6 @@ namespace GeekOff
 
             services.AddSignalR();
             
-            // services.AddMicrosoftIdentityWebApiAuthentication(Configuration, "AzureAd");
-
             services.AddControllers();
 
             services.AddHttpClient();
@@ -126,8 +130,7 @@ namespace GeekOff
             }
 
             app.UseHttpsRedirection();
-            app.UseStaticFiles();
-
+            
             app.UseRouting();
 
             app.UseAuthentication();

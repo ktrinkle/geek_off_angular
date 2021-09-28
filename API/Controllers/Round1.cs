@@ -3,10 +3,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Authorization;
 using Swashbuckle.AspNetCore.Annotations;
 using Microsoft.AspNetCore.SignalR;
+using System.Security.Claims;
+using Microsoft.Identity.Web.Resource;
 using GeekOff.Services;
 using GeekOff.Models;
 
@@ -17,7 +20,7 @@ namespace GeekOff.Controllers
     [Route("api/round1")]
     public class Round1Controller : ControllerBase
     {
-
+        static readonly string[] scopeRequiredByApi = new string[] { "access_as_user" };
         private readonly ILogger<Round1Controller> _logger;
         private readonly IScoreService _scoreService;
         private readonly IManageEventService _manageEventService;
@@ -51,7 +54,7 @@ namespace GeekOff.Controllers
         [SwaggerOperation(Summary = "Player submits the answer to the controlling system")]
         public async Task<ActionResult<string>> SubmitRound1Answer(string yEvent, int questionId, string answerText)
         {
-            // grab from user claims. TBD
+            HttpContext.VerifyUserHasAnyAcceptedScope(scopeRequiredByApi);
             int teamNo = 0;
             string answerUser = "362525";
             

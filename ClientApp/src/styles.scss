@@ -2,7 +2,7 @@
 @include mat.core();
 
 /* ======== Angular material custom themes ======== */
-$go-primary: mat.define-palette(mat.$red-palette);
+$go-primary: mat.define-palette(mat.$blue-palette, 500, 900);
 $go-accent: mat.define-palette(mat.$green-palette, 100, 500, 700);
 $go-warn: mat.define-palette(mat.$pink-palette);
 

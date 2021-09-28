@@ -11,6 +11,9 @@ Replacement for round 1 & 2 of the Geek Off at my employer. A work in progress.
 | User secret | Description |
 |--|--|
 | ConnectionStrings:GeekOff | Postgres database connection |
+| AzureAd:Domain | Azure AD domain |
+| AzureAd:TenantId | Azure AD Tenant ID |
+| AzureAd:ClientId | Azure AD Client ID |
 
 * Install the required fonts
 * Run the initial database migration
