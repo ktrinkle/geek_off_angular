@@ -1,5 +1,14 @@
 {{ currentScreen }}
-<p>We have made the intro screens.</p>
+<div id="default" *ngIf="currentScreen==='1'">
+  <p>Geeks! Don't forget to log in on your phones!</p>
+  <p>geekoff.azurewebsites.net</p>
+</div>
+
+<div id="default" *ngIf="currentScreen==='2'">
+  <p>Masks are required at all times in this room.</p>
+  <p>Unless you're the MC or announcer.</p>
+</div>
+
 <div id="intro1" *ngIf="currentScreen==='open'">
 This is where the opening video goes.
 </div>
@@ -9,10 +18,52 @@ This is where the opening video goes.
   {{ teamMasterList | json }}
 </div>
 
-<div id="default" *ngIf="currentScreen==='1'">
-  <p>This is the first screen.</p>
+<div id="rule1" *ngIf="currentScreen==='rule1'">
+<p>Three rounds</p>
+  <mat-list>
+  <mat-list-item><mat-icon>geekplane</mat-icon>Round 1: Trivia
+    <mat-list>
+    <mat-list-item>15 Questions</mat-list-item>
+    <mat-list-item>6 teams advance</mat-list-item>
+  </mat-list>
+  </mat-list-item>
+  <mat-list-item><mat-icon>geekplane</mat-icon>Round 2: Fast Points
+    <mat-list>
+    <mat-list-item>5 Questions</mat-list-item>
+    <mat-list-item>20-25 seconds per person</mat-list-item>
+    <mat-list-item>3 teams advance</mat-list-item>
+  </mat-list>
+  </mat-list-item>
+  <mat-list-item><mat-icon>geekplane</mat-icon>Round 3: Jeopardy!
+    <mat-list>
+    <mat-list-item>20 Questions</mat-list-item>
+    <mat-list-item>Teams Compete to answer first</mat-list-item>
+  </mat-list>
+  </mat-list-item>
+</mat-list>
 </div>
 
-<div id="default" *ngIf="currentScreen==='default'">
-  <p>This is a default screen.</p>
-</div>
+<div id="rule2" *ngIf="currentScreen==='rule2'">
+  <p>Rules</p>
+    <mat-list>
+    <mat-list-item><mat-icon>geekplane</mat-icon>Scores will be reset after each round
+    </mat-list-item>
+    <mat-list-item><mat-icon>geekplane</mat-icon>One bonus point for each $20 raised over $100 (max 10 bonus points)
+    </mat-list-item>
+    <mat-list-item><mat-icon>geekplane</mat-icon>No answering before the host finishes asking the question</mat-list-item>
+  </mat-list>
+  </div>
+
+  <div id="rule3" *ngIf="currentScreen==='rule3'">
+    <p>Round 1: Trivia</p>
+      <mat-list>
+      <mat-list-item><mat-icon>geekplane</mat-icon>15 questions worth 10 points each
+        <mat-list>
+        <mat-list-item>Partial credit not awarded</mat-list-item>
+      </mat-list>
+      </mat-list-item>
+      <mat-list-item><mat-icon>geekphone</mat-icon>Answer on your cell phone before the time is up
+      </mat-list-item>
+      <mat-list-item><mat-icon>geekplane</mat-icon>Top 6 teams advance to Fast Points round</mat-list-item>
+    </mat-list>
+    </div>

@@ -36,6 +36,9 @@ import { Round1ScoreboardComponent } from './round1/scoreboard/scoreboard.compon
 
 // Material
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatTableModule } from '@angular/material/table';
+import { MatListModule } from '@angular/material/list';
+import { MatIconModule } from '@angular/material/icon';
 
 /**
  * Here we pass the configuration parameters to create an MSAL instance.
@@ -90,6 +93,9 @@ export function MSALInterceptorFactory(): MsalInterceptorConfiguration {
     ReactiveFormsModule,
     MsalModule,
     MatToolbarModule,
+    MatTableModule,
+    MatListModule,
+    MatIconModule,
     BrowserAnimationsModule
   ],
   exports: [
