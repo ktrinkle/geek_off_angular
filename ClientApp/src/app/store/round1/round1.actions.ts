@@ -2,7 +2,7 @@ import { createAction, props } from '@ngrx/store';
 import { introDto } from '../../data/data';
 
 export const round1AllTeams = createAction(
-  '[Round1] getAllTeams',
+  '[Round1] GetAllTeams',
   props<{ yEvent: string }>()
 );
 

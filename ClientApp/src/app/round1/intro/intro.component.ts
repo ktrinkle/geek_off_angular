@@ -9,6 +9,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { NgModule }      from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { MatIconRegistry } from '@angular/material/icon';
 
 @Component({
   selector: 'app-intro',
@@ -21,21 +22,27 @@ export class Round1IntroComponent implements OnInit, OnDestroy {
   currentScreen: string = "";
   public yevent: string = 'e21';
   public teamMasterList: introDto[] = [];
-  constructor(private store: Store, private route: ActivatedRoute) {
+  constructor(private store: Store, private route: ActivatedRoute, private matIconRegistry: MatIconRegistry) {
     this.store.dispatch(round1AllTeams({ yEvent: 'e21' }));
+
+    this.matIconRegistry
+      .addSvgIcon('geekplane','../../assets/img/Technology-White-rgb-14.png')
+      .addSvgIcon('geekphone','../../assets/img/Travel-White-rgb-01.png');
    }
 
    destroy$: Subject<boolean> = new Subject<boolean>();
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe(params => {
-      this.currentScreen = params['page'];
-      console.log('Screen: ' + this.currentScreen);
-    });
-
     this.store.select(selectRound1Teams).pipe(takeUntil(this.destroy$)).subscribe(x =>
       this.teamMasterList = x
     );
+
+    this.route.params.subscribe(params => {
+      this.currentScreen = params['page'];
+      console.log('Screen: ' + params['page']);
+    });
+
+
   }
 
   ngOnDestroy() {

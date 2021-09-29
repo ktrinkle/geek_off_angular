@@ -140,7 +140,15 @@ namespace GeekOff
                     pattern: "{controller}/{action=Index}/{id?}");
             });
 
-            app.UseCors(builder => builder.AllowAnyMethod().AllowAnyOrigin().AllowAnyHeader());
+            app.UseCors(builder => builder.WithOrigins("http://localhost:4200")
+                                            .AllowAnyMethod()
+                                            .AllowAnyOrigin()
+                                            .AllowAnyHeader());
+
+            app.UseCors(builder => builder.WithOrigins("https://geekoff.azurewebites.net")
+                                .AllowAnyMethod()
+                                .AllowAnyOrigin()
+                                .AllowAnyHeader());
 
         }
     }
