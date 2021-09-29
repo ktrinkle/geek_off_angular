@@ -29,10 +29,10 @@ namespace GeekOff.Services
 
             foreach (Round2SurveyList survey in surveyReturn)
             {
-                survey.SurveyAnswers = surveyAnswer.FindAll(s => s.QuestionNo == survey.QuestionNo)
+                survey.SurveyAnswers = surveyAnswer.FindAll(s => s.QuestionNo == survey.QuestionNum)
                                                     .Select(s => new Round2Answers()
                                                     {
-                                                        QuestionNo = s.QuestionNo,
+                                                        QuestionNum = s.QuestionNo,
                                                         Answer = s.QuestionAnswer,
                                                         Score = (int)s.Ptsposs
                                                     }).ToList();
@@ -47,7 +47,7 @@ namespace GeekOff.Services
             var surveyReturn = await _contextGo.QuestionAns.Where(q => q.Yevent == yEvent && q.RoundNo == 2)
                                         .Select(q => new Round2SurveyList()
                                             {
-                                                QuestionNo = q.QuestionNo,
+                                                QuestionNum = q.QuestionNo,
                                                 QuestionText = q.TextQuestion
                                             })
                                         .ToListAsync();
@@ -241,30 +241,29 @@ namespace GeekOff.Services
 
         public async Task<List<IntroDto>> GetTeamList(string yEvent)
         {
-            var rawList = await _contextGo.TeamUser.Where(tu => tu.Yevent == yEvent).OrderBy(tu => new {tu.TeamNo, tu.PlayerNum}).ToListAsync();
+            var rawList = await _contextGo.TeamUser.Where(tu => tu.Yevent == yEvent && tu.TeamNo > 0)
+                                                    .OrderBy(tu => tu.TeamNo)
+                                                    .ThenBy(tu => tu.PlayerNum)
+                                                    .ToListAsync();
 
-            var rawListPlayer1 = rawList.Where(r => r.PlayerNum == 1);
-            var rawListPlayer2 = rawList.Where(r => r.PlayerNum == 2);
+            var rawListPlayer1 = rawList.Where(r => r.PlayerNum == 1).ToList();
+            var rawListPlayer2 = rawList.Where(r => r.PlayerNum == 2).ToList();
 
             var returnDto = from r1 in rawListPlayer1
                             join r2 in rawListPlayer2
                             on r1.TeamNo equals r2.TeamNo into r2j
                             from r2o in r2j.DefaultIfEmpty()
+                            join tl in _contextGo.Teamreference
+                            on r1.TeamNo equals tl.TeamNo  
                             select new IntroDto()
                             {
                                 TeamNo = r1.TeamNo,
+                                TeamName = tl.Teamname,
                                 Member1 = r1.PlayerName,
                                 Member2 = r2o.PlayerName,
                                 Workgroup1 = r1.WorkgroupName,
                                 Workgroup2 = r2o.WorkgroupName
                             };
-            
-            // lastly add team names
-            var teamNameList = await _contextGo.Teamreference.Where(tr => tr.Yevent == yEvent).ToListAsync();
-            foreach(IntroDto team in returnDto)
-            {
-                team.Teamname = teamNameList.Find(l => l.TeamNo == team.TeamNo).Teamname;
-            }
 
             return returnDto.ToList();
 
