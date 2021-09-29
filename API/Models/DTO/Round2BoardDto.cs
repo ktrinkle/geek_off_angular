@@ -15,7 +15,7 @@ namespace GeekOff.Models
 
     public class Round2Answers
     {
-        public int QuestionNo { get; set; }
+        public int QuestionNum { get; set; }
         public string Answer { get; set; }
         public int Score { get; set; }
     }

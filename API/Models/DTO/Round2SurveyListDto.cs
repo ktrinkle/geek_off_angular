@@ -7,7 +7,7 @@ namespace GeekOff.Models
 {
     public class Round2SurveyList
     {
-        public int QuestionNo { get; set; }
+        public int QuestionNum { get; set; }
         public string QuestionText { get; set; }
         public List<Round2Answers> SurveyAnswers { get; set; }
     }

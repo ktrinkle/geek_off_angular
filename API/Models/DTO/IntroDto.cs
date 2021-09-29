@@ -8,7 +8,7 @@ namespace GeekOff.Models
     public class IntroDto
     {        
         public int TeamNo { get; set; }
-        public string Teamname { get; set; }
+        public string TeamName { get; set; }
         public string Member1 { get; set; }
         public string Member2 { get; set; }
         public string Workgroup1 { get; set; }

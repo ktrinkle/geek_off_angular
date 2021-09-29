@@ -25,11 +25,11 @@ import { Round2Effects } from './store/round2/round2.effects';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { IPublicClientApplication, PublicClientApplication, InteractionType } from '@azure/msal-browser';
-import { MsalGuard, MsalBroadcastService, MsalModule, MsalService, MSAL_GUARD_CONFIG, MSAL_INSTANCE, MsalGuardConfiguration, MsalRedirectComponent, MsalInterceptor, MsalInterceptorConfiguration } from '@azure/msal-angular';
+import { MsalGuard, MsalBroadcastService, MsalModule, MsalService, MSAL_GUARD_CONFIG, MSAL_INSTANCE, MSAL_INTERCEPTOR_CONFIG, MsalGuardConfiguration, MsalRedirectComponent, MsalInterceptor, MsalInterceptorConfiguration } from '@azure/msal-angular';
 
 
 // MSAL config
-import { msalConfig } from '../environments/auth-config';
+import { msalConfig, protectedResources } from '../environments/auth-config';
 import { Round1IntroComponent } from './round1/intro/intro.component';
 import { Round1DisplayQuestionComponent } from './round1/display-question/display-question.component';
 import { Round1ScoreboardComponent } from './round1/scoreboard/scoreboard.component';
@@ -46,6 +46,22 @@ import { MatIconModule } from '@angular/material/icon';
  */
  export function MSALInstanceFactory(): IPublicClientApplication {
   return new PublicClientApplication(msalConfig);
+}
+
+/**
+ * MSAL Angular will automatically retrieve tokens for resources
+ * added to protectedResourceMap. For more info, visit:
+ * https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-angular/docs/v2-docs/initialization.md#get-tokens-for-web-api-calls
+ */
+ export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
+  const protectedResourceMap = new Map<string, Array<string>>();
+
+  protectedResourceMap.set(protectedResources.geekOffApi.endpoint, protectedResources.geekOffApi.scopes);
+
+  return {
+    interactionType: InteractionType.Redirect,
+    protectedResourceMap
+  };
 }
 
 /**
@@ -102,11 +118,11 @@ export function MSALInterceptorFactory(): MsalInterceptorConfiguration {
     FormsModule
   ],
   providers: [
-    /*{
+    {
       provide: HTTP_INTERCEPTORS,
-      useFactory: MSALInterceptorFactory,
+      useClass: MsalInterceptor,
       multi: true
-    },*/
+    },
     {
       provide: MSAL_INSTANCE,
       useFactory: MSALInstanceFactory
@@ -114,6 +130,10 @@ export function MSALInterceptorFactory(): MsalInterceptorConfiguration {
     {
       provide: MSAL_GUARD_CONFIG,
       useFactory: MSALGuardConfigFactory
+    },
+    {
+      provide: MSAL_INTERCEPTOR_CONFIG,
+      useFactory: MSALInterceptorConfigFactory
     },
     MsalService,
     MsalGuard,
