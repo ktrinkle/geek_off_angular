@@ -43,7 +43,7 @@ namespace GeekOff.Services
             {
                 var result = new Round2Answers() 
                 {
-                    QuestionNo = playerScore.QuestionNo,
+                    QuestionNum = playerScore.QuestionNo,
                     Answer = playerScore.TeamAnswer.ToUpper(),
                     Score = (int)playerScore.PointAmt
                 };
@@ -55,7 +55,7 @@ namespace GeekOff.Services
             {
                 var result = new Round2Answers() 
                 {
-                    QuestionNo = playerScore.QuestionNo,
+                    QuestionNum = playerScore.QuestionNo,
                     Answer = playerScore.TeamAnswer.ToUpper(),
                     Score = (int)playerScore.PointAmt
                 };

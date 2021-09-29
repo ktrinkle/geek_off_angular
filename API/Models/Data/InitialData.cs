@@ -138,9 +138,12 @@ namespace GeekOff.Data
             {
                 Id = 104,
                 Yevent = "e21",
-                TeamNo = 0,
+                TeamNo = 1,
                 BadgeId = "285557",
                 Username = "285557@geekoff.onmicrosoft.com",
+                PlayerName = "Grant Hill",
+                PlayerNum = 1,
+                WorkgroupName = "Information Technology",
                 AdminFlag = true
             },
             new TeamUser()
@@ -151,7 +154,19 @@ namespace GeekOff.Data
                 BadgeId = "274798",
                 Username = "274798@geekoff.onmicrosoft.com",
                 AdminFlag = true
-            },          
+            },   
+            new TeamUser()
+            {
+                Id = 106,
+                Yevent = "e21",
+                TeamNo = 1,
+                BadgeId = "641903",
+                Username = "641903@geekoff.onmicrosoft.com",
+                PlayerName = "Brandon Heath",
+                PlayerNum = 2,
+                WorkgroupName = "Information Technology",
+                AdminFlag = false
+            },         
         };
 
         public static void CreateEventMasterData(this ModelBuilder modelBuilder)

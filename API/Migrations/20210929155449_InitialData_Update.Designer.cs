@@ -3,15 +3,17 @@ using System;
 using GeekOff.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace geek_off_angular.Migrations
 {
     [DbContext(typeof(contextGo))]
-    partial class contextGoModelSnapshot : ModelSnapshot
+    [Migration("20210929155449_InitialData_Update")]
+    partial class InitialData_Update
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -418,7 +420,6 @@ namespace geek_off_angular.Migrations
                             BadgeId = "285557",
                             LoginTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             PlayerName = "Grant Hill",
-                            PlayerNum = 1,
                             TeamNo = 1,
                             Username = "285557@geekoff.onmicrosoft.com",
                             WorkgroupName = "Information Technology",
@@ -441,7 +442,6 @@ namespace geek_off_angular.Migrations
                             BadgeId = "641903",
                             LoginTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             PlayerName = "Brandon Heath",
-                            PlayerNum = 2,
                             TeamNo = 1,
                             Username = "641903@geekoff.onmicrosoft.com",
                             WorkgroupName = "Information Technology",

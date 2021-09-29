@@ -37,4 +37,6 @@ export class DataService {
     var uri = this.REST_API_SERVER + '/api/round1/teamList/' + encodeURIComponent(yEvent) + '';
     return this.httpClient.get(uri);
   }
+
+  // public getRound1QuestionText(yEvent: string, )
 }

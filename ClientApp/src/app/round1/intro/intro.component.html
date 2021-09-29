@@ -14,8 +14,39 @@ This is where the opening video goes.
 </div>
 
 <div id="teamList" *ngIf="currentScreen==='teamList'">
-  <p>This is where the team list goes.</p>
-  {{ teamMasterList | json }}
+  <p>The teams.</p>
+  <mat-table [dataSource]="teamMasterList">
+    <ng-container matColumnDef="teamNo">
+      <mat-header-cell *matHeaderCellDef> Team </mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        {{row.teamNo}}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="teamName">
+      <mat-header-cell *matHeaderCellDef> Team Name </mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        {{row.teamName}}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="member1">
+      <mat-header-cell *matHeaderCellDef> Player 1 </mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        {{row.member1}}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="member2">
+      <mat-header-cell *matHeaderCellDef> Player 2 </mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        {{row.member2}}
+      </mat-cell>
+    </ng-container>
+    <!-- Header and Row Declarations -->
+    <mat-header-row *matHeaderRowDef="['teamNo', 'teamName', 'member1', 'member2']"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: ['teamNo', 'teamName', 'member1', 'member2']"></mat-row>
+  </mat-table>
 </div>
 
 <div id="rule1" *ngIf="currentScreen==='rule1'">
