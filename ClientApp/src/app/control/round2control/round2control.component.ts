@@ -1,12 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from '../../data.service';
+import { Store } from '@ngrx/store';
+import { round2AllSurvey } from '../../store/round2/round2.actions';
 import { round2SurveyQuestions, round2SubmitAnswer } from '../../data/data';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-round2control',
   templateUrl: './round2control.component.html',
-  styleUrls: ['./round2control.component.less']
+  styleUrls: ['./round2control.component.scss']
 })
 export class Round2controlComponent implements OnInit {
 
@@ -20,10 +22,12 @@ export class Round2controlComponent implements OnInit {
   public score: number = 0;
   public apiRespone: string = '';
 
-  constructor(private _dataService: DataService,
+  constructor(private store: Store, private _dataService: DataService,
     private formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
+    this.store.dispatch(round2AllSurvey({ yEvent: 'e21' }));
+
     this.getSurveyQuestions(this.yevent);
 
     this.newEventForm = new FormGroup({

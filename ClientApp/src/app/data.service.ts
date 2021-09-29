@@ -18,6 +18,11 @@ export class DataService {
     return this.httpClient.get(url);
   }
 
+  public getADProfile(): Observable<any> {
+    var uri = 'https://graph.microsoft.com/v1.0/me'
+    return this.httpClient.get(uri);
+  }
+
   public getAllRound2SurveyQuestions(yevent: string): Observable<any> {
     var uri = this.REST_API_SERVER + '/api/round2/allSurvey/' + encodeURIComponent(yevent) + '';
     return this.httpClient.get(uri);
@@ -26,5 +31,10 @@ export class DataService {
   public sendRound2AnswerText(submitAnswer: round2SubmitAnswer): Observable<any> {
     var uri = this.REST_API_SERVER + '/api/round2/teamanswer/text';
     return this.httpClient.post(uri, submitAnswer, {responseType: 'text'});
+  }
+
+  public getRound1IntroTeamList(yEvent: string): Observable<any> {
+    var uri = this.REST_API_SERVER + '/api/round1/teamList/' + encodeURIComponent(yEvent) + '';
+    return this.httpClient.get(uri);
   }
 }
