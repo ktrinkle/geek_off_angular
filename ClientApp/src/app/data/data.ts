@@ -41,6 +41,16 @@ export interface round2SubmitAnswer
   score?: number
 }
 
+export interface introDto
+{
+  teamNo: number,
+  teamName: string,
+  member1: string,
+  member2?: string,
+  workgroup1: string,
+  workgroup2?: string
+}
+
 
 
 

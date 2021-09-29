@@ -9,7 +9,7 @@ import { round2AllSurvey } from 'src/app/store/round2/round2.actions';
 @Component({
   selector: 'app-round2display',
   templateUrl: './round2display.component.html',
-  styleUrls: ['./round2display.component.less']
+  styleUrls: ['./round2display.component.scss']
 })
 export class Round2displayComponent implements OnInit, OnDestroy {
   destroy$: Subject<boolean> = new Subject<boolean>();

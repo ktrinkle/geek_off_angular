@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'app-round2host',
   templateUrl: './round2host.component.html',
-  styleUrls: ['./round2host.component.less']
+  styleUrls: ['./round2host.component.scss']
 })
 export class Round2hostComponent implements OnInit {
 
