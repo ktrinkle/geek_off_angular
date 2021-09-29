@@ -50,7 +50,3 @@ export interface introDto
   workgroup1: string,
   workgroup2?: string
 }
-
-
-
-

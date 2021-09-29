@@ -42,4 +42,6 @@ export class Round1ContestantComponent implements OnInit {
   * 7. Limit if question = 117, don't continue.
   */
 
+
+
 }

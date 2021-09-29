@@ -9,6 +9,7 @@ using Microsoft.Identity.Web;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authentication.Certificate;
 using GeekOff.Config;
 using GeekOff.Data;
 using GeekOff.Services;
@@ -30,8 +31,13 @@ namespace GeekOff
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAuthentication(
+                CertificateAuthenticationDefaults.AuthenticationScheme)
+                .AddCertificate();
+                
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddMicrosoftIdentityWebApi(Configuration);
+
 
             services.AddAuthorization();
             
@@ -122,10 +128,9 @@ namespace GeekOff
             {
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
+                app.UseHttpsRedirection();
             }
 
-            app.UseHttpsRedirection();
-            
             app.UseRouting();
 
             app.UseAuthentication();
