@@ -50,3 +50,18 @@ export interface introDto
   workgroup1: string,
   workgroup2?: string
 }
+
+export interface round1AnswerDto
+{
+    answerId: number,
+    answer: string
+}
+
+export interface round1QADto
+{
+    questionNum: number,
+    questionText: string,
+    answers: round1AnswerDto[],
+    expireTime: Date,
+    questionAnswerType: number,
+}

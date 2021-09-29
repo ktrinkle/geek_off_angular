@@ -1,5 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { round1QADto } from 'src/app/data/data';
+import { DataService } from 'src/app/data.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+
 
 @Component({
   selector: 'app-contestant',
@@ -13,10 +18,12 @@ export class Round1ContestantComponent implements OnInit {
   answerSubmitted: boolean = false;
   currentQuestion: number = 0;
   hideTime: Date = new Date;
+  yEvent = 'e21';
+  currentQuestionDto:round1QADto[] = [];
 
+  destroy$: Subject<boolean> = new Subject<boolean>();
 
-
-  constructor(private route: ActivatedRoute) { }
+  constructor(private route: ActivatedRoute, private dataService: DataService) { }
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
@@ -42,6 +49,30 @@ export class Round1ContestantComponent implements OnInit {
   * 7. Limit if question = 117, don't continue.
   */
 
+  getCurrentQuestionText(): void {
 
+    if (this.currentQuestion < 100 || this.currentQuestion > 199)
+    {
+      this.currentQuestionDto = [];
+    }
+
+    this.dataService.getRound1QuestionText(this.yEvent, this.currentQuestion).pipe(takeUntil(this.destroy$))
+        .subscribe(q => {
+          this.currentQuestionDto = q;
+      });
+  }
+
+  getCurrentQuestionAnswer(): void {
+
+    if (this.currentQuestion < 100 || this.currentQuestion > 199)
+    {
+      this.currentQuestionDto = [];
+    }
+
+    this.dataService.getRound1QuestionAnswer(this.yEvent, this.currentQuestion).pipe(takeUntil(this.destroy$))
+        .subscribe(q => {
+          this.currentQuestionDto = q;
+      });
+  }
 
 }

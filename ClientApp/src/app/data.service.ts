@@ -38,5 +38,13 @@ export class DataService {
     return this.httpClient.get(uri);
   }
 
-  // public getRound1QuestionText(yEvent: string, )
+  public getRound1QuestionText(yEvent: string, questionId: number): Observable<any> {
+    var uri = this.REST_API_SERVER + '/api/getQuestion/' + encodeURIComponent(yEvent) + '/'  + encodeURIComponent(questionId) + '/';
+    return this.httpClient.get(uri);
+  }
+
+  public getRound1QuestionAnswer(yEvent: string, questionId: number): Observable<any> {
+    var uri = this.REST_API_SERVER + '/api/getAnswers/' + encodeURIComponent(yEvent) + '/'  + encodeURIComponent(questionId) + '/';
+    return this.httpClient.get(uri);
+  }
 }
