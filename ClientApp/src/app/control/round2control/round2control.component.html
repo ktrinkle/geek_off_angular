@@ -1,21 +1,46 @@
-<form [formGroup]="newEventForm" (ngSubmit)="saveUserAnswer()">
+<form [formGroup]="newEventForm" (ngSubmit)="saveUserAnswer()" *ngFor="let question of surveyMasterList">
   <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="100%" style="vertical-align: middle; min-height: 75px; padding: 10px;">
-    <label for="answer">Answer</label>
-    <input id="answer" name="answer" formControlName="answer" type="text">
-    <br>
-    <label for="teamNum">Team Number</label>
-    <input id="teamNum" name="teamNum" formControlName="teamNum" type="number">
-    <br>
-    <label for="playerNum">Player Number</label>
-    <input id="playerNum" name="playerNum" formControlName="playerNum" type="number">
-    <br>
-    <label for="questionNum">Question Number</label>
-    <input id="questionNum" name="questionNum" formControlName="questionNum" type="number">
-    <br>
-    <label for="score">Score</label>
-    <input id="score" name="score" formControlName="score" type="number">
-    <br>
-    <button type="submit">Submit</button>
-    {{ apiRespone }}
+    <div>Question #{{question.questionNum}}</div>
+    <mat-grid-list cols="2" rowHeight="30px">
+      <mat-grid-tile>
+        <label for="answer" class="grid-left-align">Answer</label>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <input id="answer" name="answer" formControlName="answer" type="text" class="grid-left-align">
+      </mat-grid-tile>
+      <br>
+      <mat-grid-tile>
+        <label for="teamNum" class="grid-left-align">Team Number</label>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <input id="teamNum" name="teamNum" formControlName="teamNum" type="number" class="grid-left-align">
+      </mat-grid-tile>
+      <br>
+      <mat-grid-tile>
+        <label for="playerNum" class="grid-left-align">Player Number</label>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <input id="playerNum" name="playerNum" formControlName="playerNum" type="number" class="grid-left-align">
+      </mat-grid-tile>
+      <br>
+      <mat-grid-tile>
+        <label for="questionNum" class="grid-left-align">Question Number</label>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <input id="questionNum" name="questionNum" formControlName="questionNum" type="number" class="grid-left-align">
+      </mat-grid-tile>
+      <br>
+      <mat-grid-tile>
+        <label for="score" class="grid-left-align">Score</label>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <input id="score" name="score" formControlName="score" type="number" class="grid-left-align">
+      </mat-grid-tile>
+      <br>
+      <mat-grid-tile>
+        <button type="submit" class="grid-left-align">Submit</button>
+      </mat-grid-tile>
+      {{ apiRespone }}
+    </mat-grid-list>
   </div>
 </form>

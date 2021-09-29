@@ -4,6 +4,7 @@ import { Store } from '@ngrx/store';
 import { round2AllSurvey } from '../../store/round2/round2.actions';
 import { round2SurveyQuestions, round2SubmitAnswer } from '../../data/data';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
+// import { Grid } from '@mui/material';
 
 @Component({
   selector: 'app-round2control',
@@ -43,6 +44,7 @@ export class Round2controlComponent implements OnInit {
   getSurveyQuestions(yevent: string) {
     this._dataService.getAllRound2SurveyQuestions(yevent).subscribe((data: round2SurveyQuestions[]) => {
       this.surveyMasterList = data;
+      console.log(this.surveyMasterList);
     });
     console.log(this.surveyMasterList);
   }
