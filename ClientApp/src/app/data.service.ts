@@ -32,4 +32,9 @@ export class DataService {
     var uri = this.REST_API_SERVER + '/api/round2/teamanswer/text';
     return this.httpClient.post(uri, submitAnswer, {responseType: 'text'});
   }
+
+  public getRound1IntroTeamList(yEvent: string): Observable<any> {
+    var uri = this.REST_API_SERVER + '/api/round1/teamList/' + encodeURIComponent(yEvent) + '';
+    return this.httpClient.get(uri);
+  }
 }

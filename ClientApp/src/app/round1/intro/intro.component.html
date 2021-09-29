@@ -1,1 +1,18 @@
-<p>intro works!</p>
+{{ currentScreen }}
+<p>We have made the intro screens.</p>
+<div id="intro1" *ngIf="currentScreen==='open'">
+This is where the opening video goes.
+</div>
+
+<div id="teamList" *ngIf="currentScreen==='teamList'">
+  <p>This is where the team list goes.</p>
+  {{ teamMasterList | json }}
+</div>
+
+<div id="default" *ngIf="currentScreen==='1'">
+  <p>This is the first screen.</p>
+</div>
+
+<div id="default" *ngIf="currentScreen==='default'">
+  <p>This is a default screen.</p>
+</div>

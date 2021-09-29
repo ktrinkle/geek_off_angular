@@ -140,5 +140,10 @@ namespace GeekOff.Controllers
             // add in controller here
             return Ok();
         }
+
+        [HttpGet("teamList/{yEvent}")]
+        [SwaggerOperation(Summary = "Gets a list of all team members.")]
+        public async Task<ActionResult<List<IntroDto>>> GetTeamList(string yEvent)
+            => Ok(await _manageEventService.GetTeamList(yEvent));
     }
 }

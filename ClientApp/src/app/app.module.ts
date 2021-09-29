@@ -12,6 +12,8 @@ import { Round2controlComponent } from './control/round2control/round2control.co
 import { HomeComponent } from './home/home.component';
 import { Round1ContestantComponent } from './round1/contestant/contestant.component';
 
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 
 import { DataService } from './data.service';
 import { StoreModule } from '@ngrx/store';
@@ -87,7 +89,8 @@ export function MSALInterceptorFactory(): MsalInterceptorConfiguration {
     EffectsModule.forRoot([Round2Effects]),
     ReactiveFormsModule,
     MsalModule,
-    MatToolbarModule
+    MatToolbarModule,
+    BrowserAnimationsModule
   ],
   exports: [
     FormsModule

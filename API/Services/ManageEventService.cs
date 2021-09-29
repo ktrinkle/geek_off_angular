@@ -239,6 +239,36 @@ namespace GeekOff.Services
             return returnDto;
         }
 
+        public async Task<List<IntroDto>> GetTeamList(string yEvent)
+        {
+            var rawList = await _contextGo.TeamUser.Where(tu => tu.Yevent == yEvent).OrderBy(tu => new {tu.TeamNo, tu.PlayerNum}).ToListAsync();
+
+            var rawListPlayer1 = rawList.Where(r => r.PlayerNum == 1);
+            var rawListPlayer2 = rawList.Where(r => r.PlayerNum == 2);
+
+            var returnDto = from r1 in rawListPlayer1
+                            join r2 in rawListPlayer2
+                            on r1.TeamNo equals r2.TeamNo into r2j
+                            from r2o in r2j.DefaultIfEmpty()
+                            select new IntroDto()
+                            {
+                                TeamNo = r1.TeamNo,
+                                Member1 = r1.PlayerName,
+                                Member2 = r2o.PlayerName,
+                                Workgroup1 = r1.WorkgroupName,
+                                Workgroup2 = r2o.WorkgroupName
+                            };
+            
+            // lastly add team names
+            var teamNameList = await _contextGo.Teamreference.Where(tr => tr.Yevent == yEvent).ToListAsync();
+            foreach(IntroDto team in returnDto)
+            {
+                team.Teamname = teamNameList.Find(l => l.TeamNo == team.TeamNo).Teamname;
+            }
+
+            return returnDto.ToList();
+
+        }
 
         #endregion
     }
