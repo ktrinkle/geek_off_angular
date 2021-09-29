@@ -21,23 +21,20 @@ This is where the opening video goes.
 <div id="rule1" *ngIf="currentScreen==='rule1'">
 <p>Three rounds</p>
   <mat-list>
-  <mat-list-item><mat-icon>geekplane</mat-icon>Round 1: Trivia
+  <mat-list-item><mat-icon matListIcon>geekplane</mat-icon>Round 1: Trivia</mat-list-item>
+    <mat-list-item matLine>15 Questions</mat-list-item>
+    <mat-list-item matLine>6 teams advance</mat-list-item>
+  <mat-list-item><mat-icon matListIcon>geekplane</mat-icon>Round 2: Fast Points
     <mat-list>
-    <mat-list-item>15 Questions</mat-list-item>
-    <mat-list-item>6 teams advance</mat-list-item>
+    <mat-list-item matLine>5 Questions</mat-list-item>
+    <mat-list-item matLine>20-25 seconds per person</mat-list-item>
+    <mat-list-item matLine>3 teams advance</mat-list-item>
   </mat-list>
   </mat-list-item>
-  <mat-list-item><mat-icon>geekplane</mat-icon>Round 2: Fast Points
+  <mat-list-item><mat-icon matListIcon>geekplane</mat-icon>Round 3: Jeopardy!
     <mat-list>
-    <mat-list-item>5 Questions</mat-list-item>
-    <mat-list-item>20-25 seconds per person</mat-list-item>
-    <mat-list-item>3 teams advance</mat-list-item>
-  </mat-list>
-  </mat-list-item>
-  <mat-list-item><mat-icon>geekplane</mat-icon>Round 3: Jeopardy!
-    <mat-list>
-    <mat-list-item>20 Questions</mat-list-item>
-    <mat-list-item>Teams Compete to answer first</mat-list-item>
+    <mat-list-item matLine>20 Questions</mat-list-item>
+    <mat-list-item matLine>Teams Compete to answer first</mat-list-item>
   </mat-list>
   </mat-list-item>
 </mat-list>
@@ -46,24 +43,24 @@ This is where the opening video goes.
 <div id="rule2" *ngIf="currentScreen==='rule2'">
   <p>Rules</p>
     <mat-list>
-    <mat-list-item><mat-icon>geekplane</mat-icon>Scores will be reset after each round
+    <mat-list-item><mat-icon matListIcon>geekplane</mat-icon>Scores will be reset after each round
     </mat-list-item>
-    <mat-list-item><mat-icon>geekplane</mat-icon>One bonus point for each $20 raised over $100 (max 10 bonus points)
+    <mat-list-item><mat-icon matListIcon>geekplane</mat-icon>One bonus point for each $20 raised over $100 (max 10 bonus points)
     </mat-list-item>
-    <mat-list-item><mat-icon>geekplane</mat-icon>No answering before the host finishes asking the question</mat-list-item>
+    <mat-list-item><mat-icon matListIcon>geekplane</mat-icon>No answering before the host finishes asking the question</mat-list-item>
   </mat-list>
   </div>
 
   <div id="rule3" *ngIf="currentScreen==='rule3'">
     <p>Round 1: Trivia</p>
       <mat-list>
-      <mat-list-item><mat-icon>geekplane</mat-icon>15 questions worth 10 points each
+      <mat-list-item><mat-icon matListIcon>geekplane</mat-icon>15 questions worth 10 points each
         <mat-list>
-        <mat-list-item>Partial credit not awarded</mat-list-item>
+        <mat-list-item matLine>Partial credit not awarded</mat-list-item>
       </mat-list>
       </mat-list-item>
-      <mat-list-item><mat-icon>geekphone</mat-icon>Answer on your cell phone before the time is up
+      <mat-list-item><mat-icon matListIcon>geekphone</mat-icon>Answer on your cell phone before the time is up
       </mat-list-item>
-      <mat-list-item><mat-icon>geekplane</mat-icon>Top 6 teams advance to Fast Points round</mat-list-item>
+      <mat-list-item><mat-icon matListIcon>geekplane</mat-icon>Top 6 teams advance to Fast Points round</mat-list-item>
     </mat-list>
     </div>

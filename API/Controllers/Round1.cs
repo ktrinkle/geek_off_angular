@@ -144,6 +144,9 @@ namespace GeekOff.Controllers
         [HttpGet("teamList/{yEvent}")]
         [SwaggerOperation(Summary = "Gets a list of all team members.")]
         public async Task<ActionResult<List<IntroDto>>> GetTeamList(string yEvent)
-            => Ok(await _manageEventService.GetTeamList(yEvent));
+        {
+            HttpContext.VerifyUserHasAnyAcceptedScope(scopeRequiredByApi);
+            return await _manageEventService.GetTeamList(yEvent);
+        }
     }
 }

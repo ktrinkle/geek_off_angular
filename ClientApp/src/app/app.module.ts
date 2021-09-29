@@ -118,11 +118,11 @@ export function MSALInterceptorFactory(): MsalInterceptorConfiguration {
     FormsModule
   ],
   providers: [
-    /*{
+    {
       provide: HTTP_INTERCEPTORS,
-      useFactory: MSALInterceptorFactory,
+      useClass: MsalInterceptor,
       multi: true
-    },*/
+    },
     {
       provide: MSAL_INSTANCE,
       useFactory: MSALInstanceFactory
@@ -130,6 +130,10 @@ export function MSALInterceptorFactory(): MsalInterceptorConfiguration {
     {
       provide: MSAL_GUARD_CONFIG,
       useFactory: MSALGuardConfigFactory
+    },
+    {
+      provide: MSAL_INTERCEPTOR_CONFIG,
+      useFactory: MSALInterceptorConfigFactory
     },
     MsalService,
     MsalGuard,
