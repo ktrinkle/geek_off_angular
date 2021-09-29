@@ -11,10 +11,12 @@ Replacement for round 1 & 2 of the Geek Off at my employer. A work in progress.
 | User secret | Description |
 |--|--|
 | ConnectionStrings:GeekOff | Postgres database connection |
+| AzureAd:Instance | Azure AD Instance - requires Tenant ID |
 | AzureAd:Domain | Azure AD domain |
 | AzureAd:TenantId | Azure AD Tenant ID |
 | AzureAd:ClientId | Azure AD Client ID |
 
+* Add ClientApp/src/Environment/auth-config.ts (must be sent from Kevin)
 * Install the required fonts
 * Run the initial database migration
 
@@ -38,7 +40,7 @@ The dotnet CLI tools must be installed for this, and a dotnet restore must be do
 
 The API and UI must be run separately. Use ng serve to run the UI, and dotnet run for the API.
 
-Swagger can be found at the endpoint `/swagger`. This only runs in the dev hosting environment.
+Swagger can be found at the API endpoint `/swagger`. This only runs in the dev hosting environment.
 
 # Authentication
 
