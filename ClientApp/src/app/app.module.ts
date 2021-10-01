@@ -39,7 +39,8 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTableModule } from '@angular/material/table';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
-import { MatGridListModule } from '@angular/material/grid-list'
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatButtonModule } from '@angular/material/button';
 
 /**
  * Here we pass the configuration parameters to create an MSAL instance.
@@ -114,6 +115,7 @@ export function MSALInterceptorFactory(): MsalInterceptorConfiguration {
     MatListModule,
     MatIconModule,
     MatGridListModule,
+    MatButtonModule,
     BrowserAnimationsModule
   ],
   exports: [

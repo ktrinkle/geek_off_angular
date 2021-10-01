@@ -2,9 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { DataService } from '../../data.service';
 import { Store } from '@ngrx/store';
 import { round2AllSurvey } from '../../store/round2/round2.actions';
-import { round2SurveyQuestions, round2SubmitAnswer } from '../../data/data';
+import { round2SurveyQuestions, round2SubmitAnswer, round2Answers } from '../../data/data';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
-// import { Grid } from '@mui/material';
 
 @Component({
   selector: 'app-round2control',
@@ -21,8 +20,8 @@ export class Round2controlComponent implements OnInit {
   public playerNum: number = 0;
   public answer: string = '';
   public score: number = 0;
-  public apiRespone: string = '';
-
+  public apiResponse: string = '';
+  public showBonusQuestion: boolean = false;
   constructor(private store: Store, private _dataService: DataService,
     private formBuilder: FormBuilder) { }
 
@@ -32,7 +31,6 @@ export class Round2controlComponent implements OnInit {
     this.getSurveyQuestions(this.yevent);
 
     this.newEventForm = new FormGroup({
-      questionNum: new FormControl('', [Validators.pattern('[0-9]*')]),
       teamNum: new FormControl('', [Validators.pattern('[0-9]*')]),
       playerNum: new FormControl('', [Validators.pattern('1|2')]),
       answer: new FormControl(''),
@@ -50,12 +48,12 @@ export class Round2controlComponent implements OnInit {
   }
 
   // Get user answer and store in DB (see)
-  saveUserAnswer() {
+  saveUserAnswer(question: any) {
     console.log(this.newEventForm);
 
     var submitAnswer: round2SubmitAnswer = {
       yEvent: this.yevent,
-      questionNum: this.newEventForm.value.questionNum,
+      questionNum: question.questionNum,
       playerNum: this.newEventForm.value.playerNum,
       teamNum: this.newEventForm.value.teamNum,
       answer: this.newEventForm.value.answer,
@@ -65,7 +63,28 @@ export class Round2controlComponent implements OnInit {
     console.log(submitAnswer);
 
     this._dataService.sendRound2AnswerText(submitAnswer).subscribe((data: string) => {
-                                              this.apiRespone = data;
+                                              this.apiResponse = data;
     });
+
+    this.newEventForm.get("answer")?.reset();
+    this.newEventForm.get("score")?.reset();
+    this.newEventForm.get("questionNum")?.reset();
+
+  }
+
+  toggleBonusQuestion() {
+    this.showBonusQuestion = !this.showBonusQuestion;
+    if(this.showBonusQuestion) {
+      console.log("Showing bonus...")
+    }
+    else {
+      console.log("Hiding bonus...");
+    }
+  }
+
+  presetAnswer(answer: round2Answers) {
+    this.newEventForm.get("answer")?.setValue(answer.answer);
+    this.newEventForm.get("score")?.setValue(answer.score);
+    this.newEventForm.get("questionNum")?.setValue(answer.questionNum);
   }
 }
