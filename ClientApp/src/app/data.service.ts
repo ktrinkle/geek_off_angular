@@ -10,6 +10,7 @@ import { Observable } from 'rxjs';
 export class DataService {
 
   private REST_API_SERVER = environment.api_url;
+  public currentEvent: string = '';
 
   constructor(private httpClient: HttpClient) { }
 
@@ -20,6 +21,16 @@ export class DataService {
 
   public getADProfile(): Observable<any> {
     var uri = 'https://graph.microsoft.com/v1.0/me'
+    return this.httpClient.get(uri);
+  }
+
+  public getCurrentEvent(): Observable<any> {
+    var uri = this.REST_API_SERVER + '/api/eventStatus/currentEvent';
+    return this.httpClient.get(uri);
+  }
+
+  public getCurrentQuestion(yevent: string): Observable<any> {
+    var uri = this.REST_API_SERVER + '/api/eventStatus/currentQuestion/' + encodeURIComponent(yevent) + '';
     return this.httpClient.get(uri);
   }
 

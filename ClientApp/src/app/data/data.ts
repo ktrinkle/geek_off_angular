@@ -65,3 +65,9 @@ export interface round1QADto
     expireTime: Date,
     questionAnswerType: number,
 }
+
+export interface currentQuestionDto
+{
+    questionNum: number,
+    status: number
+}

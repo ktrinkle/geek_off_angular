@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 import { Store } from '@ngrx/store';
 import { round1AllTeams, round1AllTeamsSuccess } from '../../store/round1/round1.actions';
@@ -7,10 +7,10 @@ import { introDto } from '../../data/data';
 import { selectRound1Teams } from 'src/app/store';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { NgModule }      from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DataService } from 'src/app/data.service';
+import * as signalR from '@microsoft/signalr';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-intro',
@@ -21,10 +21,10 @@ import { DataService } from 'src/app/data.service';
 export class Round1IntroComponent implements OnInit, OnDestroy {
 
   currentScreen: string = "";
-  public yevent: string = 'e21';
+  public yevent: string = sessionStorage.getItem('event') ?? '';
   public teamMasterList: introDto[] = [];
-  constructor(private store: Store, private route: ActivatedRoute, private matIconRegistry: MatIconRegistry, private dataService: DataService) {
-    this.store.dispatch(round1AllTeams({ yEvent: 'e21' }));
+  constructor(private store: Store, private route: ActivatedRoute, private router: Router, private matIconRegistry: MatIconRegistry, private dataService: DataService) {
+    //this.store.dispatch(round1AllTeams({ yEvent: 'e21' }));
 
     this.matIconRegistry
       .addSvgIcon('geekplane','../../assets/img/Technology-White-rgb-14.png')
@@ -48,6 +48,33 @@ export class Round1IntroComponent implements OnInit, OnDestroy {
       this.teamMasterList = t
     );
 
+    const connection = new signalR.HubConnectionBuilder()
+      .configureLogging(signalR.LogLevel.Information)
+      .withUrl(environment.api_url + 'event')
+      .build();
+
+    connection.start().then(function () {
+      console.log('SignalR Connected!');
+    }).catch(function (err) {
+      return console.error(err.toString());
+    });
+
+    connection.on("round1intro", (data: any) => {
+      this.changePage(data);
+    });
+
+    connection.on("round1question", (data: any) => {
+      this.goToQuestions(data);
+    });
+
+  }
+
+  changePage(page: any): void {
+    this.currentScreen = page;
+  }
+
+  goToQuestions(question: number): void {
+    this.router.navigate(['/round1/contestant']);
   }
 
   ngOnDestroy() {

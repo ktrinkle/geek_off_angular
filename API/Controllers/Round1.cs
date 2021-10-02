@@ -134,7 +134,7 @@ namespace GeekOff.Controllers
 
         [Authorize(Roles = "admin")]
         [HttpPut("changeIntroPage/{introPage}")]
-        [SwaggerOperation(Summary = "Sends message to update the scoreboard.")]
+        [SwaggerOperation(Summary = "Sends message to change the intro page.")]
         public async Task<ActionResult> ChangeIntroPage(string introPage)
         {
             // add in controller here
@@ -144,11 +144,41 @@ namespace GeekOff.Controllers
 
         [Authorize(Roles = "admin")]
         [HttpPut("moveQuestion/{questionId}")]
-        [SwaggerOperation(Summary = "Sends message to update the scoreboard.")]
+        [SwaggerOperation(Summary = "Sends message to update the question display. This message gets sent to change slides, so to speak. It won't show the answers.")]
         public async Task<ActionResult> ChangeQuestion(int questionId)
         {
             // add in controller here
-            await _eventHub.Clients.All.SendAsync("round1intro", questionId);
+            await _eventHub.Clients.All.SendAsync("round1question", questionId);
+            return Ok();
+        }
+
+        [Authorize(Roles = "admin")]
+        [HttpPut("updateStatus/{yEvent}/{questionId}/{status}")]
+        [SwaggerOperation(Summary = "Updates status of question and sends message to display. Changes the state for the contestant and big screen.")]
+        public async Task<ActionResult<CurrentQuestionDto>> ChangeQuestion(string yEvent, int questionId, int status)
+        {
+            var returnDto = await _manageEventService.SetCurrentQuestionStatus(yEvent, questionId, status);
+
+            var messageToSend = "";
+            // @TODO: refactor this as a switch when i can remember the syntax
+            if (status == 0)
+            {
+                messageToSend = "round1Question";
+            }
+            if (status == 1)
+            {
+                messageToSend = "round1ShowAnswerChoices";
+            }
+            if (status == 2)
+            {
+                messageToSend = "round1OpenAnswer";
+            }
+            if (status == 3)
+            {
+                messageToSend = "round1CloseAnswer";
+            }
+
+            await _eventHub.Clients.All.SendAsync(messageToSend, questionId);
             return Ok();
         }
 

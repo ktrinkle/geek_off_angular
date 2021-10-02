@@ -3,5 +3,20 @@
 </div>
 <div *ngif=(questionVisible)>
   <p>Here's your question!</p>
+  <p>{{ currentQuestionDto | json}}</p>
 </div>
-
+<div *ngif=(!answerVisible)>
+  <p>Hold tight, we haven't called your group yet...</p>
+</div>
+<div *ngif=(answerVisible)>
+<p>And we can see the answers!</p>
+</div>
+<div *ngif=(formVisible)>
+  <p>You've gotta pick something.</p>
+</div>
+<div *ngif=(!formVisible)>
+  <p>Looks like we may have your answer, but this isn't coded right yet...</p>
+</div>
+<div *ngIf="(answerSubmitted)">
+  <p>We've got your answer. Good luck!</p>
+</div>

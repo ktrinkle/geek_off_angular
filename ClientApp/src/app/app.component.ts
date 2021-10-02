@@ -2,8 +2,9 @@ import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
 import { Router, NavigationStart } from '@angular/router';
 import { MsalService, MsalBroadcastService, MSAL_GUARD_CONFIG, MsalGuardConfiguration } from '@azure/msal-angular';
 import { AuthenticationResult, InteractionStatus, InteractionType, PopupRequest, RedirectRequest } from '@azure/msal-browser';
-import { Subject } from 'rxjs';
+import { Subject, BehaviorSubject, Observable } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
+import { DataService } from './data.service';
 
 @Component({
   selector: 'app-root',
@@ -22,12 +23,15 @@ export class AppComponent {
     '/home',
     '/'
   ]
+  private currentEventSubject: BehaviorSubject<string>;
+  public currentEvent: Observable<string>;
   private readonly _destroying$ = new Subject<void>();
 
   constructor(
     @Inject(MSAL_GUARD_CONFIG) private msalGuardConfig: MsalGuardConfiguration,
     private authService: MsalService,
     private msalBroadcastService: MsalBroadcastService,
+    private dataService: DataService,
     private router: Router) {
       router.events.forEach((event) => {
         if (event instanceof NavigationStart) {
@@ -35,7 +39,13 @@ export class AppComponent {
           console.log(this.pagesToShowLogin.indexOf(event.url));
           this.showLoginBar = this.pagesToShowLogin.indexOf(event.url) > -1;
         }
-      })
+      });
+      this.dataService.getCurrentEvent().subscribe(event => {
+        sessionStorage.setItem('event', event);
+      });
+
+      this.currentEventSubject = new BehaviorSubject<any>(sessionStorage.getItem('event'));
+      this.currentEvent = this.currentEventSubject.asObservable();
 
     }
 
@@ -68,7 +78,14 @@ export class AppComponent {
     this.loginDisplay = this.authService.instance.getAllAccounts().length > 0;
   }
 
+  public get currentUserValue(): string {
+    this.currentEventSubject.next(sessionStorage.getItem('event') ?? '');
+    return this.currentEventSubject.value;
+}
+
   ngOnDestroy(): void {
+    sessionStorage.removeItem('event');
+    this.currentEventSubject.next('');
     this._destroying$.next(undefined);
     this._destroying$.complete();
   }
