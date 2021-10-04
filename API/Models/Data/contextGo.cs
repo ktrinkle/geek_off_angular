@@ -54,11 +54,6 @@ namespace GeekOff.Data
                 entity.HasKey(k => new {k.Yevent, k.RoundNo, k.TeamNo});
             });
 
-            modelBuilder.Entity<Scoring>(entity => 
-            {
-                entity.HasKey(k => new {k.Yevent, k.RoundNo, k.TeamNo, k.QuestionNo});
-            });
-
             modelBuilder.Entity<Teamreference>(entity => 
             {
                 entity.HasKey(k => new {k.Yevent, k.TeamNo});
