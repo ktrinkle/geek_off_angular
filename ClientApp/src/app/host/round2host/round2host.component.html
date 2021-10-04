@@ -1,1 +1,6 @@
-<p>round2host works!</p>
+<div class="host-question-wrapper">
+	<div class="intro">We surveyed 100 people; top {{surveyMasterList.length}} answers are on the board:</div>
+		<div class="host-question" *ngFor="let question of surveyMasterList;index as i">
+		<h1 class="host">{{i+1}}. {{question.questionText}}</h1>
+	</div>
+</div>

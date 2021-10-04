@@ -1,13 +1,17 @@
 {{ currentScreen }}
-<div id="default" *ngIf="currentScreen==='1'">
+<div id="screen1" *ngIf="currentScreen==='1'">
   <p>Geeks! Don't forget to log in on your phones!</p>
   <p>geekoff.azurewebsites.net</p>
 </div>
 
-<div id="default" *ngIf="currentScreen==='2'">
+<div id="screen2" *ngIf="currentScreen==='2'">
   <p>Masks are required at all times in this room.</p>
   <p>Unless you're the MC or announcer.</p>
 </div>
+
+<div id="intro0" class="intro0" *ngIf="currentScreen==='open'">
+  This is where the seatbelt screen goes.
+  </div>
 
 <div id="intro1" *ngIf="currentScreen==='open'">
 This is where the opening video goes.
@@ -15,7 +19,7 @@ This is where the opening video goes.
 
 <div id="teamList" *ngIf="currentScreen==='teamList'">
   <p>The teams.</p>
-  <mat-table [dataSource]="teamMasterList">
+  <mat-table class="teamList" [dataSource]="teamMasterList">
     <ng-container matColumnDef="teamNo">
       <mat-header-cell *matHeaderCellDef> Team </mat-header-cell>
       <mat-cell *matCellDef="let row">
