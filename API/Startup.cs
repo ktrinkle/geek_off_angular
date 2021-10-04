@@ -46,7 +46,8 @@ namespace GeekOff
             services.AddCors(options =>
             {
                 options.AddPolicy(name: MyAllowSpecificOrigins,
-                        builder => builder.AllowAnyOrigin()
+                        builder => builder.WithOrigins("http://localhost:4200")
+                                    .AllowCredentials()
                                     .AllowAnyMethod()
                                     .AllowAnyHeader()
                 );
@@ -147,12 +148,12 @@ namespace GeekOff
 
             app.UseCors(builder => builder.WithOrigins("http://localhost:4200")
                                             .AllowAnyMethod()
-                                            .AllowAnyOrigin()
+                                            .AllowCredentials()
                                             .AllowAnyHeader());
 
             app.UseCors(builder => builder.WithOrigins("https://geekoff.azurewebites.net")
+                                .AllowCredentials()
                                 .AllowAnyMethod()
-                                .AllowAnyOrigin()
                                 .AllowAnyHeader());
 
         }

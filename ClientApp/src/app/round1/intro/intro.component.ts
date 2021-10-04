@@ -50,7 +50,7 @@ export class Round1IntroComponent implements OnInit, OnDestroy {
 
     const connection = new signalR.HubConnectionBuilder()
       .configureLogging(signalR.LogLevel.Information)
-      .withUrl(environment.api_url + 'event')
+      .withUrl(environment.api_url + '/events')
       .build();
 
     connection.start().then(function () {
