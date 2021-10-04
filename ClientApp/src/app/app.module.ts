@@ -11,6 +11,7 @@ import { Round2hostComponent } from './host/round2host/round2host.component';
 import { Round2controlComponent } from './control/round2control/round2control.component';
 import { HomeComponent } from './home/home.component';
 import { Round1ContestantComponent } from './round1/contestant/contestant.component';
+import { Round1ControlComponent } from './control/round1control/round1control.component';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -39,6 +40,9 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTableModule } from '@angular/material/table';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatButtonModule } from '@angular/material/button';
+import { PregameComponent } from './control/pregame/pregame.component';
 
 // Countdown
 import { CountdownModule } from 'ngx-countdown';
@@ -100,7 +104,9 @@ export function MSALInterceptorFactory(): MsalInterceptorConfiguration {
     Round1ContestantComponent,
     Round1IntroComponent,
     Round1DisplayQuestionComponent,
-    Round1ScoreboardComponent
+    Round1ScoreboardComponent,
+    Round1ControlComponent,
+    PregameComponent
   ],
   imports: [
     BrowserModule,
@@ -116,7 +122,10 @@ export function MSALInterceptorFactory(): MsalInterceptorConfiguration {
     MatListModule,
     MatIconModule,
     BrowserAnimationsModule,
-    CountdownModule
+    CountdownModule,
+    MatGridListModule,
+    MatButtonModule,
+    BrowserAnimationsModule
   ],
   exports: [
     FormsModule

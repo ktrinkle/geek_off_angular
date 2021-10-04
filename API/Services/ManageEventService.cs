@@ -270,5 +270,67 @@ namespace GeekOff.Services
         }
 
         #endregion
+
+        public async Task<string> GetCurrentEvent()
+        {
+            var currentEvent = await _contextGo.EventMaster.SingleOrDefaultAsync(e => e.SelEvent == true);
+            if (currentEvent is null)
+            {
+                return null;
+            }
+            
+            return currentEvent.Yevent;
+        }
+
+        public async Task<CurrentQuestionDto> GetCurrentQuestion(string yEvent)
+        {
+            var currentQuestion = await _contextGo.CurrentQuestion
+                                        .Where(q => q.yEvent == yEvent)
+                                        .OrderByDescending(q => q.QuestionTime)
+                                        .Select(q => new CurrentQuestionDto() {
+                                            QuestionNum = q.QuestionNum,
+                                            Status = q.Status
+                                        }).FirstOrDefaultAsync();
+
+            if (currentQuestion is null)
+            {
+                return new CurrentQuestionDto() {
+                    QuestionNum = 0,
+                    Status = 0
+                };
+            }
+            
+            return currentQuestion;
+        }
+
+        public async Task<CurrentQuestionDto> SetCurrentQuestionStatus(string yEvent, int questionId, int status)
+        {
+            if (questionId < 100)
+            {
+                return null;
+            }
+
+            if (status < 0 || status > 3)
+            {
+                return null;
+            }
+
+            var newQuestionStatus = new CurrentQuestion() 
+            {
+                yEvent = yEvent,
+                QuestionNum = questionId,
+                Status = status,
+                QuestionTime = DateTime.UtcNow
+            };
+
+            await _contextGo.CurrentQuestion.AddAsync(newQuestionStatus);
+            await _contextGo.SaveChangesAsync();
+
+            return new CurrentQuestionDto()
+            {
+                QuestionNum = questionId,
+                Status = status
+            };
+        }
     }
 }
