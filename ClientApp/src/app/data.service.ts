@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
 import { environment } from './../environments/environment';
 import { round2SurveyList, round2SubmitAnswer } from './data/data';
 import { Observable } from 'rxjs';
@@ -58,4 +58,11 @@ export class DataService {
     var uri = this.REST_API_SERVER + '/api/round1/getAnswers/' + encodeURIComponent(yEvent) + '/'  + encodeURIComponent(questionId) + '';
     return this.httpClient.get(uri);
   }
+
+  public saveRound1Answer(yEvent: string, questionNum: number, textAnswer: string): Observable<string> {
+    var uri = this.REST_API_SERVER + '/api/round1/submitAnswer';
+    let params = {yevent: yEvent, questionNum: questionNum, textAnswer: textAnswer};
+    return this.httpClient.put(uri, params, {responseType: 'text'});
+  }
+
 }

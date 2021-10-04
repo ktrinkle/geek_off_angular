@@ -63,7 +63,7 @@ export interface round1QADto
     questionText: string,
     answers: round1AnswerDto[],
     expireTime: Date,
-    questionAnswerType: number,
+    answerType: number,
 }
 
 export interface currentQuestionDto

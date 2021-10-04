@@ -10,6 +10,7 @@ using Swashbuckle.AspNetCore.Annotations;
 using Microsoft.AspNetCore.SignalR;
 using System.Security.Claims;
 using Microsoft.Identity.Web.Resource;
+using GeekOff.Helpers;
 using GeekOff.Services;
 using GeekOff.Models;
 
@@ -50,15 +51,13 @@ namespace GeekOff.Controllers
             => Ok(await _questionService.GetRound1QuestionWithAnswer(yEvent, questionId));
 
         [Authorize(Roles = "admin,player")]
-        [HttpPut("submitAnswer/{yEvent}/{questionId}/{answerText}")]
+        [HttpPut("submitAnswer")]
         [SwaggerOperation(Summary = "Player submits the answer to the controlling system")]
-        public async Task<ActionResult<string>> SubmitRound1Answer(string yEvent, int questionId, string answerText)
+        public async Task<ActionResult<string>> SubmitRound1Answer(Round1EnteredAnswers answers)
         {
-            HttpContext.VerifyUserHasAnyAcceptedScope(scopeRequiredByApi);
-            int teamNo = 0;
-            string answerUser = "362525";
+            var answerUser = User.UserId();
             
-            var submitAnswer = await _questionService.SubmitRound1Answer(yEvent, questionId, teamNo, answerText, answerUser);
+            var submitAnswer = await _questionService.SubmitRound1Answer(answers.Yevent, answers.QuestionNum, answers.TextAnswer, answerUser);
             await _eventHub.Clients.All.SendAsync("round1PlayerAnswer");
             return Ok(submitAnswer ? "Your answer is in. Good luck!" : "We had a problem. Please try again.");
         }

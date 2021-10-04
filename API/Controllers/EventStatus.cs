@@ -46,7 +46,6 @@ namespace GeekOff.Controllers
         [SwaggerOperation(Summary = "Get the current question. Called when round1/contestant loads.")]
         public async Task<ActionResult<CurrentQuestionDto>> GetCurrentQuestion(string yEvent)
             => Ok(await _manageEventService.GetCurrentQuestion(yEvent));
-
         
     }
 }

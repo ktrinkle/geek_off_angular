@@ -22,6 +22,7 @@ export class Round1ContestantComponent implements OnInit {
   answerVisible: boolean = false;
   formVisible: boolean = false;
   answerSubmitted: boolean = false;
+  answerReturn: string = '';
   currentQuestion: currentQuestionDto = {
     questionNum: 0,
     status: 0
@@ -45,14 +46,7 @@ export class Round1ContestantComponent implements OnInit {
 
   destroy$: Subject<boolean> = new Subject<boolean>();
 
-  constructor(private route: ActivatedRoute, private dataService: DataService) {
-    this.dataService.getCurrentQuestion(this.yEvent).subscribe(initialQ => {
-      this.currentQuestion = initialQ;
-      if (this.currentQuestion.questionNum > 0) {
-        this.loadQuestion(this.currentQuestion.questionNum);
-      };
-    });
-  }
+  constructor(private route: ActivatedRoute, private dataService: DataService) { }
 
   ngOnInit(): void {
 
@@ -79,36 +73,48 @@ export class Round1ContestantComponent implements OnInit {
       this.openForm();
     });
 
+    connection.on("round1PlayerAnswer", (data: any) => {
+      this.closeForm();
+    });
+
     connection.on("round1CloseAnswer", (data: any) => {
       this.closeForm();
     });
 
     // set up our internal state
-    // we may need to make this wait for the API call for current question.
-    console.log(this.currentQuestion);
-    if (this.currentQuestion.questionNum > 99 && this.currentQuestion.questionNum < 120)
-    {
-      // we have already loaded in the init so we have our state here.
-      if (this.currentQuestion.status == 3)
-      {
-        this.closeForm();
-      }
+    // this is not working as we desire on reloads of the component, need to review
+    this.dataService.getCurrentQuestion(this.yEvent).subscribe(initialQ => {
+      this.currentQuestion = initialQ;
+      if (this.currentQuestion.questionNum > 0) {
+        this.loadQuestion(this.currentQuestion.questionNum);
 
-      if (this.currentQuestion.status == 2)
-      {
-        this.openForm();
-      }
+        console.log(this.currentQuestion);
+        if (this.currentQuestion.questionNum > 99 && this.currentQuestion.questionNum < 120)
+        {
+          // we have already loaded in the init so we have our state here. In theory.
+          if (this.currentQuestion.status == 3)
+          {
+            this.closeForm();
+          }
 
-      if (this.currentQuestion.status == 1)
-      {
-        this.showChoices();
-      }
-    };
+          if (this.currentQuestion.status == 2)
+          {
+            this.openForm();
+          }
 
-    if (this.currentQuestion.questionNum == 0)
-    {
-      this.hangTight = true;
-    }
+          if (this.currentQuestion.status == 1)
+          {
+            this.showChoices();
+          }
+        };
+
+        if (this.currentQuestion.questionNum == 0)
+        {
+          this.hangTight = true;
+        }
+
+      };
+    });
   }
 
   loadQuestion(questionId: number): void{
@@ -119,6 +125,7 @@ export class Round1ContestantComponent implements OnInit {
     this.hangTight = true;
     this.questionVisible = false;
     this.answerSubmitted = false;
+    this.answerReturn = '';
     this.dataService.getRound1QuestionAnswer(this.yEvent, questionId).pipe(takeUntil(this.destroy$))
         .subscribe(q => {
           this.resetForm(); // confirm this does what we expect.
@@ -159,7 +166,34 @@ export class Round1ContestantComponent implements OnInit {
   }
 
   submitAnswer() {
-    // future to code
+    var answerText;
+    var questionNum = this.currentQuestionDto?.questionNum ?? 0;
+    console.log('Submit started');
+    console.log(this.currentQuestionDto?.answerType);
+    console.log(this.answerForm.value);
+
+    if (this.currentQuestionDto?.answerType != 1)
+    {
+      // multiple guess and fill in process
+      answerText = this.answerForm.value.textAnswer;
+      console.log(answerText);
+    }
+
+    if (this.currentQuestionDto?.answerType == 1)
+    {
+      // match process
+      answerText = this.answerForm.value.multipleChoice1.toString()
+                    + this.answerForm.value.multipleChoice2.toString()
+                    + this.answerForm.value.multipleChoice3.toString()
+                    + this.answerForm.value.multipleChoice4.toString();
+    }
+    if (questionNum > 0 && answerText != null)
+    {
+      this.dataService.saveRound1Answer(this.yEvent, questionNum, answerText).subscribe(a => {
+        this.answerReturn = a;
+        this.formVisible = false;
+      });
+    }
   }
 
   debugVals() {

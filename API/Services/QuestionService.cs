@@ -84,7 +84,7 @@ namespace GeekOff.Services
                     Answer = question.TextAnswer4,
                 });
 
-                questionReturn.AnswerType = question.CorrectAnswer.Length == 1 ? QuestionAnswerType.MultipleChoice : QuestionAnswerType.Match;
+                questionReturn.AnswerType = question.CorrectAnswer.Length == 1 ? QuestionAnswerType.Match : QuestionAnswerType.MultipleChoice;
             }
 
             if (question.MultipleChoice == false)
@@ -95,7 +95,7 @@ namespace GeekOff.Services
             return questionReturn;
         }
 
-        public async Task<bool> SubmitRound1Answer(string yEvent, int questionId, int teamNo, string answerText, string answerUser)
+        public async Task<bool> SubmitRound1Answer(string yEvent, int questionId, string answerText, string answerUser)
         {
             // test values
             if (questionId < 100 || questionId > 199)
@@ -108,7 +108,20 @@ namespace GeekOff.Services
                 return false;
             }
 
-            var existAnswer = await _contextGo.UserAnswer.Where(u => u.QuestionNo == questionId && u.TeamNo == teamNo && u.Yevent == yEvent).ToListAsync();
+            if (answerUser is null || answerUser == "000000")
+            {
+                return false;
+            }
+
+            // grab team info for this user. If this fails, we exit early.
+            var playerInfo = await _contextGo.TeamUser.FirstOrDefaultAsync(u => u.BadgeId == answerUser && u.Yevent == yEvent);
+
+            if (playerInfo is null)
+            {
+                return false;
+            }
+
+            var existAnswer = await _contextGo.UserAnswer.Where(u => u.QuestionNo == questionId && u.TeamNo == playerInfo.TeamNo && u.Yevent == yEvent).ToListAsync();
             if (existAnswer is not null)
             {
                 _contextGo.UserAnswer.RemoveRange(existAnswer);
@@ -118,7 +131,7 @@ namespace GeekOff.Services
             var newAnswer = new UserAnswer()
             {
                 Yevent = yEvent,
-                TeamNo = teamNo,
+                TeamNo = playerInfo.TeamNo,
                 QuestionNo = questionId,
                 TextAnswer = answerText,
                 RoundNo = 1,
