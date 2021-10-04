@@ -40,6 +40,9 @@ import { MatTableModule } from '@angular/material/table';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 
+// Countdown
+import { CountdownModule } from 'ngx-countdown';
+
 /**
  * Here we pass the configuration parameters to create an MSAL instance.
  * For more info, visit: https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-angular/docs/v2-docs/configuration.md
@@ -112,7 +115,8 @@ export function MSALInterceptorFactory(): MsalInterceptorConfiguration {
     MatTableModule,
     MatListModule,
     MatIconModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    CountdownModule
   ],
   exports: [
     FormsModule
