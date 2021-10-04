@@ -2,6 +2,12 @@
 
 Replacement for round 1 & 2 of the Geek Off at my employer. A work in progress.
 
+# Requirements
+
+* .NET Core 5.x SDK
+* NPM/Node 14+
+* Azure account to support Azure AD - if installing from the repo without using any established infrastructure, you will need to set up the application in Azure AD. Refer to Microsoft documentation to establish the tenant and client ID required below.
+
 # Initial setup
 
 * Run dotnet restore in the /API folder to get the Nuget packages
@@ -38,9 +44,11 @@ The dotnet CLI tools must be installed for this, and a dotnet restore must be do
 
 # Running the App
 
-The API and UI must be run separately. Use ng serve to run the UI, and dotnet run for the API.
+The API and UI must be run separately. Use `ng serve` to run the UI, and `dotnet run` for the API.
 
 Swagger can be found at the API endpoint `/swagger`. This only runs in the dev hosting environment.
+
+SignalR communication uses the endpoint `/events`.
 
 # Authentication
 
@@ -67,7 +75,7 @@ Automated testing is not enforced or required.
   * Show list of questions and answers from database. API: /api/round2/allSurvey/{yEvent}
   * Enter answer that team gives for question and points. API: /api/round2/teamAnswer/text, /api/round2/teamAnswer/survey from button
   * Finalize the round. /api/round2/finalize/{yevent}
-5. Host screen (host cellphone) - Dan
+5. Host screen (host cellphone) - Dan - completed.
   * Show questions on the phone. API: /api/round2/allQuestions/{yEvent}
 6. Scoreboard (lower priority)
   * API: /api/round2/scoreboard/{yEvent}

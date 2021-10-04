@@ -3,15 +3,17 @@ using System;
 using GeekOff.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace geek_off_angular.Migrations
 {
     [DbContext(typeof(contextGo))]
-    partial class contextGoModelSnapshot : ModelSnapshot
+    [Migration("20211002182622_CurrentQuestionTable")]
+    partial class CurrentQuestionTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -304,11 +306,22 @@ namespace geek_off_angular.Migrations
 
             modelBuilder.Entity("GeekOff.Data.Scoring", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<string>("Yevent")
+                        .HasMaxLength(6)
+                        .HasColumnType("character varying(6)")
+                        .HasColumnName("yevent");
+
+                    b.Property<int>("RoundNo")
                         .HasColumnType("integer")
-                        .HasColumnName("id")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                        .HasColumnName("round_no");
+
+                    b.Property<int>("TeamNo")
+                        .HasColumnType("integer")
+                        .HasColumnName("team_no");
+
+                    b.Property<int>("QuestionNo")
+                        .HasColumnType("integer")
+                        .HasColumnName("question_no");
 
                     b.Property<int?>("FinalJep")
                         .HasColumnType("integer")
@@ -322,36 +335,19 @@ namespace geek_off_angular.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("point_amt");
 
-                    b.Property<int>("QuestionNo")
-                        .HasColumnType("integer")
-                        .HasColumnName("question_no");
-
                     b.Property<int?>("Round3neg")
                         .HasColumnType("integer")
                         .HasColumnName("round3neg");
-
-                    b.Property<int>("RoundNo")
-                        .HasColumnType("integer")
-                        .HasColumnName("round_no");
 
                     b.Property<string>("TeamAnswer")
                         .HasColumnType("text")
                         .HasColumnName("team_answer");
 
-                    b.Property<int>("TeamNo")
-                        .HasColumnType("integer")
-                        .HasColumnName("team_no");
-
                     b.Property<DateTime>("Updatetime")
                         .HasColumnType("timestamp without time zone")
                         .HasColumnName("updatetime");
 
-                    b.Property<string>("Yevent")
-                        .HasMaxLength(6)
-                        .HasColumnType("character varying(6)")
-                        .HasColumnName("yevent");
-
-                    b.HasKey("Id");
+                    b.HasKey("Yevent", "RoundNo", "TeamNo", "QuestionNo");
 
                     b.ToTable("scoring");
                 });
