@@ -46,12 +46,47 @@ const routes: Routes = [
     pathMatch: 'full',
     canActivate: [MsalGuard]
   },
-  { path: 'round2/countdown', component: Round2countdownComponent, pathMatch: 'full' },
-  { path: 'round2/display', component: Round2displayComponent, pathMatch: 'full' },
-  { path: 'control/round2', component: Round2controlComponent, pathMatch: 'full' },
-  { path: 'host/round2', component: Round2hostComponent, pathMatch: 'full' },
-  { path: 'home', component: HomeComponent, pathMatch: 'full' },
-  { path: '', redirectTo: 'home', pathMatch: 'full' },
+  {
+    path: 'round2/countdown',
+    component: Round2countdownComponent,
+    pathMatch: 'full',
+    canActivate: [MsalGuard]
+  },
+  {
+    path: 'round2/display',
+    component: Round2displayComponent,
+    pathMatch: 'full',
+    canActivate: [MsalGuard]
+  },
+  {
+    path: 'control/round1',
+    component: Round2controlComponent,
+    pathMatch: 'full',
+    canActivate: [MsalGuard]
+  },
+  {
+    path: 'control/round2',
+    component: Round2controlComponent,
+    pathMatch: 'full',
+    canActivate: [MsalGuard]
+  },
+  {
+    path: 'host/round2',
+    component: Round2hostComponent,
+    pathMatch: 'full',
+    canActivate: [MsalGuard]
+  },
+  // these do not need MSAL guards and should be open to all
+  {
+    path: 'home',
+    component: HomeComponent,
+    pathMatch: 'full'
+  },
+  {
+    path: '',
+    redirectTo: 'home',
+    pathMatch: 'full'
+  },
 ];
 
 @NgModule({

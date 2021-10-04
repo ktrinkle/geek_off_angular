@@ -14,5 +14,8 @@ namespace GeekOff.Services
         Task<string> FinalizeRound(string yEvent);
         Task<List<Round1EnteredAnswers>> ShowRound1TeamEnteredAnswers(string yEvent, int questionId);
         Task<List<IntroDto>> GetTeamList(string yEvent);
+        Task<string> GetCurrentEvent();
+        Task<CurrentQuestionDto> GetCurrentQuestion(string yEvent);
+        Task<CurrentQuestionDto> SetCurrentQuestionStatus(string yEvent, int questionId, int status);
     }
 }

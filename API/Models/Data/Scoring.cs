@@ -7,6 +7,8 @@ namespace GeekOff.Data
     [Table("scoring")]
     public class Scoring
     {
+        [Key]
+        public int Id { get; set; }
         [MaxLength(6)]
         public string Yevent { get; set; }
         public int TeamNo { get; set; }

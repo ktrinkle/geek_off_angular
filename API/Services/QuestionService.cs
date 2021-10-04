@@ -32,7 +32,7 @@ namespace GeekOff.Services
 
             var questionReturn = new Round1QuestionDto()
                                 {
-                                    QuestionNo = questionNo,
+                                    QuestionNum = questionNo,
                                     QuestionText = question.TextQuestion
                                 };
             
@@ -52,7 +52,7 @@ namespace GeekOff.Services
 
             var questionReturn = new Round1QuestionDto()
                                 {
-                                    QuestionNo = questionNo,
+                                    QuestionNum = questionNo,
                                     QuestionText = question.TextQuestion,
                                     Answers = new List<Round1Answers>(),
                                     ExpireTime = DateTime.UtcNow.AddSeconds(60)
