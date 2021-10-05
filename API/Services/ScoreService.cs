@@ -143,5 +143,53 @@ namespace GeekOff.Services
             return teamList;
 
         }
+
+        public async Task<string> ScoreAnswerAutomatic(string yEvent, int questionId)
+        {
+            if (yEvent is null)
+            {
+                return "Invalid event.";
+            }
+
+            if (questionId < 100 || questionId > 199)
+            {
+                return "Invalid question.";
+            }
+
+            var submittedAnswers = await _contextGo.UserAnswer.Where(u => u.QuestionNo == questionId && u.Yevent == yEvent).ToListAsync();
+            var questionInfo = await _contextGo.QuestionAns.FirstOrDefaultAsync(u => u.QuestionNo == questionId && u.Yevent == yEvent);
+
+            if (questionInfo is null)
+            {
+                return "Unable to load question.";
+            }
+
+            var correctAnswer = questionInfo.CorrectAnswer;
+            var scoring = new List<Scoring>();
+
+            foreach(UserAnswer answer in submittedAnswers)
+            {
+                if (answer.TextAnswer.ToLower() == correctAnswer.ToLower())
+                {
+                    var teamScore = new Scoring()
+                    {
+                        Yevent = answer.Yevent,
+                        TeamNo = answer.TeamNo,
+                        RoundNo = 1,
+                        QuestionNo = answer.QuestionNo,
+                        TeamAnswer = answer.TextAnswer,
+                        PointAmt = 10,
+                        Updatetime = answer.AnswerTime
+                    };
+
+                    scoring.Add(teamScore);
+                }
+            }
+
+            await _contextGo.AddRangeAsync(scoring);
+            await _contextGo.SaveChangesAsync();
+
+            return "Auto-scoring complete.";
+        }
     }
 }

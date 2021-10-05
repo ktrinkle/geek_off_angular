@@ -73,7 +73,6 @@ namespace GeekOff.Controllers
         [SwaggerOperation(Summary = "Show answer choices to contestants and on big board.")]
         public async Task<ActionResult> ShowAnswersToEvent()
         {
-            // add in controller here
             await _eventHub.Clients.All.SendAsync("round1ShowAnswerChoices");
             return Ok();
         }
@@ -83,7 +82,6 @@ namespace GeekOff.Controllers
         [SwaggerOperation(Summary = "Open contestants for answers.")]
         public async Task<ActionResult> OpenAnswerToContestant()
         {
-            // add in controller here
             await _eventHub.Clients.All.SendAsync("round1OpenAnswer");
             return Ok();
         }
@@ -93,13 +91,12 @@ namespace GeekOff.Controllers
         [SwaggerOperation(Summary = "Close answers to contestants.")]
         public async Task<ActionResult> CloseAnswerToContestant()
         {
-            // add in controller here
             await _eventHub.Clients.All.SendAsync("round1CloseAnswer");
             return Ok();
         }
 
         [Authorize(Roles = "admin")]
-        [HttpPut("showTeamAnswer/{yEvent}/{questionId}")]
+        [HttpGet("showTeamAnswer/{yEvent}/{questionId}")]
         [SwaggerOperation(Summary = "Show entered answers")]
         public async Task<ActionResult<List<Round1EnteredAnswers>>> ShowRound1TeamEnteredAnswers(string yEvent, int questionId)
         {
@@ -111,11 +108,11 @@ namespace GeekOff.Controllers
         [Authorize(Roles = "admin")]
         [HttpPut("scoreAnswer/{yEvent}/{questionId}")]
         [SwaggerOperation(Summary = "Scores the answer automatically")]
-        public async Task<ActionResult> ScoreAnswerAutomatic(string yEvent, int questionId)
+        public async Task<ActionResult<string>> ScoreAnswerAutomatic(string yEvent, int questionId)
         {
-            // add in controller here
+            var returnString = await _scoreService.ScoreAnswerAutomatic(yEvent, questionId);
             await _eventHub.Clients.All.SendAsync("round1ScoreUpdate");
-            return Ok();
+            return Ok(returnString);
         }
 
         [Authorize(Roles = "admin")]
@@ -184,7 +181,7 @@ namespace GeekOff.Controllers
             }
 
             await _eventHub.Clients.All.SendAsync(messageToSend, questionId);
-            return Ok();
+            return Ok(returnDto);
         }
 
         [Authorize(Roles = "admin")]
@@ -201,5 +198,11 @@ namespace GeekOff.Controllers
             // HttpContext.VerifyUserHasAnyAcceptedScope(scopeRequiredByApi);
             return await _manageEventService.GetTeamList(yEvent);
         }
+
+        [Authorize(Roles = "admin")]
+        [HttpPut("finalize/{yEvent}")]
+        [SwaggerOperation(Summary = "Finalize round 1")]
+        public async Task<ActionResult<string>> FinalizeRound(string yEvent)
+            => Ok(await _manageEventService.FinalizeRound(yEvent, 1));
     }
 }

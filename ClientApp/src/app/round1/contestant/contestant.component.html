@@ -22,7 +22,7 @@
     <div id="formMc" *ngIf="currentQuestionDto?.answerType == 0">
       <div id="formMcOptions" *ngFor="let answer of currentQuestionDto?.answers">
         <label for="{{answer.answerId}}">{{answer.answerId}}. {{answer.answer}}</label>
-        <input id="{{answer.answerId}}" name="textAnswer" value="{{answer.answerId}}" formControlName="textAnswer" type="radio">
+        <input id="{{answer.answerId}}" name="textAnswer" value="{{answer.answer}}" formControlName="textAnswer" type="radio">
       <br />
       </div>
     </div>

@@ -81,7 +81,7 @@ namespace GeekOff.Controllers
         [HttpPut("finalize/{yEvent}")]
         [SwaggerOperation(Summary = "Finalize round 2")]
         public async Task<ActionResult<string>> FinalizeRound(string yEvent)
-            => Ok(await _manageEventService.FinalizeRound(yEvent));
+            => Ok(await _manageEventService.FinalizeRound(yEvent, 2));
         
     }
 }

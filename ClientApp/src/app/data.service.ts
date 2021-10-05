@@ -76,13 +76,38 @@ export class DataService {
   }
 
   public changeRound1QuestionStatus(yEvent: string, questionNum: number, status: number): Observable<any> {
-    var uri = this.REST_API_SERVER + 'api/round1/updateStatus/' + encodeURIComponent(yEvent) + '/'  + encodeURIComponent(questionNum) + '/' + encodeURIComponent(status) + '';
-    return this.httpClient.get(uri);
+    var uri = this.REST_API_SERVER + '/api/round1/updateStatus/' + encodeURIComponent(yEvent) + '/'  + encodeURIComponent(questionNum) + '/' + encodeURIComponent(status) + '';
+    return this.httpClient.put(uri, {responseType: 'json'});
   }
 
   public getRound1Scores(yEvent: string): Observable<any> {
-    var uri = this.REST_API_SERVER + 'api/round1/scoreboard/' + encodeURIComponent(yEvent) + '';
+    var uri = this.REST_API_SERVER + '/api/round1/scoreboard/' + encodeURIComponent(yEvent) + '';
     return this.httpClient.get(uri);
+  }
+
+  public updateScoreboardDisplay() {
+    var uri = this.REST_API_SERVER + '/api/round1/updateScoreboard';
+    this.httpClient.get(uri);
+  }
+
+  public finalizeRound1(yEvent: string): Observable<any> {
+    var uri = this.REST_API_SERVER + '/api/round1/finalize/' + encodeURIComponent(yEvent) + '';
+    return this.httpClient.put(uri, {responseType: 'text'});
+  }
+
+  public finalizeRound2(yEvent: string): Observable<any> {
+    var uri = this.REST_API_SERVER + '/api/round2/finalize/' + encodeURIComponent(yEvent) + '';
+    return this.httpClient.put(uri, {responseType: 'text'});
+  }
+
+  public round1AutoScore(yEvent: string, questionId: number): Observable<any> {
+    var uri = this.REST_API_SERVER + '/api/round1/scoreAnswer/' + encodeURIComponent(yEvent) + '/' + encodeURIComponent(questionId) + '';
+    return this.httpClient.put(uri, {responseType: 'text'});
+  }
+
+  public round1ManualScore(yEvent: string, questionId: number, teamNum: number): Observable<any> {
+    var uri = this.REST_API_SERVER + '/api/round1/scoreAnswer/' + encodeURIComponent(yEvent) + '/' + encodeURIComponent(questionId) + '/' + encodeURIComponent(teamNum) + '';
+    return this.httpClient.put(uri, {responseType: 'text'});
   }
 
 }

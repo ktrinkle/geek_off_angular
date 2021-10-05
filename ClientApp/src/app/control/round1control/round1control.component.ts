@@ -50,10 +50,10 @@ export class Round1ControlComponent implements OnInit {
       return console.error(err.toString());
     });
 
-    // commented out in case we need to keep these to keep SignalR happy
-    // connection.on("round1ShowAnswerChoices", (data: any) => {});
+    // used to keep SignalR happy and not throwing warnings
+    connection.on("round1ShowAnswerChoices", (data: any) => {});
 
-    // connection.on("round1OpenAnswer", (data: any) => {});
+    connection.on("round1OpenAnswer", (data: any) => {});
 
     connection.on("round1PlayerAnswer", (data: any) => {
       this.loadTeamAnswers();
@@ -85,7 +85,11 @@ export class Round1ControlComponent implements OnInit {
 
   sendClientMessage(status: number)
   {
+    console.log(this.yEvent);
+    console.log(this.selectedQuestion);
+    console.log(status);
     this.dataService.changeRound1QuestionStatus(this.yEvent, this.selectedQuestion, status).subscribe(c => {
+      console.log(c);
       this.status = c.status;
       this.currentQuestion = c.questionNum;
       this.selectedQuestion = c.questionNum;
@@ -99,9 +103,25 @@ export class Round1ControlComponent implements OnInit {
     this.sendClientMessage(status);
   }
 
+  updateRemoteScoreboard()
+  {
+    this.dataService.updateScoreboardDisplay();
+  }
+
+  autoScore()
+  {
+    console.log('Autoscore called');
+    this.dataService.round1AutoScore(this.yEvent, this.currentQuestion);
+  }
+
+  scoreManual(team: number)
+  {
+    this.dataService.round1ManualScore(this.yEvent, this.currentQuestion, team);
+  }
+
   finalizeRound()
   {
-
+    this.dataService.finalizeRound1(this.yEvent);
   }
 
   goToRound2()

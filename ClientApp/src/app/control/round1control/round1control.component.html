@@ -1,16 +1,23 @@
-<div id="r1header"><p>Inject question here</p></div>
+<div id="r1header"><p>Question {{currentQuestion}} - Inject question here</p></div>
 <div class="content" fxLayout="row wrap" fxLayoutGap="16px grid">
 <div id="currentAnswer" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%" style="padding: 10px;">
   <h3>Round 1 - Current team answers</h3>
   <mat-table class="round1ControlScoreboard" [dataSource]="teamAnswers">
-    <ng-container matColumnDef="teamNo">
+    <ng-container matColumnDef="teamButton">
+      <mat-header-cell *matHeaderCellDef></mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        <button id="score{{row.teamNum}}" (click)="scoreManual(row.teamNum)"> + </button>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="sbteamNo">
       <mat-header-cell *matHeaderCellDef> Team # </mat-header-cell>
       <mat-cell *matCellDef="let row">
         {{row.teamNum}}
       </mat-cell>
     </ng-container>
 
-    <ng-container matColumnDef="teamAnswer">
+    <ng-container matColumnDef="sbteamAnswer">
       <mat-header-cell *matHeaderCellDef> Team Answer </mat-header-cell>
       <mat-cell *matCellDef="let row">
         {{row.textAnswer}}
@@ -18,10 +25,10 @@
     </ng-container>
 
     <!-- Header and Row Declarations -->
-    <mat-header-row *matHeaderRowDef="['teamNo', 'teamAnswer']"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: ['teamNo', 'teamAnswer']"></mat-row>
+    <mat-header-row *matHeaderRowDef="['teamButton','sbteamNo', 'sbteamAnswer']"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: ['teamButton','sbteamNo', 'sbteamAnswer']"></mat-row>
   </mat-table>
-
+  <button id="updateScoreboard" (click)="updateRemoteScoreboard()">Send scoreboard update</button>
 </div>
   <div id="currentScoreboard" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%" style="padding: 10px;">
     <h3>Round 1 Scoreboard</h3>
@@ -46,19 +53,17 @@
     </mat-table>
 
   </div>
-<div id="controlCorner" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%" style="padding: 10px;">
+<div id="controlCorner" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%" style="padding: 10px;">
   <h3>Controls</h3>
-  <button id="showAnswer" (onClick)="sendClientMessage(1)">Show Answer</button>
-  <button id="openAnswer" (onClick)="sendClientMessage(2)">Open Answer</button>
-  <button id="closeAnswer" (onClick)="sendClientMessage(3)">Close Answer</button>
-  <button id="goToQuestion" (onClick)="sendClientMessage(0)">Go to selected question</button>
+  <button id="showAnswer" (click)="sendClientMessage(1)">Show Answer</button>
+  <button id="openAnswer" (click)="sendClientMessage(2)">Open Answer</button>
+  <button id="closeAnswer" (click)="sendClientMessage(3)">Close Answer</button>
+  <button id="goToQuestion" (click)="sendClientMessage(0)">Go to selected question</button>
   <div clear="all"></div>
-  <button id="goToNextQuestion" (onClick)="sendNextClientMessage(0)">Go to next question</button>
-  <button id="finalizeRound" (onClick)="finalizeRound()">Finalize round</button>
-  <button id="round2" (onClick)="goToRound2()">Go to round 2 control</button>
-</div>
-<div id="scorePane" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%" style="padding: 10px;">
-  <button id="autoScore">Auto-Score</button>
-<p>Score answers here</p>
+  <button id="autoScore" (click)="autoScore()">Auto-Score</button>
+  <div clear="all"></div>
+  <button id="goToNextQuestion" (click)="sendNextClientMessage(0)">Go to next question</button>
+  <button id="finalizeRound" (click)="finalizeRound()">Finalize round</button>
+  <button id="round2" (click)="goToRound2()">Go to round 2 control</button>
 </div>
 </div>
