@@ -11,6 +11,7 @@ import { Round1ContestantComponent } from './round1/contestant/contestant.compon
 import { Round1IntroComponent } from './round1/intro/intro.component';
 import { Round1DisplayQuestionComponent } from './round1/display-question/display-question.component';
 import { Round1ScoreboardComponent } from './round1/scoreboard/scoreboard.component';
+import { Round1ControlComponent } from './control/round1control/round1control.component';
 
 import { MsalGuard, MsalRedirectComponent } from '@azure/msal-angular';
 import { BrowserUtils } from '@azure/msal-browser';
@@ -60,7 +61,7 @@ const routes: Routes = [
   },
   {
     path: 'control/round1',
-    component: Round2controlComponent,
+    component: Round1ControlComponent,
     pathMatch: 'full',
     canActivate: [MsalGuard]
   },

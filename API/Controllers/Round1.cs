@@ -40,15 +40,21 @@ namespace GeekOff.Controllers
 
         [Authorize(Roles = "admin,player")]
         [HttpGet("getQuestion/{yEvent}/{questionId}")]
-        [SwaggerOperation(Summary = "Get all of the survey questions and answers for use of the operators.")]
+        [SwaggerOperation(Summary = "Get a single round 1 question for the contestants.")]
         public async Task<ActionResult<Round1QuestionDto>> GetRound1Question(string yEvent, int questionId)
             => Ok(await _questionService.GetRound1Question(yEvent, questionId));
 
         [Authorize(Roles = "admin,player")]
         [HttpGet("getAnswers/{yEvent}/{questionId}")]
-        [SwaggerOperation(Summary = "Get all of the survey questions and answers for use of the operators.")]
+        [SwaggerOperation(Summary = "Get a single round 1 question and answer for the contestants.")]
         public async Task<ActionResult<Round1QuestionDto>> GetRound1Answers(string yEvent, int questionId)
             => Ok(await _questionService.GetRound1QuestionWithAnswer(yEvent, questionId));
+
+        [Authorize(Roles = "admin")]
+        [HttpGet("getAllQuestions/{yEvent}")]
+        [SwaggerOperation(Summary = "Get all of the survey questions and answers for use of the operators.")]
+        public async Task<ActionResult<List<Round1QuestionControlDto>>> GetAllRound1Questions(string yEvent)
+            => Ok(await _questionService.GetAllRound1Questions(yEvent));
 
         [Authorize(Roles = "admin,player")]
         [HttpPut("submitAnswer")]
@@ -185,10 +191,7 @@ namespace GeekOff.Controllers
         [HttpGet("scoreboard/{yEvent}")]
         [SwaggerOperation(Summary = "Gets the round 1 scoreboard")]
         public async Task<ActionResult<List<Round1Scores>>> GetScoreboard(string yEvent)
-        {
-            // add in controller here
-            return Ok();
-        }
+            => Ok(await _scoreService.GetRound1Scores(yEvent));
 
         [Authorize(Roles = "admin")]
         [HttpGet("teamList/{yEvent}")]

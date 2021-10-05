@@ -84,7 +84,7 @@ namespace GeekOff.Services
                     Answer = question.TextAnswer4,
                 });
 
-                questionReturn.AnswerType = question.CorrectAnswer.Length == 1 ? QuestionAnswerType.Match : QuestionAnswerType.MultipleChoice;
+                questionReturn.AnswerType = question.MatchQuestion == true ? QuestionAnswerType.Match : QuestionAnswerType.MultipleChoice;
             }
 
             if (question.MultipleChoice == false)
@@ -93,6 +93,44 @@ namespace GeekOff.Services
             }
             
             return questionReturn;
+        }
+
+        public async Task<List<Round1QuestionControlDto>> GetAllRound1Questions(string yEvent)
+        {
+            var returnList = new List<Round1QuestionControlDto>();
+
+            var questions = await _contextGo.QuestionAns.Where(q => q.Yevent == yEvent
+                                                        && q.RoundNo == 1).ToListAsync();
+
+            foreach (QuestionAns question in questions)
+            {
+                var answerType = new QuestionAnswerType();
+                if (question.MultipleChoice == false)
+                {
+                    answerType = QuestionAnswerType.FreeText;
+                }
+
+                if (question.MatchQuestion == true)
+                {
+                    answerType = QuestionAnswerType.Match;
+                }
+
+                if (question.MultipleChoice == true)
+                {
+                    answerType = QuestionAnswerType.MultipleChoice;
+                }
+               
+                var transformedQuestion = new Round1QuestionControlDto() {
+                    QuestionNum = question.QuestionNo,
+                    QuestionText = question.TextQuestion,
+                    AnswerType = answerType,
+                    AnswerText = question.TextAnswer
+                };
+
+                returnList.Add(transformedQuestion);
+            }
+
+            return returnList;     
         }
 
         public async Task<bool> SubmitRound1Answer(string yEvent, int questionId, string answerText, string answerUser)

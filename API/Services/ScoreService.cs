@@ -74,6 +74,35 @@ namespace GeekOff.Services
             return returnResult;
         }
 
+        public async Task<List<Round1Scores>> GetRound1Scores(string yEvent)
+        {
+            if (yEvent == null)
+            {
+                return null;
+            }
+
+            var teamList = await _contextGo.Teamreference.Where(tr => tr.Yevent == yEvent)
+                                .Select(tr => new Round1Scores() {
+                                    TeamName = tr.Teamname,
+                                    TeamNum = tr.TeamNo,
+                                    Q = _contextGo.Scoring.Where(s => s.RoundNo == 1 && s.TeamNo == tr.TeamNo && s.Yevent == tr.Yevent)
+                                        .Select(s => new Round1ScoreDetail() {
+                                            QuestionId = s.QuestionNo,
+                                            QuestionScore = s.PointAmt
+                                        }).ToList()
+                                }).ToListAsync();
+
+            // now we need to calc the TeamScore and Rnk
+            
+            foreach (Round1Scores team in teamList)
+            {
+                team.TeamScore = team.Q.Sum(s => s.QuestionScore);
+            }
+
+            return teamList;
+
+        }
+
         public async Task<List<Round23Scores>> GetRound23Scores(string yEvent, int roundNo)
         {
             if (yEvent == null || roundNo < 2 || roundNo > 3)

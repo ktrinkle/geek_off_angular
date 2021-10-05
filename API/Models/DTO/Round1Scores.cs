@@ -18,6 +18,6 @@ namespace GeekOff.Models
     public class Round1ScoreDetail
     {
         public int QuestionId { get; set; }
-        public int QuestionScore { get; set; }
+        public int? QuestionScore { get; set; }
     }
 }

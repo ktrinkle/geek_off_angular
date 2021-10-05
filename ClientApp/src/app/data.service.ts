@@ -59,10 +59,30 @@ export class DataService {
     return this.httpClient.get(uri);
   }
 
+  public getAllRound1Questions(yEvent: string): Observable<any> {
+    var uri = this.REST_API_SERVER + '/api/round1/getAllQuestions/' + encodeURIComponent(yEvent) + '';
+    return this.httpClient.get(uri);
+  }
+
+  public getAllEnteredAnswers(yEvent: string, questionId: number): Observable<any> {
+    var uri = this.REST_API_SERVER + '/api/round1/showTeamAnswer/' + encodeURIComponent(yEvent) + '/' + encodeURIComponent(questionId) + '';
+    return this.httpClient.get(uri);
+  }
+
   public saveRound1Answer(yEvent: string, questionNum: number, textAnswer: string): Observable<string> {
     var uri = this.REST_API_SERVER + '/api/round1/submitAnswer';
     let params = {yevent: yEvent, questionNum: questionNum, textAnswer: textAnswer};
     return this.httpClient.put(uri, params, {responseType: 'text'});
+  }
+
+  public changeRound1QuestionStatus(yEvent: string, questionNum: number, status: number): Observable<any> {
+    var uri = this.REST_API_SERVER + 'api/round1/updateStatus/' + encodeURIComponent(yEvent) + '/'  + encodeURIComponent(questionNum) + '/' + encodeURIComponent(status) + '';
+    return this.httpClient.get(uri);
+  }
+
+  public getRound1Scores(yEvent: string): Observable<any> {
+    var uri = this.REST_API_SERVER + 'api/round1/scoreboard/' + encodeURIComponent(yEvent) + '';
+    return this.httpClient.get(uri);
   }
 
 }

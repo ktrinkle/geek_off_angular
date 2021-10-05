@@ -1,14 +1,61 @@
-<p>round1 works! This needs Flex Layout installed.</p>
-<div id="currentScoreboard"><p>CurrentScoreboard</p></div>
-<div id="currentAnswer"><p>CurrentAnswers</p></div>
-<div id="controlCorner">
+<h2>Round 1 scoreboard</h2>
+<div class="content" fxLayout="row wrap" fxLayoutGap="16px grid">
+<div id="currentAnswer" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%" style="padding: 10px;">
+  <h3>Current team answers</h3>
+  <mat-table class="round1ControlScoreboard" [dataSource]="teamAnswers">
+    <ng-container matColumnDef="teamNo">
+      <mat-header-cell *matHeaderCellDef> Team # </mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        {{row.teamNum}}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="teamAnswer">
+      <mat-header-cell *matHeaderCellDef> Team Answer </mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        {{row.textAnswer}}
+      </mat-cell>
+    </ng-container>
+
+    <!-- Header and Row Declarations -->
+    <mat-header-row *matHeaderRowDef="['teamNo', 'teamAnswer']"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: ['teamNo', 'teamAnswer']"></mat-row>
+  </mat-table>
+
+</div>
+  <div id="currentScoreboard" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%" style="padding: 10px;">
+    <h3>Current Scoreboard</h3>
+    <mat-table class="round1ControlScoreboard" [dataSource]="scoreboard">
+      <ng-container matColumnDef="teamNo">
+        <mat-header-cell *matHeaderCellDef> Team # </mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          {{row.teamNum}}
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="teamScore">
+        <mat-header-cell *matHeaderCellDef> Team Score </mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          {{row.teamScore}}
+        </mat-cell>
+      </ng-container>
+
+      <!-- Header and Row Declarations -->
+      <mat-header-row *matHeaderRowDef="['teamNo', 'teamScore']"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: ['teamNo', 'teamScore']"></mat-row>
+    </mat-table>
+
+  </div>
+<div id="controlCorner" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%" style="padding: 10px;">
+  <h3>Controls</h3>
   <button id="showAnswer">Show Answer</button>
   <button id="openAnswer">Open Answer</button>
   <button id="closeAnswer">Close Answer</button>
   <button id="goToNextQuestion">Go to next question</button>
   <button id="finalizeRound">Finalize round</button>
 </div>
-<div id="scorePane">
+<div id="scorePane" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%" style="padding: 10px;">
   <button id="autoScore">Auto-Score</button>
 <p>Score answers here</p>
+</div>
 </div>
