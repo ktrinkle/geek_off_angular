@@ -17,6 +17,7 @@ import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms'
 export class Round1ControlComponent implements OnInit {
 
   currentQuestion: number = 0;
+  selectedQuestion: number = 0;
   possibleAnswers: round1QuestionControlDto[] = [];
   teamAnswers: round1EnteredAnswers[] = [];
   scoreboard: round1Scores[] = [];
@@ -24,7 +25,7 @@ export class Round1ControlComponent implements OnInit {
   statusEnum:string[] = [''];
   status: number = 0;
 
-  constructor(private dataService: DataService) {
+  constructor(private dataService: DataService, private router:Router) {
     this.dataService.getAllRound1Questions(this.yEvent).subscribe({next: (q => {
       this.possibleAnswers = q;
     }),
@@ -32,6 +33,7 @@ export class Round1ControlComponent implements OnInit {
       this.dataService.getCurrentQuestion(this.yEvent).subscribe(c => {
         this.status = c.status;
         this.currentQuestion = c.questionNum;
+        this.selectedQuestion = c.questionNum;
       });
     }});
   }
@@ -81,12 +83,30 @@ export class Round1ControlComponent implements OnInit {
   });
   }
 
-  sendClientMessage(questionNum: number, status: number)
+  sendClientMessage(status: number)
   {
-    this.dataService.changeRound1QuestionStatus(this.yEvent, questionNum, status).subscribe(c => {
+    this.dataService.changeRound1QuestionStatus(this.yEvent, this.selectedQuestion, status).subscribe(c => {
       this.status = c.status;
       this.currentQuestion = c.questionNum;
+      this.selectedQuestion = c.questionNum;
     });
+  }
+
+  sendNextClientMessage(status: number)
+  {
+    // brute force for now, this should become more elegant
+    this.selectedQuestion = this.currentQuestion + 1;
+    this.sendClientMessage(status);
+  }
+
+  finalizeRound()
+  {
+
+  }
+
+  goToRound2()
+  {
+    this.router.navigate(['/control/round2']);
   }
 
 }

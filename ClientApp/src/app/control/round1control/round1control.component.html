@@ -48,12 +48,14 @@
   </div>
 <div id="controlCorner" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%" style="padding: 10px;">
   <h3>Controls</h3>
-  <button id="showAnswer">Show Answer</button>
-  <button id="openAnswer">Open Answer</button>
-  <button id="closeAnswer">Close Answer</button>
-  <button id="goToNextQuestion">Go to next question</button>
-  <button id="finalizeRound">Finalize round</button>
-  <button id="round2">Go to round 2 control</button>
+  <button id="showAnswer" (onClick)="sendClientMessage(1)">Show Answer</button>
+  <button id="openAnswer" (onClick)="sendClientMessage(2)">Open Answer</button>
+  <button id="closeAnswer" (onClick)="sendClientMessage(3)">Close Answer</button>
+  <button id="goToQuestion" (onClick)="sendClientMessage(0)">Go to selected question</button>
+  <div clear="all"></div>
+  <button id="goToNextQuestion" (onClick)="sendNextClientMessage(0)">Go to next question</button>
+  <button id="finalizeRound" (onClick)="finalizeRound()">Finalize round</button>
+  <button id="round2" (onClick)="goToRound2()">Go to round 2 control</button>
 </div>
 <div id="scorePane" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%" style="padding: 10px;">
   <button id="autoScore">Auto-Score</button>
