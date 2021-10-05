@@ -25,15 +25,15 @@ export class Round1ControlComponent implements OnInit {
   status: number = 0;
 
   constructor(private dataService: DataService) {
-    this.dataService.getAllRound1Questions(this.yEvent).subscribe(q => {
+    this.dataService.getAllRound1Questions(this.yEvent).subscribe({next: (q => {
       this.possibleAnswers = q;
-    });
-
-    // mostly in case of reload
-    this.dataService.getCurrentQuestion(this.yEvent).subscribe(c => {
-      this.status = c.status;
-      this.currentQuestion = c.questionNum;
-    });
+    }),
+    complete: () => {
+      this.dataService.getCurrentQuestion(this.yEvent).subscribe(c => {
+        this.status = c.status;
+        this.currentQuestion = c.questionNum;
+      });
+    }});
   }
 
   ngOnInit(): void {

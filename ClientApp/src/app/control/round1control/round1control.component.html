@@ -1,7 +1,7 @@
-<h2>Round 1 scoreboard</h2>
+<div id="r1header"><p>Inject question here</p></div>
 <div class="content" fxLayout="row wrap" fxLayoutGap="16px grid">
 <div id="currentAnswer" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%" style="padding: 10px;">
-  <h3>Current team answers</h3>
+  <h3>Round 1 - Current team answers</h3>
   <mat-table class="round1ControlScoreboard" [dataSource]="teamAnswers">
     <ng-container matColumnDef="teamNo">
       <mat-header-cell *matHeaderCellDef> Team # </mat-header-cell>
@@ -24,7 +24,7 @@
 
 </div>
   <div id="currentScoreboard" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%" style="padding: 10px;">
-    <h3>Current Scoreboard</h3>
+    <h3>Round 1 Scoreboard</h3>
     <mat-table class="round1ControlScoreboard" [dataSource]="scoreboard">
       <ng-container matColumnDef="teamNo">
         <mat-header-cell *matHeaderCellDef> Team # </mat-header-cell>
@@ -53,6 +53,7 @@
   <button id="closeAnswer">Close Answer</button>
   <button id="goToNextQuestion">Go to next question</button>
   <button id="finalizeRound">Finalize round</button>
+  <button id="round2">Go to round 2 control</button>
 </div>
 <div id="scorePane" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%" style="padding: 10px;">
   <button id="autoScore">Auto-Score</button>
