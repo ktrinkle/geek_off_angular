@@ -1,0 +1,18 @@
+mat-cell.mat-cell,
+mat-header-cell.mat-header-cell {
+  font-size: 100%;
+  clear: all;
+  height: auto;
+  font-family: eggcrate, Arial, Helvetica, sans-serif;
+  border: none !important;
+}
+
+.text {
+  font-family: eggcrate, Arial, Helvetica, sans-serif;
+}
+
+mat-row,
+mat-header-row,
+mat-footer-row {
+  border-bottom: none;
+}

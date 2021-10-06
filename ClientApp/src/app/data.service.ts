@@ -26,7 +26,7 @@ export class DataService {
 
   public getCurrentEvent(): Observable<any> {
     var uri = this.REST_API_SERVER + '/api/eventStatus/currentEvent';
-    return this.httpClient.get(uri, {responseType: "text"});
+    return this.httpClient.get(uri, { responseType: "text" });
   }
 
   public getCurrentQuestion(yevent: string): Observable<any> {
@@ -41,7 +41,7 @@ export class DataService {
 
   public sendRound2AnswerText(submitAnswer: round2SubmitAnswer): Observable<any> {
     var uri = this.REST_API_SERVER + '/api/round2/teamanswer/text';
-    return this.httpClient.post(uri, submitAnswer, {responseType: 'text'});
+    return this.httpClient.post(uri, submitAnswer, { responseType: 'text' });
   }
 
   public getRound1IntroTeamList(yEvent: string): Observable<any> {
@@ -50,12 +50,17 @@ export class DataService {
   }
 
   public getRound1QuestionText(yEvent: string, questionId: number): Observable<any> {
-    var uri = this.REST_API_SERVER + '/api/round1/getQuestion/' + encodeURIComponent(yEvent) + '/'  + encodeURIComponent(questionId) + '';
+    var uri = this.REST_API_SERVER + '/api/round1/getQuestion/' + encodeURIComponent(yEvent) + '/' + encodeURIComponent(questionId) + '';
     return this.httpClient.get(uri);
   }
 
   public getRound1QuestionAnswer(yEvent: string, questionId: number): Observable<any> {
-    var uri = this.REST_API_SERVER + '/api/round1/getAnswers/' + encodeURIComponent(yEvent) + '/'  + encodeURIComponent(questionId) + '';
+    var uri = this.REST_API_SERVER + '/api/round1/getAnswers/' + encodeURIComponent(yEvent) + '/' + encodeURIComponent(questionId) + '';
+    return this.httpClient.get(uri);
+  }
+
+  public getRound2DisplayBoard(yEvent: string, teamNumber: number): Observable<any> {
+    var uri = this.REST_API_SERVER + '/api/round2/bigBoard/' + encodeURIComponent(yEvent) + '/' + encodeURIComponent(teamNumber);
     return this.httpClient.get(uri);
   }
 
