@@ -12,17 +12,17 @@ $go-theme: mat.define-light-theme($go-primary, $go-accent, $go-warn);
 
 @font-face {
   font-family: eggcrate;
-  src: url('./assets/fonts/EGGCRATE.TTF');
+  src: url('./assets/EGGCRATE.TTF');
 }
 
 @font-face {
   font-family: sportstype;
-  src: url('./assets/fonts/sportstype.ttf');
+  src: url('./assets/sportstype.ttf');
 }
 
 @font-face {
   font-family: fastmoney;
-  src: url('./assets/fonts/fast-money-three.ttf');
+  src: url('./assets/fast-money-three.ttf');
 }
 
 .bigbtngrnlabel {
