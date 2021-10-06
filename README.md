@@ -63,7 +63,7 @@ Automated testing is not enforced or required.
 ## Round 2
 
 1. Store (ngrx) - library installed but that's it
-2. Countdown timer screen/component
+2. Countdown timer screen/component - Diyalo
   * Supports countdown from 20 or 25 seconds
   * Import something and style?
   * Kicks off from control screen
