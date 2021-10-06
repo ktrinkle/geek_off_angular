@@ -23,15 +23,13 @@ export interface round23Scores {
   rnk?: number
 }
 
-export interface round2SurveyList
-{
+export interface round2SurveyList {
   questionNum: number,
   questionText: string,
   surveyAnswers: round2Answers[]
 }
 
-export interface round2SubmitAnswer
-{
+export interface round2SubmitAnswer {
   yEvent: string,
   questionNum: number,
   teamNum: number,
@@ -41,8 +39,7 @@ export interface round2SubmitAnswer
   score?: number
 }
 
-export interface introDto
-{
+export interface introDto {
   teamNo: number,
   teamName: string,
   member1: string,
@@ -51,23 +48,20 @@ export interface introDto
   workgroup2?: string
 }
 
-export interface round1AnswerDto
-{
-    answerId: number,
-    answer: string
+export interface round1AnswerDto {
+  answerId: number,
+  answer: string
 }
 
-export interface round1QADto
-{
-    questionNum: number,
-    questionText: string,
-    answers: round1AnswerDto[],
-    expireTime: Date,
-    questionAnswerType: number,
+export interface round1QADto {
+  questionNum: number,
+  questionText: string,
+  answers: round1AnswerDto[],
+  expireTime: Date,
+  questionAnswerType: number,
 }
 
-export interface currentQuestionDto
-{
-    questionNum: number,
-    status: number
+export interface currentQuestionDto {
+  questionNum: number,
+  status: number
 }
