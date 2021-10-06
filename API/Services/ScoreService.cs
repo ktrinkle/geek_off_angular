@@ -81,18 +81,25 @@ namespace GeekOff.Services
                 return null;
             }
 
+            // question and team needs
             var teamList = await _contextGo.Teamreference.Where(tr => tr.Yevent == yEvent)
                                 .Select(tr => new Round1Scores() {
                                     TeamName = tr.Teamname,
                                     TeamNum = tr.TeamNo,
-                                    Q = _contextGo.Scoring.Where(s => s.RoundNo == 1 && s.TeamNo == tr.TeamNo && s.Yevent == tr.Yevent)
-                                        .Select(s => new Round1ScoreDetail() {
-                                            QuestionId = s.QuestionNo,
-                                            QuestionScore = s.PointAmt
+                                    Bonus = tr.Dollarraised >= 200 ? 10 : tr.Dollarraised > 100 ? (int)(tr.Dollarraised - 100)/10 : 0,
+                                    Q = (from q in _contextGo.QuestionAns
+                                        join s in _contextGo.Scoring
+                                        on new {q.RoundNo, q.QuestionNo, q.Yevent} 
+                                        equals new {s.RoundNo, s.QuestionNo, s.Yevent} into sq
+                                        from sqi in sq.DefaultIfEmpty()
+                                        select new Round1ScoreDetail()
+                                        {
+                                            QuestionId = q.QuestionNo,
+                                            QuestionScore = sqi.PointAmt
                                         }).ToList()
                                 }).ToListAsync();
 
-            // now we need to calc the TeamScore and Rnk
+            // now we need to calc the TeamScore. Rnk is not used here.
             
             foreach (Round1Scores team in teamList)
             {

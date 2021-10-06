@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { DataService } from 'src/app/data.service';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, map } from 'rxjs/operators';
 import * as signalR from '@microsoft/signalr';
 import { environment } from 'src/environments/environment';
 import { round1Scores, round1ScoreMap } from 'src/app/data/data';
@@ -46,6 +46,7 @@ export class Round1ScoreboardComponent implements OnInit {
   }
 
   getScoreboard(): void {
+    console.log(this.yevent);
     this.dataService.getRound1Scores(this.yevent).pipe(takeUntil(this.destroy$)).subscribe(s => {
       this.displayObject.push(
         {

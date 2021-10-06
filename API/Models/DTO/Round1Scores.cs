@@ -11,6 +11,7 @@ namespace GeekOff.Models
         public string TeamName { get; set; }
         public List<Round1ScoreDetail> Q { get; set; }
         public int? TeamScore { get; set; }
+        public int? Bonus { get; set; }
         public int? Rnk { get; set; }
         
     }
