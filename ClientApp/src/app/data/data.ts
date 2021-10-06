@@ -20,6 +20,7 @@ export interface round1Scores {
   teamNum: number,
   teamName: string,
   q: round1ScoreDetail[],
+  bonus?: number,
   teamScore?: number,
   rnk?: number
 }
@@ -27,6 +28,15 @@ export interface round1Scores {
 export interface round1ScoreDetail {
   questionId: number,
   questionScore?: number
+}
+
+export interface round1ScoreMap {
+  teamNum: number,
+  teamName: string,
+  q: Map<string, number>[],
+  bonus?: number,
+  teamScore?: number,
+  rnk?: number
 }
 
 export interface round23Scores {
@@ -71,7 +81,7 @@ export interface round1QADto {
   questionText: string,
   answers: round1AnswerDto[],
   expireTime: Date,
-  questionAnswerType: number,
+  answerType: number,
 }
 
 export interface currentQuestionDto {
