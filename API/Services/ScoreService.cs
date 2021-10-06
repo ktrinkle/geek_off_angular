@@ -159,7 +159,7 @@ namespace GeekOff.Services
                 return "Invalid event.";
             }
 
-            if (questionId < 100 || questionId > 199)
+            if (questionId < 1 || questionId > 99)
             {
                 return "Invalid question.";
             }
@@ -199,5 +199,51 @@ namespace GeekOff.Services
 
             return "Auto-scoring complete.";
         }
+
+        public async Task<bool> ScoreAnswerManual(string yEvent, int questionId, int teamNum)
+        {
+            // we don't need to look at the answer since a human has done so. But we are flipping the score if it exists.
+
+            var scoring = await _contextGo.Scoring.Where(s => s.Yevent == yEvent && s.TeamNo == teamNum && s.QuestionNo == questionId).ToListAsync();
+
+            if (scoring is not null)
+            {
+                // remove the entry since it's a flip back
+                _contextGo.Scoring.RemoveRange(scoring);
+                await _contextGo.SaveChangesAsync();
+
+                return false;
+            }
+
+            if (scoring is null)
+            {
+                var teamAnswer = await _contextGo.UserAnswer.FirstOrDefaultAsync(u => u.Yevent == yEvent && u.QuestionNo == questionId && u.TeamNo == teamNum);
+
+                if (teamAnswer is not null)
+                {
+                    // add a new entry
+                    var teamScore = new Scoring()
+                        {
+                            Yevent = yEvent,
+                            TeamNo = teamNum,
+                            RoundNo = 1,
+                            QuestionNo = questionId,
+                            TeamAnswer = teamAnswer.TextAnswer,
+                            PointAmt = 10,
+                            Updatetime = teamAnswer.AnswerTime
+                        };
+
+                    await _contextGo.Scoring.AddAsync(teamScore);
+                    await _contextGo.SaveChangesAsync();
+
+                    return true;
+                }
+                
+            }
+
+            // this should never be hit.
+            return false;
+        }
+
     }
 }

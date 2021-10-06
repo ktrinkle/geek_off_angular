@@ -102,5 +102,6 @@ export interface round1EnteredAnswers
   yEvent: string,
   teamNum: number,
   questionNum: number,
-  textAnswer: string
+  textAnswer: string,
+  answerStatus: boolean
 }

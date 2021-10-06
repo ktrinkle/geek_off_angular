@@ -136,7 +136,7 @@ namespace GeekOff.Services
         public async Task<bool> SubmitRound1Answer(string yEvent, int questionId, string answerText, string answerUser)
         {
             // test values
-            if (questionId < 100 || questionId > 199)
+            if (questionId < 1 || questionId > 99)
             {
                 return false;
             }

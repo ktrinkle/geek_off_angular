@@ -225,6 +225,9 @@ namespace GeekOff.Services
                                     .Where(u => u.RoundNo == 1 && u.QuestionNo == questionId && u.Yevent == yEvent)
                                     .ToListAsync();
 
+            var scoredAnswer = await _contextGo.Scoring.Where(s => s.RoundNo == 1 && s.Yevent == yEvent && s.QuestionNo == questionId)
+                                .ToListAsync();
+
             if (submittedAnswer is null)
             {
                 return null;
@@ -236,7 +239,8 @@ namespace GeekOff.Services
                 {
                     TeamNum = answer.TeamNo,
                     QuestionNum = questionId,
-                    TextAnswer = answer.TextAnswer
+                    TextAnswer = answer.TextAnswer,
+                    AnswerStatus = scoredAnswer.Any(s => s.TeamNo == answer.TeamNo)
                 };
                 returnDto.Add(displayAnswer);
             }
@@ -310,7 +314,7 @@ namespace GeekOff.Services
 
         public async Task<CurrentQuestionDto> SetCurrentQuestionStatus(string yEvent, int questionId, int status)
         {
-            if (questionId < 100)
+            if (questionId < 1)
             {
                 return null;
             }

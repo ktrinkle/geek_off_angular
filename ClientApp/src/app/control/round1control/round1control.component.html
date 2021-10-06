@@ -6,7 +6,7 @@
     <ng-container matColumnDef="teamButton">
       <mat-header-cell *matHeaderCellDef></mat-header-cell>
       <mat-cell *matCellDef="let row">
-        <button id="score{{row.teamNum}}" (click)="scoreManual(row.teamNum)"> + </button>
+        <mat-slide-toggle color="accent" id="{{row.teamNum}}" name="{{row.teamNum}}" formControlName="{{row.teamNum}}" (change)="scoreManual(row.teamNum)"></mat-slide-toggle>
       </mat-cell>
     </ng-container>
 
@@ -61,6 +61,7 @@
   <button id="goToQuestion" (click)="sendClientMessage(0)">Go to selected question</button>
   <div clear="all"></div>
   <button id="autoScore" (click)="autoScore()">Auto-Score</button>
+  <p>{{scoreResponse}}</p>
   <div clear="all"></div>
   <button id="goToNextQuestion" (click)="sendNextClientMessage(0)">Go to next question</button>
   <button id="finalizeRound" (click)="finalizeRound()">Finalize round</button>

@@ -24,8 +24,11 @@ export class Round1ControlComponent implements OnInit {
   yEvent = sessionStorage.getItem('event') ?? '';
   statusEnum:string[] = [''];
   status: number = 0;
+  scoreResponse:string = '';
 
-  constructor(private dataService: DataService, private router:Router) {
+  public answerForm: FormGroup = new FormGroup({});
+
+  constructor(private dataService: DataService, private router:Router, private formBuilder: FormBuilder) {
     this.dataService.getAllRound1Questions(this.yEvent).subscribe({next: (q => {
       this.possibleAnswers = q;
     }),
@@ -68,8 +71,10 @@ export class Round1ControlComponent implements OnInit {
 
   loadTeamAnswers()
   {
+    this.answerForm = this.formBuilder.group({});
     this.dataService.getAllEnteredAnswers(this.yEvent, this.currentQuestion).subscribe(a => {
       this.teamAnswers = a;
+      // answerform - inject here
     });
   }
 
@@ -110,8 +115,10 @@ export class Round1ControlComponent implements OnInit {
 
   autoScore()
   {
-    console.log('Autoscore called');
-    this.dataService.round1AutoScore(this.yEvent, this.currentQuestion);
+    this.dataService.round1AutoScore(this.yEvent, this.currentQuestion).subscribe(as => {
+      this.scoreResponse = as;
+    });
+    // add loadTeamAnswers as then
   }
 
   scoreManual(team: number)

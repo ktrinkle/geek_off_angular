@@ -44,6 +44,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatButtonModule } from '@angular/material/button';
 import { PregameComponent } from './control/pregame/pregame.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle'
 
 /**
  * Here we pass the configuration parameters to create an MSAL instance.
@@ -122,7 +123,8 @@ export function MSALInterceptorFactory(): MsalInterceptorConfiguration {
     MatGridListModule,
     MatButtonModule,
     BrowserAnimationsModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    MatSlideToggleModule
   ],
   exports: [
     FormsModule

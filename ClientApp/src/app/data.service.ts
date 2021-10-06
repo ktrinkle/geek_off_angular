@@ -107,11 +107,12 @@ export class DataService {
 
   public round1AutoScore(yEvent: string, questionId: number): Observable<any> {
     var uri = this.REST_API_SERVER + '/api/round1/scoreAnswer/' + encodeURIComponent(yEvent) + '/' + encodeURIComponent(questionId) + '';
+    console.log(uri);
     return this.httpClient.put(uri, {responseType: 'text'});
   }
 
   public round1ManualScore(yEvent: string, questionId: number, teamNum: number): Observable<any> {
-    var uri = this.REST_API_SERVER + '/api/round1/scoreAnswer/' + encodeURIComponent(yEvent) + '/' + encodeURIComponent(questionId) + '/' + encodeURIComponent(teamNum) + '';
+    var uri = this.REST_API_SERVER + '/api/round1/scoreManualAnswer/' + encodeURIComponent(yEvent) + '/' + encodeURIComponent(questionId) + '/' + encodeURIComponent(teamNum) + '';
     return this.httpClient.put(uri, {responseType: 'text'});
   }
 

@@ -116,7 +116,7 @@ namespace GeekOff.Controllers
         }
 
         [Authorize(Roles = "admin")]
-        [HttpPut("scoreAnswer/{yEvent}/{questionId}/{teamNum}")]
+        [HttpPut("scoreManualAnswer/{yEvent}/{questionId}/{teamNum}")]
         [SwaggerOperation(Summary = "Scores the answer manually based on team")]
         public async Task<ActionResult> ScoreAnswerManual(string yEvent, int questionId, int teamNum)
         {

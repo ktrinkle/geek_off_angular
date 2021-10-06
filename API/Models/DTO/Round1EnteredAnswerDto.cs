@@ -11,5 +11,6 @@ namespace GeekOff.Models
         public int TeamNum { get; set; }
         public int QuestionNum { get; set; }
         public string TextAnswer { get; set; }
+        public bool? AnswerStatus { get; set; }
     }
 }
