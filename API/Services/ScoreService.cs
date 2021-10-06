@@ -92,6 +92,7 @@ namespace GeekOff.Services
                                         on new {q.RoundNo, q.QuestionNo, q.Yevent} 
                                         equals new {s.RoundNo, s.QuestionNo, s.Yevent} into sq
                                         from sqi in sq.DefaultIfEmpty()
+                                        where q.RoundNo == 1 && q.Yevent == tr.Yevent
                                         select new Round1ScoreDetail()
                                         {
                                             QuestionId = q.QuestionNo,
