@@ -6,6 +6,13 @@ import { Subject, BehaviorSubject, Observable } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { DataService } from './data.service';
 
+type ProfileType = {
+  playerName: string,
+  userName: string,
+  teamNum: number,
+  playerNum: number
+};
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -26,6 +33,7 @@ export class AppComponent {
   private currentEventSubject: BehaviorSubject<string>;
   public currentEvent: Observable<string>;
   private readonly _destroying$ = new Subject<void>();
+  public profile:ProfileType | undefined;
 
   constructor(
     @Inject(MSAL_GUARD_CONFIG) private msalGuardConfig: MsalGuardConfiguration,
@@ -75,7 +83,21 @@ export class AppComponent {
   }
 
   setLoginDisplay() {
-    this.loginDisplay = this.authService.instance.getAllAccounts().length > 0;
+    if (this.authService.instance.getAllAccounts().length > 0)
+    {
+      this.getAdInfo();
+      this.loginDisplay = true;
+    }
+    else{
+      this.loginDisplay = false;
+    }
+  }
+
+  getAdInfo() {
+    this.dataService.getADProfile().subscribe(ad => {
+      this.profile = ad;
+      console.log(this.profile);
+    });
   }
 
   public get currentUserValue(): string {

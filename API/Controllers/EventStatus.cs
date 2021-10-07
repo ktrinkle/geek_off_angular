@@ -10,6 +10,7 @@ using Swashbuckle.AspNetCore.Annotations;
 using Microsoft.AspNetCore.SignalR;
 using System.Security.Claims;
 using Microsoft.Identity.Web.Resource;
+using GeekOff.Helpers;
 using GeekOff.Services;
 using GeekOff.Models;
 
@@ -21,19 +22,14 @@ namespace GeekOff.Controllers
     {
         static readonly string[] scopeRequiredByApi = new string[] { "access_as_user" };
         private readonly ILogger<EventStatusController> _logger;
-        private readonly IScoreService _scoreService;
         private readonly IManageEventService _manageEventService;
-        private readonly IHubContext<EventHub> _eventHub;
-        private readonly IQuestionService _questionService;
+        private readonly ILoginService _loginService;
 
-        public EventStatusController(ILogger<EventStatusController> logger, IScoreService scoreService, IManageEventService manageEventService,
-                                IHubContext<EventHub> eventHub, IQuestionService questionService)
+        public EventStatusController(ILogger<EventStatusController> logger, ILoginService loginService, IManageEventService manageEventService)
         {
             _logger = logger;
-            _scoreService = scoreService;
             _manageEventService = manageEventService;
-            _eventHub = eventHub;
-            _questionService = questionService;
+            _loginService = loginService;
         }
 
         [HttpGet("currentEvent")]
@@ -46,6 +42,20 @@ namespace GeekOff.Controllers
         [SwaggerOperation(Summary = "Get the current question. Called when round1/contestant loads.")]
         public async Task<ActionResult<CurrentQuestionDto>> GetCurrentQuestion(string yEvent)
             => Ok(await _manageEventService.GetCurrentQuestion(yEvent));
+
+        [Authorize]
+        [HttpGet("currentUser")]
+        [SwaggerOperation(Summary = "Get current user and team info from database based on logged in user.")]
+        public async Task<ActionResult<UserInfoDto>> GetUserInfo()
+        {
+            var badgeId = User.UserId();
+            if (badgeId == "000000")
+            {
+                return null;
+            }
+
+            return await _loginService.Login(badgeId);
+        }
         
     }
 }

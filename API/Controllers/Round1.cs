@@ -119,10 +119,7 @@ namespace GeekOff.Controllers
         [HttpPut("scoreManualAnswer/{yEvent}/{questionId}/{teamNum}")]
         [SwaggerOperation(Summary = "Scores the answer manually based on team")]
         public async Task<ActionResult> ScoreAnswerManual(string yEvent, int questionId, int teamNum)
-        {
-            // add in controller here
-            return Ok();
-        }
+            => Ok(await _scoreService.ScoreAnswerManual(yEvent, questionId, teamNum));
 
         [Authorize(Roles = "admin")]
         [HttpPut("updateScoreboard")]

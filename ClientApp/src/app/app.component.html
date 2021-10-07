@@ -2,9 +2,12 @@
   <a class="title" href="/">{{ title }}</a>
 
   <div class="toolbar-spacer"></div>
+  <div class="username" *ngIf="profile">{{profile.playerName}} {{profile.teamNum}}</div>
 
+  <div class="spanright">
   <button mat-raised-button *ngIf="!loginDisplay" (click)="login()">Login</button>
   <button mat-raised-button *ngIf="loginDisplay" (click)="logout()">Logout</button>
+  </div>
 
 </mat-toolbar>
 <div class="container">

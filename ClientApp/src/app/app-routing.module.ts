@@ -16,6 +16,14 @@ import { Round1ControlComponent } from './control/round1control/round1control.co
 import { MsalGuard, MsalRedirectComponent } from '@azure/msal-angular';
 import { BrowserUtils } from '@azure/msal-browser';
 
+import { PlayerGuard } from './player.guard';
+
+const roles = {
+  "Player": "player",
+  "Admin": "admin",
+  "Host": "host"
+}
+
 const routes: Routes = [
   {
     // Dedicated route for redirects
@@ -27,55 +35,82 @@ const routes: Routes = [
     path: 'round1/contestant',
     component: Round1ContestantComponent,
     pathMatch: 'full',
-    canActivate: [MsalGuard]
+    canActivate: [MsalGuard, PlayerGuard],
+    data: {
+      expectedRole: roles.Player
+    }
   },
   {
     path: 'round1/intro/:page',
     component: Round1IntroComponent,
     pathMatch: 'full',
-    canActivate: [MsalGuard]
+    canActivate: [MsalGuard, PlayerGuard],
+    data: {
+      expectedRole: roles.Admin
+    }
   },
   {
     path: 'round1/question/:question',
     component: Round1DisplayQuestionComponent,
     pathMatch: 'full',
-    canActivate: [MsalGuard]
+    canActivate: [MsalGuard, PlayerGuard],
+    data: {
+      expectedRole: roles.Admin
+    }
   },
   {
     path: 'round1/scoreboard',
     component: Round1ScoreboardComponent,
     pathMatch: 'full',
-    canActivate: [MsalGuard]
+    canActivate: [MsalGuard, PlayerGuard],
+    data: {
+      expectedRole: roles.Admin
+    }
   },
   {
     path: 'round2/countdown',
     component: Round2countdownComponent,
     pathMatch: 'full',
-    canActivate: [MsalGuard]
+    canActivate: [MsalGuard, PlayerGuard],
+    data: {
+      expectedRole: roles.Admin
+    }
   },
   {
     path: 'round2/display',
     component: Round2displayComponent,
     pathMatch: 'full',
-    canActivate: [MsalGuard]
+    canActivate: [MsalGuard, PlayerGuard],
+    data: {
+      expectedRole: roles.Admin
+    }
   },
   {
     path: 'control/round1',
     component: Round1ControlComponent,
     pathMatch: 'full',
-    canActivate: [MsalGuard]
+    canActivate: [MsalGuard, PlayerGuard],
+    data: {
+      expectedRole: roles.Admin
+    }
   },
   {
     path: 'control/round2',
     component: Round2controlComponent,
     pathMatch: 'full',
-    canActivate: [MsalGuard]
+    canActivate: [MsalGuard, PlayerGuard],
+    data: {
+      expectedRole: roles.Admin
+    }
   },
   {
     path: 'host/round2',
     component: Round2hostComponent,
     pathMatch: 'full',
-    canActivate: [MsalGuard]
+    canActivate: [MsalGuard, PlayerGuard],
+    data: {
+      expectedRole: roles.Admin
+    }
   },
   // these do not need MSAL guards and should be open to all
   {

@@ -20,7 +20,7 @@ export class DataService {
   }
 
   public getADProfile(): Observable<any> {
-    var uri = 'https://graph.microsoft.com/v1.0/me'
+    var uri = this.REST_API_SERVER + '/api/eventStatus/currentUser';
     return this.httpClient.get(uri);
   }
 
