@@ -43,6 +43,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatButtonModule } from '@angular/material/button';
 import { PregameComponent } from './control/pregame/pregame.component';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle'
 
 // Countdown
 import { CountdownModule } from 'ngx-countdown';
@@ -125,7 +127,9 @@ export function MSALInterceptorFactory(): MsalInterceptorConfiguration {
     CountdownModule,
     MatGridListModule,
     MatButtonModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    FlexLayoutModule,
+    MatSlideToggleModule
   ],
   exports: [
     FormsModule
