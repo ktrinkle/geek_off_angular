@@ -78,10 +78,21 @@ namespace GeekOff.Controllers
             return Ok();
         }
 
+        [Authorize(Roles = "admin")]
+        [HttpPut("updateScoreboard")]
+        [SwaggerOperation(Summary = "Sends message to update the scoreboard.")]
+        public async Task<ActionResult> UpdateScoreboard()
+        {
+            // add in controller here
+            await _eventHub.Clients.All.SendAsync("round2ScoreUpdate");
+            return Ok();
+        }
+
+        [Authorize(Roles = "admin")]
         [HttpPut("finalize/{yEvent}")]
         [SwaggerOperation(Summary = "Finalize round 2")]
         public async Task<ActionResult<string>> FinalizeRound(string yEvent)
-            => Ok(await _manageEventService.FinalizeRound(yEvent));
+            => Ok(await _manageEventService.FinalizeRound(yEvent, 2));
         
     }
 }

@@ -12,10 +12,11 @@ namespace GeekOff.Data
         public int RoundNo { get; set; }
         public string TextQuestion { get; set; }
         public string TextAnswer { get; set; }
-        public bool? MultipleChoice { get; set; }
         public string TextAnswer2 { get; set; }
         public string TextAnswer3 { get; set; }
         public string TextAnswer4 { get; set; }
         public string CorrectAnswer { get; set; }
+        public bool? MultipleChoice { get; set; }
+        public bool? MatchQuestion { get; set; }
     }
 }

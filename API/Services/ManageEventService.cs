@@ -167,14 +167,19 @@ namespace GeekOff.Services
             return "The answer was successfully saved.";
         }
 
-        public async Task<string> FinalizeRound(string yEvent)
+        public async Task<string> FinalizeRound(string yEvent, int roundNum)
         {
             if (yEvent is null)
             {
                 return "No event was specified.";
             }
 
-            var totalPoints = await _contextGo.Scoring.Where(s => s.RoundNo == 2 && s.Yevent == yEvent)
+            if (roundNum < 1 || roundNum > 3)
+            {
+                return "Incorrect round number.";
+            }
+
+            var totalPoints = await _contextGo.Scoring.Where(s => s.RoundNo == roundNum && s.Yevent == yEvent)
                                 .GroupBy(s => s.TeamNo)
                                 .Select(s => new Round2FinalDto()
                                 {
@@ -184,7 +189,7 @@ namespace GeekOff.Services
 
             // now we rank and store into the DB. First we remove anything that already exists.
 
-            var scorestoRemove = await _contextGo.Roundresult.Where(r => r.Yevent == yEvent && r.RoundNo == 2).ToListAsync();
+            var scorestoRemove = await _contextGo.Roundresult.Where(r => r.Yevent == yEvent && r.RoundNo == roundNum).ToListAsync();
 
             if (!(scorestoRemove is null))
             {
@@ -199,7 +204,7 @@ namespace GeekOff.Services
             {
                 Yevent = yEvent,
                 TeamNo = s.TeamNo,
-                RoundNo = 2,
+                RoundNo = roundNum,
                 Ptswithbonus = s.FinalScore,
                 rnk = (from r in totalPoints
                         where r.FinalScore > s.FinalScore
@@ -220,6 +225,9 @@ namespace GeekOff.Services
                                     .Where(u => u.RoundNo == 1 && u.QuestionNo == questionId && u.Yevent == yEvent)
                                     .ToListAsync();
 
+            var scoredAnswer = await _contextGo.Scoring.Where(s => s.RoundNo == 1 && s.Yevent == yEvent && s.QuestionNo == questionId)
+                                .ToListAsync();
+
             if (submittedAnswer is null)
             {
                 return null;
@@ -231,7 +239,8 @@ namespace GeekOff.Services
                 {
                     TeamNum = answer.TeamNo,
                     QuestionNum = questionId,
-                    TextAnswer = answer.TextAnswer
+                    TextAnswer = answer.TextAnswer,
+                    AnswerStatus = scoredAnswer.Any(s => s.TeamNo == answer.TeamNo)
                 };
                 returnDto.Add(displayAnswer);
             }
@@ -305,7 +314,7 @@ namespace GeekOff.Services
 
         public async Task<CurrentQuestionDto> SetCurrentQuestionStatus(string yEvent, int questionId, int status)
         {
-            if (questionId < 100)
+            if (questionId < 1)
             {
                 return null;
             }

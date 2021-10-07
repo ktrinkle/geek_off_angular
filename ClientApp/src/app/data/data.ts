@@ -16,6 +16,29 @@ export interface round2Display {
   finalScore: number
 }
 
+export interface round1Scores {
+  teamNum: number,
+  teamName: string,
+  q: round1ScoreDetail[],
+  bonus?: number,
+  teamScore?: number,
+  rnk?: number
+}
+
+export interface round1ScoreDetail {
+  questionId: number,
+  questionScore?: number
+}
+
+export interface round1ScoreMap {
+  teamNum: number,
+  teamName: string,
+  q: Map<string, number>[],
+  bonus?: number,
+  teamScore?: number,
+  rnk?: number
+}
+
 export interface round23Scores {
   teamNo: number,
   teamName: string,
@@ -58,10 +81,27 @@ export interface round1QADto {
   questionText: string,
   answers: round1AnswerDto[],
   expireTime: Date,
-  questionAnswerType: number,
+  answerType: number,
 }
 
 export interface currentQuestionDto {
   questionNum: number,
   status: number
+}
+
+export interface round1QuestionControlDto
+{
+  questionNum: number,
+  questionText: string,
+  questionAnswerType: number,
+  answerText: string
+}
+
+export interface round1EnteredAnswers
+{
+  yEvent: string,
+  teamNum: number,
+  questionNum: number,
+  textAnswer: string,
+  answerStatus: boolean
 }

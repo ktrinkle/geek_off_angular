@@ -1,14 +1,70 @@
-<p>round1 works! This needs Flex Layout installed.</p>
-<div id="currentScoreboard"><p>CurrentScoreboard</p></div>
-<div id="currentAnswer"><p>CurrentAnswers</p></div>
-<div id="controlCorner">
-  <button id="showAnswer">Show Answer</button>
-  <button id="openAnswer">Open Answer</button>
-  <button id="closeAnswer">Close Answer</button>
-  <button id="goToNextQuestion">Go to next question</button>
-  <button id="finalizeRound">Finalize round</button>
+<div id="r1header"><p>Question {{currentQuestion}} - Inject question here</p></div>
+<div class="content" fxLayout="row wrap" fxLayoutGap="16px grid">
+<div id="currentAnswer" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%" style="padding: 10px;">
+  <h3>Round 1 - Current team answers</h3>
+  <mat-table class="round1ControlScoreboard" [dataSource]="teamAnswers">
+    <ng-container matColumnDef="teamButton">
+      <mat-header-cell *matHeaderCellDef></mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        <mat-slide-toggle color="accent" id="{{row.teamNum}}" name="{{row.teamNum}}" formControlName="{{row.teamNum}}" (change)="scoreManual(row.teamNum)"></mat-slide-toggle>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="sbteamNo">
+      <mat-header-cell *matHeaderCellDef> Team # </mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        {{row.teamNum}}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="sbteamAnswer">
+      <mat-header-cell *matHeaderCellDef> Team Answer </mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        {{row.textAnswer}}
+      </mat-cell>
+    </ng-container>
+
+    <!-- Header and Row Declarations -->
+    <mat-header-row *matHeaderRowDef="['teamButton','sbteamNo', 'sbteamAnswer']"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: ['teamButton','sbteamNo', 'sbteamAnswer']"></mat-row>
+  </mat-table>
+  <button id="updateScoreboard" (click)="updateRemoteScoreboard()">Send scoreboard update</button>
 </div>
-<div id="scorePane">
-  <button id="autoScore">Auto-Score</button>
-<p>Score answers here</p>
+  <div id="currentScoreboard" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%" style="padding: 10px;">
+    <h3>Round 1 Scoreboard</h3>
+    <mat-table class="round1ControlScoreboard" [dataSource]="scoreboard">
+      <ng-container matColumnDef="teamNo">
+        <mat-header-cell *matHeaderCellDef> Team # </mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          {{row.teamNum}}
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="teamScore">
+        <mat-header-cell *matHeaderCellDef> Team Score </mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          {{row.teamScore}}
+        </mat-cell>
+      </ng-container>
+
+      <!-- Header and Row Declarations -->
+      <mat-header-row *matHeaderRowDef="['teamNo', 'teamScore']"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: ['teamNo', 'teamScore']"></mat-row>
+    </mat-table>
+
+  </div>
+<div id="controlCorner" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%" style="padding: 10px;">
+  <h3>Controls</h3>
+  <button id="showAnswer" (click)="sendClientMessage(1)">Show Answer</button>
+  <button id="openAnswer" (click)="sendClientMessage(2)">Open Answer</button>
+  <button id="closeAnswer" (click)="sendClientMessage(3)">Close Answer</button>
+  <button id="goToQuestion" (click)="sendClientMessage(0)">Go to selected question</button>
+  <div clear="all"></div>
+  <button id="autoScore" (click)="autoScore()">Auto-Score</button>
+  <p>{{scoreResponse}}</p>
+  <div clear="all"></div>
+  <button id="goToNextQuestion" (click)="sendNextClientMessage(0)">Go to next question</button>
+  <button id="finalizeRound" (click)="finalizeRound()">Finalize round</button>
+  <button id="round2" (click)="goToRound2()">Go to round 2 control</button>
+</div>
 </div>
