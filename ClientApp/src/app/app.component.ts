@@ -10,7 +10,8 @@ type ProfileType = {
   playerName: string,
   userName: string,
   teamNum: number,
-  playerNum: number
+  playerNum: number,
+  admin: boolean
 };
 
 @Component({

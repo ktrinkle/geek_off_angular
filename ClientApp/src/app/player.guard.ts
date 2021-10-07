@@ -31,4 +31,16 @@ export class PlayerGuard implements CanActivate {
     return true;
   }
 
+  checkAdmin(expectedRole: string): boolean {
+    let account: Account = this.authService.instance.getAllAccounts()[0];
+
+    if (!account.idTokenClaims?.roles) {
+      return false;
+    } else if (!account.idTokenClaims?.roles?.includes(expectedRole)) {
+      return false;
+    }
+
+    return true;
+  }
+
 }

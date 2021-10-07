@@ -3,12 +3,12 @@
 </div>
 
 <div *ngIf="userIsLoggedIn">
-  <p>You are in the Geek Off!</p>
+  <p>Welcome to the Geek Off!</p>
   <p><a routerLink="/round1/contestant">Start playing the game!</a></p>
 </div>
 
-<div>
-<p>Below this line will be admin functions once the guards are established.</p>
+<div *ngIf="userIsAdmin && userIsLoggedIn">
+<p>Admin functions:</p>
 <p>Round 1</p>
 <p><a routerLink="/round1/intro/1">Start the intro screens</a></p>
 <p><a routerLink="/round1/question/1">Start the round 1 questions</a></p>
