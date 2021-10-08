@@ -18,5 +18,7 @@ namespace GeekOff.Data
         public string CorrectAnswer { get; set; }
         public bool? MultipleChoice { get; set; }
         public bool? MatchQuestion { get; set; }
+        public string MediaFile { get; set; }
+        public string MediaType { get; set; }
     }
 }
