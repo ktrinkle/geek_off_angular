@@ -19,7 +19,7 @@ namespace GeekOff.Services
             _contextGo = context;
         }
 
-        public async Task<Round1QuestionDto> GetRound1Question(string yEvent, int questionNo)
+        public async Task<Round1QuestionDisplay> GetRound1Question(string yEvent, int questionNo)
         {
             var question = await _contextGo.QuestionAns.SingleOrDefaultAsync(q => q.QuestionNo == questionNo 
                                                                             && q.Yevent == yEvent
@@ -30,11 +30,48 @@ namespace GeekOff.Services
                 return null;
             }
 
-            var questionReturn = new Round1QuestionDto()
+            var questionReturn = new Round1QuestionDisplay()
                                 {
                                     QuestionNum = questionNo,
-                                    QuestionText = question.TextQuestion
+                                    QuestionText = question.TextQuestion,
+                                    Answers = new List<Round1Answers>(),
+                                    MediaFile = question.MediaFile,
+                                    MediaType = question.MediaType
                                 };
+
+            if (question.MultipleChoice == true)
+            {
+                questionReturn.Answers.Add(new Round1Answers()
+                {
+                    AnswerId = 1,
+                    Answer = question.TextAnswer,
+                });
+
+                questionReturn.Answers.Add(new Round1Answers()
+                {
+                    AnswerId = 2,
+                    Answer = question.TextAnswer2,
+                });
+
+                questionReturn.Answers.Add(new Round1Answers()
+                {
+                    AnswerId = 3,
+                    Answer = question.TextAnswer3,
+                });
+                
+                questionReturn.Answers.Add(new Round1Answers()
+                {
+                    AnswerId = 4,
+                    Answer = question.TextAnswer4,
+                });
+
+                questionReturn.AnswerType = question.MatchQuestion == true ? QuestionAnswerType.Match : QuestionAnswerType.MultipleChoice;
+            }
+
+            if (question.MultipleChoice == false)
+            {
+                questionReturn.AnswerType = QuestionAnswerType.FreeText;
+            }
             
             return questionReturn;
         }

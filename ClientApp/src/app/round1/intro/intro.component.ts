@@ -8,27 +8,39 @@ import { selectRound1Teams } from 'src/app/store';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { MatIconRegistry } from '@angular/material/icon';
+import { DomSanitizer } from '@angular/platform-browser';
 import { DataService } from 'src/app/data.service';
 import * as signalR from '@microsoft/signalr';
 import { environment } from 'src/environments/environment';
+
 
 @Component({
   selector: 'app-intro',
   templateUrl: './intro.component.html',
   styleUrls: ['./intro.component.scss'],
-  animations: []
+  animations: [
+    trigger('fadeInOut', [
+      state('void', style({
+        opacity: 0
+      })),
+      transition('void <=> *', animate(1000)),
+    ]),
+  ]
 })
 export class Round1IntroComponent implements OnInit, OnDestroy {
 
   currentScreen: string = "";
+  currentItem: number = 0;
   public yevent: string = sessionStorage.getItem('event') ?? '';
   public teamMasterList: introDto[] = [];
-  constructor(private store: Store, private route: ActivatedRoute, private router: Router, private matIconRegistry: MatIconRegistry, private dataService: DataService) {
+  constructor(private store: Store, private route: ActivatedRoute, private router: Router, private matIconRegistry: MatIconRegistry, private domSanitzer: DomSanitizer, private dataService: DataService) {
     //this.store.dispatch(round1AllTeams({ yEvent: 'e21' }));
 
     this.matIconRegistry
-      .addSvgIcon('geekplane','../../assets/img/Technology-White-rgb-14.png')
-      .addSvgIcon('geekphone','../../assets/img/Travel-White-rgb-01.png');
+      .addSvgIcon('geekplane', this.domSanitzer.bypassSecurityTrustResourceUrl('/assets/icon/icon_plane_aa.svg'))
+      .addSvgIcon('geekphone', this.domSanitzer.bypassSecurityTrustResourceUrl('/assets/icon/icon_phone_aa.svg'))
+      .addSvgIcon('geekmask', this.domSanitzer.bypassSecurityTrustResourceUrl('/assets/icon/icon_facemask_blue.svg'))
+      .addSvgIcon('geekasterisk', this.domSanitzer.bypassSecurityTrustResourceUrl('/assets/icon/icon_gtasterisk.svg'));
    }
 
    destroy$: Subject<boolean> = new Subject<boolean>();
@@ -67,14 +79,23 @@ export class Round1IntroComponent implements OnInit, OnDestroy {
       this.goToQuestions(data);
     });
 
+    connection.on("round1Animate", (data: any) => {
+      this.changeText();
+    });
+
   }
 
   changePage(page: any): void {
+    this.currentItem = 0;
     this.currentScreen = page;
   }
 
   goToQuestions(question: number): void {
     this.router.navigate(['/round1/contestant']);
+  }
+
+  changeText() {
+    this.currentItem++;
   }
 
   ngOnDestroy() {

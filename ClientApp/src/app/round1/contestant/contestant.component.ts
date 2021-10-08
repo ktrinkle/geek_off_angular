@@ -83,13 +83,14 @@ export class Round1ContestantComponent implements OnInit {
 
     // set up our internal state
     // this is not working as we desire on reloads of the component, need to review
-    this.dataService.getCurrentQuestion(this.yEvent).subscribe(initialQ => {
+    this.dataService.getCurrentQuestion(this.yEvent).subscribe({next: (initialQ => {
       this.currentQuestion = initialQ;
+    }), complete: () => {
       if (this.currentQuestion.questionNum > 0) {
         this.loadQuestion(this.currentQuestion.questionNum);
 
         console.log(this.currentQuestion);
-        if (this.currentQuestion.questionNum > 99 && this.currentQuestion.questionNum < 120)
+        if (this.currentQuestion.questionNum > 0 && this.currentQuestion.questionNum < 120)
         {
           // we have already loaded in the init so we have our state here. In theory.
           if (this.currentQuestion.status == 3)
@@ -114,7 +115,7 @@ export class Round1ContestantComponent implements OnInit {
         }
 
       };
-    });
+    }});
   }
 
   loadQuestion(questionId: number): void{

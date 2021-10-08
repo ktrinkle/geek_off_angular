@@ -16,20 +16,10 @@
     </mat-cell>
   </ng-container>
 
-  <ng-container matColumnDef="q.questionId" *ngFor="let question of displayObject.q">
-    <mat-header-cell *matHeaderCellDef>{{ question.questionId }}</mat-header-cell>
-    <mat-cell *matCellDef="let element">{{ question.questionScore }}</mat-cell>
+  <ng-container matColumnDef="questionId" >
+    <mat-header-cell *matHeaderCellDef="let question of row.q">{{ question.questionId }}</mat-header-cell>
+    <mat-cell *matCellDef="let question of row.q">{{ question.questionScore }}</mat-cell>
   </ng-container>
-
-  <mat-cell *matCellDef="let element">
-    <div>
-      <ng-container  *ngFor="let item of element?.FooChain">
-        <div >
-            <span>{{item.Foo}}</span>
-        </div>
-      </ng-container>
-    </div>
-</mat-cell>
 
   <ng-container matColumnDef="bonus">
     <mat-header-cell *matHeaderCellDef> BNS </mat-header-cell>
@@ -46,7 +36,7 @@
   </ng-container>
 
   <!-- Header and Row Declarations -->
-  <mat-header-row *matHeaderRowDef="['teamNo','teamName', 'bonus', 'ttl']"></mat-header-row>
-  <mat-row *matRowDef="let row; columns: ['teamNo','teamName', 'bonus', 'ttl']"></mat-row>
+  <mat-header-row *matHeaderRowDef="['teamNo','teamName', 'questionId', 'bonus', 'ttl']"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: ['teamNo','teamName', 'questionId', 'bonus', 'ttl']"></mat-row>
 </mat-table>
 </div>

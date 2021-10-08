@@ -152,6 +152,26 @@ namespace GeekOff.Controllers
         }
 
         [Authorize(Roles = "admin")]
+        [HttpPut("animateText")]
+        [SwaggerOperation(Summary = "Sends message to animate intro screen text.")]
+        public async Task<ActionResult> ShowMedia()
+        {
+            // add in controller here
+            await _eventHub.Clients.All.SendAsync("round1Animate");
+            return Ok();
+        }
+
+        [Authorize(Roles = "admin")]
+        [HttpPut("showMedia/{questionId}")]
+        [SwaggerOperation(Summary = "Sends message to show any media on the round 1 big board.")]
+        public async Task<ActionResult> ShowMedia(int questionId)
+        {
+            // add in controller here
+            await _eventHub.Clients.All.SendAsync("round1ShowMedia", questionId);
+            return Ok();
+        }
+
+        [Authorize(Roles = "admin")]
         [HttpPut("updateStatus/{yEvent}/{questionId}/{status}")]
         [SwaggerOperation(Summary = "Updates status of question and sends message to display. Changes the state for the contestant and big screen.")]
         public async Task<ActionResult<CurrentQuestionDto>> ChangeQuestion(string yEvent, int questionId, int status)

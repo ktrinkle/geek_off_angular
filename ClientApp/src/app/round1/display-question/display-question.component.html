@@ -1,1 +1,19 @@
-<p>display-question works!</p>
+<div class="geekofflogo">
+  <div class="questionBox" *ngIf="questionVisible" [@fadeIn]>
+    <div class="topright">{{currentQuestion.questionNum}}</div>
+  {{currentQuestionDto?.questionText}}
+  </div>
+  <div class="mediaBox" *ngIf="showMedia"></div>
+  <div class="answerBox" *ngIf="showChoices && currentQuestionDto?.answerType == 1" [@fadeIn]>
+
+
+  </div>
+  <div class="answerBox" *ngIf="showChoices && currentQuestionDto?.answerType == 0" [@fadeIn]>
+
+
+  </div>
+  <!--correct answer for written text only-->
+  <div class="answerBox" *ngIf="showAnswer && currentQuestionDto?.answerType == 1" [@fadeIn]>
+    {{currentQuestionDto?.correctAnswer}}
+  </div>
+</div>

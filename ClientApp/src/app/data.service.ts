@@ -85,6 +85,11 @@ export class DataService {
     return this.httpClient.put(uri, {responseType: 'json'});
   }
 
+  public showRound1QuestionMedia(questionNum: number): Observable<any> {
+    var uri = this.REST_API_SERVER + '/api/round1/showMedia/' + encodeURIComponent(questionNum) + '';
+    return this.httpClient.put(uri, {responseType: 'json'});
+  }
+
   public getRound1Scores(yEvent: string): Observable<any> {
     var uri = this.REST_API_SERVER + '/api/round1/scoreboard/' + encodeURIComponent(yEvent) + '';
     return this.httpClient.get(uri);

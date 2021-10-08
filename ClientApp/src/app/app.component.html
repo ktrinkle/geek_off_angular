@@ -1,3 +1,4 @@
+<div class="container-app">
 <mat-toolbar color="primary" *ngIf="showLoginBar">
   <a class="title" href="/">{{ title }}</a>
 
@@ -13,4 +14,5 @@
 <div class="container">
   <!--This is to avoid reload during acquireTokenSilent() because of hidden iframe -->
   <router-outlet *ngIf="!isIframe"></router-outlet>
+</div>
 </div>

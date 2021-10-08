@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
-import { Router, NavigationStart } from '@angular/router';
+import { Router, NavigationStart, NavigationEnd } from '@angular/router';
 import { MsalService, MsalBroadcastService, MSAL_GUARD_CONFIG, MsalGuardConfiguration } from '@azure/msal-angular';
 import { AuthenticationResult, InteractionStatus, InteractionType, PopupRequest, RedirectRequest } from '@azure/msal-browser';
 import { Subject, BehaviorSubject, Observable } from 'rxjs';
@@ -43,7 +43,7 @@ export class AppComponent {
     private dataService: DataService,
     private router: Router) {
       router.events.forEach((event) => {
-        if (event instanceof NavigationStart) {
+        if (event instanceof NavigationEnd) {
           console.log(event.url);
           console.log(this.pagesToShowLogin.indexOf(event.url));
           this.showLoginBar = this.pagesToShowLogin.indexOf(event.url) > -1;
