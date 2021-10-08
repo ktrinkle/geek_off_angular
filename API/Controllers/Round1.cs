@@ -38,10 +38,10 @@ namespace GeekOff.Controllers
             _questionService = questionService;
         }
 
-        [Authorize(Roles = "admin,player")]
+        [Authorize(Roles = "admin")]
         [HttpGet("getQuestion/{yEvent}/{questionId}")]
-        [SwaggerOperation(Summary = "Get a single round 1 question for the contestants.")]
-        public async Task<ActionResult<Round1QuestionDto>> GetRound1Question(string yEvent, int questionId)
+        [SwaggerOperation(Summary = "Get a single round 1 question for the big display with media.")]
+        public async Task<ActionResult<Round1QuestionDisplay>> GetRound1Question(string yEvent, int questionId)
             => Ok(await _questionService.GetRound1Question(yEvent, questionId));
 
         [Authorize(Roles = "admin,player")]

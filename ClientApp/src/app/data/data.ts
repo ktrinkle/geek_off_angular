@@ -30,15 +30,6 @@ export interface round1ScoreDetail {
   questionScore?: number
 }
 
-export interface round1ScoreMap {
-  teamNum: number,
-  teamName: string,
-  q: Map<string, number>[],
-  bonus?: number,
-  teamScore?: number,
-  rnk?: number
-}
-
 export interface round23Scores {
   teamNo: number,
   teamName: string,
@@ -82,6 +73,15 @@ export interface round1QADto {
   answers: round1AnswerDto[],
   expireTime: Date,
   answerType: number,
+}
+
+export interface round1QDisplay {
+  questionNum: number,
+  questionText: string,
+  answers: round1AnswerDto[],
+  answerType: number,
+  mediaFile: string,
+  mediaType: string
 }
 
 export interface currentQuestionDto {

@@ -16,10 +16,20 @@
     </mat-cell>
   </ng-container>
 
-  <ng-container matColumnDef="q.key" *ngFor="let q of displayObject | keyvalue">
-    <mat-header-cell *matHeaderCellDef>{{ q.key }}</mat-header-cell>
-    <mat-cell *matCellDef="let element">{{ q.value }}</mat-cell>
+  <ng-container matColumnDef="q.questionId" *ngFor="let question of displayObject.q">
+    <mat-header-cell *matHeaderCellDef>{{ question.questionId }}</mat-header-cell>
+    <mat-cell *matCellDef="let element">{{ question.questionScore }}</mat-cell>
   </ng-container>
+
+  <mat-cell *matCellDef="let element">
+    <div>
+      <ng-container  *ngFor="let item of element?.FooChain">
+        <div >
+            <span>{{item.Foo}}</span>
+        </div>
+      </ng-container>
+    </div>
+</mat-cell>
 
   <ng-container matColumnDef="bonus">
     <mat-header-cell *matHeaderCellDef> BNS </mat-header-cell>
