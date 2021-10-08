@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import * as signalR from '@microsoft/signalr';
 import { environment } from 'src/environments/environment';
+import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
 
 
 @Component({
@@ -25,7 +26,11 @@ export class PregameComponent implements OnInit {
     {key: 'rule3', value: 'Rules page 3'},
   ];
 
-  constructor() { }
+  pageForm: FormGroup = new FormGroup({
+    teamNum: new FormControl('')
+  });
+
+  constructor(private formBuilder: FormBuilder, private router: Router) { }
 
   ngOnInit(): void {
     const connection = new signalR.HubConnectionBuilder()
@@ -49,7 +54,7 @@ export class PregameComponent implements OnInit {
   }
 
   moveToRound1() {
-
+    this.router.navigate(['/control/round1']);
   }
 
 }
