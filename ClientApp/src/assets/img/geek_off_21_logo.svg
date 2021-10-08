@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 548 340" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+    <g transform="matrix(1,0,0,1,46.8692,-790.838)">
+        <g id="Geek-off-title" serif:id="Geek off title" transform="matrix(1,0,0,1,-15.0854,8.31831)">
+            <g transform="matrix(1.19566,-0.641978,0.641978,1.19566,-429.963,369.014)">
+                <text x="164.609px" y="579.336px" style="font-family:'GroovyScriptExtrude', 'Groovy Script Extrude';font-size:72px;fill:rgb(195,0,25);">eek</text>
+            </g>
+            <g transform="matrix(0.711181,-0.382087,0.382087,0.711181,-389.281,666.736)">
+                <text x="378.529px" y="729.194px" style="font-family:'GroovyScriptExtrude', 'Groovy Script Extrude';font-size:107.809px;fill:rgb(195,0,25);">Oﬀ</text>
+            </g>
+            <g transform="matrix(0.688784,-0.370054,0.370054,0.688784,-235.917,685.477)">
+                <text x="393.85px" y="653.51px" style="font-family:'GroovyScriptExtrude', 'Groovy Script Extrude';font-size:212.123px;fill:rgb(255,115,24);">2</text>
+            </g>
+            <g transform="matrix(1.33661,-0.718101,0.718101,1.33661,-900.064,555.637)">
+                <text x="598.741px" y="667.251px" style="font-family:'GroovyScriptExtrude', 'Groovy Script Extrude';font-size:121.346px;fill:rgb(255,115,24);">1</text>
+            </g>
+            <g transform="matrix(0.757937,-0.407207,0.407207,0.757937,-246.383,667.366)">
+                <text x="59.26px" y="560.394px" style="font-family:'GroovyScriptExtrude', 'Groovy Script Extrude';font-size:149.525px;fill:rgb(195,0,25);">G</text>
+            </g>
+            <g transform="matrix(1.19566,-0.641978,0.641978,1.19566,-429.963,369.014)">
+                <text x="164.609px" y="579.336px" style="font-family:'GroovyScript', 'Groovy Script';font-size:72px;fill:white;">eek</text>
+            </g>
+            <g transform="matrix(0.711181,-0.382087,0.382087,0.711181,-389.281,666.736)">
+                <text x="378.529px" y="729.194px" style="font-family:'GroovyScript', 'Groovy Script';font-size:107.809px;fill:white;">Oﬀ</text>
+            </g>
+            <g transform="matrix(0.688784,-0.370054,0.370054,0.688784,-235.917,685.477)">
+                <text x="393.85px" y="653.51px" style="font-family:'GroovyScript', 'Groovy Script';font-size:212.123px;fill:rgb(0,120,210);">2</text>
+            </g>
+            <g transform="matrix(1.33661,-0.718101,0.718101,1.33661,-900.064,555.637)">
+                <text x="598.741px" y="667.251px" style="font-family:'GroovyScript', 'Groovy Script';font-size:121.346px;fill:rgb(0,120,210);">1</text>
+            </g>
+            <g transform="matrix(0.757937,-0.407207,0.407207,0.757937,-246.383,667.366)">
+                <text x="59.26px" y="560.394px" style="font-family:'GroovyScript', 'Groovy Script';font-size:149.525px;fill:white;">G</text>
+            </g>
+        </g>
+    </g>
+</svg>
