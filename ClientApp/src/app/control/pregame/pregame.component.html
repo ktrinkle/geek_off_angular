@@ -1,6 +1,20 @@
 <h2>Geek Off Pregame Control</h2>
 <div class="content" fxLayout="row wrap" fxLayoutGap="16px grid">
   <div id="buttonScreen" fxFlex="30%" fxFlex.xs="100%" fxFlex.sm="100%" style="padding: 10px;">
+    <form [formGroup]="pageForm">
+        <label for="pageName">Select a screen:</label>
+        <select id="pageName" formControlName="pageName">
+          <option>--</option>
+          <option *ngFor="let page of listofPages" [value]="page.key">
+            {{page.value}}
+          </option>
+        </select>
+
+      <button type="submit">Change screen</button>
+    </form>
+    <button id="seatBelt" (onClick)="changeSeatBelt()">Turn on seatbelt sign</button>
+    <button id="playCbsSound" (onClick)="playCbsSound()">Play CBS sound</button>
+    <button id="moveToRound1" (onClick)="moveToRound1()">Move to Round 1</button>
     </div>
     <div id="infoScreen" fxFlex="70%" fxFlex.xs="100%" fxFlex.sm="100%" style="padding: 10px;">
     </div>

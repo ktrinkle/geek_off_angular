@@ -121,4 +121,8 @@ export class DataService {
     return this.httpClient.put(uri, {responseType: 'text'});
   }
 
+  public changeIntroPage(page: string) {
+    var uri = this.REST_API_SERVER + '/api/round1/changeIntroPage/' + encodeURIComponent(page) + '';
+    this.httpClient.put(uri, {responseType: 'text'});
+  }
 }
