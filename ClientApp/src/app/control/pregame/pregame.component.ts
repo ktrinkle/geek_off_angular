@@ -5,7 +5,7 @@ import { takeUntil } from 'rxjs/operators';
 import * as signalR from '@microsoft/signalr';
 import { environment } from 'src/environments/environment';
 import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
-
+import { DataService } from 'src/app/data.service';
 
 @Component({
   selector: 'app-pregame',
@@ -15,6 +15,10 @@ import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
 export class PregameComponent implements OnInit {
 
   currentPage: string = '1';
+  currentPageName: string = 'Intro page 1';
+  seatBelt: boolean = false;
+  yEvent = sessionStorage.getItem('event') ?? '';
+  audio = new Audio();
   listofPages: {key: string, value:string}[] = [
     {key: '1', value: 'Intro page 1'},
     {key: '2', value: 'Intro page 2'},
@@ -27,12 +31,15 @@ export class PregameComponent implements OnInit {
   ];
 
   pageForm: FormGroup = new FormGroup({
-    teamNum: new FormControl('')
+    pageName: new FormControl('')
   });
 
-  constructor(private formBuilder: FormBuilder, private router: Router) { }
+  constructor(private formBuilder: FormBuilder, private router: Router, private dataService: DataService) { }
 
   ngOnInit(): void {
+    this.audio.src = '../../assets/snd/top_of_hour.mp3';
+    this.audio.load();
+
     const connection = new signalR.HubConnectionBuilder()
       .configureLogging(signalR.LogLevel.Information)
       .withUrl(environment.api_url + '/events')
@@ -49,11 +56,27 @@ export class PregameComponent implements OnInit {
 
   }
 
-  changeScreen(event:any){
+  changeScreen(){
+    this.dataService.changeIntroPage(this.pageForm.value.pageName);
+    this.currentPage = this.pageForm.value.pageName;
+    var currentPageList = this.listofPages.filter(p => p.key == this.currentPage);
+    console.log(currentPageList);
+  }
 
+  changeSeatBelt() {
+    this.seatBelt == false ? true : false;
+  }
+
+  animateText() {
+    this.dataService.changeAnimation();
+  }
+
+  playCbsSound() {
+    this.audio.play();
   }
 
   moveToRound1() {
+    this.dataService.changeRound1QuestionStatus(this.yEvent, 1, 0).subscribe(c => {});
     this.router.navigate(['/control/round1']);
   }
 

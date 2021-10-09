@@ -86,12 +86,14 @@ export class Round1IntroComponent implements OnInit, OnDestroy {
   }
 
   changePage(page: any): void {
+    console.log('ChangePage: ' + page);
     this.currentItem = 0;
     this.currentScreen = page;
   }
 
   goToQuestions(question: number): void {
-    this.router.navigate(['/round1/contestant']);
+    console.log('Going to round 1 questions');
+    this.router.navigate(['/round1/question/1']);
   }
 
   changeText() {
