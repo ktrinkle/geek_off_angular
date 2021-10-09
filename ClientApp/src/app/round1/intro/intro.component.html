@@ -11,7 +11,6 @@
 </div>
 
 <div id="intro0" class="intro0" [@fadeInOut] *ngIf="currentScreen==='open'">
-  This is where the seatbelt screen goes.
   </div>
 
 <div id="intro1" *ngIf="currentScreen==='open2'">
@@ -80,11 +79,17 @@ This is where the opening video goes.
     <mat-list class="questionBox">
     <mat-list-item *ngIf="currentItem >= 0" [@fadeInOut]><h4><mat-icon svgIcon="geekplane" inline="true" matListIcon></mat-icon>Scores will be reset after each round
     </h4></mat-list-item>
-    <mat-list-item *ngIf="currentItem >= 1" [@fadeInOut]><h4><mat-icon svgIcon="geekplane" inline="true" matListIcon></mat-icon>One bonus point for each $20 raised over $100 (max 10 bonus points)
+    <div *ngIf="currentItem >= 1" [@fadeInOut]>
+    <mat-list-item ><h4><mat-icon svgIcon="geekplane" inline="true" matListIcon></mat-icon>One bonus point for each $20 raised over $100
     </h4></mat-list-item>
+    <mat-list-item matLine><h5><mat-icon svgIcon="geekasterisk" inline="true" matListIcon></mat-icon>Maximum of 10 bonus points awarded</h5></mat-list-item>
+    </div>
     <mat-list-item *ngIf="currentItem >= 2" [@fadeInOut]><h4><mat-icon svgIcon="geekplane" inline="true" matListIcon></mat-icon>No answering before the host finishes asking the question
     </h4></mat-list-item>
-    <mat-list-item *ngIf="currentItem >= 3" [@fadeInOut]><h4><mat-icon svgIcon="geekmask" inline="true" matListIcon></mat-icon>Masks required in the room, unless you are at a microphone</h4></mat-list-item>
+    <div *ngIf="currentItem >= 3" [@fadeInOut]>
+    <mat-list-item><h4><mat-icon svgIcon="geekmask" inline="true" matListIcon></mat-icon>Masks required at all times in the room</h4></mat-list-item>
+    <mat-list-item matLine><h5><mat-icon svgIcon="geekasterisk" inline="true" matListIcon></mat-icon>Except if you are in front of a microphone</h5></mat-list-item>
+    </div>
   </mat-list>
   </div>
 

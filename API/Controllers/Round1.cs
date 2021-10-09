@@ -162,6 +162,16 @@ namespace GeekOff.Controllers
         }
 
         [Authorize(Roles = "admin")]
+        [HttpPut("animateSeatbelt")]
+        [SwaggerOperation(Summary = "Sends message to animate intro screen text.")]
+        public async Task<ActionResult> ChangeIntroSeatBelt()
+        {
+            // add in controller here
+            await _eventHub.Clients.All.SendAsync("introSeatbelt");
+            return Ok();
+        }
+
+        [Authorize(Roles = "admin")]
         [HttpPut("showMedia/{questionId}")]
         [SwaggerOperation(Summary = "Sends message to show any media on the round 1 big board.")]
         public async Task<ActionResult> ShowMedia(int questionId)

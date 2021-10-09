@@ -131,4 +131,9 @@ export class DataService {
     var uri = this.REST_API_SERVER + '/api/round1/animateText';
     return this.httpClient.put(uri, {responseType: 'json'}).toPromise();
   }
+
+  public changeSeatbelt(): Promise<any> {
+    var uri = this.REST_API_SERVER + '/api/round1/animateSeatbelt';
+    return this.httpClient.put(uri, {responseType: 'json'}).toPromise();
+  }
 }

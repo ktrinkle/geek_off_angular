@@ -26,6 +26,7 @@ export class AppComponent {
   showLoginBar = true;
   pagesToShowLogin = [
     '/round1/contestant',
+    '/control/pregame',
     '/control/round2',
     '/control/round1',
     '/home',

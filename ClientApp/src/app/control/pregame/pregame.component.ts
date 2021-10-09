@@ -19,6 +19,7 @@ export class PregameComponent implements OnInit {
   seatBelt: boolean = false;
   yEvent = sessionStorage.getItem('event') ?? '';
   audio = new Audio();
+  seatBeltSound = new Audio();
   listofPages: {key: string, value:string}[] = [
     {key: '1', value: 'Intro page 1'},
     {key: '2', value: 'Intro page 2'},
@@ -38,7 +39,9 @@ export class PregameComponent implements OnInit {
 
   ngOnInit(): void {
     this.audio.src = '../../assets/snd/top_of_hour.mp3';
+    this.seatBeltSound.src = '../../assets/snd/seatbelt.mp3';
     this.audio.load();
+    this.seatBeltSound.load();
 
     const connection = new signalR.HubConnectionBuilder()
       .configureLogging(signalR.LogLevel.Information)
@@ -65,6 +68,8 @@ export class PregameComponent implements OnInit {
 
   changeSeatBelt() {
     this.seatBelt == false ? true : false;
+    this.dataService.changeSeatbelt();
+    this.seatBeltSound.play();
   }
 
   animateText() {

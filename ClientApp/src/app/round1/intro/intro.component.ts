@@ -31,6 +31,7 @@ export class Round1IntroComponent implements OnInit, OnDestroy {
 
   currentScreen: string = "";
   currentItem: number = 0;
+  seatBelt: boolean = false;
   public yevent: string = sessionStorage.getItem('event') ?? '';
   public teamMasterList: introDto[] = [];
   constructor(private store: Store, private route: ActivatedRoute, private router: Router, private matIconRegistry: MatIconRegistry, private domSanitzer: DomSanitizer, private dataService: DataService) {
@@ -75,6 +76,10 @@ export class Round1IntroComponent implements OnInit, OnDestroy {
       this.changePage(data);
     });
 
+    connection.on("introSeatbelt", (data:any) => {
+      this.changeSeatbelt;
+    })
+
     connection.on("round1question", (data: any) => {
       this.goToQuestions(data);
     });
@@ -98,6 +103,10 @@ export class Round1IntroComponent implements OnInit, OnDestroy {
 
   changeText() {
     this.currentItem++;
+  }
+
+  changeSeatbelt() {
+    this.seatBelt == false ? true : false;
   }
 
   ngOnDestroy() {

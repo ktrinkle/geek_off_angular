@@ -94,7 +94,6 @@ export class Round1ControlComponent implements OnInit {
     console.log(this.selectedQuestion);
     console.log(status);
     this.dataService.changeRound1QuestionStatus(this.yEvent, this.selectedQuestion, status).subscribe(c => {
-      console.log(c);
       this.status = c.status;
       this.currentQuestion = c.questionNum;
       this.selectedQuestion = c.questionNum;
