@@ -1,19 +1,29 @@
 <div class="geekofflogo">
   <div class="questionBox" *ngIf="questionVisible" [@fadeIn]>
     <div class="topright">{{currentQuestion.questionNum}}</div>
-  {{currentQuestionDto?.questionText}}
+  {{currentQuestionDto.questionText}}
   </div>
   <div class="mediaBox" *ngIf="showMedia"></div>
-  <div class="answerBox" *ngIf="showChoices && currentQuestionDto?.answerType == 1" [@fadeIn]>
-
-
+  <div class="answerBox" *ngIf="answerVisible && (currentQuestionDto.answerType == questionMulti)" [@fadeIn]>
+    <div class="content" fxLayout="row wrap" fxLayoutGap="16px grid">
+      <div *ngFor="let question of currentQuestionDto.answers" class="answer" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%" style="padding: 10px;">
+        <span *ngIf="!answerShown">{{question.answer}}</span><span>&nbsp;</span>
+        <span class="correctAnswer" *ngIf="answerShown && question.answer == currentQuestionDto.correctAnswer" [@fadeIn]>
+          {{currentQuestionDto.correctAnswer}}
+        </span>
+      </div>
+    </div>
   </div>
-  <div class="answerBox" *ngIf="showChoices && currentQuestionDto?.answerType == 0" [@fadeIn]>
-
-
+  <div class="answerBox" *ngIf="answerVisible && (currentQuestionDto.answerType == questionMatch)" [@fadeIn]>
+    <div class="content" fxLayout="row wrap" fxLayoutGap="16px grid">
+      <div *ngFor="let question of currentQuestionDto.answers" class="answer" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%" style="padding: 10px;">
+        <span class="correctAnswer" *ngIf="answerShown" [@fadeIn]>{{matchString.charAt(question.answerId)}}: </span>
+        {{question.answerId}}. {{question.answer}}
+      </div>
+    </div>
   </div>
   <!--correct answer for written text only-->
-  <div class="answerBox" *ngIf="showAnswer && currentQuestionDto?.answerType == 1" [@fadeIn]>
-    {{currentQuestionDto?.correctAnswer}}
+  <div class="answerBox" *ngIf="answerShown && (currentQuestionDto.answerType == questionText)" [@fadeIn]>
+    {{currentQuestionDto.correctAnswer}}
   </div>
 </div>

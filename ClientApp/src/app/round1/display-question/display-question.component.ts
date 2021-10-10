@@ -27,12 +27,24 @@ export class Round1DisplayQuestionComponent implements OnInit, OnDestroy {
   mediaVisible: boolean = false;
   answerVisible: boolean = false;
   answerShown: boolean = false;
+  matchString = 'xABCD'; // 1 based to make life easier ahead
   currentQuestion: currentQuestionDto = {
     questionNum: 0,
     status: 0
   };
   yEvent = sessionStorage.getItem('event') ?? '';
-  currentQuestionDto:round1QDisplay | undefined;
+  public currentQuestionDto: round1QDisplay = {
+    questionNum: 0,
+    questionText: '',
+    answers: [],
+    correctAnswer: '',
+    answerType: -1,
+    mediaFile: '',
+    mediaType: ''
+  };
+  questionMatch: number = 1;
+  questionMulti: number = 0;
+  questionText: number = 2;
 
   destroy$: Subject<boolean> = new Subject<boolean>();
 
@@ -101,7 +113,10 @@ export class Round1DisplayQuestionComponent implements OnInit, OnDestroy {
     this.dataService.getRound1QuestionText(this.yEvent, questionId).pipe(takeUntil(this.destroy$))
         .subscribe(q => {
           this.currentQuestionDto = q;
-          // inject form
+          if (q.answerType == 1)
+          {
+            this.matchString = 'x' + this.convertStringToAnswer(q.correctAnswer);
+          }
       });
       this.debugVals();
   };
@@ -132,6 +147,18 @@ export class Round1DisplayQuestionComponent implements OnInit, OnDestroy {
     console.log("mediavisible" + this.mediaVisible);
     console.log("answerVisible " + this.answerVisible);
     console.log("answerShown" + this.answerShown);
+    console.log(this.currentQuestionDto);
+  }
+
+  convertStringToAnswer(input: string):string {
+    // shift all ascii bytes up by 16 to convert numbers to letters
+    let newS = '';
+    for (let i = 0; i < input.length; ++i) {
+      // ASCII value
+      let val = input[i].charCodeAt(0);
+      newS += String.fromCharCode(val + 16);
+    }
+    return newS;
   }
 
   ngOnDestroy(): void {

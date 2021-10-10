@@ -36,7 +36,8 @@ namespace GeekOff.Services
                                     QuestionText = question.TextQuestion,
                                     Answers = new List<Round1Answers>(),
                                     MediaFile = question.MediaFile,
-                                    MediaType = question.MediaType
+                                    MediaType = question.MediaType,
+                                    CorrectAnswer = question.CorrectAnswer
                                 };
 
             if (question.MultipleChoice == true)
