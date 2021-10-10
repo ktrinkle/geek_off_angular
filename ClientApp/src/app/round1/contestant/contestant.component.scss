@@ -1,0 +1,62 @@
+.contestant{
+  position: fixed;
+  background-image: url('../../../assets/img/contestant_bg.svg');
+  background-repeat: repeat-x;
+  background-size: cover;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  height: 100vh;
+  font-family: 'AmericanSans', Arial, Helvetica, sans-serif;
+  font-size: 2vh;
+  color: #36495A;
+}
+
+.contestant h2{
+  position: absolute;
+  right: 2px;
+  top: 0px;
+  font-family: 'AmericanSans', Arial, Helvetica, sans-serif;
+  font-size: 3vh;
+  color: #ffffff;
+  -webkit-text-stroke: 1px #C30019;
+  text-shadow: 5px 5px 3px #36495A;
+}
+
+#showQuestion #answered{
+  position: fixed;
+  left: 3vw;
+  top: 5vh;
+  width: 94vw;
+  height: 30vh;
+  vertical-align: middle;
+  text-align: left;
+  padding-left: 2vw;
+  padding-right: 2vw;
+  padding-top: 2vh;
+  padding-bottom: 2vh;
+  background-blend-mode: overlay;
+  border-radius: 0.5%;
+  border: 0.3vw solid #36495A;
+  background-color: antiquewhite;
+  font-size: 2vh;
+}
+
+#showAnswer #showForm{
+  position: fixed;
+  left: 3vw;
+  top: 42vh;
+  width: 94vw;
+  height: 55vh;
+  vertical-align: top;
+  text-align: left;
+  padding-left: 2vw;
+  padding-right: 2vw;
+  padding-top: 2vh;
+  padding-bottom: 2vh;
+  background-blend-mode: overlay;
+  border-radius: 0.5%;
+  border: 0.3vw solid #36495A;
+  background-color: antiquewhite;
+  font-size: 2vh;
+}
