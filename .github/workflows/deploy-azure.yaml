@@ -36,8 +36,8 @@ jobs:
       - name: Copy prod file to location
         working-directory: ./ClientApp
         run: |
-          cp ./src/configurations/prod/auth-config.ts ./src/auth
-          ls ./src/auth
+          cp src/configurations/prod/auth-config.ts src/auth/auth-config.ts
+          ls
       
       - name: npm install, build, and test
         working-directory: ./ClientApp
@@ -55,7 +55,6 @@ jobs:
       - uses: marvinpinto/action-automatic-releases@latest
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: true
           prerelease: false
           files: |
             ui.zip
@@ -87,13 +86,11 @@ jobs:
         uses: TheDoctor0/zip-release@0.6.0
         with:
           filename: webapi.zip
-          # Working directory before zipping
           directory: ./webapi
 
       - uses: marvinpinto/action-automatic-releases@latest
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: true
           prerelease: false
           files: |
             ./webapi.zip
