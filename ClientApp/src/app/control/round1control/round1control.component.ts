@@ -26,7 +26,9 @@ export class Round1ControlComponent implements OnInit {
   status: number = 0;
   scoreResponse:string = '';
 
-  public answerForm: FormGroup = new FormGroup({});
+  public answerForm: FormGroup = new FormGroup({
+    selectedQuestion: new FormControl(this.currentQuestion)
+  });
 
   constructor(private dataService: DataService, private router:Router, private formBuilder: FormBuilder) {
     this.dataService.getAllRound1Questions(this.yEvent).subscribe({next: (q => {
@@ -37,7 +39,10 @@ export class Round1ControlComponent implements OnInit {
         this.status = c.status;
         this.currentQuestion = c.questionNum;
         this.selectedQuestion = c.questionNum;
+        this.answerForm.patchValue({selectedQuestion: this.selectedQuestion});
       });
+      this.updateScoreboard();
+      this.loadTeamAnswers();
     }});
   }
 
@@ -71,10 +76,8 @@ export class Round1ControlComponent implements OnInit {
 
   loadTeamAnswers()
   {
-    this.answerForm = this.formBuilder.group({});
     this.dataService.getAllEnteredAnswers(this.yEvent, this.currentQuestion).subscribe(a => {
       this.teamAnswers = a;
-      // answerform - inject here
     });
   }
 
@@ -90,11 +93,14 @@ export class Round1ControlComponent implements OnInit {
 
   sendClientMessage(status: number)
   {
+    if (status == 0)
+    {
+      this.selectedQuestion = this.answerForm.value.selectedQuestion;
+    }
     console.log(this.yEvent);
     console.log(this.selectedQuestion);
     console.log(status);
     this.dataService.changeRound1QuestionStatus(this.yEvent, this.selectedQuestion, status).subscribe(c => {
-      console.log(c);
       this.status = c.status;
       this.currentQuestion = c.questionNum;
       this.selectedQuestion = c.questionNum;
@@ -105,6 +111,8 @@ export class Round1ControlComponent implements OnInit {
   {
     // brute force for now, this should become more elegant
     this.selectedQuestion = this.currentQuestion + 1;
+    this.currentQuestion = this.selectedQuestion;
+    this.answerForm.patchValue({selectedQuestion: this.selectedQuestion});
     this.sendClientMessage(status);
   }
 

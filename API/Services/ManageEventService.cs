@@ -248,6 +248,7 @@ namespace GeekOff.Services
             return returnDto;
         }
 
+        // @TODO: fix this.
         public async Task<List<IntroDto>> GetTeamList(string yEvent)
         {
             var rawList = await _contextGo.TeamUser.Where(tu => tu.Yevent == yEvent && tu.TeamNo > 0)
@@ -255,14 +256,16 @@ namespace GeekOff.Services
                                                     .ThenBy(tu => tu.PlayerNum)
                                                     .ToListAsync();
 
+            var teamList = await _contextGo.Teamreference.Where(tr => tr.Yevent == yEvent).ToListAsync();
+
             var rawListPlayer1 = rawList.Where(r => r.PlayerNum == 1).ToList();
             var rawListPlayer2 = rawList.Where(r => r.PlayerNum == 2).ToList();
 
-            var returnDto = from r1 in rawListPlayer1
+            var returnDto = (from r1 in rawListPlayer1
                             join r2 in rawListPlayer2
                             on r1.TeamNo equals r2.TeamNo into r2j
                             from r2o in r2j.DefaultIfEmpty()
-                            join tl in _contextGo.Teamreference
+                            join tl in teamList
                             on r1.TeamNo equals tl.TeamNo  
                             select new IntroDto()
                             {
@@ -272,9 +275,9 @@ namespace GeekOff.Services
                                 Member2 = r2o.PlayerName,
                                 Workgroup1 = r1.WorkgroupName,
                                 Workgroup2 = r2o.WorkgroupName
-                            };
+                            }).ToList();
 
-            return returnDto.ToList();
+            return returnDto;
 
         }
 

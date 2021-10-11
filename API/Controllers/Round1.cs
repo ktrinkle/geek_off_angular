@@ -38,10 +38,10 @@ namespace GeekOff.Controllers
             _questionService = questionService;
         }
 
-        [Authorize(Roles = "admin,player")]
+        [Authorize(Roles = "admin")]
         [HttpGet("getQuestion/{yEvent}/{questionId}")]
-        [SwaggerOperation(Summary = "Get a single round 1 question for the contestants.")]
-        public async Task<ActionResult<Round1QuestionDto>> GetRound1Question(string yEvent, int questionId)
+        [SwaggerOperation(Summary = "Get a single round 1 question for the big display with media.")]
+        public async Task<ActionResult<Round1QuestionDisplay>> GetRound1Question(string yEvent, int questionId)
             => Ok(await _questionService.GetRound1Question(yEvent, questionId));
 
         [Authorize(Roles = "admin,player")]
@@ -148,6 +148,36 @@ namespace GeekOff.Controllers
         {
             // add in controller here
             await _eventHub.Clients.All.SendAsync("round1question", questionId);
+            return Ok();
+        }
+
+        [Authorize(Roles = "admin")]
+        [HttpPut("animateText")]
+        [SwaggerOperation(Summary = "Sends message to animate intro screen text.")]
+        public async Task<ActionResult> ShowMedia()
+        {
+            // add in controller here
+            await _eventHub.Clients.All.SendAsync("round1Animate");
+            return Ok();
+        }
+
+        [Authorize(Roles = "admin")]
+        [HttpPut("animateSeatbelt")]
+        [SwaggerOperation(Summary = "Sends message to animate intro screen text.")]
+        public async Task<ActionResult> ChangeIntroSeatBelt()
+        {
+            // add in controller here
+            await _eventHub.Clients.All.SendAsync("introSeatbelt");
+            return Ok();
+        }
+
+        [Authorize(Roles = "admin")]
+        [HttpPut("showMedia/{questionId}")]
+        [SwaggerOperation(Summary = "Sends message to show any media on the round 1 big board.")]
+        public async Task<ActionResult> ShowMedia(int questionId)
+        {
+            // add in controller here
+            await _eventHub.Clients.All.SendAsync("round1ShowMedia", questionId);
             return Ok();
         }
 
