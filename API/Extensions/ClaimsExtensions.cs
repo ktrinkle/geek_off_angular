@@ -37,13 +37,6 @@ namespace GeekOff.Helpers
                 return userPrincipal;
             }
     
-            // Add role claims to cloned identity
-            foreach(var roleName in user.Roles)
-            {
-                var claim = new Claim(newIdentity.RoleClaimType, roleName);
-                newIdentity.AddClaim(claim);
-            }
-    
             return cloneIdentity;
         }
     }

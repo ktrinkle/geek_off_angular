@@ -1,0 +1,5 @@
+{
+    "appService.defaultWebAppToDeploy": "",
+    "appService.deploySubpath": "ClientApp/dist/ClientApp",
+    "appService.showBuildDuringDeployPrompt": false
+}

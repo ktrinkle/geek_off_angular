@@ -31,7 +31,7 @@ import { MsalGuard, MsalBroadcastService, MsalModule, MsalService, MSAL_GUARD_CO
 
 
 // MSAL config
-import { msalConfig, protectedResources } from '../environments/auth-config';
+import { msalConfig, protectedResources } from '../auth/auth-config';
 import { Round1IntroComponent } from './round1/intro/intro.component';
 import { Round1DisplayQuestionComponent } from './round1/display-question/display-question.component';
 import { Round1ScoreboardComponent } from './round1/scoreboard/scoreboard.component';
@@ -44,6 +44,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatButtonModule } from '@angular/material/button';
 import { PregameComponent } from './control/pregame/pregame.component';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle'
+
+import { CountdownModule } from 'ngx-countdown';
 
 /**
  * Here we pass the configuration parameters to create an MSAL instance.
@@ -120,9 +124,13 @@ export function MSALInterceptorFactory(): MsalInterceptorConfiguration {
     MatTableModule,
     MatListModule,
     MatIconModule,
+    BrowserAnimationsModule,
+    CountdownModule,
     MatGridListModule,
     MatButtonModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    FlexLayoutModule,
+    MatSlideToggleModule
   ],
   exports: [
     FormsModule

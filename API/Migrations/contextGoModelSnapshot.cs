@@ -137,6 +137,18 @@ namespace geek_off_angular.Migrations
                         .HasColumnType("text")
                         .HasColumnName("correct_answer");
 
+                    b.Property<bool?>("MatchQuestion")
+                        .HasColumnType("boolean")
+                        .HasColumnName("match_question");
+
+                    b.Property<string>("MediaFile")
+                        .HasColumnType("text")
+                        .HasColumnName("media_file");
+
+                    b.Property<string>("MediaType")
+                        .HasColumnType("text")
+                        .HasColumnName("media_type");
+
                     b.Property<bool?>("MultipleChoice")
                         .HasColumnType("boolean")
                         .HasColumnName("multiple_choice");
@@ -173,26 +185,6 @@ namespace geek_off_angular.Migrations
                             QuestionNo = 201,
                             TextQuestion = "Name your favorite developer."
                         });
-                });
-
-            modelBuilder.Entity("GeekOff.Data.Round1score", b =>
-                {
-                    b.Property<string>("Yevent")
-                        .HasMaxLength(6)
-                        .HasColumnType("character varying(6)")
-                        .HasColumnName("yevent");
-
-                    b.Property<string>("RespTxt")
-                        .HasColumnType("text")
-                        .HasColumnName("resp_txt");
-
-                    b.Property<int?>("RowName")
-                        .HasColumnType("integer")
-                        .HasColumnName("row_name");
-
-                    b.HasKey("Yevent");
-
-                    b.ToTable("round1score");
                 });
 
             modelBuilder.Entity("GeekOff.Data.Roundresult", b =>
