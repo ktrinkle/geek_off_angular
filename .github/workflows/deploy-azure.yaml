@@ -36,7 +36,7 @@ jobs:
       - name: Copy prod file to location
         working-directory: ./ClientApp
         run: |
-          cp src/configurations/prod/auth-config.ts src/auth/auth-config.ts
+          cp src/configurations/prod/auth-config.ts src/auth/
           ls
       
       - name: npm install, build, and test
@@ -55,6 +55,7 @@ jobs:
       - uses: marvinpinto/action-automatic-releases@latest
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "latest"
           prerelease: false
           files: |
             ui.zip
@@ -91,6 +92,7 @@ jobs:
       - uses: marvinpinto/action-automatic-releases@latest
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "latest"
           prerelease: false
           files: |
             ./webapi.zip
