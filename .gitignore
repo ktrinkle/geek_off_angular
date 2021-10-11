@@ -238,3 +238,4 @@ ClientApp/src/configurations/dev/*
 
 # audio and video
 *.mp4
+*.mp3
