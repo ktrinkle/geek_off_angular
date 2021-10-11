@@ -19,7 +19,7 @@ namespace GeekOff.Services
             _contextGo = context;
         }
 
-        public async Task<Round1QuestionDto> GetRound1Question(string yEvent, int questionNo)
+        public async Task<Round1QuestionDisplay> GetRound1Question(string yEvent, int questionNo)
         {
             var question = await _contextGo.QuestionAns.SingleOrDefaultAsync(q => q.QuestionNo == questionNo 
                                                                             && q.Yevent == yEvent
@@ -30,11 +30,49 @@ namespace GeekOff.Services
                 return null;
             }
 
-            var questionReturn = new Round1QuestionDto()
+            var questionReturn = new Round1QuestionDisplay()
                                 {
                                     QuestionNum = questionNo,
-                                    QuestionText = question.TextQuestion
+                                    QuestionText = question.TextQuestion,
+                                    Answers = new List<Round1Answers>(),
+                                    MediaFile = question.MediaFile,
+                                    MediaType = question.MediaType,
+                                    CorrectAnswer = question.CorrectAnswer
                                 };
+
+            if (question.MultipleChoice == true)
+            {
+                questionReturn.Answers.Add(new Round1Answers()
+                {
+                    AnswerId = 1,
+                    Answer = question.TextAnswer,
+                });
+
+                questionReturn.Answers.Add(new Round1Answers()
+                {
+                    AnswerId = 2,
+                    Answer = question.TextAnswer2,
+                });
+
+                questionReturn.Answers.Add(new Round1Answers()
+                {
+                    AnswerId = 3,
+                    Answer = question.TextAnswer3,
+                });
+                
+                questionReturn.Answers.Add(new Round1Answers()
+                {
+                    AnswerId = 4,
+                    Answer = question.TextAnswer4,
+                });
+
+                questionReturn.AnswerType = question.MatchQuestion == true ? QuestionAnswerType.Match : QuestionAnswerType.MultipleChoice;
+            }
+
+            if (question.MultipleChoice == false)
+            {
+                questionReturn.AnswerType = QuestionAnswerType.FreeText;
+            }
             
             return questionReturn;
         }
@@ -84,7 +122,7 @@ namespace GeekOff.Services
                     Answer = question.TextAnswer4,
                 });
 
-                questionReturn.AnswerType = question.CorrectAnswer.Length == 1 ? QuestionAnswerType.MultipleChoice : QuestionAnswerType.Match;
+                questionReturn.AnswerType = question.MatchQuestion == true ? QuestionAnswerType.Match : QuestionAnswerType.MultipleChoice;
             }
 
             if (question.MultipleChoice == false)
@@ -95,10 +133,48 @@ namespace GeekOff.Services
             return questionReturn;
         }
 
-        public async Task<bool> SubmitRound1Answer(string yEvent, int questionId, int teamNo, string answerText, string answerUser)
+        public async Task<List<Round1QuestionControlDto>> GetAllRound1Questions(string yEvent)
+        {
+            var returnList = new List<Round1QuestionControlDto>();
+
+            var questions = await _contextGo.QuestionAns.Where(q => q.Yevent == yEvent
+                                                        && q.RoundNo == 1).ToListAsync();
+
+            foreach (QuestionAns question in questions)
+            {
+                var answerType = new QuestionAnswerType();
+                if (question.MultipleChoice == false)
+                {
+                    answerType = QuestionAnswerType.FreeText;
+                }
+
+                if (question.MatchQuestion == true)
+                {
+                    answerType = QuestionAnswerType.Match;
+                }
+
+                if (question.MultipleChoice == true)
+                {
+                    answerType = QuestionAnswerType.MultipleChoice;
+                }
+               
+                var transformedQuestion = new Round1QuestionControlDto() {
+                    QuestionNum = question.QuestionNo,
+                    QuestionText = question.TextQuestion,
+                    AnswerType = answerType,
+                    AnswerText = question.TextAnswer
+                };
+
+                returnList.Add(transformedQuestion);
+            }
+
+            return returnList;     
+        }
+
+        public async Task<bool> SubmitRound1Answer(string yEvent, int questionId, string answerText, string answerUser)
         {
             // test values
-            if (questionId < 100 || questionId > 199)
+            if (questionId < 1 || questionId > 99)
             {
                 return false;
             }
@@ -108,7 +184,20 @@ namespace GeekOff.Services
                 return false;
             }
 
-            var existAnswer = await _contextGo.UserAnswer.Where(u => u.QuestionNo == questionId && u.TeamNo == teamNo && u.Yevent == yEvent).ToListAsync();
+            if (answerUser is null || answerUser == "000000")
+            {
+                return false;
+            }
+
+            // grab team info for this user. If this fails, we exit early.
+            var playerInfo = await _contextGo.TeamUser.FirstOrDefaultAsync(u => u.BadgeId == answerUser && u.Yevent == yEvent);
+
+            if (playerInfo is null)
+            {
+                return false;
+            }
+
+            var existAnswer = await _contextGo.UserAnswer.Where(u => u.QuestionNo == questionId && u.TeamNo == playerInfo.TeamNo && u.Yevent == yEvent).ToListAsync();
             if (existAnswer is not null)
             {
                 _contextGo.UserAnswer.RemoveRange(existAnswer);
@@ -118,7 +207,7 @@ namespace GeekOff.Services
             var newAnswer = new UserAnswer()
             {
                 Yevent = yEvent,
-                TeamNo = teamNo,
+                TeamNo = playerInfo.TeamNo,
                 QuestionNo = questionId,
                 TextAnswer = answerText,
                 RoundNo = 1,

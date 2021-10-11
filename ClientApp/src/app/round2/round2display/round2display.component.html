@@ -1,2 +1,35 @@
-<p>round2display works!</p>
-{{ something | json }}
+<p class="text">TEAM NUMBER: {{ teamNumber }}</p>
+
+<mat-table [dataSource]="displayRows">
+    <ng-container matColumnDef="player1Answer">
+        <mat-header-cell *matHeaderCellDef>ANSWER</mat-header-cell>
+        <mat-cell *matCellDef="let row">
+            {{row.player1.answer}}
+        </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="player1AnswerValue">
+        <mat-header-cell *matHeaderCellDef>VALUE</mat-header-cell>
+        <mat-cell *matCellDef="let row">
+            {{row.player1.score}}
+        </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="player2Answer">
+        <mat-header-cell *matHeaderCellDef>ANSWER</mat-header-cell>
+        <mat-cell *matCellDef="let row">
+            {{row.player2.answer}}
+        </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="player2AnswerValue">
+        <mat-header-cell *matHeaderCellDef>VALUE</mat-header-cell>
+        <mat-cell *matCellDef="let row">
+            {{row.player2.score}}
+        </mat-cell>
+    </ng-container>
+
+    <!-- Header and Row Declarations -->
+    <mat-header-row *matHeaderRowDef="['player1Answer', 'player1AnswerValue', 'player2Answer', 'player2AnswerValue']"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: ['player1Answer', 'player1AnswerValue', 'player2Answer', 'player2AnswerValue']"></mat-row>
+</mat-table>

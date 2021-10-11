@@ -20,9 +20,9 @@ namespace GeekOff.Services
             _contextGo = context;
         }
 
-        public async Task<UserInfoDto> Login(string emailAddr)
+        public async Task<UserInfoDto> Login(string badgeId)
         {
-            var loginInfo = await _contextGo.TeamUser.SingleOrDefaultAsync(u => u.Username == emailAddr);
+            var loginInfo = await _contextGo.TeamUser.SingleOrDefaultAsync(u => u.BadgeId == badgeId);
             if (loginInfo is null)
             {
                 return null;
@@ -33,13 +33,9 @@ namespace GeekOff.Services
                 // we don't care about the team now
                 var returnAdmin = new UserInfoDto()
                 {
+                    PlayerName = loginInfo.PlayerName,
                     UserName = loginInfo.Username,
-                    TeamNum = 0,
-                    Roles = new List<string>()
-                    {
-                        "Admin",
-                        "Player"
-                    }
+                    TeamNum = 0
                 };
 
                 return returnAdmin;
@@ -47,13 +43,10 @@ namespace GeekOff.Services
 
             var returnUser = new UserInfoDto()
             {
+                PlayerName = loginInfo.PlayerName,
                 UserName = loginInfo.Username,
                 TeamNum = loginInfo.TeamNo,
-                PlayerNum = loginInfo.PlayerNum,
-                Roles = new List<string>()
-                {
-                    "Player"
-                }
+                PlayerNum = loginInfo.PlayerNum
             };
 
             return returnUser;

@@ -30,6 +30,11 @@ $go-theme: mat.define-light-theme($go-primary, $go-accent, $go-warn);
   src: url('./assets/arcadeclassic.ttf');
 }
 
+.container-app {
+  width: 100%;
+  height: 100%
+}
+
 .bigbtngrnlabel {
 background: #02856b;
 background-image: -webkit-linear-gradient(top, #02856b, #085747);

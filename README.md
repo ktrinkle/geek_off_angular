@@ -22,7 +22,7 @@ Replacement for round 1 & 2 of the Geek Off at my employer. A work in progress.
 | AzureAd:TenantId | Azure AD Tenant ID |
 | AzureAd:ClientId | Azure AD Client ID |
 
-* Add ClientApp/src/Environment/auth-config.ts (must be sent from Kevin)
+* Add ClientApp/src/auth/auth-config.ts (must be sent from Kevin)
 * Install the required fonts
 * Run the initial database migration
 
@@ -64,7 +64,7 @@ Automated testing is not enforced or required.
 ## Round 2
 
 1. Store (ngrx) - library installed but that's it
-2. Countdown timer screen/component
+2. Countdown timer screen/component - Diyalo
   * Supports countdown from 20 or 25 seconds
   * Import something and style?
   * Kicks off from control screen
