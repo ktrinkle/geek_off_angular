@@ -6,6 +6,8 @@ on:
 env:
   AZURE_WEBAPP_API_NAME_UI: geekoff-2021
   AZURE_WEBAPP_PACKAGE_PATH_UI: './ClientApp/dist'
+  AZURE_WEBAPP_API_NAME_UI: geekoff-2021api
+  AZURE_WEBAPP_PACKAGE_PATH_UI: './API'
   NODE_VERSION: '14.x'
 
 jobs:
@@ -47,7 +49,7 @@ jobs:
         working-directory: ./API
         run: |
           dotnet restore
-          dotnet build --prod
+          dotnet publish
       - name: Archive production artifacts
         uses: actions/upload-artifact@v2
         with:
@@ -56,3 +58,10 @@ jobs:
           path: |
             build
             !dist/**/*.md
+      - name: 'Deploy to Azure WebApp'
+        uses: azure/webapps-deploy@v2
+        with:
+          working-directory: ./API
+          app-name: ${{ env.AZURE_WEBAPP_NAME_API }}
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE_API }}
+          package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH_API }}
