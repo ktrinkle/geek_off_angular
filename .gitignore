@@ -231,7 +231,6 @@ _Pvt_Extensions
 .fake/
 
 # fonts
-*.ttf
 
 # auth config
 ClientApp/src/auth/*
