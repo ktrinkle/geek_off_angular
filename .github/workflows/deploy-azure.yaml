@@ -32,6 +32,12 @@ jobs:
           AUTHORITY: ${{ secrets.AD_AUTHORITY }}
           CLIENT_ID: ${{ secrets.AD_CLIENT_ID }}
           SCOPE: ${{ secrets.AD_SCOPE }}
+          
+      - name: Copy prod file to location
+        working-directory: ./ClientApp
+        run: |
+          cp ./src/configurations/prod/auth-config.ts ./src/auth
+          ls ./src/auth
       
       - name: npm install, build, and test
         working-directory: ./ClientApp
