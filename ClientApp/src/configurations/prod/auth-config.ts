@@ -6,7 +6,7 @@
 */
 
 import { LogLevel, Configuration, BrowserCacheLocation } from '@azure/msal-browser';
-import { environment } from './../environments/environment';
+import { environment } from 'src/environments/environment';
 
 const REST_API_SERVER = environment.api_url;
 const isIE = window.navigator.userAgent.indexOf("MSIE ") > -1 || window.navigator.userAgent.indexOf("Trident/") > -1;
