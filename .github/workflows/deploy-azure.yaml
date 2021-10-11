@@ -1,4 +1,4 @@
-Name: Build and release code
+name: Build and release code
 on:
   pull_request:
     branches: [main]
@@ -39,7 +39,7 @@ jobs:
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE_UI }}
           package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH_UI }}
   build_net_core:
-    runs_on: ubuntu-latest
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
