@@ -17,14 +17,15 @@
   </div>
 </div>
 <div id="showForm" *ngIf="formVisible && !answerSubmitted">
-  <p>You've gotta pick something.</p>
+  <p>Time to answer!</p>
   <form [formGroup]="answerForm" (ngSubmit)="submitAnswer()">
     <div id="formMc" *ngIf="currentQuestionDto?.answerType == 0">
+      <mat-button-toggle-group formControlName="textAnswer">
       <div id="formMcOptions" *ngFor="let answer of currentQuestionDto?.answers">
-        <label for="{{answer.answerId}}">{{answer.answerId}}. {{answer.answer}}</label>
-        <input id="{{answer.answerId}}" name="textAnswer" value="{{answer.answer}}" formControlName="textAnswer" type="radio">
+        <mat-button-toggle class="bigbtngrnlabel" value="{{answer.answer}}">{{answer.answer}}</mat-button-toggle>
       <br />
       </div>
+    </mat-button-toggle-group>
     </div>
     <div id="formMatch" *ngIf="currentQuestionDto?.answerType == 1">
       <label for="matchanswer1">A.</label>
