@@ -34,10 +34,9 @@ jobs:
           SCOPE: ${{ secrets.AD_SCOPE }}
           
       - name: Copy prod file to location
-        working-directory: ./ClientApp
         run: |
-          cp src/configurations/prod/auth-config.ts src/auth/
-          ls
+          cp ClientApp/src/configurations/prod/auth-config.ts ClientApp/src/auth
+          ls ClientApp/src
       
       - name: npm install, build, and test
         working-directory: ./ClientApp
