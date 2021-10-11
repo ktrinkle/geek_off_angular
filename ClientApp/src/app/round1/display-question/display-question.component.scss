@@ -52,12 +52,19 @@
   padding-top: 2%;
   padding-bottom: 2%;
   background-blend-mode: overlay;
-  color: #36495A;
   font-family: 'AmericanSans','Arial', 'Helvetica Neue';
   font-size: 8vh;
   border-radius: 10px;
   border: 0.3vw solid #36495A;
   background-color: antiquewhite;
+}
+
+.answer {
+  color: #36495A;
+}
+
+.wrongAnswer {
+  color: #D0DAE0;
 }
 
 .correctAnswer {

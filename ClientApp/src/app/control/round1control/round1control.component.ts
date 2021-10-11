@@ -41,6 +41,8 @@ export class Round1ControlComponent implements OnInit {
         this.selectedQuestion = c.questionNum;
         this.answerForm.patchValue({selectedQuestion: this.selectedQuestion});
       });
+      this.updateScoreboard();
+      this.loadTeamAnswers();
     }});
   }
 
