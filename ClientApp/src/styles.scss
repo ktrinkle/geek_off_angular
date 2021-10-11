@@ -12,17 +12,17 @@ $go-theme: mat.define-light-theme($go-primary, $go-accent, $go-warn);
 
 @font-face {
   font-family: eggcrate;
-  src: url('./assets/eggcrate.ttf');
+  src: url('https://geekoff2021static.blob.core.windows.net/fonts/eggcrate.ttf');
 }
 
 @font-face {
   font-family: sportstype;
-  src: url('./assets/sportstype.ttf');
+  src: url('https://geekoff2021static.blob.core.windows.net/fonts/sportstype.ttf');
 }
 
 @font-face {
   font-family: fastmoney;
-  src: url('./assets/fast-money-three.ttf');
+  src: url('https://geekoff2021static.blob.core.windows.net/fonts/fast-money-three.ttf');
 }
 
 .container-app {

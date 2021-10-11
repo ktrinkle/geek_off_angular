@@ -41,9 +41,6 @@ export class Round1ContestantComponent implements OnInit {
     multipleChoice4: new FormControl()
   });
 
-
-
-
   destroy$: Subject<boolean> = new Subject<boolean>();
 
   constructor(private route: ActivatedRoute, private dataService: DataService) { }
@@ -154,6 +151,9 @@ export class Round1ContestantComponent implements OnInit {
   }
 
   openForm() {
+    this.hangTight = false;
+    this.questionVisible = true;
+    this.answerVisible = false;
     this.formVisible = true;
     this.currentQuestion.status = 2;
     this.debugVals();
@@ -169,9 +169,6 @@ export class Round1ContestantComponent implements OnInit {
   submitAnswer() {
     var answerText;
     var questionNum = this.currentQuestionDto?.questionNum ?? 0;
-    console.log('Submit started');
-    console.log(this.currentQuestionDto?.answerType);
-    console.log(this.answerForm.value);
 
     if (this.currentQuestionDto?.answerType != 1)
     {
@@ -219,12 +216,12 @@ export class Round1ContestantComponent implements OnInit {
 
   resetForm() {
     this.answerForm.patchValue({
-      questionNum: {},
-      textAnswer: {},
-      multipleChoice1: {},
-      multipleChoice2: {},
-      multipleChoice3: {},
-      multipleChoice4: {}
+      questionNum: '',
+      textAnswer: '',
+      multipleChoice1: '',
+      multipleChoice2: '',
+      multipleChoice3: '',
+      multipleChoice4: ''
     })
   }
 
