@@ -44,5 +44,5 @@ testem.log
 .DS_Store
 Thumbs.db
 
-# Auth
-/ClientApp/src/environments/auth*.ts
+# Auth - we want to store prod in the repo
+/ClientApp/src/environments/auth.config.ts
