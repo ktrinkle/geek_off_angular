@@ -39,13 +39,20 @@ jobs:
           npm install
           npm run build --if-present
           
+      - name: Zip Release
+        uses: TheDoctor0/zip-release@0.6.0
+        with:
+          filename: ui.zip
+          path: .
+          directory: ./ClientApp/dist
+          
       - uses: marvinpinto/action-automatic-releases@latest
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           automatic_release_tag: true
           prerelease: false
           files: |
-            ClientApp/dist/*
+            ui.zip
             
       - name: 'Deploy to Azure WebApp'
         uses: azure/webapps-deploy@v2
@@ -69,6 +76,13 @@ jobs:
           dotnet build --configuration Release --no-restore
           dotnet publish -c Release -o ../webapi -r linux-x64 --self-contained true /p:UseAppHost=true
           ls ../webapi
+          
+      - name: Zip Release
+        uses: TheDoctor0/zip-release@0.6.0
+        with:
+          filename: webapi.zip
+          # Working directory before zipping
+          directory: ./webapi
 
       - uses: marvinpinto/action-automatic-releases@latest
         with:
@@ -76,7 +90,7 @@ jobs:
           automatic_release_tag: true
           prerelease: false
           files: |
-            ./webapi/*
+            ./webapi.zip
 
       - name: 'Deploy to Azure WebApp'
         uses: azure/webapps-deploy@v2
