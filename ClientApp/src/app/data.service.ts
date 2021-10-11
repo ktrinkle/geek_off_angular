@@ -58,4 +58,9 @@ export class DataService {
     var uri = this.REST_API_SERVER + '/api/round1/getAnswers/' + encodeURIComponent(yEvent) + '/'  + encodeURIComponent(questionId) + '';
     return this.httpClient.get(uri);
   }
+
+  public getRound2Scores(yEvent: string): Observable<any> {
+    var uri = this.REST_API_SERVER + '/api/round2/scoreboard/' + encodeURIComponent(yEvent);
+    return this.httpClient.get(uri);
+  }
 }

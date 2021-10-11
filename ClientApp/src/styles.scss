@@ -25,6 +25,11 @@ $go-theme: mat.define-light-theme($go-primary, $go-accent, $go-warn);
   src: url('./assets/fast-money-three.ttf');
 }
 
+@font-face {
+  font-family: round2scoreboard;
+  src: url('./assets/arcadeclassic.ttf');
+}
+
 .bigbtngrnlabel {
 background: #02856b;
 background-image: -webkit-linear-gradient(top, #02856b, #085747);

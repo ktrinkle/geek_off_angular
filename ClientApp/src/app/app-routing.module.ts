@@ -6,6 +6,7 @@ import { Round2controlComponent } from './control/round2control/round2control.co
 import { Round2hostComponent } from './host/round2host/round2host.component';
 import { Round2countdownComponent } from './round2/round2countdown/round2countdown.component';
 import { Round2displayComponent } from './round2/round2display/round2display.component';
+import { Round2scoreboardComponent } from './round2/round2scoreboard/round2scoreboard.component';
 
 import { Round1ContestantComponent } from './round1/contestant/contestant.component';
 import { Round1IntroComponent } from './round1/intro/intro.component';
@@ -55,6 +56,12 @@ const routes: Routes = [
   {
     path: 'round2/display',
     component: Round2displayComponent,
+    pathMatch: 'full',
+    canActivate: [MsalGuard]
+  },
+  {
+    path: 'round2/scoreboard',
+    component: Round2scoreboardComponent,
     pathMatch: 'full',
     canActivate: [MsalGuard]
   },
