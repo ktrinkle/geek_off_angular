@@ -22,7 +22,7 @@ Replacement for round 1 & 2 of the Geek Off at my employer. A work in progress.
 | AzureAd:TenantId | Azure AD Tenant ID |
 | AzureAd:ClientId | Azure AD Client ID |
 
-* Add ClientApp/src/Environment/auth-config.ts (must be sent from Kevin)
+* Add ClientApp/src/auth/auth-config.ts (must be sent from Kevin)
 * Install the required fonts
 * Run the initial database migration
 

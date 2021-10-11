@@ -30,7 +30,7 @@ import { MsalGuard, MsalBroadcastService, MsalModule, MsalService, MSAL_GUARD_CO
 
 
 // MSAL config
-import { msalConfig, protectedResources } from '../environments/auth-config';
+import { msalConfig, protectedResources } from '../auth/auth-config';
 import { Round1IntroComponent } from './round1/intro/intro.component';
 import { Round1DisplayQuestionComponent } from './round1/display-question/display-question.component';
 import { Round1ScoreboardComponent } from './round1/scoreboard/scoreboard.component';

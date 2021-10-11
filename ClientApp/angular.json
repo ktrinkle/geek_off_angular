@@ -42,7 +42,7 @@
                 "src/assets",
                 {
                   "input": "src/configurations/prod",
-                  "output": "environments/",
+                  "output": "auth/",
                   "glob": "*.ts"
                 }
               ],
@@ -78,7 +78,7 @@
                 "src/assets",
                 {
                   "input": "src/configurations/dev",
-                  "output": "environments/",
+                  "output": "auth/",
                   "glob": "*.ts"
                 }
               ],
