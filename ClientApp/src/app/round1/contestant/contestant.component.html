@@ -6,10 +6,10 @@
     <div id="showQuestion" *ngIf="questionVisible">
         <p>{{ currentQuestionDto?.questionText }}</p>
     </div>
-    <div id="hideQuestion" *ngIf="!answerVisible && !formVisible">
+    <div id="hideQuestion" *ngIf="!answerVisible && !formVisible && !answerSubmitted">
         <p>Hold tight, we haven't called your group yet...</p>
     </div>
-    <div id="showAnswer" *ngIf="answerVisible">
+    <div id="showAnswer" *ngIf="answerVisible && !answerSubmitted">
         <p>What will your answer be?</p>
         <div id="answerMC" *ngIf="currentQuestionDto.answerType < 2">
             <div class="answerText" *ngFor="let answer of currentQuestionDto.answers">
@@ -32,6 +32,7 @@
             <div id="formMatch" *ngIf="currentQuestionDto?.answerType == 1">
                 <label for="matchanswer1">A.</label>
                 <select id="matchanswer1" name="matchanswer1" formControlName="multipleChoice1">
+          <option value=" ">--</option>
           <option *ngFor="let answer of currentQuestionDto?.answers" [value]="answer.answerId">
             {{answer.answerId}}. {{answer.answer}}
           </option>
@@ -39,6 +40,7 @@
                 <br />
                 <label for="matchanswer2">B.</label>
                 <select id="matchanswer2" name="matchanswer2" formControlName="multipleChoice2">
+                  <option value=" ">--</option>
           <option *ngFor="let answer of currentQuestionDto?.answers" [value]="answer.answerId">
             {{answer.answerId}}. {{answer.answer}}
           </option>
@@ -46,6 +48,7 @@
                 <br />
                 <label for="matchanswer3">C.</label>
                 <select id="matchanswer3" name="matchanswer3" formControlName="multipleChoice3">
+                  <option value=" ">--</option>
           <option *ngFor="let answer of currentQuestionDto?.answers" [value]="answer.answerId">
             {{answer.answerId}}. {{answer.answer}}
           </option>
@@ -53,6 +56,7 @@
                 <br />
                 <label for="matchanswer4">D.</label>
                 <select id="matchanswer4" name="matchanswer4" formControlName="multipleChoice4">
+                  <option value=" ">--</option>
           <option *ngFor="let answer of currentQuestionDto?.answers" [value]="answer.answerId">
             {{answer.answerId}}. {{answer.answer}}
           </option>
@@ -67,6 +71,5 @@
     </div>
     <div id="answered" *ngIf="answerSubmitted">
         <p>{{answerReturn}}</p>
-        <p>We've got your answer. Good luck!</p>
     </div>
 </div>

@@ -20,9 +20,9 @@ namespace GeekOff.Services
             _contextGo = context;
         }
 
-        public async Task<UserInfoDto> Login(string badgeId)
+        public async Task<UserInfoDto> Login(string userId)
         {
-            var loginInfo = await _contextGo.TeamUser.SingleOrDefaultAsync(u => u.BadgeId == badgeId);
+            var loginInfo = await _contextGo.TeamUser.SingleOrDefaultAsync(u => u.Username == userId);
             if (loginInfo is null)
             {
                 return null;

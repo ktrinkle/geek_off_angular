@@ -172,8 +172,19 @@ namespace GeekOff.Services
                 return "Unable to load question.";
             }
 
+            var submittedTeams = submittedAnswers.Select(t => t.TeamNo).ToList();
+
             var correctAnswer = questionInfo.CorrectAnswer;
             var scoring = new List<Scoring>();
+
+            // remove existing answers for the auto-score process
+            var answersToRemove = await _contextGo.Scoring.Where(s => s.Yevent == yEvent && s.RoundNo == 1 && submittedTeams.Contains(s.TeamNo) && s.QuestionNo == questionId).ToListAsync();
+
+            if (answersToRemove is not null)
+            {
+                _contextGo.Scoring.RemoveRange(answersToRemove);
+                await _contextGo.SaveChangesAsync();
+            }
 
             foreach(UserAnswer answer in submittedAnswers)
             {
