@@ -46,3 +46,4 @@ Thumbs.db
 
 # Auth - we want to store prod in the repo
 /ClientApp/src/environments/auth.config.ts
+/ClientApp/src/configurations/dev/*
