@@ -29,7 +29,13 @@ export class Round1ContestantComponent implements OnInit {
   };
   hideTime: Date = new Date;
   yEvent = sessionStorage.getItem('event') ?? '';
-  currentQuestionDto:round1QADto | undefined;
+  public currentQuestionDto: round1QADto = {
+    questionNum: 0,
+    questionText: '',
+    answers: [],
+    answerType: -1,
+    expireTime: new Date()
+  };
 
   // define form
   public answerForm: FormGroup = new FormGroup({
@@ -190,6 +196,7 @@ export class Round1ContestantComponent implements OnInit {
       this.dataService.saveRound1Answer(this.yEvent, questionNum, answerText).subscribe(a => {
         this.answerReturn = a;
         this.formVisible = false;
+        this.answerSubmitted = true;
       });
     }
   }
@@ -198,7 +205,8 @@ export class Round1ContestantComponent implements OnInit {
     console.log("hangTight " + this.hangTight);
     console.log("questionVisible " + this.questionVisible);
     console.log("answerVisible " + this.answerVisible);
-    console.log("formVisible" + this.formVisible);
+    console.log("formVisible " + this.formVisible);
+    console.log("answerSubmitted " + this.answerSubmitted);
   }
 
   parseDtoToForm() {

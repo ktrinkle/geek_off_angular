@@ -89,10 +89,10 @@ namespace GeekOff.Services
                                     Bonus = tr.Dollarraised >= 200 ? 10 : tr.Dollarraised > 100 ? (int)(tr.Dollarraised - 100)/10 : 0,
                                     Q = (from q in _contextGo.QuestionAns
                                         join s in _contextGo.Scoring
-                                        on new {q.RoundNo, q.QuestionNo, q.Yevent} 
-                                        equals new {s.RoundNo, s.QuestionNo, s.Yevent} into sq
+                                        on new {q.RoundNo, q.QuestionNo, q.Yevent, tr.TeamNo} 
+                                        equals new {s.RoundNo, s.QuestionNo, s.Yevent, s.TeamNo} into sq
                                         from sqi in sq.DefaultIfEmpty()
-                                        where q.RoundNo == 1 && q.Yevent == tr.Yevent && sqi.TeamNo == tr.TeamNo
+                                        where q.RoundNo == 1 && q.Yevent == tr.Yevent
                                         select new Round1ScoreDetail()
                                         {
                                             QuestionId = q.QuestionNo,
