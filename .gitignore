@@ -233,7 +233,7 @@ _Pvt_Extensions
 # fonts
 
 # auth config
-ClientApp/src/auth/*
+ClientApp/src/auth/*.ts
 ClientApp/src/configurations/dev/*
 
 # audio and video
