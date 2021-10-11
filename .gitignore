@@ -239,3 +239,6 @@ ClientApp/src/configurations/dev/*
 # audio and video
 *.mp4
 *.mp3
+
+# Ignore Rider config folder
+.idea

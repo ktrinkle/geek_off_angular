@@ -1,0 +1,27 @@
+body {
+  background-color: black;
+  color: white;
+  font-family: "round2scoreboard";
+}
+
+h1 {
+  text-align: center;
+}
+
+h3 {
+  font-size: 140%;
+}
+
+mat-grid-tile {
+  text-align: center;
+}
+
+body {
+  border: none !important;
+  margin: inherit !important;
+  padding: 0 !important;
+}
+
+img {
+  vertical-align: flex-end !important;
+}

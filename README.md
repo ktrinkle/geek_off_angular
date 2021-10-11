@@ -35,6 +35,7 @@ Fonts used in the scoreboard are not included for copyright reasons. These fonts
 | eggcrate.ttf | http://tpirepguide.com/qwizx/tpirfonts/eggcrate.zip | Round 1 board | |
 | sportstype.ttf | http://tpirepguide.com/qwizx/tpirfonts/sportstype.zip | Round 3 scores | Rename the file from "Sports Type Full.ttf" |
 | fast-money-three.ttf | https://fontstruct.com/fontstructions/show/1181116/fast_money_three | Round 2 board | |
+| ARCADECLASSIC.ttf | https://dl.dafont.com/dl/?f=arcade_classic_2 | Round 2 Scoreboard | |
 
 ## Database creation
 

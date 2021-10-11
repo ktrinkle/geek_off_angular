@@ -30,7 +30,7 @@ export class AppComponent {
     '/control/round2',
     '/control/round1',
     '/home',
-    '/'
+    '/',
   ]
   private currentEventSubject: BehaviorSubject<string>;
   public currentEvent: Observable<string>;
