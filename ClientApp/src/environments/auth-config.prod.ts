@@ -18,8 +18,8 @@ const isIE = window.navigator.userAgent.indexOf("MSIE ") > -1 || window.navigato
 */
 export const msalConfig: Configuration = {
   auth: {
-    clientId: '%%CLIENT_ID%%',
-    authority: '%%AUTHORITY%%',
+    clientId: '#{CLIENT_ID}#',
+    authority: '#{AUTHORITY}#',
     redirectUri: environment.app_url, // Points to window.location.origin. You must register this URI on Azure portal/App Registration.
     postLogoutRedirectUri: '/home',
     navigateToLoginRequestUrl: true, // If "true", will navigate back to the original request location before processing the auth code response.
@@ -51,7 +51,7 @@ export const silentRequest = {
 export const protectedResources = {
   geekOffApi: {
     endpoint: REST_API_SERVER + '/api',
-    scopes: ["%%SCOPE%%"]
+    scopes: ["#{SCOPE}#"]
   }
 }
 
