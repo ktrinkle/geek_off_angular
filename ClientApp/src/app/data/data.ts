@@ -34,7 +34,8 @@ export interface round23Scores {
   teamNo: number,
   teamName: string,
   teamScore?: number,
-  rnk?: number
+  rnk?: number,
+  color?: string
 }
 
 export interface round2SurveyList {

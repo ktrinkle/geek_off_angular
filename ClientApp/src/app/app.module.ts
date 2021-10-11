@@ -12,6 +12,7 @@ import { Round2controlComponent } from './control/round2control/round2control.co
 import { HomeComponent } from './home/home.component';
 import { Round1ContestantComponent } from './round1/contestant/contestant.component';
 import { Round1ControlComponent } from './control/round1control/round1control.component';
+import { Round2scoreboardComponent } from './round2/round2scoreboard/round2scoreboard.component';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -47,7 +48,6 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatButtonToggle, MatButtonToggleModule } from '@angular/material/button-toggle';
 
-// Countdown
 import { CountdownModule } from 'ngx-countdown';
 
 /**
@@ -103,6 +103,7 @@ export function MSALInterceptorFactory(): MsalInterceptorConfiguration {
     Round2displayComponent,
     Round2hostComponent,
     Round2controlComponent,
+    Round2scoreboardComponent,
     HomeComponent,
     Round1ContestantComponent,
     Round1IntroComponent,
