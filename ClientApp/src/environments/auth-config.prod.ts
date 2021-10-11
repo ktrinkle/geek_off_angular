@@ -51,7 +51,7 @@ export const silentRequest = {
 export const protectedResources = {
   geekOffApi: {
     endpoint: REST_API_SERVER + '/api',
-    scopes: ["api://5382ff2c-8c21-4125-9fa2-2cb0f18c4715/access_as_user"]
+    scopes: ["%%SCOPE%%"]
   }
 }
 
