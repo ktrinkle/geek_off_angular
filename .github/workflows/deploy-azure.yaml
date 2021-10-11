@@ -27,7 +27,7 @@ jobs:
         with:
           tokenPrefix: '#{'
           tokenSuffix: '}#'
-          files: /**/*/auth-config.prod.ts
+          files: ClientApp/src/environments/auth-config.prod.ts
         env:
           AUTHORITY: ${{ secrets.AD_AUTHORITY }}
           CLIENT_ID: ${{ secrets.AD_CLIENT_ID }}
@@ -50,7 +50,6 @@ jobs:
       - name: 'Deploy to Azure WebApp'
         uses: azure/webapps-deploy@v2
         with:
-          working-directory: ./ClientApp/dist
           app-name: ${{ env.AZURE_WEBAPP_NAME_UI }}
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE_UI }}
           package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH_UI }}
