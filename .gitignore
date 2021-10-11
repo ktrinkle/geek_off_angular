@@ -231,11 +231,11 @@ _Pvt_Extensions
 .fake/
 
 # fonts
-*.ttf
 
 # auth config
-ClientApp/src/environments/auth-config.ts
+ClientApp/src/auth/*
+ClientApp/src/configurations/dev/*
 
 # audio and video
-*.mp3
 *.mp4
+*.mp3

@@ -38,8 +38,8 @@ export class PregameComponent implements OnInit {
   constructor(private formBuilder: FormBuilder, private router: Router, private dataService: DataService) { }
 
   ngOnInit(): void {
-    this.audio.src = '../../assets/snd/top_of_hour.mp3';
-    this.seatBeltSound.src = '../../assets/snd/seatbelt.mp3';
+    this.audio.src = 'https://geekoff2021static.blob.core.windows.net/snd/top_of_hour.mp3';
+    this.seatBeltSound.src = 'https://geekoff2021static.blob.core.windows.net/snd/seatbelt.mp3';
     this.audio.load();
     this.seatBeltSound.load();
 

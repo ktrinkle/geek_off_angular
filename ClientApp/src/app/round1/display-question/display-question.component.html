@@ -6,8 +6,9 @@
   <div class="mediaBox" *ngIf="showMedia"></div>
   <div class="answerBox" *ngIf="answerVisible && (currentQuestionDto.answerType == questionMulti)" [@fadeIn]>
     <div class="content" fxLayout="row wrap" fxLayoutGap="16px grid">
-      <div *ngFor="let question of currentQuestionDto.answers" class="answer" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%" style="padding: 10px;">
-        <span *ngIf="!answerShown || question.answer != currentQuestionDto.correctAnswer"[ngClass]="{'answer':'!answerShown', 'wrongAnswer':'answerShown && question.answer != currentQuestionDto.correctAnswer'}">{{question.answer}}</span>
+      <div *ngFor="let question of currentQuestionDto.answers" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%" style="padding: 10px;">
+        <span *ngIf="!answerShown" class="answer">{{question.answer}}</span>
+        <span *ngIf="answerShown && question.answer != currentQuestionDto.correctAnswer" class="wrongAnswer" [@fadeIn]>{{question.answer}}</span>
         <span class="correctAnswer" *ngIf="answerShown && question.answer == currentQuestionDto.correctAnswer" [@fadeIn]>
           {{currentQuestionDto.correctAnswer}}
         </span>
