@@ -1,0 +1,58 @@
+name: Build and release code
+on:
+  pull_request:
+    branches: [main]
+
+env:
+  AZURE_WEBAPP_API_NAME_UI: geekoff-2021
+  AZURE_WEBAPP_PACKAGE_PATH_UI: './ClientApp/dist'
+  NODE_VERSION: '14.x'
+
+jobs:
+  build_and_test_node:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Use Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: npm install, build, and test
+        working-directory: ./ClientApp
+        run: |
+          npm install
+          npm run build --if-present
+      - name: Archive production artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: geekoff_node
+          working-directory: ./ClientApp
+          path: |
+            dist
+            !dist/**/*.md
+      - name: 'Deploy to Azure WebApp'
+        uses: azure/webapps-deploy@v2
+        with:
+          working-directory: ./ClientApp/dist
+          app-name: ${{ env.AZURE_WEBAPP_NAME_UI }}
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE_UI }}
+          package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH_UI }}
+  build_net_core:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: .NET restore and build
+        working-directory: ./API
+        run: |
+          dotnet restore
+          dotnet build --prod
+      - name: Archive production artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: geekoff_net
+          working-directory: ./API
+          path: |
+            build
+            !dist/**/*.md
