@@ -23,7 +23,6 @@ Replacement for round 1 & 2 of the Geek Off at my employer. A work in progress.
 | AzureAd:ClientId | Azure AD Client ID |
 
 * Add ClientApp/src/auth/auth-config.ts (must be sent from Kevin)
-* Install the required fonts
 * Run the initial database migration
 
 ## Required Fonts
@@ -36,6 +35,8 @@ Fonts used in the scoreboard are not included for copyright reasons. These fonts
 | sportstype.ttf | http://tpirepguide.com/qwizx/tpirfonts/sportstype.zip | Round 3 scores | Rename the file from "Sports Type Full.ttf" |
 | fast-money-three.ttf | https://fontstruct.com/fontstructions/show/1181116/fast_money_three | Round 2 board | |
 | ARCADECLASSIC.ttf | https://dl.dafont.com/dl/?f=arcade_classic_2 | Round 2 Scoreboard | |
+
+These, along with required media files, are stored in an Azure Storage account. Fonts are required to be open to the public, but other items behind authentication may be kept behind AD auth (if there aren't any issues...)
 
 ## Database creation
 
@@ -78,9 +79,12 @@ Automated testing is not enforced or required.
   * Finalize the round. /api/round2/finalize/{yevent}
 5. Host screen (host cellphone) - Dan - completed.
   * Show questions on the phone. API: /api/round2/allQuestions/{yEvent}
-6. Scoreboard (lower priority)
+6. Scoreboard (lower priority) - completed
   * API: /api/round2/scoreboard/{yEvent}
 
 ## Round 1
 
-Work will be identified after round 2 is completed.
+1. CSS - cleaning up formatting
+2. Implementing timeout protection for SignalR connections
+3. Fixing the manual scoring form in round1control
+4. Scoreboard - Kristin helping
