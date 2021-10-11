@@ -4,7 +4,7 @@ import { Subject } from 'rxjs';
 import { takeUntil, map } from 'rxjs/operators';
 import * as signalR from '@microsoft/signalr';
 import { environment } from 'src/environments/environment';
-import { round1Scores, round1ScoreMap } from 'src/app/data/data';
+import { round1Scores } from 'src/app/data/data';
 import { Router } from '@angular/router';
 
 @Component({
@@ -15,8 +15,7 @@ import { Router } from '@angular/router';
 export class Round1ScoreboardComponent implements OnInit {
 
   yevent: string = sessionStorage.getItem('event') ?? '';
-  scoreObject: round1Scores[] = [];
-  displayObject: round1ScoreMap[] = [];
+  displayObject: round1Scores[] = [];
   destroy$: Subject<boolean> = new Subject<boolean>();
 
   constructor(private dataService: DataService, private router:Router) { }
@@ -48,15 +47,7 @@ export class Round1ScoreboardComponent implements OnInit {
   getScoreboard(): void {
     console.log(this.yevent);
     this.dataService.getRound1Scores(this.yevent).pipe(takeUntil(this.destroy$)).subscribe(s => {
-      this.displayObject.push(
-        {
-          teamNum: s.teamNum,
-          teamName: s.teamName,
-          q: s.q.map((q: { questionId: number; questionScore: string; }) => [q.questionId, q.questionScore]),
-          bonus: s.bonus,
-          teamScore: s.teamScore
-        }
-      );
+      this.displayObject = s;
     });
 
     console.log(this.displayObject);

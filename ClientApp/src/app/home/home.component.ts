@@ -13,6 +13,7 @@ import { PlayerGuard } from '../player.guard';
 export class HomeComponent implements OnInit {
   userIsLoggedIn: boolean = false;
   userIsAdmin: boolean = false;
+  public yevent: string = sessionStorage.getItem('event') ?? '';
 
   constructor(
     private authService: MsalService,

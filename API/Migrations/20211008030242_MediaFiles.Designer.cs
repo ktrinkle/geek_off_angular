@@ -3,15 +3,17 @@ using System;
 using GeekOff.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace geek_off_angular.Migrations
 {
     [DbContext(typeof(contextGo))]
-    partial class contextGoModelSnapshot : ModelSnapshot
+    [Migration("20211008030242_MediaFiles")]
+    partial class MediaFiles
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -185,6 +187,26 @@ namespace geek_off_angular.Migrations
                             QuestionNo = 201,
                             TextQuestion = "Name your favorite developer."
                         });
+                });
+
+            modelBuilder.Entity("GeekOff.Data.Round1score", b =>
+                {
+                    b.Property<string>("Yevent")
+                        .HasMaxLength(6)
+                        .HasColumnType("character varying(6)")
+                        .HasColumnName("yevent");
+
+                    b.Property<string>("RespTxt")
+                        .HasColumnType("text")
+                        .HasColumnName("resp_txt");
+
+                    b.Property<int?>("RowName")
+                        .HasColumnType("integer")
+                        .HasColumnName("row_name");
+
+                    b.HasKey("Yevent");
+
+                    b.ToTable("round1score");
                 });
 
             modelBuilder.Entity("GeekOff.Data.Roundresult", b =>

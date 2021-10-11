@@ -16,9 +16,9 @@
     </mat-cell>
   </ng-container>
 
-  <ng-container matColumnDef="q.key" *ngFor="let q of displayObject | keyvalue">
-    <mat-header-cell *matHeaderCellDef>{{ q.key }}</mat-header-cell>
-    <mat-cell *matCellDef="let element">{{ q.value }}</mat-cell>
+  <ng-container matColumnDef="questionId" >
+    <mat-header-cell *matHeaderCellDef="let question of row.q">{{ question.questionId }}</mat-header-cell>
+    <mat-cell *matCellDef="let question of row.q">{{ question.questionScore }}</mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="bonus">
@@ -36,7 +36,7 @@
   </ng-container>
 
   <!-- Header and Row Declarations -->
-  <mat-header-row *matHeaderRowDef="['teamNo','teamName', 'bonus', 'ttl']"></mat-header-row>
-  <mat-row *matRowDef="let row; columns: ['teamNo','teamName', 'bonus', 'ttl']"></mat-row>
+  <mat-header-row *matHeaderRowDef="['teamNo','teamName', 'questionId', 'bonus', 'ttl']"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: ['teamNo','teamName', 'questionId', 'bonus', 'ttl']"></mat-row>
 </mat-table>
 </div>

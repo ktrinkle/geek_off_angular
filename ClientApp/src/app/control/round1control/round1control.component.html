@@ -55,16 +55,25 @@
   </div>
 <div id="controlCorner" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%" style="padding: 10px;">
   <h3>Controls</h3>
-  <button id="showAnswer" (click)="sendClientMessage(1)">Show Answer</button>
-  <button id="openAnswer" (click)="sendClientMessage(2)">Open Answer</button>
-  <button id="closeAnswer" (click)="sendClientMessage(3)">Close Answer</button>
-  <button id="goToQuestion" (click)="sendClientMessage(0)">Go to selected question</button>
+    <form [formGroup]="answerForm">
+        <label for="selectedQuestion">Select a screen:</label>
+        <select id="selectedQuestion" formControlName="selectedQuestion">
+          <option>--</option>
+          <option *ngFor="let answer of possibleAnswers" [value]="answer.questionNum">
+            {{answer.questionNum}}
+          </option>
+        </select>
+  <button id="showAnswer" class="bigbtngrnlabel" (click)="sendClientMessage(1)">Show Answer</button>
+  <button id="openAnswer" class="bigbtngrnlabel" (click)="sendClientMessage(2)">Open Answer</button>
+  <button id="closeAnswer" class="bigbtngrnlabel" (click)="sendClientMessage(3)">Close Answer</button>
+  <button id="goToQuestion" type="submit" class="bigbtngrnlabel" (click)="sendClientMessage(0)">Go to selected question</button>
+</form>
   <div clear="all"></div>
   <button id="autoScore" (click)="autoScore()">Auto-Score</button>
   <p>{{scoreResponse}}</p>
   <div clear="all"></div>
-  <button id="goToNextQuestion" (click)="sendNextClientMessage(0)">Go to next question</button>
-  <button id="finalizeRound" (click)="finalizeRound()">Finalize round</button>
-  <button id="round2" (click)="goToRound2()">Go to round 2 control</button>
+  <button id="goToNextQuestion" class="bigbtnbluelabel" (click)="sendNextClientMessage(0)">Go to next question</button>
+  <button id="finalizeRound" class="bigbtnredlabel" (click)="finalizeRound()">Finalize round</button>
+  <button id="round2" class="bigbtnredlabel" (click)="goToRound2()">Go to round 2 control</button>
 </div>
 </div>

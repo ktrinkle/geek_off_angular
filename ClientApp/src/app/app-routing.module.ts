@@ -7,6 +7,7 @@ import { Round2hostComponent } from './host/round2host/round2host.component';
 import { Round2countdownComponent } from './round2/round2countdown/round2countdown.component';
 import { Round2displayComponent } from './round2/round2display/round2display.component';
 
+import { PregameComponent } from './control/pregame/pregame.component';
 import { Round1ContestantComponent } from './round1/contestant/contestant.component';
 import { Round1IntroComponent } from './round1/intro/intro.component';
 import { Round1DisplayQuestionComponent } from './round1/display-question/display-question.component';
@@ -79,6 +80,15 @@ const routes: Routes = [
   {
     path: 'round2/display',
     component: Round2displayComponent,
+    pathMatch: 'full',
+    canActivate: [MsalGuard, PlayerGuard],
+    data: {
+      expectedRole: roles.Admin
+    }
+  },
+  {
+    path: 'control/pregame',
+    component: PregameComponent,
     pathMatch: 'full',
     canActivate: [MsalGuard, PlayerGuard],
     data: {

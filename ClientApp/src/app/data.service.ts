@@ -85,6 +85,11 @@ export class DataService {
     return this.httpClient.put(uri, {responseType: 'json'});
   }
 
+  public showRound1QuestionMedia(questionNum: number): Observable<any> {
+    var uri = this.REST_API_SERVER + '/api/round1/showMedia/' + encodeURIComponent(questionNum) + '';
+    return this.httpClient.put(uri, {responseType: 'json'});
+  }
+
   public getRound1Scores(yEvent: string): Observable<any> {
     var uri = this.REST_API_SERVER + '/api/round1/scoreboard/' + encodeURIComponent(yEvent) + '';
     return this.httpClient.get(uri);
@@ -116,4 +121,19 @@ export class DataService {
     return this.httpClient.put(uri, {responseType: 'text'});
   }
 
+  public changeIntroPage(page: string): Promise<any> {
+    var uri = this.REST_API_SERVER + '/api/round1/changeIntroPage/' + encodeURIComponent(page) + '';
+    console.log(uri);
+    return this.httpClient.put(uri, {responseType: 'json'}).toPromise();
+  }
+
+  public changeAnimation(): Promise<any> {
+    var uri = this.REST_API_SERVER + '/api/round1/animateText';
+    return this.httpClient.put(uri, {responseType: 'json'}).toPromise();
+  }
+
+  public changeSeatbelt(): Promise<any> {
+    var uri = this.REST_API_SERVER + '/api/round1/animateSeatbelt';
+    return this.httpClient.put(uri, {responseType: 'json'}).toPromise();
+  }
 }

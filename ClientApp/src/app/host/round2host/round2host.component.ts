@@ -14,7 +14,7 @@ import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms'
 
 export class Round2hostComponent implements OnInit {
 
-  public yevent: string = 'e21';
+  public yevent: string = sessionStorage.getItem('event') ?? '';
   public surveyMasterList: round2SurveyList[] = [];
 
   constructor(private _dataService: DataService,
