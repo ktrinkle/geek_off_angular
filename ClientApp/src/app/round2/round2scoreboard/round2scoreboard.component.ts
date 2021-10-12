@@ -11,7 +11,7 @@ export class Round2scoreboardComponent implements OnInit {
 
   constructor(private _dataService: DataService) { }
 
-  public yevent: string = 'e21';
+  yEvent = sessionStorage.getItem('event') ?? '';
   public roundNo: number = 2;
   public scores: round23Scores[] = [];
   public colors: string[] = [
@@ -24,7 +24,7 @@ export class Round2scoreboardComponent implements OnInit {
   ]
 
   ngOnInit(): void {
-    this.getScoreboardInfo(this.yevent);
+    this.getScoreboardInfo(this.yEvent);
     console.log("End of Init");
   }
 

@@ -20,7 +20,7 @@ export interface displayRow {
 export class Round2displayComponent implements OnInit, OnDestroy {
   @ViewChild(MatTable, { static: true }) table!: MatTable<any>;
   destroy$: Subject<boolean> = new Subject<boolean>();
-  yEvent = 'e21'
+  yEvent = sessionStorage.getItem('event') ?? '';
   teamNumber = 1;
   displayObject: round2Display = {
     teamNo: 0,
