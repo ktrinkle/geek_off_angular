@@ -47,9 +47,12 @@ export class Round1ScoreboardComponent implements OnInit {
 
   getScoreboard(): void {
     this.dataService.getRound1Scores(this.yevent).pipe(takeUntil(this.destroy$)).subscribe(s => {
-      let questionNumbers = null;
+      let questionNumbers: any[] = [];
       if (s.length > 0) {
-        questionNumbers = [...new Set(s[0].q.map((q: any) => q.questionId))];
+        for (const team of s) {
+          const tempNumbers = [...new Set(team.q.map((q: any) => q.questionId))];
+          questionNumbers = [...new Set([...questionNumbers, ...tempNumbers])]
+        }
       }
 
       // this creates the headers to display
@@ -63,7 +66,7 @@ export class Round1ScoreboardComponent implements OnInit {
           display: 'NAME'
         }
       ];
-      if (questionNumbers) {
+      if (questionNumbers.length > 0) {
         for (const number of questionNumbers) {
           this.headers.push({ property: `${number}`, display: `${number}` });
         }
