@@ -22,10 +22,9 @@
         <form [formGroup]="answerForm" (ngSubmit)="submitAnswer()">
             <div id="formMc" *ngIf="currentQuestionDto.answerType == 0">
                 <mat-button-toggle-group formControlName="textAnswer">
-                    <div id="formMcOptions" *ngFor="let answer of currentQuestionDto.answers">
-                        <div class="buttonSpace">
-                            <mat-button-toggle class="bigbtngrnlabel" value="{{answer.answer}}">{{answer.answer}}</mat-button-toggle>
-                        </div>
+                    <div id="formMcOptions" class="buttonSpace" *ngFor="let answer of currentQuestionDto.answers">
+                      <mat-button-toggle value="{{answer.answer}}">{{answer.answer}}</mat-button-toggle>
+                      <div class="buttonSpace"></div>
                     </div>
                 </mat-button-toggle-group>
             </div>
