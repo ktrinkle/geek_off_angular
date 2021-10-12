@@ -10,22 +10,22 @@ $go-theme: mat.define-light-theme($go-primary, $go-accent, $go-warn);
 @include mat.all-component-themes($go-theme);
 @font-face {
     font-family: eggcrate;
-    src: url('https://geekoff2021static.blob.core.windows.net/fonts/eggcrate.ttf');
+    src: url('//geekoff2021static.blob.core.windows.net/fonts/eggcrate.ttf');
 }
 
 @font-face {
     font-family: sportstype;
-    src: url('https://geekoff2021static.blob.core.windows.net/fonts/sportstype.ttf');
+    src: url('//geekoff2021static.blob.core.windows.net/fonts/sportstype.ttf');
 }
 
 @font-face {
     font-family: fastmoney;
-    src: url('https://geekoff2021static.blob.core.windows.net/fonts/fast-money-three.ttf');
+    src: url('//geekoff2021static.blob.core.windows.net/fonts/fast-money-three.ttf');
 }
 
 @font-face {
     font-family: round2scoreboard;
-    src: url('https://geekoff2021static.blob.core.windows.net/fonts/arcadeclassic.ttf');
+    src: url('//geekoff2021static.blob.core.windows.net/fonts/arcadeclassic.ttf');
 }
 
 .container-app {

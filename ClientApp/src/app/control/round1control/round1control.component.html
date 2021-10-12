@@ -2,7 +2,7 @@
     <p>Question {{currentQuestion}}</p>
 </div>
 <div class="content" fxLayout="row wrap" fxLayoutGap="16px grid">
-    <div id="currentAnswer" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%" style="padding: 10px;">
+    <div id="currentAnswer" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%" style="padding: 10px;" [formGroup]="answerForm">
         <h3>Round 1 - Current team answers</h3>
         <mat-table class="round1ControlScoreboard" [dataSource]="teamAnswers">
             <ng-container matColumnDef="teamButton">
@@ -58,7 +58,7 @@
     <div id="controlCorner" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%" style="padding: 10px;">
         <h3>Controls</h3>
         <form [formGroup]="answerForm">
-            <label for="selectedQuestion">Select a screen:</label>
+            <label for="selectedQuestion">Select a question:</label>
             <select id="selectedQuestion" formControlName="selectedQuestion">
           <option>--</option>
           <option *ngFor="let answer of possibleAnswers" [value]="answer.questionNum">
@@ -71,11 +71,12 @@
             <button id="goToQuestion" type="submit" class="bigbtngrnlabel" (click)="sendClientMessage(0)">Go to selected question</button>
         </form>
         <div clear="all"></div>
-        <button id="autoScore" (click)="autoScore()">Auto-Score</button>
-        <p>{{scoreResponse}}</p>
+        <p><button id="autoScore" class="bigbtnbluelabel" (click)="autoScore()">Auto-Score</button> {{scoreResponse}}
+        </p>
         <div clear="all"></div>
         <button id="goToNextQuestion" class="bigbtnbluelabel" (click)="sendNextClientMessage(0)">Go to next question</button>
-        <button id="finalizeRound" class="bigbtnredlabel" (click)="finalizeRound()">Finalize round</button>
+        <button id="finalizeRound" class="bigbtnredlabel" (click)="finalizeRound()">{{finalizeState}}</button>
         <button id="round2" class="bigbtnredlabel" (click)="goToRound2()">Go to round 2 control</button>
+
     </div>
 </div>
