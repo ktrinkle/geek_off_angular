@@ -1,10 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { DataService } from 'src/app/data.service';
 import { Subject } from 'rxjs';
-import { takeUntil, map } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import * as signalR from '@microsoft/signalr';
 import { environment } from 'src/environments/environment';
-import { round1Scores } from 'src/app/data/data';
 import { Router } from '@angular/router';
 
 @Component({
@@ -15,10 +14,12 @@ import { Router } from '@angular/router';
 export class Round1ScoreboardComponent implements OnInit {
 
   yevent: string = sessionStorage.getItem('event') ?? '';
-  displayObject: round1Scores[] = [];
+  headers: { property: string, display: string }[] = [];
+  displayHeaders: string[] = [];
+  teamData: any[] = [];
   destroy$: Subject<boolean> = new Subject<boolean>();
 
-  constructor(private dataService: DataService, private router:Router) { }
+  constructor(private dataService: DataService, private router: Router) { }
 
   ngOnInit(): void {
     this.getScoreboard();
@@ -45,13 +46,61 @@ export class Round1ScoreboardComponent implements OnInit {
   }
 
   getScoreboard(): void {
-    console.log(this.yevent);
     this.dataService.getRound1Scores(this.yevent).pipe(takeUntil(this.destroy$)).subscribe(s => {
-      this.displayObject = s;
-    });
+      let questionNumbers = null;
+      if (s.length > 0) {
+        questionNumbers = [...new Set(s[0].q.map((q: any) => q.questionId))];
+      }
 
-    console.log(this.displayObject);
-  }
+      // this creates the headers to display
+      this.headers = [
+        {
+          property: 'teamNumber',
+          display: '#'
+        },
+        {
+          property: 'teamName',
+          display: 'NAME'
+        }
+      ];
+      if (questionNumbers) {
+        for (const number of questionNumbers) {
+          this.headers.push({ property: `${number}`, display: `${number}` });
+        }
+      }
+      this.headers.push({
+        property: 'bonus',
+        display: 'BONUS'
+      });
+      this.headers.push({
+        property: 'total',
+        display: 'TTL'
+      });
+      this.displayHeaders = this.headers.map(h => h.display);
+
+      for (let team of s) {
+        let temp = {
+          teamNumber: team.teamNum,
+          teamName: team.teamName,
+          bonus: team.bonus,
+          total: team.teamScore
+        }
+        if (questionNumbers) {
+          for (const number of questionNumbers) {
+            const question = team.q.filter((a: any) => a.questionId === number);
+            if (question.length > 0) {
+              Object.assign(temp, { [`${number}`]: question[0].questionScore });
+            } else {
+              Object.assign(temp, { [`${number}`]: 0 });
+            }
+          }
+        }
+
+        this.teamData.push(temp);
+      }
+
+    });
+  };
 
   ngOnDestroy() {
     this.destroy$.next(true);
