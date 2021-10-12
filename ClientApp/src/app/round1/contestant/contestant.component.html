@@ -23,7 +23,7 @@
             <div id="formMc" *ngIf="currentQuestionDto.answerType == 0">
                 <mat-button-toggle-group formControlName="textAnswer">
                     <div id="formMcOptions" *ngFor="let answer of currentQuestionDto.answers">
-                        <div>
+                        <div class="buttonSpace">
                             <mat-button-toggle class="bigbtngrnlabel" value="{{answer.answer}}">{{answer.answer}}</mat-button-toggle>
                         </div>
                     </div>
