@@ -12,7 +12,7 @@ import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms'
 })
 export class Round2controlComponent implements OnInit {
 
-  public yevent: string = 'e21';
+  public yevent = sessionStorage.getItem('event') ?? '';
   public surveyMasterList: round2SurveyQuestions[] = [];
   public newEventForm: FormGroup = new FormGroup({});
   public questionNum: number = 0;
