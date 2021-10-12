@@ -45,4 +45,5 @@ testem.log
 Thumbs.db
 
 # Auth
-/ClientApp/src/environments/auth*.ts
+/ClientApp/src/auth/auth.config.ts
+/ClientApp/src/configurations/dev/*

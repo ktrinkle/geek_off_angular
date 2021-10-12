@@ -1,0 +1,105 @@
+name: Build and release code
+on:
+  push:
+    branches: [main]
+
+env:
+  AZURE_WEBAPP_API_NAME_UI: geekoff-2021
+  AZURE_WEBAPP_PACKAGE_PATH_UI: './ClientApp/dist/ClientApp'
+  AZURE_WEBAPP_API_NAME_API: geekoff-2021api
+  AZURE_WEBAPP_PACKAGE_PATH_API: './webapi'
+  NODE_VERSION: '14.x'
+
+jobs:
+  build_and_test_node:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        
+      - name: Use Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+  
+      - name: Replace tokens
+        uses: cschleiden/replace-tokens@v1.1
+        with:
+          tokenPrefix: '#{'
+          tokenSuffix: '}#'
+          files: ClientApp/src/configurations/prod/auth-config.ts
+        env:
+          AUTHORITY: ${{ secrets.AD_AUTHORITY }}
+          CLIENT_ID: ${{ secrets.AD_CLIENT_ID }}
+          SCOPE: ${{ secrets.AD_SCOPE }}
+          
+      - name: Copy prod file to location
+        run: |
+          cp ClientApp/src/configurations/prod/auth-config.ts ClientApp/src/auth
+          ls ClientApp/src
+      
+      - name: npm install, build, and test
+        working-directory: ./ClientApp
+        run: |
+          npm install
+          npm run build --if-present
+          
+      - name: Zip Release
+        uses: TheDoctor0/zip-release@0.6.0
+        with:
+          filename: ui.zip
+          path: .
+          directory: ./ClientApp/dist
+          
+      - uses: marvinpinto/action-automatic-releases@latest
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "latest"
+          prerelease: false
+          files: |
+            ui.zip
+            
+      - name: 'Deploy to Azure WebApp'
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: ${{ env.AZURE_WEBAPP_NAME_UI }}
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE_UI }}
+          package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH_UI }}
+  build_net_core:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        working-directory: ./API
+        run: dotnet restore
+
+      - name: Build
+        run: |
+          cd API
+          dotnet build --configuration Release --no-restore
+          dotnet publish -c Release -o ../webapi -r linux-x64 --self-contained true /p:UseAppHost=true
+          ls ../webapi
+          
+      - name: Zip Release
+        uses: TheDoctor0/zip-release@0.6.0
+        with:
+          filename: webapi.zip
+          path: .
+          directory: ./webapi
+
+      - uses: marvinpinto/action-automatic-releases@latest
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "latest"
+          prerelease: false
+          files: |
+            ./webapi.zip
+
+      - name: 'Deploy to Azure WebApp'
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: ${{ env.AZURE_WEBAPP_NAME_API }}
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE_API }}
+          package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH_API }}

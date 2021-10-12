@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 1284 2778" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+    <rect id="Artboard1" x="0" y="0" width="1284" height="2778" style="fill:none;"/>
+    <clipPath id="_clip1">
+        <rect id="Artboard11" serif:id="Artboard1" x="0" y="0" width="1284" height="2778"/>
+    </clipPath>
+    <g clip-path="url(#_clip1)">
+        <rect x="-58.249" y="-74.464" width="1497.61" height="3270.43" style="fill:rgb(209,213,118);"/>
+        <g transform="matrix(0.607188,0,0,0.572945,252.393,-1.88748)">
+            <path d="M641.658,3.294L1278.97,245.726L4.346,245.726L641.658,3.294Z" style="fill:rgb(0,120,210);"/>
+        </g>
+        <g transform="matrix(0.607188,0,0,-0.572945,242.429,2779.89)">
+            <path d="M641.658,3.294L1278.97,245.726L4.346,245.726L641.658,3.294Z" style="fill:rgb(0,70,127);"/>
+        </g>
+        <g transform="matrix(1.43757,0,0,1.45976,-262.171,-661.124)">
+            <path d="M628.958,1112.59L1075.55,1179.39L628.958,1246.18L182.371,1179.39L628.958,1112.59Z" style="fill:rgb(209,213,50);"/>
+        </g>
+        <g transform="matrix(1,0,0,0.90174,-5.12075,12.6903)">
+            <path d="M647.121,129.15L768.873,591.257L647.121,1053.36L525.369,591.257L647.121,129.15Z" style="fill:rgb(208,218,224);"/>
+        </g>
+        <g transform="matrix(1,0,0,0.90174,392.379,12.6903)">
+            <path d="M647.121,129.15L768.873,591.257L647.121,1053.36L525.369,591.257L647.121,129.15Z" style="fill:rgb(195,0,25);"/>
+        </g>
+        <g transform="matrix(1,0,0,0.90174,-403.221,12.6903)">
+            <path d="M647.121,129.15L768.873,591.257L647.121,1053.36L525.369,591.257L647.121,129.15Z" style="fill:rgb(255,115,24);"/>
+        </g>
+        <g transform="matrix(1,0,0,1.59307,-5.12075,952.254)">
+            <path d="M647.121,129.15L768.873,591.257L647.121,1053.36L525.369,591.257L647.121,129.15Z" style="fill:rgb(250,175,0);"/>
+        </g>
+        <g transform="matrix(1,0,0,1.59307,392.379,952.254)">
+            <path d="M647.121,129.15L768.873,591.257L647.121,1053.36L525.369,591.257L647.121,129.15Z" style="fill:rgb(0,185,137);"/>
+        </g>
+        <g transform="matrix(1,0,0,1.59307,-403.221,952.254)">
+            <path d="M647.121,129.15L768.873,591.257L647.121,1053.36L525.369,591.257L647.121,129.15Z" style="fill:rgb(77,180,250);"/>
+        </g>
+    </g>
+</svg>

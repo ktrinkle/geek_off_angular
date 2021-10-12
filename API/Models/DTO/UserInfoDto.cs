@@ -7,9 +7,9 @@ namespace GeekOff.Models
 {
     public class UserInfoDto
     {
+        public string PlayerName { get; set; }
         public string UserName { get; set; }
         public int TeamNum { get; set; }
         public int? PlayerNum { get; set; }
-        public List<string> Roles { get; set; }
     }
 }

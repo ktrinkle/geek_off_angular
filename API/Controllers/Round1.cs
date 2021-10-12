@@ -10,6 +10,7 @@ using Swashbuckle.AspNetCore.Annotations;
 using Microsoft.AspNetCore.SignalR;
 using System.Security.Claims;
 using Microsoft.Identity.Web.Resource;
+using GeekOff.Helpers;
 using GeekOff.Services;
 using GeekOff.Models;
 
@@ -37,28 +38,32 @@ namespace GeekOff.Controllers
             _questionService = questionService;
         }
 
-        [Authorize(Roles = "admin,player")]
+        [Authorize(Roles = "admin")]
         [HttpGet("getQuestion/{yEvent}/{questionId}")]
-        [SwaggerOperation(Summary = "Get all of the survey questions and answers for use of the operators.")]
-        public async Task<ActionResult<Round1QuestionDto>> GetRound1Question(string yEvent, int questionId)
+        [SwaggerOperation(Summary = "Get a single round 1 question for the big display with media.")]
+        public async Task<ActionResult<Round1QuestionDisplay>> GetRound1Question(string yEvent, int questionId)
             => Ok(await _questionService.GetRound1Question(yEvent, questionId));
 
         [Authorize(Roles = "admin,player")]
         [HttpGet("getAnswers/{yEvent}/{questionId}")]
-        [SwaggerOperation(Summary = "Get all of the survey questions and answers for use of the operators.")]
+        [SwaggerOperation(Summary = "Get a single round 1 question and answer for the contestants.")]
         public async Task<ActionResult<Round1QuestionDto>> GetRound1Answers(string yEvent, int questionId)
             => Ok(await _questionService.GetRound1QuestionWithAnswer(yEvent, questionId));
 
+        [Authorize(Roles = "admin")]
+        [HttpGet("getAllQuestions/{yEvent}")]
+        [SwaggerOperation(Summary = "Get all of the survey questions and answers for use of the operators.")]
+        public async Task<ActionResult<List<Round1QuestionControlDto>>> GetAllRound1Questions(string yEvent)
+            => Ok(await _questionService.GetAllRound1Questions(yEvent));
+
         [Authorize(Roles = "admin,player")]
-        [HttpPut("submitAnswer/{yEvent}/{questionId}/{answerText}")]
+        [HttpPut("submitAnswer")]
         [SwaggerOperation(Summary = "Player submits the answer to the controlling system")]
-        public async Task<ActionResult<string>> SubmitRound1Answer(string yEvent, int questionId, string answerText)
+        public async Task<ActionResult<string>> SubmitRound1Answer(Round1EnteredAnswers answers)
         {
-            HttpContext.VerifyUserHasAnyAcceptedScope(scopeRequiredByApi);
-            int teamNo = 0;
-            string answerUser = "362525";
+            var answerUser = User.UserId();
             
-            var submitAnswer = await _questionService.SubmitRound1Answer(yEvent, questionId, teamNo, answerText, answerUser);
+            var submitAnswer = await _questionService.SubmitRound1Answer(answers.Yevent, answers.QuestionNum, answers.TextAnswer, answerUser);
             await _eventHub.Clients.All.SendAsync("round1PlayerAnswer");
             return Ok(submitAnswer ? "Your answer is in. Good luck!" : "We had a problem. Please try again.");
         }
@@ -68,7 +73,6 @@ namespace GeekOff.Controllers
         [SwaggerOperation(Summary = "Show answer choices to contestants and on big board.")]
         public async Task<ActionResult> ShowAnswersToEvent()
         {
-            // add in controller here
             await _eventHub.Clients.All.SendAsync("round1ShowAnswerChoices");
             return Ok();
         }
@@ -78,7 +82,6 @@ namespace GeekOff.Controllers
         [SwaggerOperation(Summary = "Open contestants for answers.")]
         public async Task<ActionResult> OpenAnswerToContestant()
         {
-            // add in controller here
             await _eventHub.Clients.All.SendAsync("round1OpenAnswer");
             return Ok();
         }
@@ -88,13 +91,12 @@ namespace GeekOff.Controllers
         [SwaggerOperation(Summary = "Close answers to contestants.")]
         public async Task<ActionResult> CloseAnswerToContestant()
         {
-            // add in controller here
             await _eventHub.Clients.All.SendAsync("round1CloseAnswer");
             return Ok();
         }
 
         [Authorize(Roles = "admin")]
-        [HttpPut("showTeamAnswer/{yEvent}/{questionId}")]
+        [HttpGet("showTeamAnswer/{yEvent}/{questionId}")]
         [SwaggerOperation(Summary = "Show entered answers")]
         public async Task<ActionResult<List<Round1EnteredAnswers>>> ShowRound1TeamEnteredAnswers(string yEvent, int questionId)
         {
@@ -106,21 +108,18 @@ namespace GeekOff.Controllers
         [Authorize(Roles = "admin")]
         [HttpPut("scoreAnswer/{yEvent}/{questionId}")]
         [SwaggerOperation(Summary = "Scores the answer automatically")]
-        public async Task<ActionResult> ScoreAnswerAutomatic(string yEvent, int questionId)
+        public async Task<ActionResult<string>> ScoreAnswerAutomatic(string yEvent, int questionId)
         {
-            // add in controller here
+            var returnString = await _scoreService.ScoreAnswerAutomatic(yEvent, questionId);
             await _eventHub.Clients.All.SendAsync("round1ScoreUpdate");
-            return Ok();
+            return Ok(returnString);
         }
 
         [Authorize(Roles = "admin")]
-        [HttpPut("scoreAnswer/{yEvent}/{questionId}/{teamNum}")]
+        [HttpPut("scoreManualAnswer/{yEvent}/{questionId}/{teamNum}")]
         [SwaggerOperation(Summary = "Scores the answer manually based on team")]
         public async Task<ActionResult> ScoreAnswerManual(string yEvent, int questionId, int teamNum)
-        {
-            // add in controller here
-            return Ok();
-        }
+            => Ok(await _scoreService.ScoreAnswerManual(yEvent, questionId, teamNum));
 
         [Authorize(Roles = "admin")]
         [HttpPut("updateScoreboard")]
@@ -153,6 +152,36 @@ namespace GeekOff.Controllers
         }
 
         [Authorize(Roles = "admin")]
+        [HttpPut("animateText")]
+        [SwaggerOperation(Summary = "Sends message to animate intro screen text.")]
+        public async Task<ActionResult> ShowMedia()
+        {
+            // add in controller here
+            await _eventHub.Clients.All.SendAsync("round1Animate");
+            return Ok();
+        }
+
+        [Authorize(Roles = "admin")]
+        [HttpPut("animateSeatbelt")]
+        [SwaggerOperation(Summary = "Sends message to animate intro screen text.")]
+        public async Task<ActionResult> ChangeIntroSeatBelt()
+        {
+            // add in controller here
+            await _eventHub.Clients.All.SendAsync("introSeatbelt");
+            return Ok();
+        }
+
+        [Authorize(Roles = "admin")]
+        [HttpPut("showMedia/{questionId}")]
+        [SwaggerOperation(Summary = "Sends message to show any media on the round 1 big board.")]
+        public async Task<ActionResult> ShowMedia(int questionId)
+        {
+            // add in controller here
+            await _eventHub.Clients.All.SendAsync("round1ShowMedia", questionId);
+            return Ok();
+        }
+
+        [Authorize(Roles = "admin")]
         [HttpPut("updateStatus/{yEvent}/{questionId}/{status}")]
         [SwaggerOperation(Summary = "Updates status of question and sends message to display. Changes the state for the contestant and big screen.")]
         public async Task<ActionResult<CurrentQuestionDto>> ChangeQuestion(string yEvent, int questionId, int status)
@@ -179,17 +208,14 @@ namespace GeekOff.Controllers
             }
 
             await _eventHub.Clients.All.SendAsync(messageToSend, questionId);
-            return Ok();
+            return Ok(returnDto);
         }
 
         [Authorize(Roles = "admin")]
         [HttpGet("scoreboard/{yEvent}")]
         [SwaggerOperation(Summary = "Gets the round 1 scoreboard")]
         public async Task<ActionResult<List<Round1Scores>>> GetScoreboard(string yEvent)
-        {
-            // add in controller here
-            return Ok();
-        }
+            => Ok(await _scoreService.GetRound1Scores(yEvent));
 
         [Authorize(Roles = "admin")]
         [HttpGet("teamList/{yEvent}")]
@@ -199,5 +225,11 @@ namespace GeekOff.Controllers
             // HttpContext.VerifyUserHasAnyAcceptedScope(scopeRequiredByApi);
             return await _manageEventService.GetTeamList(yEvent);
         }
+
+        [Authorize(Roles = "admin")]
+        [HttpPut("finalize/{yEvent}")]
+        [SwaggerOperation(Summary = "Finalize round 1")]
+        public async Task<ActionResult<string>> FinalizeRound(string yEvent)
+            => Ok(await _manageEventService.FinalizeRound(yEvent, 1));
     }
 }

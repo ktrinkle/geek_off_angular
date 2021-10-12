@@ -1,1 +1,18 @@
-<p>scoreboard works!</p>
+<div id="bb">
+<p>A I R L I N E   G E E K   O F F</p>
+<p>=============   =======   =====</p>
+<mat-table mat-table [dataSource]="teamData">
+<ng-container *ngFor="let header of headers" [matColumnDef]="header.display">
+  <mat-header-cell *matHeaderCellDef>
+    <p>{{header.display}}</p>
+  </mat-header-cell>
+  <mat-cell *matCellDef="let team">
+      <span>{{team[header.property]}}</span>
+  </mat-cell>
+</ng-container>
+
+<mat-header-row *matHeaderRowDef="displayHeaders"></mat-header-row>
+<mat-row *matRowDef="let row; columns: displayHeaders;"></mat-row>
+</mat-table>
+
+</div>

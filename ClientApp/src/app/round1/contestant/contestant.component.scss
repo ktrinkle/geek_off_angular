@@ -1,0 +1,110 @@
+.contestant {
+    background-image: url('../../../assets/img/contestant_bg.svg');
+    background-repeat: repeat;
+    height: 93vh;
+    font-family: 'AmericanSans', Arial, Helvetica, sans-serif;
+    font-size: 2vh;
+    color: #36495A;
+}
+
+.contestant h2 {
+    position: absolute;
+    right: 10px;
+    top: 6vh;
+    font-family: 'AmericanSans', Arial, Helvetica, sans-serif;
+    font-size: 3vh;
+    color: #ffffff;
+    text-align: center;
+    vertical-align: middle;
+    background: radial-gradient( ellipse at center, rgba(195, 0, 25, 1) 0%, rgba(195, 0, 25, 1) 70%, rgba(195, 0, 25, 0) 70.3%);
+    width: 4vh;
+    height: 4vh;
+}
+
+#showQuestion,
+#answered,
+#hangTight {
+    position: absolute;
+    left: 3vw;
+    top: 13vh;
+    width: 89vw;
+    height: 25vh;
+    vertical-align: middle;
+    text-align: left;
+    padding-left: 2vw;
+    padding-right: 2vw;
+    padding-top: 2vh;
+    padding-bottom: 2vh;
+    background-blend-mode: overlay;
+    border-radius: 0.5%;
+    border: 0.3vw solid #36495A;
+    background-color: antiquewhite;
+    font-size: 2vh;
+}
+
+#showAnswer,
+#showForm,
+#hideQuestion {
+    position: absolute;
+    left: 3vw;
+    top: 46vh;
+    width: 89vw;
+    height: 47vh;
+    vertical-align: top;
+    text-align: left;
+    padding-left: 2vw;
+    padding-right: 2vw;
+    padding-top: 2vh;
+    padding-bottom: 2vh;
+    background-blend-mode: overlay;
+    border-radius: 0.5%;
+    border: 0.3vw solid #36495A;
+    background-color: antiquewhite;
+    font-size: 2vh;
+}
+
+#showAnswer,
+#hideQuestion {
+    position: absolute;
+    left: 3vw;
+    top: 46vh;
+    width: 89vw;
+    height: 20vh;
+    vertical-align: top;
+    text-align: left;
+    padding-left: 2vw;
+    padding-right: 2vw;
+    padding-top: 2vh;
+    padding-bottom: 2vh;
+    background-blend-mode: overlay;
+    border-radius: 0.5%;
+    border: 0.3vw solid #36495A;
+    background-color: antiquewhite;
+    font-size: 2vh;
+}
+
+#answered {
+    position: absolute;
+    left: 3vw;
+    top: 46vh;
+    width: 89vw;
+    height: 15vh;
+    vertical-align: top;
+    text-align: left;
+    padding-left: 2vw;
+    padding-right: 2vw;
+    padding-top: 2vh;
+    padding-bottom: 2vh;
+    background-blend-mode: overlay;
+    border-radius: 0.5%;
+    border: 0.3vw solid #36495A;
+    background-color: antiquewhite;
+    font-size: 2vh;
+}
+
+.buttonSpace {
+  display: block;
+  margin-top: 10px;
+  align-items: center;
+  clear: both;
+}
