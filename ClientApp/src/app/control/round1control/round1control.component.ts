@@ -78,6 +78,15 @@ export class Round1ControlComponent implements OnInit {
   {
     this.dataService.getAllEnteredAnswers(this.yEvent, this.currentQuestion).subscribe(a => {
       this.teamAnswers = a;
+
+      // reset form
+      this.answerForm = new FormGroup({
+        selectedQuestion: new FormControl(this.currentQuestion)
+      });
+
+      a.forEach((ans: round1EnteredAnswers) => {
+        this.answerForm.addControl(ans.teamNum.toString(), new FormControl(ans.answerStatus));
+      });
     });
   }
 
@@ -96,6 +105,10 @@ export class Round1ControlComponent implements OnInit {
     if (status == 0)
     {
       this.selectedQuestion = this.answerForm.value.selectedQuestion;
+      // reset answerform
+      this.answerForm = new FormGroup({
+        selectedQuestion: new FormControl(this.currentQuestion)
+      });
     }
     console.log(this.yEvent);
     console.log(this.selectedQuestion);
