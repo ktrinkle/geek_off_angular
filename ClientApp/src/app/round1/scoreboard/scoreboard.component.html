@@ -1,42 +1,18 @@
 <div id="bb">
 <p>A I R L I N E   G E E K   O F F</p>
 <p>=============   =======   =====</p>
-<mat-table class="round1ControlScoreboard" [dataSource]="displayObject">
-  <ng-container matColumnDef="teamNo">
-    <mat-header-cell *matHeaderCellDef> T </mat-header-cell>
-    <mat-cell *matCellDef="let row">
-      {{row.teamNum}}
-    </mat-cell>
-  </ng-container>
+<mat-table mat-table [dataSource]="teamData">
+<ng-container *ngFor="let header of headers" [matColumnDef]="header.display">
+  <mat-header-cell *matHeaderCellDef>
+    <p>{{header.display}}</p>
+  </mat-header-cell>
+  <mat-cell *matCellDef="let team">
+      <span>{{team[header.property]}}</span>
+  </mat-cell>
+</ng-container>
 
-  <ng-container matColumnDef="teamName">
-    <mat-header-cell *matHeaderCellDef> NAME </mat-header-cell>
-    <mat-cell *matCellDef="let row">
-      {{row.teamName}}
-    </mat-cell>
-  </ng-container>
-
-  <ng-container matColumnDef="questionId" >
-    <mat-header-cell *matHeaderCellDef="let question of row.q">{{ question.questionId }}</mat-header-cell>
-    <mat-cell *matCellDef="let question of row.q">{{ question.questionScore }}</mat-cell>
-  </ng-container>
-
-  <ng-container matColumnDef="bonus">
-    <mat-header-cell *matHeaderCellDef> BNS </mat-header-cell>
-    <mat-cell *matCellDef="let row">
-      {{row.bonus}}
-    </mat-cell>
-  </ng-container>
-
-  <ng-container matColumnDef="ttl">
-    <mat-header-cell *matHeaderCellDef> TTL </mat-header-cell>
-    <mat-cell *matCellDef="let row">
-      {{row.teamScore}}
-    </mat-cell>
-  </ng-container>
-
-  <!-- Header and Row Declarations -->
-  <mat-header-row *matHeaderRowDef="['teamNo','teamName', 'questionId', 'bonus', 'ttl']"></mat-header-row>
-  <mat-row *matRowDef="let row; columns: ['teamNo','teamName', 'questionId', 'bonus', 'ttl']"></mat-row>
+<mat-header-row *matHeaderRowDef="displayHeaders"></mat-header-row>
+<mat-row *matRowDef="let row; columns: displayHeaders;"></mat-row>
 </mat-table>
+
 </div>
