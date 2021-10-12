@@ -1,24 +1,24 @@
+using GeekOff.Config;
+using GeekOff.Data;
+using GeekOff.Services;
+using Microsoft.AspNetCore.Authentication.Certificate;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Identity.Web;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authentication.Certificate;
-using GeekOff.Config;
-using GeekOff.Data;
-using GeekOff.Services;
 
 namespace GeekOff
 {
     public class Startup
     {
-        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+        private readonly string _myAllowSpecificOrigins = "_myAllowSpecificOrigins";
         public Startup(IConfiguration configuration, IWebHostEnvironment environment)
         {
             Configuration = configuration;
@@ -34,32 +34,28 @@ namespace GeekOff
             services.AddAuthentication(
                 CertificateAuthenticationDefaults.AuthenticationScheme)
                 .AddCertificate();
-                
+
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddMicrosoftIdentityWebApi(Configuration);
 
 
             services.AddAuthorization();
-            
+
             services.AddControllers();
 
-            services.AddCors(options =>
-            {
-                options.AddPolicy(name: MyAllowSpecificOrigins,
+            services.AddCors(options => options.AddPolicy(name: _myAllowSpecificOrigins,
                         builder => builder.WithOrigins("http://localhost:4200")
                                     .AllowCredentials()
                                     .AllowAnyMethod()
                                     .AllowAnyHeader()
-                );
-            });
+                ));
 
             #region swagger
-            services.AddSwaggerGen(c =>
-            {
+            services.AddSwaggerGen(c => {
                 c.EnableAnnotations();
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Geek Off API", Version = "v1" });
                 //future c.TagActionsBy();
-        
+
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     Name = "Authorization",
@@ -69,35 +65,35 @@ namespace GeekOff
                     In = ParameterLocation.Header,
                     Description = "JWT Authorization header using the Bearer scheme."
                 });
-        
+
                 c.AddSecurityRequirement(new OpenApiSecurityRequirement
                 {
                     {
                         new OpenApiSecurityScheme
                             {
-                                Reference = new OpenApiReference 
-                                { 
-                                    Type = ReferenceType.SecurityScheme, 
-                                    Id = "Bearer" 
+                                Reference = new OpenApiReference
+                                {
+                                    Type = ReferenceType.SecurityScheme,
+                                    Id = "Bearer"
                                 }
                             },
-                            new string[] {}
-        
+                            System.Array.Empty<string>()
+
                     }
                 });
             });
-        
 
-#endregion
 
-            string postgresConn = Configuration["ConnectionStrings:GeekOff"];
+            #endregion
 
-            services.AddDbContext<contextGo>(options => options.UseNpgsql(postgresConn));
+            var postgresConn = Configuration["ConnectionStrings:GeekOff"];
 
-            services.AddCustomServices(Configuration);
+            services.AddDbContext<ContextGo>(options => options.UseNpgsql(postgresConn));
+
+            services.AddCustomServices();
 
             services.AddSignalR();
-            
+
             services.AddControllers();
 
             services.AddHttpClient();
@@ -111,19 +107,16 @@ namespace GeekOff
         {
             if (env.IsDevelopment())
             {
-            // Enable middleware to serve generated Swagger as a JSON endpoint.
+                // Enable middleware to serve generated Swagger as a JSON endpoint.
                 app.UseSwagger();
 
                 // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
                 // specifying the Swagger JSON endpoint.
-                app.UseSwaggerUI(c =>
-                {
-                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Geek Off API");
-                });
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Geek Off API"));
 
                 app.UseDeveloperExceptionPage();
 
-                app.UseCors(MyAllowSpecificOrigins);
+                app.UseCors(_myAllowSpecificOrigins);
             }
             else
             {
@@ -138,8 +131,7 @@ namespace GeekOff
 
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
-            {
+            app.UseEndpoints(endpoints => {
                 endpoints.MapHub<EventHub>("/events");
                 endpoints.MapControllerRoute(
                     name: "default",

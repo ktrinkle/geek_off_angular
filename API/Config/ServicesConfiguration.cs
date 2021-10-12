@@ -1,18 +1,18 @@
 using System;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
+using GeekOff.Helpers;
+using GeekOff.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using GeekOff.Services;
-using GeekOff.Helpers;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace GeekOff.Config
 {
     public static class ServicesConfiguration
     {
-        public static void AddCustomServices(this IServiceCollection services, IConfiguration configuration)
+        public static void AddCustomServices(this IServiceCollection services)
         {
             // Services
             services.TryAddScoped<ILoginService, LoginService>();

@@ -2,7 +2,7 @@
 
 namespace geek_off_angular.Migrations
 {
-    public partial class questionType : Migration
+    public partial class QuestionType : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

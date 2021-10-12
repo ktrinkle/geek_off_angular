@@ -19,5 +19,5 @@ namespace GeekOff.Data
         public int? PlayerNum { get; set; }
         public bool AdminFlag { get; set; }
         public DateTime LoginTime { get; set; }
-   }
+    }
 }
