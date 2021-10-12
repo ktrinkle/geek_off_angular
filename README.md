@@ -44,6 +44,14 @@ Standard EF migration processes are followed. To create the database locally fro
 
 The dotnet CLI tools must be installed for this, and a dotnet restore must be done to ensure all packages are downloaded before migration.
 
+## Trusting dev-certs
+
+If you need to trust the development certificates in .NET core, run the following commands:
+```
+dotnet dev-certs https --clean
+dotnet dev-certs https --trust
+```
+
 # Running the App
 
 The API and UI must be run separately. Use `ng serve` to run the UI, and `dotnet run` for the API.
