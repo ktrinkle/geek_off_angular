@@ -248,12 +248,12 @@ $go-theme: mat.define-light-theme($go-primary, $go-accent, $go-warn);
     vertical-align: middle;
 }
 
-#bb table {
+#bb mat-table {
     table-layout: fixed;
 }
 
 #bb th,
-#bb td {
+#bb mat-table-cell {
     background: #000;
     font-family: eggcrate;
     border: 0px;
