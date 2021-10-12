@@ -235,6 +235,7 @@ _Pvt_Extensions
 # auth config
 ClientApp/src/auth/*.ts
 ClientApp/src/configurations/dev/*
+ClientApp/src/environments/auth*.ts
 
 # audio and video
 *.mp4
