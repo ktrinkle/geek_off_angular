@@ -59,6 +59,11 @@ export class DataService {
     return this.httpClient.get(uri);
   }
 
+  public getRound2Scores(yEvent: string): Observable<any> {
+    var uri = this.REST_API_SERVER + '/api/round2/scoreboard/' + encodeURIComponent(yEvent);
+    return this.httpClient.get(uri);
+  }
+
   public getRound2DisplayBoard(yEvent: string, teamNumber: number): Observable<any> {
     var uri = this.REST_API_SERVER + '/api/round2/bigBoard/' + encodeURIComponent(yEvent) + '/' + encodeURIComponent(teamNumber);
     return this.httpClient.get(uri);
@@ -102,23 +107,23 @@ export class DataService {
 
   public finalizeRound1(yEvent: string): Observable<any> {
     var uri = this.REST_API_SERVER + '/api/round1/finalize/' + encodeURIComponent(yEvent) + '';
-    return this.httpClient.put(uri, {responseType: 'text'});
+    return this.httpClient.put(uri, {}, {responseType: 'text'});
   }
 
   public finalizeRound2(yEvent: string): Observable<any> {
     var uri = this.REST_API_SERVER + '/api/round2/finalize/' + encodeURIComponent(yEvent) + '';
-    return this.httpClient.put(uri, {responseType: 'text'});
+    return this.httpClient.put(uri, {}, {responseType: 'text'});
   }
 
   public round1AutoScore(yEvent: string, questionId: number): Observable<any> {
     var uri = this.REST_API_SERVER + '/api/round1/scoreAnswer/' + encodeURIComponent(yEvent) + '/' + encodeURIComponent(questionId) + '';
     console.log(uri);
-    return this.httpClient.put(uri, {responseType: 'text'});
+    return this.httpClient.put(uri, {}, {responseType: 'text'});
   }
 
-  public round1ManualScore(yEvent: string, questionId: number, teamNum: number): Observable<any> {
+  public round1ManualScore(yEvent: string, questionId: number, teamNum: number): Promise<any> {
     var uri = this.REST_API_SERVER + '/api/round1/scoreManualAnswer/' + encodeURIComponent(yEvent) + '/' + encodeURIComponent(questionId) + '/' + encodeURIComponent(teamNum) + '';
-    return this.httpClient.put(uri, {responseType: 'text'});
+    return this.httpClient.put(uri, {}, {responseType: 'text'}).toPromise();
   }
 
   public changeIntroPage(page: string): Promise<any> {

@@ -29,7 +29,13 @@ export class Round1ContestantComponent implements OnInit {
   };
   hideTime: Date = new Date;
   yEvent = sessionStorage.getItem('event') ?? '';
-  currentQuestionDto:round1QADto | undefined;
+  public currentQuestionDto: round1QADto = {
+    questionNum: 0,
+    questionText: '',
+    answers: [],
+    answerType: -1,
+    expireTime: new Date()
+  };
 
   // define form
   public answerForm: FormGroup = new FormGroup({
@@ -40,9 +46,6 @@ export class Round1ContestantComponent implements OnInit {
     multipleChoice3: new FormControl(),
     multipleChoice4: new FormControl()
   });
-
-
-
 
   destroy$: Subject<boolean> = new Subject<boolean>();
 
@@ -154,6 +157,9 @@ export class Round1ContestantComponent implements OnInit {
   }
 
   openForm() {
+    this.hangTight = false;
+    this.questionVisible = true;
+    this.answerVisible = false;
     this.formVisible = true;
     this.currentQuestion.status = 2;
     this.debugVals();
@@ -169,9 +175,6 @@ export class Round1ContestantComponent implements OnInit {
   submitAnswer() {
     var answerText;
     var questionNum = this.currentQuestionDto?.questionNum ?? 0;
-    console.log('Submit started');
-    console.log(this.currentQuestionDto?.answerType);
-    console.log(this.answerForm.value);
 
     if (this.currentQuestionDto?.answerType != 1)
     {
@@ -193,6 +196,7 @@ export class Round1ContestantComponent implements OnInit {
       this.dataService.saveRound1Answer(this.yEvent, questionNum, answerText).subscribe(a => {
         this.answerReturn = a;
         this.formVisible = false;
+        this.answerSubmitted = true;
       });
     }
   }
@@ -201,7 +205,8 @@ export class Round1ContestantComponent implements OnInit {
     console.log("hangTight " + this.hangTight);
     console.log("questionVisible " + this.questionVisible);
     console.log("answerVisible " + this.answerVisible);
-    console.log("formVisible" + this.formVisible);
+    console.log("formVisible " + this.formVisible);
+    console.log("answerSubmitted " + this.answerSubmitted);
   }
 
   parseDtoToForm() {
@@ -219,12 +224,12 @@ export class Round1ContestantComponent implements OnInit {
 
   resetForm() {
     this.answerForm.patchValue({
-      questionNum: {},
-      textAnswer: {},
-      multipleChoice1: {},
-      multipleChoice2: {},
-      multipleChoice3: {},
-      multipleChoice4: {}
+      questionNum: '',
+      textAnswer: '',
+      multipleChoice1: '',
+      multipleChoice2: '',
+      multipleChoice3: '',
+      multipleChoice4: ''
     })
   }
 

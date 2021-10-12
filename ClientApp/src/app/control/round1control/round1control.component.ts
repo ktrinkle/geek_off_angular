@@ -25,6 +25,7 @@ export class Round1ControlComponent implements OnInit {
   statusEnum:string[] = [''];
   status: number = 0;
   scoreResponse:string = '';
+  finalizeState: string = 'Finalize round';
 
   public answerForm: FormGroup = new FormGroup({
     selectedQuestion: new FormControl(this.currentQuestion)
@@ -78,6 +79,18 @@ export class Round1ControlComponent implements OnInit {
   {
     this.dataService.getAllEnteredAnswers(this.yEvent, this.currentQuestion).subscribe(a => {
       this.teamAnswers = a;
+
+      // reset form
+      this.answerForm = new FormGroup({
+        selectedQuestion: new FormControl(this.currentQuestion)
+      });
+
+      a.forEach((ans: round1EnteredAnswers) => {
+        console.log(a);
+        this.answerForm.setControl(ans.teamNum.toString(), new FormControl(ans.answerStatus));
+      });
+
+      console.log(this.answerForm);
     });
   }
 
@@ -96,14 +109,22 @@ export class Round1ControlComponent implements OnInit {
     if (status == 0)
     {
       this.selectedQuestion = this.answerForm.value.selectedQuestion;
+      // reset answerform
+      this.answerForm = new FormGroup({
+        selectedQuestion: new FormControl(this.currentQuestion)
+      });
     }
     console.log(this.yEvent);
     console.log(this.selectedQuestion);
     console.log(status);
-    this.dataService.changeRound1QuestionStatus(this.yEvent, this.selectedQuestion, status).subscribe(c => {
+    this.dataService.changeRound1QuestionStatus(this.yEvent, this.selectedQuestion, status).subscribe({next: (c => {
       this.status = c.status;
       this.currentQuestion = c.questionNum;
       this.selectedQuestion = c.questionNum;
+      }), complete: () => {
+        // drops old answers
+        this.loadTeamAnswers();
+      }
     });
   }
 
@@ -119,6 +140,7 @@ export class Round1ControlComponent implements OnInit {
   updateRemoteScoreboard()
   {
     this.dataService.updateScoreboardDisplay();
+    this.updateScoreboard();
   }
 
   autoScore()
@@ -126,7 +148,6 @@ export class Round1ControlComponent implements OnInit {
     this.dataService.round1AutoScore(this.yEvent, this.currentQuestion).subscribe(as => {
       this.scoreResponse = as;
     });
-    // add loadTeamAnswers as then
   }
 
   scoreManual(team: number)
@@ -136,7 +157,9 @@ export class Round1ControlComponent implements OnInit {
 
   finalizeRound()
   {
-    this.dataService.finalizeRound1(this.yEvent);
+    this.dataService.finalizeRound1(this.yEvent).subscribe(data => {
+      this.finalizeState = data;
+    });
   }
 
   goToRound2()

@@ -66,16 +66,16 @@ namespace GeekOff.Data
                 Yevent = "e21",
                 RoundNo = 2,
                 QuestionNo = 201,
-                SurveyOrder = 4,
+                SurveyOrder = 5,
                 QuestionAnswer = "Li",
-                Ptsposs = 6
+                Ptsposs = 2
             },
             new Scoreposs()
             {
                 Yevent = "e21",
                 RoundNo = 2,
                 QuestionNo = 201,
-                SurveyOrder = 5,
+                SurveyOrder = 4,
                 QuestionAnswer = "Dan",
                 Ptsposs = 5
             }
@@ -103,8 +103,8 @@ namespace GeekOff.Data
                 Id = 100,
                 Yevent = "e21",
                 TeamNo = 0,
-                BadgeId = "362525",
                 Username = "362525@geekoff.onmicrosoft.com",
+                PlayerName = "Kevin Trinkle",
                 AdminFlag = true
             },
             new TeamUser()
@@ -112,8 +112,8 @@ namespace GeekOff.Data
                 Id = 101,
                 Yevent = "e21",
                 TeamNo = 0,
-                BadgeId = "446792",
                 Username = "446792@geekoff.onmicrosoft.com",
+                PlayerName = "Kristin Russell",
                 AdminFlag = true
             },
             new TeamUser()
@@ -121,8 +121,8 @@ namespace GeekOff.Data
                 Id = 102,
                 Yevent = "e21",
                 TeamNo = 0,
-                BadgeId = "226250",
                 Username = "226250@geekoff.onmicrosoft.com",
+                PlayerName = "Diyalo Manral",
                 AdminFlag = true
             },
             new TeamUser()
@@ -130,8 +130,8 @@ namespace GeekOff.Data
                 Id = 103,
                 Yevent = "e21",
                 TeamNo = 0,
-                BadgeId = "288132",
                 Username = "288132@geekoff.onmicrosoft.com",
+                PlayerName = "Dan Mullings",
                 AdminFlag = true
             },
             new TeamUser()
@@ -151,8 +151,8 @@ namespace GeekOff.Data
                 Id = 105,
                 Yevent = "e21",
                 TeamNo = 0,
-                BadgeId = "274798",
-                Username = "274798@geekoff.onmicrosoft.com",
+                Username = "jay.cox_aa.com#EXT#@geekoff.onmicrosoft.com",
+                PlayerName = "Jay Cox",
                 AdminFlag = true
             },   
             new TeamUser()
@@ -160,13 +160,34 @@ namespace GeekOff.Data
                 Id = 106,
                 Yevent = "e21",
                 TeamNo = 1,
-                BadgeId = "641903",
                 Username = "641903@geekoff.onmicrosoft.com",
                 PlayerName = "Brandon Heath",
                 PlayerNum = 2,
                 WorkgroupName = "Information Technology",
                 AdminFlag = false
-            },         
+            },
+            new TeamUser()
+            {
+                Id = 107,
+                Yevent = "e21",
+                TeamNo = 2,
+                Username = "991023@geekoff.onmicrosoft.com",
+                PlayerName = "Roger Marsolek",
+                PlayerNum = 1,
+                WorkgroupName = "Information Technology",
+                AdminFlag = false
+            }, 
+            new TeamUser()
+            {
+                Id = 108,
+                Yevent = "e21",
+                TeamNo = 0,
+                Username = "kevin.trinkle_aa.com#EXT#@geekoff.onmicrosoft.com",
+                PlayerName = "Kevin Trinkle",
+                PlayerNum = 0,
+                WorkgroupName = "Information Technology",
+                AdminFlag = true
+            },          
         };
 
         public static void CreateEventMasterData(this ModelBuilder modelBuilder)

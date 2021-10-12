@@ -48,13 +48,13 @@ namespace GeekOff.Controllers
         [SwaggerOperation(Summary = "Get current user and team info from database based on logged in user.")]
         public async Task<ActionResult<UserInfoDto>> GetUserInfo()
         {
-            var badgeId = User.UserId();
-            if (badgeId == "000000")
+            var userId = User.UserId();
+            if (userId == "000000")
             {
                 return null;
             }
 
-            return await _loginService.Login(badgeId);
+            return await _loginService.Login(userId);
         }
         
     }

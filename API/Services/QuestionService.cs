@@ -190,7 +190,7 @@ namespace GeekOff.Services
             }
 
             // grab team info for this user. If this fails, we exit early.
-            var playerInfo = await _contextGo.TeamUser.FirstOrDefaultAsync(u => u.BadgeId == answerUser && u.Yevent == yEvent);
+            var playerInfo = await _contextGo.TeamUser.FirstOrDefaultAsync(u => u.Username == answerUser && u.Yevent == yEvent);
 
             if (playerInfo is null)
             {
