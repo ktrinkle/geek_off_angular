@@ -217,7 +217,7 @@ namespace GeekOff.Services
 
             var scoring = await _contextGo.Scoring.Where(s => s.Yevent == yEvent && s.TeamNo == teamNum && s.QuestionNo == questionId).ToListAsync();
 
-            if (scoring is not null)
+            if (scoring.Count > 0)
             {
                 // remove the entry since it's a flip back
                 _contextGo.Scoring.RemoveRange(scoring);
@@ -226,7 +226,7 @@ namespace GeekOff.Services
                 return false;
             }
 
-            if (scoring is null)
+            if (scoring.Count == 0)
             {
                 var teamAnswer = await _contextGo.UserAnswer.FirstOrDefaultAsync(u => u.Yevent == yEvent && u.QuestionNo == questionId && u.TeamNo == teamNum);
 
