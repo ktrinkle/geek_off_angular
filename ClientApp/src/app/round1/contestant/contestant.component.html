@@ -1,75 +1,74 @@
 <div class="contestant">
-  <h2>{{ currentQuestionDto?.questionNum }}</h2>
-<div id="hangTight" *ngIf="!questionVisible || hangTight">
-  <p>Hang tight! Your question is coming!</p>
-</div>
-<div id="showQuestion" *ngIf="questionVisible">
-  <p>{{ currentQuestionDto?.questionText }}</p>
-</div>
-<div id="hideQuestion" *ngIf="!answerVisible">
-  <p>Hold tight, we haven't called your group yet...</p>
-</div>
-<div id="showAnswer" *ngIf="answerVisible">
-  <p>What will your answer be?</p>
-  <div id="answerMC" *ngIf="currentQuestionDto?.answerType ?? 0 < 2">
-    <div class="answerText" *ngFor="let answer of currentQuestionDto?.answers">
-      <p>{{ answer.answerId }}. {{ answer.answer }}</p>
-  </div>
-</div>
-<div id="showForm" *ngIf="formVisible && !answerSubmitted">
-  <p>You've gotta pick something.</p>
-  <form [formGroup]="answerForm" (ngSubmit)="submitAnswer()">
-    <div id="formMc" *ngIf="currentQuestionDto?.answerType == 0">
-      <div id="formMcOptions" *ngFor="let answer of currentQuestionDto?.answers">
-        <label for="{{answer.answerId}}">{{answer.answerId}}. {{answer.answer}}</label>
-        <input id="{{answer.answerId}}" name="textAnswer" value="{{answer.answer}}" formControlName="textAnswer" type="radio">
-      <br />
-      </div>
+    <h2>{{ currentQuestionDto.questionNum }}</h2>
+    <div id="hangTight" *ngIf="!questionVisible || hangTight">
+        <p>Hang tight! Your question is coming!</p>
     </div>
-    <div id="formMatch" *ngIf="currentQuestionDto?.answerType == 1">
-      <label for="matchanswer1">A.</label>
-      <select id="matchanswer1" name="matchanswer1" formControlName="multipleChoice1">
-        <option *ngFor="let answer of currentQuestionDto?.answers" [value]="answer.answerId">
-          {{answer.answerId}}. {{answer.answer}}
-        </option>
-      </select>
-      <br />
-      <label for="matchanswer2">B.</label>
-      <select id="matchanswer2" name="matchanswer2" formControlName="multipleChoice2">
-        <option *ngFor="let answer of currentQuestionDto?.answers" [value]="answer.answerId">
-          {{answer.answerId}}. {{answer.answer}}
-        </option>
-      </select>
-      <br />
-      <label for="matchanswer3">C.</label>
-      <select id="matchanswer3" name="matchanswer3" formControlName="multipleChoice3">
-        <option *ngFor="let answer of currentQuestionDto?.answers" [value]="answer.answerId">
-          {{answer.answerId}}. {{answer.answer}}
-        </option>
-      </select>
-      <br />
-      <label for="matchanswer4">D.</label>
-      <select id="matchanswer4" name="matchanswer4" formControlName="multipleChoice4">
-        <option *ngFor="let answer of currentQuestionDto?.answers" [value]="answer.answerId">
-          {{answer.answerId}}. {{answer.answer}}
-        </option>
-      </select>
-      </div>
-      <div id="formFillIn" *ngIf="currentQuestionDto?.answerType == 2">
-        <label for="textAnswer">Your answer:</label>
-        <input id="textAnswer" name="textAnswer" formControlName="textAnswer" type="text">
-      </div>
-      <button type="submit">Save your answer</button>
-  </form>
-</div>
-<div id="hideForm" *ngIf="!formVisible && !answerVisible">
-  <p>You can't pick an answer yet...</p>
-</div>
-<div id="hideForm" *ngIf="!formVisible && answerVisible">
-  <p>Looks like we may have your answer, but this isn't coded right yet...</p>
-</div>
-<div id="answered" *ngIf="answerSubmitted">
-  <p>{{answerReturn}}</p>
-  <p>We've got your answer. Good luck!</p>
-</div>
+    <div id="showQuestion" *ngIf="questionVisible">
+        <p>{{ currentQuestionDto?.questionText }}</p>
+    </div>
+    <div id="hideQuestion" *ngIf="!answerVisible && !formVisible && !answerSubmitted">
+        <p>Hold tight, we haven't called your group yet...</p>
+    </div>
+    <div id="showAnswer" *ngIf="answerVisible && !answerSubmitted">
+        <p>What will your answer be?</p>
+        <div id="answerMC" *ngIf="currentQuestionDto.answerType < 2">
+            <div class="answerText" *ngFor="let answer of currentQuestionDto.answers">
+                <p>{{ answer.answerId }}. {{ answer.answer }}</p>
+            </div>
+        </div>
+    </div>
+    <div id="showForm" *ngIf="formVisible && !answerSubmitted">
+        <p>Time to answer!</p>
+        <form [formGroup]="answerForm" (ngSubmit)="submitAnswer()">
+            <div id="formMc" *ngIf="currentQuestionDto.answerType == 0">
+                <mat-button-toggle-group formControlName="textAnswer">
+                    <div id="formMcOptions" class="buttonSpace" *ngFor="let answer of currentQuestionDto.answers">
+                      <mat-button-toggle value="{{answer.answer}}">{{answer.answer}}</mat-button-toggle>
+                      <div class="buttonSpace"></div>
+                    </div>
+                </mat-button-toggle-group>
+            </div>
+            <div id="formMatch" *ngIf="currentQuestionDto?.answerType == 1">
+                <label for="matchanswer1">A.</label>
+                <select id="matchanswer1" name="matchanswer1" formControlName="multipleChoice1">
+          <option value=" ">--</option>
+          <option *ngFor="let answer of currentQuestionDto?.answers" [value]="answer.answerId">
+            {{answer.answerId}}. {{answer.answer}}
+          </option>
+        </select>
+                <br />
+                <label for="matchanswer2">B.</label>
+                <select id="matchanswer2" name="matchanswer2" formControlName="multipleChoice2">
+                  <option value=" ">--</option>
+          <option *ngFor="let answer of currentQuestionDto?.answers" [value]="answer.answerId">
+            {{answer.answerId}}. {{answer.answer}}
+          </option>
+        </select>
+                <br />
+                <label for="matchanswer3">C.</label>
+                <select id="matchanswer3" name="matchanswer3" formControlName="multipleChoice3">
+                  <option value=" ">--</option>
+          <option *ngFor="let answer of currentQuestionDto?.answers" [value]="answer.answerId">
+            {{answer.answerId}}. {{answer.answer}}
+          </option>
+        </select>
+                <br />
+                <label for="matchanswer4">D.</label>
+                <select id="matchanswer4" name="matchanswer4" formControlName="multipleChoice4">
+                  <option value=" ">--</option>
+          <option *ngFor="let answer of currentQuestionDto?.answers" [value]="answer.answerId">
+            {{answer.answerId}}. {{answer.answer}}
+          </option>
+        </select>
+            </div>
+            <div id="formFillIn" *ngIf="currentQuestionDto?.answerType == 2">
+                <label for="textAnswer">Your answer:</label>
+                <input id="textAnswer" name="textAnswer" formControlName="textAnswer" type="text">
+            </div>
+            <button mat-button mat-accent type="submit">Save your answer</button>
+        </form>
+    </div>
+    <div id="answered" *ngIf="answerSubmitted">
+        <p>{{answerReturn}}</p>
+    </div>
 </div>

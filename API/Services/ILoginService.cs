@@ -9,6 +9,6 @@ namespace GeekOff.Services
 {
     public interface ILoginService
     {
-        Task<UserInfoDto> Login(string badgeId);
+        Task<UserInfoDto> Login(string userId);
     }
 }
