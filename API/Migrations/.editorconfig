@@ -1,4 +1,4 @@
 ###############################################################################
-# Top-most EditorConfig file
+# Editor config to ignore the contents of the generate migration files from syntax analysis
 ###############################################################################
 root = true
