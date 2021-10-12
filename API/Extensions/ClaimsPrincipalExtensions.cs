@@ -10,7 +10,7 @@ namespace GeekOff.Helpers
             Claim claim = principal.Claims.FirstOrDefault(c => c.Type == "preferred_username");
             try
             {
-                return claim.Value.Substring(0,6);
+                return claim.Value;
             }
             catch
             {

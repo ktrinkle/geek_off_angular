@@ -89,10 +89,10 @@ namespace GeekOff.Services
                                     Bonus = tr.Dollarraised >= 200 ? 10 : tr.Dollarraised > 100 ? (int)(tr.Dollarraised - 100)/10 : 0,
                                     Q = (from q in _contextGo.QuestionAns
                                         join s in _contextGo.Scoring
-                                        on new {q.RoundNo, q.QuestionNo, q.Yevent} 
-                                        equals new {s.RoundNo, s.QuestionNo, s.Yevent} into sq
+                                        on new {q.RoundNo, q.QuestionNo, q.Yevent, tr.TeamNo} 
+                                        equals new {s.RoundNo, s.QuestionNo, s.Yevent, s.TeamNo} into sq
                                         from sqi in sq.DefaultIfEmpty()
-                                        where q.RoundNo == 1 && q.Yevent == tr.Yevent && sqi.TeamNo == tr.TeamNo
+                                        where q.RoundNo == 1 && q.Yevent == tr.Yevent
                                         select new Round1ScoreDetail()
                                         {
                                             QuestionId = q.QuestionNo,
@@ -172,8 +172,19 @@ namespace GeekOff.Services
                 return "Unable to load question.";
             }
 
+            var submittedTeams = submittedAnswers.Select(t => t.TeamNo).ToList();
+
             var correctAnswer = questionInfo.CorrectAnswer;
             var scoring = new List<Scoring>();
+
+            // remove existing answers for the auto-score process
+            var answersToRemove = await _contextGo.Scoring.Where(s => s.Yevent == yEvent && s.RoundNo == 1 && submittedTeams.Contains(s.TeamNo) && s.QuestionNo == questionId).ToListAsync();
+
+            if (answersToRemove is not null)
+            {
+                _contextGo.Scoring.RemoveRange(answersToRemove);
+                await _contextGo.SaveChangesAsync();
+            }
 
             foreach(UserAnswer answer in submittedAnswers)
             {

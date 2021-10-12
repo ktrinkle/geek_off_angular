@@ -107,23 +107,23 @@ export class DataService {
 
   public finalizeRound1(yEvent: string): Observable<any> {
     var uri = this.REST_API_SERVER + '/api/round1/finalize/' + encodeURIComponent(yEvent) + '';
-    return this.httpClient.put(uri, {responseType: 'text'});
+    return this.httpClient.put(uri, {}, {responseType: 'text'});
   }
 
   public finalizeRound2(yEvent: string): Observable<any> {
     var uri = this.REST_API_SERVER + '/api/round2/finalize/' + encodeURIComponent(yEvent) + '';
-    return this.httpClient.put(uri, {responseType: 'text'});
+    return this.httpClient.put(uri, {}, {responseType: 'text'});
   }
 
   public round1AutoScore(yEvent: string, questionId: number): Observable<any> {
     var uri = this.REST_API_SERVER + '/api/round1/scoreAnswer/' + encodeURIComponent(yEvent) + '/' + encodeURIComponent(questionId) + '';
     console.log(uri);
-    return this.httpClient.put(uri, {responseType: 'text'});
+    return this.httpClient.put(uri, {}, {responseType: 'text'});
   }
 
   public round1ManualScore(yEvent: string, questionId: number, teamNum: number): Observable<any> {
     var uri = this.REST_API_SERVER + '/api/round1/scoreManualAnswer/' + encodeURIComponent(yEvent) + '/' + encodeURIComponent(questionId) + '/' + encodeURIComponent(teamNum) + '';
-    return this.httpClient.put(uri, {responseType: 'text'});
+    return this.httpClient.put(uri, {}, {responseType: 'text'});
   }
 
   public changeIntroPage(page: string): Promise<any> {
