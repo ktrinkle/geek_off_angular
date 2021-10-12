@@ -121,9 +121,9 @@ export class DataService {
     return this.httpClient.put(uri, {}, {responseType: 'text'});
   }
 
-  public round1ManualScore(yEvent: string, questionId: number, teamNum: number): Observable<any> {
+  public round1ManualScore(yEvent: string, questionId: number, teamNum: number): Promise<any> {
     var uri = this.REST_API_SERVER + '/api/round1/scoreManualAnswer/' + encodeURIComponent(yEvent) + '/' + encodeURIComponent(questionId) + '/' + encodeURIComponent(teamNum) + '';
-    return this.httpClient.put(uri, {}, {responseType: 'text'});
+    return this.httpClient.put(uri, {}, {responseType: 'text'}).toPromise();
   }
 
   public changeIntroPage(page: string): Promise<any> {

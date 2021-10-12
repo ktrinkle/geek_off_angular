@@ -191,25 +191,29 @@ namespace GeekOff.Services
 
             var scorestoRemove = await _contextGo.Roundresult.Where(r => r.Yevent == yEvent && r.RoundNo == roundNum).ToListAsync();
 
-            if (!(scorestoRemove is null))
+            if (scorestoRemove.Count > 0)
             {
                 _contextGo.RemoveRange(scorestoRemove);
                 await _contextGo.SaveChangesAsync();
             }
 
             // add the new records
-            var scorestoAdd = from s in totalPoints
-            orderby s.FinalScore descending
-            select new Roundresult()
-            {
-                Yevent = yEvent,
-                TeamNo = s.TeamNo,
-                RoundNo = roundNum,
-                Ptswithbonus = s.FinalScore,
-                rnk = (from r in totalPoints
-                        where r.FinalScore > s.FinalScore
-                        select r).Count() + 1
-            };
+            var scorestoAdd = (from s in totalPoints
+                                orderby s.FinalScore descending
+                                select new Roundresult()
+                                {
+                                    Yevent = yEvent,
+                                    TeamNo = s.TeamNo,
+                                    RoundNo = roundNum,
+                                    Ptswithbonus = s.FinalScore,
+                                    rnk = (from r in totalPoints
+                                            where r.FinalScore > s.FinalScore
+                                            select r).Count() + 1
+                                }).ToList();
+
+            await _contextGo.Roundresult.AddRangeAsync(scorestoAdd);
+            await _contextGo.SaveChangesAsync();
+
 
             return "Scores have been finalized in the system.";
 
