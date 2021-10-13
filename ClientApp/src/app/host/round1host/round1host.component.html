@@ -1,0 +1,26 @@
+<div id="currentAnswer" style="padding: 10px;">
+    <div *ngIf="currentQuestionDto.questionNum > 0">
+        {{currentQuestionDto.questionNum}}. {{currentQuestionDto.questionText}}
+    </div>
+    <hr />
+    <h3>Round 1 - Current team answers</h3>
+    <mat-table class="round1ControlScoreboard" [dataSource]="teamAnswers">
+        <ng-container matColumnDef="sbteamNo">
+            <mat-header-cell *matHeaderCellDef> Team # </mat-header-cell>
+            <mat-cell *matCellDef="let row">
+                {{row.teamNum}}
+            </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="sbteamAnswer">
+            <mat-header-cell *matHeaderCellDef> Team Answer </mat-header-cell>
+            <mat-cell *matCellDef="let row">
+                {{row.textAnswer}}
+            </mat-cell>
+        </ng-container>
+
+        <!-- Header and Row Declarations -->
+        <mat-header-row *matHeaderRowDef="['teamButton','sbteamNo', 'sbteamAnswer']"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: ['teamButton','sbteamNo', 'sbteamAnswer']"></mat-row>
+    </mat-table>
+</div>

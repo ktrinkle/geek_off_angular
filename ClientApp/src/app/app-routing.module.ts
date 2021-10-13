@@ -14,6 +14,7 @@ import { Round1IntroComponent } from './round1/intro/intro.component';
 import { Round1DisplayQuestionComponent } from './round1/display-question/display-question.component';
 import { Round1ScoreboardComponent } from './round1/scoreboard/scoreboard.component';
 import { Round1ControlComponent } from './control/round1control/round1control.component';
+import { Round1hostComponent } from './host/round1host/round1host.component';
 
 import { MsalGuard, MsalRedirectComponent } from '@azure/msal-angular';
 import { BrowserUtils } from '@azure/msal-browser';
@@ -100,7 +101,10 @@ const routes: Routes = [
     path: 'round2/scoreboard',
     component: Round2scoreboardComponent,
     pathMatch: 'full',
-    canActivate: [MsalGuard]
+    canActivate: [MsalGuard, PlayerGuard],
+    data: {
+      expectedRole: roles.Admin
+    }
   },
   {
     path: 'control/round1',
@@ -123,6 +127,15 @@ const routes: Routes = [
   {
     path: 'host/round2',
     component: Round2hostComponent,
+    pathMatch: 'full',
+    canActivate: [MsalGuard, PlayerGuard],
+    data: {
+      expectedRole: roles.Admin
+    }
+  },
+  {
+    path: 'host/round1',
+    component: Round1hostComponent,
     pathMatch: 'full',
     canActivate: [MsalGuard, PlayerGuard],
     data: {
