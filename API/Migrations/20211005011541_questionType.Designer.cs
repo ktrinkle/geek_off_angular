@@ -9,9 +9,9 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace geek_off_angular.Migrations
 {
-    [DbContext(typeof(contextGo))]
+    [DbContext(typeof(ContextGo))]
     [Migration("20211005011541_questionType")]
-    partial class questionType
+    partial class QuestionType
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

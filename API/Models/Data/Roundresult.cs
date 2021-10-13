@@ -12,6 +12,6 @@ namespace GeekOff.Data
         public int RoundNo { get; set; }
         public int TeamNo { get; set; }
         public decimal? Ptswithbonus { get; set; }
-        public int? rnk { get; set; }
+        public int? Rnk { get; set; }
     }
 }

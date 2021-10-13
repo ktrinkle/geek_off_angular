@@ -1,6 +1,6 @@
 using System;
-using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
 namespace GeekOff.Models
@@ -12,7 +12,7 @@ namespace GeekOff.Models
         public List<Round1Answers> Answers { get; set; }
         public DateTime ExpireTime { get; set; }
         public QuestionAnswerType AnswerType { get; set; }
-        
+
     }
 
     public class Round1Answers

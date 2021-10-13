@@ -6,7 +6,7 @@ namespace GeekOff.Data
 {
     public static class ModelBuilderExtensions
     {
-        public static readonly List<EventMaster> eventMaster = new List<EventMaster>() 
+        public static readonly List<EventMaster> EventMaster = new()
         {
             new EventMaster()
             {
@@ -21,7 +21,7 @@ namespace GeekOff.Data
             }
         };
 
-        public static readonly List<QuestionAns> questionAns = new List<QuestionAns>()
+        public static readonly List<QuestionAns> QuestionAns = new()
         {
             new QuestionAns()
             {
@@ -32,7 +32,7 @@ namespace GeekOff.Data
             }
         };
 
-        public static readonly List<Scoreposs> scorePoss = new List<Scoreposs>() 
+        public static readonly List<Scoreposs> ScorePoss = new()
         {
             new Scoreposs()
             {
@@ -81,7 +81,7 @@ namespace GeekOff.Data
             }
         };
 
-        public static readonly List<Teamreference> teamReference = new List<Teamreference>() 
+        public static readonly List<Teamreference> TeamReference = new()
         {
             new Teamreference()
             {
@@ -96,7 +96,7 @@ namespace GeekOff.Data
             }
         };
 
-        public static readonly List<TeamUser> teamUser = new List<TeamUser>()
+        public static readonly List<TeamUser> TeamUser = new()
         {
             new TeamUser()
             {
@@ -154,7 +154,7 @@ namespace GeekOff.Data
                 Username = "jay.cox_aa.com#EXT#@geekoff.onmicrosoft.com",
                 PlayerName = "Jay Cox",
                 AdminFlag = true
-            },   
+            },
             new TeamUser()
             {
                 Id = 106,
@@ -176,7 +176,7 @@ namespace GeekOff.Data
                 PlayerNum = 1,
                 WorkgroupName = "Information Technology",
                 AdminFlag = false
-            }, 
+            },
             new TeamUser()
             {
                 Id = 108,
@@ -187,33 +187,18 @@ namespace GeekOff.Data
                 PlayerNum = 0,
                 WorkgroupName = "Information Technology",
                 AdminFlag = true
-            },          
+            },
         };
 
-        public static void CreateEventMasterData(this ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<EventMaster>().HasData(eventMaster.ToArray());
-        }
+        public static void CreateEventMasterData(this ModelBuilder modelBuilder) => modelBuilder.Entity<EventMaster>().HasData(EventMaster.ToArray());
 
-        public static void CreateScorepossData(this ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<Scoreposs>().HasData(scorePoss.ToArray());
-        }
+        public static void CreateScorepossData(this ModelBuilder modelBuilder) => modelBuilder.Entity<Scoreposs>().HasData(ScorePoss.ToArray());
 
-        public static void CreateQuestionAnsData(this ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<QuestionAns>().HasData(questionAns.ToArray());
-        }
+        public static void CreateQuestionAnsData(this ModelBuilder modelBuilder) => modelBuilder.Entity<QuestionAns>().HasData(QuestionAns.ToArray());
 
-        public static void CreateTeamReferenceData(this ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<Teamreference>().HasData(teamReference.ToArray());
-        }
+        public static void CreateTeamReferenceData(this ModelBuilder modelBuilder) => modelBuilder.Entity<Teamreference>().HasData(TeamReference.ToArray());
 
-        public static void CreateTeamUserData(this ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<TeamUser>().HasData(teamUser.ToArray());
-        }
+        public static void CreateTeamUserData(this ModelBuilder modelBuilder) => modelBuilder.Entity<TeamUser>().HasData(TeamUser.ToArray());
     }
 
 
