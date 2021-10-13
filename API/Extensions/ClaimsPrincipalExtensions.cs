@@ -1,5 +1,5 @@
-using System.Security.Claims;
 using System.Linq;
+using System.Security.Claims;
 
 namespace GeekOff.Helpers
 {
@@ -7,7 +7,7 @@ namespace GeekOff.Helpers
     {
         public static string UserId(this ClaimsPrincipal principal)
         {
-            Claim claim = principal.Claims.FirstOrDefault(c => c.Type == "preferred_username");
+            var claim = principal.Claims.FirstOrDefault(c => c.Type == "preferred_username");
             try
             {
                 return claim.Value;

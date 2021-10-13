@@ -1,20 +1,20 @@
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
-using Microsoft.EntityFrameworkCore;
-using System.Security.Claims;
 using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
 using GeekOff.Data;
 using GeekOff.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace GeekOff.Services
 {
-    public class LoginService: ILoginService
+    public class LoginService : ILoginService
     {
-        private readonly contextGo _contextGo;
+        private readonly ContextGo _contextGo;
         private readonly ILogger<LoginService> _logger;
-        public LoginService(ILogger<LoginService> logger, contextGo context)
+        public LoginService(ILogger<LoginService> logger, ContextGo context)
         {
             _logger = logger;
             _contextGo = context;
