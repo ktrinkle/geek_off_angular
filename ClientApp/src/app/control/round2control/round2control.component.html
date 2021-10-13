@@ -1,3 +1,4 @@
+<div class="content" fxLayout="row wrap" fxLayoutGap="16px grid">
 <form [formGroup]="newEventForm">
   <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="100%" style="vertical-align: middle; min-height: 75px; padding: 10px;">
     <mat-grid-list cols="12" rowHeight="30px" gutterSize="10px">
@@ -56,5 +57,44 @@
     </mat-grid-list>
   </div>
 </form>
+  <div id="currentScoreboard" fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="100%" style="padding: 10px;">
+    <h3>Round 2 Scoreboard</h3>
+    <mat-table class="round2ControlScoreboard" [dataSource]="scoreboard">
+        <ng-container matColumnDef="teamNo">
+            <mat-header-cell *matHeaderCellDef> Team # </mat-header-cell>
+            <mat-cell *matCellDef="let row">
+                {{row.teamNo}}
+            </mat-cell>
+        </ng-container>
 
-<button (click)="toggleBonusQuestion()">Toggle Bonus Question</button>
+        <ng-container matColumnDef="teamScore">
+            <mat-header-cell *matHeaderCellDef> Team Score </mat-header-cell>
+            <mat-cell *matCellDef="let row">
+                {{row.teamScore}}
+            </mat-cell>
+        </ng-container>
+
+        <!-- Header and Row Declarations -->
+        <mat-header-row *matHeaderRowDef="['teamNo', 'teamScore']"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: ['teamNo', 'teamScore']"></mat-row>
+    </mat-table>
+    <button id="updateScoreboard" (click)="updateRemoteScoreboard()">Send scoreboard update</button>
+    <button (click)="toggleBonusQuestion()">Toggle Bonus Question</button>
+    <button (click)="playBuzzer()">Play Buzzer</button>
+    <button (click)="playDings()">Play Dings</button>
+  </div>
+  <div id="changeDisplay" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%" style="padding: 10px;">
+    <form [formGroup]="pickAnimateForm">
+      <label for="currentDisplayId">Select a status:</label>
+      <select id="currentDisplayId" formControlName="currentDisplayId">
+    <option>--</option>
+    <option *ngFor="let list of displayList" [value]="list.key">
+      {{list.value}}
+    </option>
+  </select>
+      <button id="revealAnswer" type="submit" (click)="showDisplayBoardValue()">Show Answer</button>
+  </form>
+  </div>
+</div>
+
+

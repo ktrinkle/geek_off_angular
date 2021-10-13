@@ -77,7 +77,7 @@ namespace GeekOff.Controllers
             => Ok(await _scoreService.GetRound23Scores(yEvent, 2));
 
         [Authorize(Roles = "admin")]
-        [HttpGet("bigboard/reveal")]
+        [HttpGet("bigboard/reveal/{entryNum}")]
         [SwaggerOperation(Summary = "Send message to reveal scoreboard")]
         public async Task<ActionResult> RevealAnswerAsync(int entryNum)
         {
