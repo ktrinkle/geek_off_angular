@@ -22,3 +22,7 @@ button {
 button:hover {
   cursor: pointer;
 }
+
+mat-row, mat-footer-row {
+  min-height: 24px;
+}

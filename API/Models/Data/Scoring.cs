@@ -17,7 +17,7 @@ namespace GeekOff.Data
         public string TeamAnswer { get; set; }
         public int? PlayerNum { get; set; }
         public int? PointAmt { get; set; }
-        public int? Round3neg { get; set;}
+        public int? Round3neg { get; set; }
         public int? FinalJep { get; set; }
         public DateTime Updatetime { get; set; }
     }

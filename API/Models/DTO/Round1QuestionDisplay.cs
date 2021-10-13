@@ -1,6 +1,6 @@
 using System;
-using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
 namespace GeekOff.Models
@@ -15,5 +15,5 @@ namespace GeekOff.Models
         public string MediaFile { get; set; }
         public string MediaType { get; set; }
     }
-    
+
 }

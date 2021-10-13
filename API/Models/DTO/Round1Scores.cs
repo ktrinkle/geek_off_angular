@@ -1,6 +1,6 @@
 using System;
-using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
 namespace GeekOff.Models
@@ -13,7 +13,7 @@ namespace GeekOff.Models
         public int? TeamScore { get; set; }
         public int? Bonus { get; set; }
         public int? Rnk { get; set; }
-        
+
     }
 
     public class Round1ScoreDetail

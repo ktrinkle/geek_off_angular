@@ -1,12 +1,12 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import * as signalR from '@microsoft/signalr';
+import { environment } from 'src/environments/environment';
 import { MatTable } from '@angular/material/table';
 import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { DataService } from 'src/app/data.service';
 import { round2Answers, round2Display, round2SurveyList } from 'src/app/data/data';
-import { selectRound2AllSurvey } from 'src/app/store';
-import { round2AllSurvey } from 'src/app/store/round2/round2.actions';
 
 export interface displayRow {
   player1: round2Answers;
@@ -20,7 +20,7 @@ export interface displayRow {
 export class Round2displayComponent implements OnInit, OnDestroy {
   @ViewChild(MatTable, { static: true }) table!: MatTable<any>;
   destroy$: Subject<boolean> = new Subject<boolean>();
-  yEvent = 'e21'
+  yEvent = sessionStorage.getItem('event') ?? '';
   teamNumber = 1;
   displayObject: round2Display = {
     teamNo: 0,
@@ -36,6 +36,28 @@ export class Round2displayComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    const connection = new signalR.HubConnectionBuilder()
+      .configureLogging(signalR.LogLevel.Information)
+      .withUrl(environment.api_url + '/events')
+      .build();
+
+    connection.start().then(function () {
+      console.log('SignalR Connected!');
+    }).catch(function (err) {
+      return console.error(err.toString());
+    });
+
+    connection.on("round2Answer", (data: any) => { this.getDisplayBoard(); });
+
+    this.getDisplayBoard();
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next(true);
+    this.destroy$.unsubscribe();
+  }
+
+  getDisplayBoard(): void {
     this.dataService.getRound2DisplayBoard(this.yEvent, this.teamNumber).pipe(takeUntil(this.destroy$)).subscribe(x => {
       this.teamNumber = x.teamNo;
       let questionNumbers = [...new Set([...x.player1Answers.map((q: round2Answers) => q.questionNum), ...x.player2Answers.map((q: round2Answers) => q.questionNum)])];
@@ -52,10 +74,4 @@ export class Round2displayComponent implements OnInit, OnDestroy {
       this.table.renderRows();
     });
   }
-
-  ngOnDestroy() {
-    this.destroy$.next(true);
-    this.destroy$.unsubscribe();
-  }
-
 }
