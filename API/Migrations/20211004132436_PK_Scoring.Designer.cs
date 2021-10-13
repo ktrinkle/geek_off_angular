@@ -9,7 +9,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace geek_off_angular.Migrations
 {
-    [DbContext(typeof(contextGo))]
+    [DbContext(typeof(ContextGo))]
     [Migration("20211004132436_PK_Scoring")]
     partial class PK_Scoring
     {
