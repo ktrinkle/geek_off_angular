@@ -9,7 +9,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace geek_off_angular.Migrations
 {
-    [DbContext(typeof(contextGo))]
+    [DbContext(typeof(ContextGo))]
     [Migration("20210929163048_InitialData_PlayerNum")]
     partial class InitialData_PlayerNum
     {

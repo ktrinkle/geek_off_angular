@@ -1,19 +1,19 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Collections.Generic;
-using Microsoft.Extensions.Logging;
-using Microsoft.EntityFrameworkCore;
 using GeekOff.Data;
 using GeekOff.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace GeekOff.Services
 {
     public class QuestionService : IQuestionService
     {
-        private readonly contextGo _contextGo;
+        private readonly ContextGo _contextGo;
         private readonly ILogger<QuestionService> _logger;
-        public QuestionService(ILogger<QuestionService> logger, contextGo context)
+        public QuestionService(ILogger<QuestionService> logger, ContextGo context)
         {
             _logger = logger;
             _contextGo = context;
@@ -21,7 +21,7 @@ namespace GeekOff.Services
 
         public async Task<Round1QuestionDisplay> GetRound1Question(string yEvent, int questionNo)
         {
-            var question = await _contextGo.QuestionAns.SingleOrDefaultAsync(q => q.QuestionNo == questionNo 
+            var question = await _contextGo.QuestionAns.SingleOrDefaultAsync(q => q.QuestionNo == questionNo
                                                                             && q.Yevent == yEvent
                                                                             && q.RoundNo == 1);
 
@@ -31,14 +31,14 @@ namespace GeekOff.Services
             }
 
             var questionReturn = new Round1QuestionDisplay()
-                                {
-                                    QuestionNum = questionNo,
-                                    QuestionText = question.TextQuestion,
-                                    Answers = new List<Round1Answers>(),
-                                    MediaFile = question.MediaFile,
-                                    MediaType = question.MediaType,
-                                    CorrectAnswer = question.CorrectAnswer
-                                };
+            {
+                QuestionNum = questionNo,
+                QuestionText = question.TextQuestion,
+                Answers = new List<Round1Answers>(),
+                MediaFile = question.MediaFile,
+                MediaType = question.MediaType,
+                CorrectAnswer = question.CorrectAnswer
+            };
 
             if (question.MultipleChoice == true)
             {
@@ -59,7 +59,7 @@ namespace GeekOff.Services
                     AnswerId = 3,
                     Answer = question.TextAnswer3,
                 });
-                
+
                 questionReturn.Answers.Add(new Round1Answers()
                 {
                     AnswerId = 4,
@@ -73,13 +73,13 @@ namespace GeekOff.Services
             {
                 questionReturn.AnswerType = QuestionAnswerType.FreeText;
             }
-            
+
             return questionReturn;
         }
 
         public async Task<Round1QuestionDto> GetRound1QuestionWithAnswer(string yEvent, int questionNo)
         {
-            var question = await _contextGo.QuestionAns.SingleOrDefaultAsync(q => q.QuestionNo == questionNo 
+            var question = await _contextGo.QuestionAns.SingleOrDefaultAsync(q => q.QuestionNo == questionNo
                                                                             && q.Yevent == yEvent
                                                                             && q.RoundNo == 1);
 
@@ -89,12 +89,12 @@ namespace GeekOff.Services
             }
 
             var questionReturn = new Round1QuestionDto()
-                                {
-                                    QuestionNum = questionNo,
-                                    QuestionText = question.TextQuestion,
-                                    Answers = new List<Round1Answers>(),
-                                    ExpireTime = DateTime.UtcNow.AddSeconds(60)
-                                };
+            {
+                QuestionNum = questionNo,
+                QuestionText = question.TextQuestion,
+                Answers = new List<Round1Answers>(),
+                ExpireTime = DateTime.UtcNow.AddSeconds(60)
+            };
 
             if (question.MultipleChoice == true)
             {
@@ -115,7 +115,7 @@ namespace GeekOff.Services
                     AnswerId = 3,
                     Answer = question.TextAnswer3,
                 });
-                
+
                 questionReturn.Answers.Add(new Round1Answers()
                 {
                     AnswerId = 4,
@@ -129,7 +129,7 @@ namespace GeekOff.Services
             {
                 questionReturn.AnswerType = QuestionAnswerType.FreeText;
             }
-            
+
             return questionReturn;
         }
 
@@ -140,7 +140,7 @@ namespace GeekOff.Services
             var questions = await _contextGo.QuestionAns.Where(q => q.Yevent == yEvent
                                                         && q.RoundNo == 1).ToListAsync();
 
-            foreach (QuestionAns question in questions)
+            foreach (var question in questions)
             {
                 var answerType = new QuestionAnswerType();
                 if (question.MultipleChoice == false)
@@ -157,8 +157,9 @@ namespace GeekOff.Services
                 {
                     answerType = QuestionAnswerType.MultipleChoice;
                 }
-               
-                var transformedQuestion = new Round1QuestionControlDto() {
+
+                var transformedQuestion = new Round1QuestionControlDto()
+                {
                     QuestionNum = question.QuestionNo,
                     QuestionText = question.TextQuestion,
                     AnswerType = answerType,
@@ -168,23 +169,23 @@ namespace GeekOff.Services
                 returnList.Add(transformedQuestion);
             }
 
-            return returnList;     
+            return returnList;
         }
 
         public async Task<bool> SubmitRound1Answer(string yEvent, int questionId, string answerText, string answerUser)
         {
             // test values
-            if (questionId < 1 || questionId > 99)
+            if (questionId is < 1 or > 99)
             {
                 return false;
             }
 
-            if (answerText is null || answerText == "")
+            if (answerText is null or "")
             {
                 return false;
             }
 
-            if (answerUser is null || answerUser == "000000")
+            if (answerUser is null or "000000")
             {
                 return false;
             }

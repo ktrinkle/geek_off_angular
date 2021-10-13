@@ -1,14 +1,14 @@
 using System;
-using Microsoft.EntityFrameworkCore;
 using System.Text.RegularExpressions;
+using Microsoft.EntityFrameworkCore;
 
 namespace GeekOff.Data
 {
-    public partial class contextGo : DbContext
+    public partial class ContextGo : DbContext
     {
-        public contextGo() { }
+        public ContextGo() { }
 
-        public contextGo(DbContextOptions<contextGo> options)
+        public ContextGo(DbContextOptions<ContextGo> options)
             : base(options) { }
 
         public virtual DbSet<CurrentQuestion> CurrentQuestion { get; set; }
@@ -38,30 +38,15 @@ namespace GeekOff.Data
             }
 
             // handle composite PK
-            modelBuilder.Entity<QuestionAns>(entity => 
-            {
-                entity.HasKey(k => new {k.Yevent, k.RoundNo, k.QuestionNo});
-            });
+            modelBuilder.Entity<QuestionAns>(entity => entity.HasKey(k => new { k.Yevent, k.RoundNo, k.QuestionNo }));
 
-            modelBuilder.Entity<Scoreposs>(entity => 
-            {
-                entity.HasKey(k => new {k.Yevent, k.RoundNo, k.QuestionNo, k.SurveyOrder});
-            });
+            modelBuilder.Entity<Scoreposs>(entity => entity.HasKey(k => new { k.Yevent, k.RoundNo, k.QuestionNo, k.SurveyOrder }));
 
-            modelBuilder.Entity<Roundresult>(entity => 
-            {
-                entity.HasKey(k => new {k.Yevent, k.RoundNo, k.TeamNo});
-            });
+            modelBuilder.Entity<Roundresult>(entity => entity.HasKey(k => new { k.Yevent, k.RoundNo, k.TeamNo }));
 
-            modelBuilder.Entity<Teamreference>(entity => 
-            {
-                entity.HasKey(k => new {k.Yevent, k.TeamNo});
-            });
+            modelBuilder.Entity<Teamreference>(entity => entity.HasKey(k => new { k.Yevent, k.TeamNo }));
 
-            modelBuilder.Entity<UserAnswer>(entity => 
-            {
-                entity.HasKey(k => new {k.Yevent, k.RoundNo, k.TeamNo, k.QuestionNo});
-            });
+            modelBuilder.Entity<UserAnswer>(entity => entity.HasKey(k => new { k.Yevent, k.RoundNo, k.TeamNo, k.QuestionNo }));
 
             modelBuilder.CreateEventMasterData();
             modelBuilder.CreateQuestionAnsData();
