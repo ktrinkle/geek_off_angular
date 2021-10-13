@@ -23,6 +23,11 @@ button:hover {
   cursor: pointer;
 }
 
+div.container {
+  vertical-align: middle;
+  min-height: 75px;
+  padding: 10px;
+
 mat-row, mat-footer-row {
   min-height: 24px;
 }

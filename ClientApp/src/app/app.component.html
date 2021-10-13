@@ -1,13 +1,14 @@
 <div class="container-app">
 <mat-toolbar color="primary" *ngIf="showLoginBar">
-  <a class="title" href="/">{{ title }}</a>
+  <a class="title" href="/">{{ title }} Home</a>
 
-  <div class="toolbar-spacer"></div>
-  <div class="username" *ngIf="profile">{{profile.playerName}} {{profile.teamNum}}</div>
+  <span class="spacer"></span>
+  <div class="username" *ngIf="profile">{{profile.playerName}}, Team #{{profile.teamNum}}</div>
+  <span class="spacer"></span>
 
   <div>
-  <button class="right" mat-raised-button *ngIf="!loginDisplay" (click)="login()">Login</button>
-  <button class="right" mat-raised-button *ngIf="loginDisplay" (click)="logout()">Logout</button>
+    <button class="btn-login" mat-raised-button *ngIf="!loginDisplay" (click)="login()">Login</button>
+    <button class="btn-login" mat-raised-button *ngIf="loginDisplay" (click)="logout()">Logout</button>
   </div>
 
 </mat-toolbar>
