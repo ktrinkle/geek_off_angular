@@ -13,6 +13,10 @@ import { HomeComponent } from './home/home.component';
 import { Round1ContestantComponent } from './round1/contestant/contestant.component';
 import { Round1ControlComponent } from './control/round1control/round1control.component';
 import { Round2scoreboardComponent } from './round2/round2scoreboard/round2scoreboard.component';
+import { Round1hostComponent } from './host/round1host/round1host.component';
+import { Round1IntroComponent } from './round1/intro/intro.component';
+import { Round1DisplayQuestionComponent } from './round1/display-question/display-question.component';
+import { Round1ScoreboardComponent } from './round1/scoreboard/scoreboard.component';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -27,14 +31,11 @@ import { Round2Effects } from './store/round2/round2.effects';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { IPublicClientApplication, PublicClientApplication, InteractionType } from '@azure/msal-browser';
-import { MsalGuard, MsalBroadcastService, MsalModule, MsalService, MSAL_GUARD_CONFIG, MSAL_INSTANCE, MSAL_INTERCEPTOR_CONFIG, MsalGuardConfiguration, MsalRedirectComponent, MsalInterceptor, MsalInterceptorConfiguration } from '@azure/msal-angular';
 
 
 // MSAL config
+import { MsalGuard, MsalBroadcastService, MsalModule, MsalService, MSAL_GUARD_CONFIG, MSAL_INSTANCE, MSAL_INTERCEPTOR_CONFIG, MsalGuardConfiguration, MsalRedirectComponent, MsalInterceptor, MsalInterceptorConfiguration } from '@azure/msal-angular';
 import { msalConfig, protectedResources } from '../auth/auth-config';
-import { Round1IntroComponent } from './round1/intro/intro.component';
-import { Round1DisplayQuestionComponent } from './round1/display-question/display-question.component';
-import { Round1ScoreboardComponent } from './round1/scoreboard/scoreboard.component';
 
 // Material
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -110,7 +111,8 @@ export function MSALInterceptorFactory(): MsalInterceptorConfiguration {
     Round1DisplayQuestionComponent,
     Round1ScoreboardComponent,
     Round1ControlComponent,
-    PregameComponent
+    PregameComponent,
+    Round1hostComponent
   ],
   imports: [
     BrowserModule,
