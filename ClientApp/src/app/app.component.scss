@@ -1,12 +1,21 @@
-spanright {
-  float: right;
-}
-
-button.right {
+span.right {
   float: right;
 }
 
 mat-toolbar {
-  height: 7vh;
+  height: 15vh;
   margin: 0;
+}
+
+span.spacer {
+  flex: 1 1 auto;
+}
+
+.btn-login {
+  height: 2rem;
+  float: right;
+}
+
+a:visited {
+  color: white;
 }
