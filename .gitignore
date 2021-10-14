@@ -243,3 +243,7 @@ ClientApp/src/environments/auth*.ts
 
 # Ignore Rider config folder
 .idea
+ClientApp/src/app/round2/round2display/round2display.component.css-ff
+ClientApp/src/app/round2/round2display/round2display.component.html-ff
+ClientApp/src/app/round2/round2display/round2display.component.html-old
+package-lock.json

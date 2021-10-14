@@ -7,21 +7,44 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { DataService } from 'src/app/data.service';
 import { round2Answers, round2Display, round2SurveyList } from 'src/app/data/data';
+import { trigger, state, style, animate, transition } from '@angular/animations';
 
 export interface displayRow {
   player1: round2Answers;
   player2: round2Answers;
 }
+
 @Component({
   selector: 'app-round2display',
   templateUrl: './round2display.component.html',
-  styleUrls: ['./round2display.component.scss']
+  styleUrls: ['./round2display.component.scss'],
+  animations: [
+    trigger('fadeInOut', [
+      state('void', style({
+        opacity: 0
+      })),
+      transition('void <=> *', animate(500)),
+    ]),
+    trigger('flipState', [
+      state('active', style({
+        transform: 'rotateY(179.9deg)'
+      })),
+      state('inactive', style({
+        transform: 'rotateY(0)'
+      })),
+      transition('active => inactive', animate('500ms ease-out')),
+      // transition('inactive => active', animate('500ms ease-in'))
+      transition('inactive => active', animate('500ms ease-in'))
+    ])
+  ]
 })
+
 export class Round2displayComponent implements OnInit, OnDestroy {
   @ViewChild(MatTable, { static: true }) table!: MatTable<any>;
   destroy$: Subject<boolean> = new Subject<boolean>();
   yEvent = sessionStorage.getItem('event') ?? '';
-  teamNumber = 1;
+  displayStatus = 0;
+  teamNumber = 2;
   displayObject: round2Display = {
     teamNo: 0,
     player1Answers: [],
@@ -47,7 +70,21 @@ export class Round2displayComponent implements OnInit, OnDestroy {
       return console.error(err.toString());
     });
 
-    connection.on("round2Answer", (data: any) => { this.getDisplayBoard(); });
+    connection.on("round2ChangeTeam", (data: any) => {
+      this.changeTeam(data);
+    });
+
+    connection.on("round2Answer", (data: any) => {
+      this.getDisplayBoard();
+    });
+
+    connection.on("round2AnswerShow", (data: any) => {
+      this.changeDisplayState(data);
+    });
+
+    connection.on("round2ShowPlayer1", (data: any) => {
+      this.revealPlayerOne();
+    });
 
     this.getDisplayBoard();
   }
@@ -73,5 +110,25 @@ export class Round2displayComponent implements OnInit, OnDestroy {
       }
       this.table.renderRows();
     });
+  }
+
+  changeDisplayState(state: number): void {
+    this.displayStatus = state;
+    console.log(this.displayStatus);
+  }
+
+  revealPlayerOne() {
+    for (let s = 1; s <= 10; s++) {
+      this.delay(500).then(()=> this.displayStatus = s);
+    }
+  }
+
+  changeTeam(teamNum: number) {
+    this.teamNumber = teamNum;
+    this.getDisplayBoard();
+  }
+
+  async delay(ms: number) {
+    await new Promise<void>(resolve => setTimeout(()=>resolve(), ms)).then(()=>console.log("fired"));
   }
 }

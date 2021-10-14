@@ -1,18 +1,88 @@
-mat-cell.mat-cell,
-mat-header-cell.mat-header-cell {
-  font-size: 100%;
-  clear: all;
-  height: auto;
-  font-family: eggcrate, Arial, Helvetica, sans-serif;
-  border: none !important;
+#bb {
+    position: fixed;
+    background-color: #000;
+    background-size: cover;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    color: #ffff00;
+    font-family: fastmoney;
+    font-size: 10vh;
+    width: 100vw;
+    height: 100vh;
+}
+
+mat-table.mat-table {
+    background-color: #000;
+    color: #ffff00;
+    font-family: fastmoney;
+    font-size: 10vh;
+}
+
+mat-cell {
+    font-size: 10vh;
+    color: #ffff00;
+    clear: all;
+    font-family: fastmoney;
+    border: none !important;
+    flex: auto;
+}
+
+.answercell {
+    width: 40vw;
+}
+
+.scorecell {
+    width: 20vw;
+}
+
+.answer {
+    font-size: 10vh;
+    clear: all;
+    font-family: fastmoney;
+    border: none !important;
+    overflow: hidden;
+    /* Ensures the content is not revealed until the animation */
+    white-space: nowrap;
+    /* Keeps the content on a single line */
+    //letter-spacing: .17em;
+    animation: reveal 0.5s steps(10, end);
+}
+
+.score {
+    font-size: 10vh;
+    clear: all;
+    width: 20vw;
+    font-family: fastmoney;
+    border: none !important;
+    overflow: hidden;
+    /* Ensures the content is not revealed until the animation */
+    white-space: nowrap;
+    /* Keeps the content on a single line */
+    animation: reveal 0.1s steps(2, end);
+}
+
+
+/* The typing effect */
+
+@keyframes reveal {
+    from {
+        width: 0
+    }
+    to {
+        width: 100%
+    }
 }
 
 .text {
-  font-family: eggcrate, Arial, Helvetica, sans-serif;
+    font-family: fastmoney;
+    font-size: 10vh;
+    height: 12.5vh;
 }
 
 mat-row,
 mat-header-row,
 mat-footer-row {
-  border-bottom: none;
+    border-bottom: none;
+    height: 12.5vh;
 }
