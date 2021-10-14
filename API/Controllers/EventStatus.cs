@@ -48,7 +48,7 @@ namespace GeekOff.Controllers
         public async Task<ActionResult<UserInfoDto>> GetUserInfoAsync()
         {
             var userId = User.UserId();
-            return userId == "000000" ? null : (ActionResult<UserInfoDto>)await _loginService.Login(userId);
+            return userId == null ? null : (ActionResult<UserInfoDto>)await _loginService.Login(userId);
         }
 
     }
