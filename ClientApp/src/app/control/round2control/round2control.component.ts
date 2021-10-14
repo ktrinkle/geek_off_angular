@@ -26,6 +26,7 @@ export class Round2controlComponent implements OnInit {
   public showBonusQuestion: boolean = false;
   public scoreboard: round23Scores[] = [];
   public currentDisplayId: number = 0;
+  public firstPlayerAnswers: round2Answers[] = [];
   buzzer = new Audio();
   dings = new Audio();
 
@@ -177,5 +178,12 @@ export class Round2controlComponent implements OnInit {
     // this will be values 0-20. 0 = hide all, 10 = show all player 1, 20 = show all
     var entryNum = this.pickAnimateForm.value.currentDisplayId;
     this._dataService.revealRound2Value(entryNum);
+  }
+
+  showFirstAnswers(form: FormGroup) {
+    console.log("Team Num: " + form.get("teamNum")?.value);
+    this._dataService.getRound2FirstPlayer(form.get("teamNum")?.value)
+                                               .subscribe((data: round2Answers[]) => this.firstPlayerAnswers = data);
+    console.log("FPA: " + this.firstPlayerAnswers);
   }
 }
