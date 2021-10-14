@@ -14,7 +14,7 @@ namespace GeekOff.Helpers
             }
             catch
             {
-                return "000000";
+                return null;
             }
         }
     }
