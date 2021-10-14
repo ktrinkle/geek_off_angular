@@ -44,7 +44,7 @@ export class Round2displayComponent implements OnInit, OnDestroy {
   destroy$: Subject<boolean> = new Subject<boolean>();
   yEvent = sessionStorage.getItem('event') ?? '';
   displayStatus = 0;
-  teamNumber = 1;
+  teamNumber = 2;
   displayObject: round2Display = {
     teamNo: 0,
     player1Answers: [],
