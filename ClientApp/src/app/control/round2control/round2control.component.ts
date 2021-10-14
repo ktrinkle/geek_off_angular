@@ -143,9 +143,9 @@ export class Round2controlComponent implements OnInit {
     this.newEventForm.get("questionNum")?.setValue(answer.questionNum);
   }
 
-  updateRemoteScoreboard()
+  async updateRemoteScoreboard()
   {
-    this._dataService.updateScoreboardRound2();
+    await this._dataService.updateScoreboardRound2();
     this.updateScoreboard();
   }
 
