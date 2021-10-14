@@ -237,56 +237,6 @@ $go-theme: mat.define-light-theme($go-primary, $go-accent, $go-warn);
 }
  */
 
-#bb {
-    width: 100%;
-    height: 100%;
-    background: #000;
-    font-family: eggcrate;
-    padding: 0px;
-    border: 0px;
-    color: #D7FF22;
-    vertical-align: middle;
-}
-
-#bb mat-table {
-    table-layout: fixed;
-}
-
-#bb th,
-#bb mat-table-cell {
-    background: #000;
-    font-family: eggcrate;
-    border: 0px;
-    color: #D7FF22;
-    font-size: 1.6vw;
-    padding: 0.3vh 0.3vw;
-    line-height: 1.1;
-}
-
-#bb .scoreteam {
-    width: 2.2vw;
-}
-
-#bb .teamname {
-    width: 16vw;
-}
-
-#bb .score {
-    width: 2.2vw;
-}
-
-#bb .bonus {
-    width: 8.1vw;
-}
-
-#bb .ttl {
-    width: 4.8vw;
-}
-
-#bb.teamnm {
-    width: 18.2vw;
-}
-
 .btngrnbg {
     background: #02856b;
     background-image: -webkit-linear-gradient(top, #02856b, #085747);

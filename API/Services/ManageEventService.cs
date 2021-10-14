@@ -333,7 +333,7 @@ namespace GeekOff.Services
                 QuestionTime = DateTime.UtcNow
             };
 
-            await _contextGo.CurrentQuestion.AddAsync(newQuestionStatus);
+            _contextGo.CurrentQuestion.Add(newQuestionStatus);
             await _contextGo.SaveChangesAsync();
 
             return new CurrentQuestionDto()
