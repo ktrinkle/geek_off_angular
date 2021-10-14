@@ -1,98 +1,99 @@
 mat-grid-list {
-  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
 .question-title {
-  position: absolute;
-  left: 10px;
-  font-size: large;
+    position: absolute;
+    left: 10px;
+    font-size: large;
 }
 
 input.answer-choice {
-  width: 150px;
+    width: 150px;
 }
 
 .answer-choice {
-  position: absolute;
-  left: 10px;
-  font-size: medium;
+    position: absolute;
+    left: 10px;
+    font-size: medium;
 }
 
 button {
-  color: #494949 !important;
-	text-transform: uppercase;
-	text-decoration: none;
-	background: #ffffff;
-	border: 2px solid #494949 !important;
-	display: inline-block;
-	transition: all 0.4s ease 0s;
+    color: #494949 !important;
+    text-transform: uppercase;
+    text-decoration: none;
+    background: #ffffff;
+    border: 2px solid #494949 !important;
+    display: inline-block;
+    transition: all 0.4s ease 0s;
 }
 
 button:hover {
-  color: #ffffff !important;
-  background: green;
-  border-color: green !important;
-  transition: all 0.4s ease 0s;
-  cursor: pointer;
+    color: #ffffff !important;
+    background: green;
+    border-color: green !important;
+    transition: all 0.4s ease 0s;
+    cursor: pointer;
 }
 
-mat-row, mat-footer-row {
-  min-height: 24px;
+mat-row,
+mat-footer-row {
+    min-height: 24px;
 }
 
 mat-grid-list.top-row {
-  flex: 1 1 auto;
+    flex: 1 1 auto;
 }
 
 mat-grid-list.question {
-  width: 50vw;
-  height: 100vw;
+    width: 50vw;
+    height: 100vw;
 }
 
 div.scoreboard {
-  padding: 10px;
+    padding: 10px;
 }
 
 div.vl {
-  border-left: 1px solid black;
-  height: 300px;
-  position: absolute;
-  left: 50%;
-  margin-left: -3px;
-  top: 50px;
+    border-left: 1px solid black;
+    height: 300px;
+    position: absolute;
+    left: 50%;
+    margin-left: -3px;
+    top: 50px;
 }
-=======
-    .boxed {
-        border: 5em;
+
+.boxed {
+    border: 5em;
+}
+
+.question-title {
+    position: absolute;
+    left: 10px;
+    font-size: large;
+}
+
+.answer-choice {
+    position: absolute;
+    left: 10px;
+    font-size: small;
+}
+
+button {
+    color: white;
+    background-color: green;
+}
+
+button:hover {
+    cursor: pointer;
+}
+
+div.container {
+    vertical-align: middle;
+    min-height: 75px;
+    padding: 10px;
+    mat-row,
+    mat-footer-row {
+        min-height: 24px;
     }
-    
-    .question-title {
-        position: absolute;
-        left: 10px;
-        font-size: large;
-    }
-    
-    .answer-choice {
-        position: absolute;
-        left: 10px;
-        font-size: small;
-    }
-    
-    button {
-        color: white;
-        background-color: green;
-    }
-    
-    button:hover {
-        cursor: pointer;
-    }
-    
-    div.container {
-        vertical-align: middle;
-        min-height: 75px;
-        padding: 10px;
-        mat-row,
-        mat-footer-row {
-            min-height: 24px;
-        }
-    }
+}
