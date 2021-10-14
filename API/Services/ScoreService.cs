@@ -264,7 +264,8 @@ namespace GeekOff.Services
                                                      x.TeamNo == teamNum)
                                               .FirstOrDefault().PlayerNum;
 
-            if(playerNum is not null) {
+            if (playerNum is not null)
+            {
                 var answers = await _contextGo.Scoring.Where(x => x.RoundNo == 2 &&
                                                        x.TeamNo == teamNum &&
                                                        x.PlayerNum == playerNum)
@@ -275,10 +276,8 @@ namespace GeekOff.Services
                                                 }).ToListAsync();
                 return answers;
             }
-            else {
-                return null;
-            }
 
+            return null;
         }
     }
 }
