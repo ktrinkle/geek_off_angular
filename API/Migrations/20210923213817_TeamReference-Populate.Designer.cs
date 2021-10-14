@@ -9,7 +9,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace geek_off_angular.Migrations
 {
-    [DbContext(typeof(contextGo))]
+    [DbContext(typeof(ContextGo))]
     [Migration("20210923213817_TeamReference-Populate")]
     partial class TeamReferencePopulate
     {

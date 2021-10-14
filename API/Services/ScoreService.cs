@@ -1,19 +1,19 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Collections.Generic;
-using Microsoft.Extensions.Logging;
-using Microsoft.EntityFrameworkCore;
 using GeekOff.Data;
 using GeekOff.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace GeekOff.Services
 {
     public class ScoreService : IScoreService
     {
-        private readonly contextGo _contextGo;
+        private readonly ContextGo _contextGo;
         private readonly ILogger<ScoreService> _logger;
-        public ScoreService(ILogger<ScoreService> logger, contextGo context)
+        public ScoreService(ILogger<ScoreService> logger, ContextGo context)
         {
             _logger = logger;
             _contextGo = context;
@@ -39,9 +39,9 @@ namespace GeekOff.Services
             var player2 = new List<Round2Answers>();
             var totalScore = new int();
 
-            foreach(Scoring playerScore in player1Result)
+            foreach (var playerScore in player1Result)
             {
-                var result = new Round2Answers() 
+                var result = new Round2Answers()
                 {
                     QuestionNum = playerScore.QuestionNo,
                     Answer = playerScore.TeamAnswer.ToUpper(),
@@ -51,9 +51,9 @@ namespace GeekOff.Services
                 player1.Add(result);
             }
 
-            foreach(Scoring playerScore in player2Result)
+            foreach (var playerScore in player2Result)
             {
-                var result = new Round2Answers() 
+                var result = new Round2Answers()
                 {
                     QuestionNum = playerScore.QuestionNo,
                     Answer = playerScore.TeamAnswer.ToUpper(),
@@ -83,26 +83,27 @@ namespace GeekOff.Services
 
             // question and team needs
             var teamList = await _contextGo.Teamreference.Where(tr => tr.Yevent == yEvent)
-                                .Select(tr => new Round1Scores() {
+                                .Select(tr => new Round1Scores()
+                                {
                                     TeamName = tr.Teamname,
                                     TeamNum = tr.TeamNo,
-                                    Bonus = tr.Dollarraised >= 200 ? 10 : tr.Dollarraised > 100 ? (int)(tr.Dollarraised - 100)/10 : 0,
+                                    Bonus = tr.Dollarraised >= 200 ? 10 : tr.Dollarraised > 100 ? (int)(tr.Dollarraised - 100) / 10 : 0,
                                     Q = (from q in _contextGo.QuestionAns
-                                        join s in _contextGo.Scoring
-                                        on new {q.RoundNo, q.QuestionNo, q.Yevent, tr.TeamNo} 
-                                        equals new {s.RoundNo, s.QuestionNo, s.Yevent, s.TeamNo} into sq
-                                        from sqi in sq.DefaultIfEmpty()
-                                        where q.RoundNo == 1 && q.Yevent == tr.Yevent
-                                        select new Round1ScoreDetail()
-                                        {
-                                            QuestionId = q.QuestionNo,
-                                            QuestionScore = sqi.PointAmt
-                                        }).ToList()
+                                         join s in _contextGo.Scoring
+                                         on new { q.RoundNo, q.QuestionNo, q.Yevent, tr.TeamNo }
+                                         equals new { s.RoundNo, s.QuestionNo, s.Yevent, s.TeamNo } into sq
+                                         from sqi in sq.DefaultIfEmpty()
+                                         where q.RoundNo == 1 && q.Yevent == tr.Yevent
+                                         select new Round1ScoreDetail()
+                                         {
+                                             QuestionId = q.QuestionNo,
+                                             QuestionScore = sqi.PointAmt
+                                         }).ToList()
                                 }).ToListAsync();
 
             // now we need to calc the TeamScore. Rnk is not used here.
-            
-            foreach (Round1Scores team in teamList)
+
+            foreach (var team in teamList)
             {
                 team.TeamScore = team.Q.Sum(s => s.QuestionScore);
             }
@@ -120,26 +121,27 @@ namespace GeekOff.Services
 
             var teamList = await (from rr in _contextGo.Roundresult
                                   join t in _contextGo.Teamreference
-                                  on new {rr.TeamNo, rr.Yevent} equals new {t.TeamNo, t.Yevent}
+                                  on new { rr.TeamNo, rr.Yevent } equals new { t.TeamNo, t.Yevent }
                                   where rr.RoundNo == roundNo - 1
                                   && rr.Yevent == yEvent
                                   select new Round23Scores()
                                   {
-                                    TeamName = t.Teamname,
-                                    TeamNo = t.TeamNo
+                                      TeamName = t.Teamname,
+                                      TeamNo = t.TeamNo
                                   }).ToListAsync();
 
             // the join was nasty and required a view, so this way avoids that.
 
             var returnList = await _contextGo.Scoring.Where(s => s.Yevent == yEvent && s.RoundNo == roundNo)
                                                     .GroupBy(s => s.TeamNo)
-                                                    .Select(s => new Round23Scores {
+                                                    .Select(s => new Round23Scores
+                                                    {
                                                         TeamNo = s.Key,
                                                         TeamScore = s.Sum(x => (int)x.PointAmt)
                                                     }).ToListAsync();
 
             // merge the 2
-            foreach (Round23Scores team in teamList)
+            foreach (var team in teamList)
             {
                 var thisTeam = returnList.Find(t => t.TeamNo == team.TeamNo);
                 if (thisTeam is not null)
@@ -159,7 +161,7 @@ namespace GeekOff.Services
                 return "Invalid event.";
             }
 
-            if (questionId < 1 || questionId > 99)
+            if (questionId is < 1 or > 99)
             {
                 return "Invalid question.";
             }
@@ -186,7 +188,7 @@ namespace GeekOff.Services
                 await _contextGo.SaveChangesAsync();
             }
 
-            foreach(UserAnswer answer in submittedAnswers)
+            foreach (var answer in submittedAnswers)
             {
                 if (answer.TextAnswer.ToLower() == correctAnswer.ToLower())
                 {
@@ -234,22 +236,22 @@ namespace GeekOff.Services
                 {
                     // add a new entry
                     var teamScore = new Scoring()
-                        {
-                            Yevent = yEvent,
-                            TeamNo = teamNum,
-                            RoundNo = 1,
-                            QuestionNo = questionId,
-                            TeamAnswer = teamAnswer.TextAnswer,
-                            PointAmt = 10,
-                            Updatetime = teamAnswer.AnswerTime
-                        };
+                    {
+                        Yevent = yEvent,
+                        TeamNo = teamNum,
+                        RoundNo = 1,
+                        QuestionNo = questionId,
+                        TeamAnswer = teamAnswer.TextAnswer,
+                        PointAmt = 10,
+                        Updatetime = teamAnswer.AnswerTime
+                    };
 
                     await _contextGo.Scoring.AddAsync(teamScore);
                     await _contextGo.SaveChangesAsync();
 
                     return true;
                 }
-                
+
             }
 
             // this should never be hit.

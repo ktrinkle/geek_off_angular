@@ -1,6 +1,6 @@
 using System;
-using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
 namespace GeekOff.Models
@@ -14,6 +14,6 @@ namespace GeekOff.Models
         public string Answer { get; set; }
         public int Score { get; set; }
         public int AnswerNum { get; set; }
-        
+
     }
 }

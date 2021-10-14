@@ -1,12 +1,12 @@
 using System;
-using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
 namespace GeekOff.Models
 {
     public class IntroDto
-    {        
+    {
         public int TeamNo { get; set; }
         public string TeamName { get; set; }
         public string Member1 { get; set; }

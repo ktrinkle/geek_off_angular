@@ -1,18 +1,18 @@
 using System;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Collections.Generic;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
-using Microsoft.AspNetCore.Authorization;
-using Swashbuckle.AspNetCore.Annotations;
-using Microsoft.AspNetCore.SignalR;
+using System.Linq;
 using System.Security.Claims;
-using Microsoft.Identity.Web.Resource;
+using System.Threading.Tasks;
 using GeekOff.Helpers;
-using GeekOff.Services;
 using GeekOff.Models;
+using GeekOff.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.Logging;
+using Microsoft.Identity.Web.Resource;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace GeekOff.Controllers
 {
@@ -20,7 +20,6 @@ namespace GeekOff.Controllers
     [Route("api/eventstatus")]
     public class EventStatusController : ControllerBase
     {
-        static readonly string[] scopeRequiredByApi = new string[] { "access_as_user" };
         private readonly ILogger<EventStatusController> _logger;
         private readonly IManageEventService _manageEventService;
         private readonly ILoginService _loginService;
@@ -34,28 +33,23 @@ namespace GeekOff.Controllers
 
         [HttpGet("currentEvent")]
         [SwaggerOperation(Summary = "Get the current event. Called as part of app.component.ts.")]
-        public async Task<ActionResult<string>> GetCurrentEvent(string yEvent, int questionId)
+        public async Task<ActionResult<string>> GetCurrentEventAsync()
             => Ok(await _manageEventService.GetCurrentEvent());
 
         [Authorize(Roles = "admin,player")]
         [HttpGet("currentQuestion/{yEvent}")]
         [SwaggerOperation(Summary = "Get the current question. Called when round1/contestant loads.")]
-        public async Task<ActionResult<CurrentQuestionDto>> GetCurrentQuestion(string yEvent)
+        public async Task<ActionResult<CurrentQuestionDto>> GetCurrentQuestionAsync(string yEvent)
             => Ok(await _manageEventService.GetCurrentQuestion(yEvent));
 
         [Authorize]
         [HttpGet("currentUser")]
         [SwaggerOperation(Summary = "Get current user and team info from database based on logged in user.")]
-        public async Task<ActionResult<UserInfoDto>> GetUserInfo()
+        public async Task<ActionResult<UserInfoDto>> GetUserInfoAsync()
         {
             var userId = User.UserId();
-            if (userId == "000000")
-            {
-                return null;
-            }
-
-            return await _loginService.Login(userId);
+            return userId == "000000" ? null : (ActionResult<UserInfoDto>)await _loginService.Login(userId);
         }
-        
+
     }
 }

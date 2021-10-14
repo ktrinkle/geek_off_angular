@@ -1,19 +1,19 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Collections.Generic;
-using Microsoft.Extensions.Logging;
-using Microsoft.EntityFrameworkCore;
 using GeekOff.Data;
 using GeekOff.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace GeekOff.Services
 {
     public class ManageEventService : IManageEventService
     {
-        private readonly contextGo _contextGo;
+        private readonly ContextGo _contextGo;
         private readonly ILogger<ManageEventService> _logger;
-        public ManageEventService(ILogger<ManageEventService> logger, contextGo context)
+        public ManageEventService(ILogger<ManageEventService> logger, ContextGo context)
         {
             _logger = logger;
             _contextGo = context;
@@ -27,7 +27,7 @@ namespace GeekOff.Services
             // get the question text
             var surveyReturn = await GetRound2QuestionList(yEvent);
 
-            foreach (Round2SurveyList survey in surveyReturn)
+            foreach (var survey in surveyReturn)
             {
                 survey.SurveyAnswers = surveyAnswer.FindAll(s => s.QuestionNo == survey.QuestionNum)
                                                     .Select(s => new Round2Answers()
@@ -38,7 +38,7 @@ namespace GeekOff.Services
                                                     }).ToList();
             }
 
-            return surveyReturn;            
+            return surveyReturn;
         }
 
         public async Task<List<Round2SurveyList>> GetRound2QuestionList(string yEvent)
@@ -46,25 +46,25 @@ namespace GeekOff.Services
             // get the question text
             var surveyReturn = await _contextGo.QuestionAns.Where(q => q.Yevent == yEvent && q.RoundNo == 2)
                                         .Select(q => new Round2SurveyList()
-                                            {
-                                                QuestionNum = q.QuestionNo,
-                                                QuestionText = q.TextQuestion
-                                            })
+                                        {
+                                            QuestionNum = q.QuestionNo,
+                                            QuestionText = q.TextQuestion
+                                        })
                                         .ToListAsync();
 
-            return surveyReturn;            
+            return surveyReturn;
         }
 
         public async Task<string> SetRound2AnswerText(Round2AnswerDto submitAnswer)
         {
             // check limits
-            if (!(submitAnswer.PlayerNum > 0 && submitAnswer.PlayerNum < 3))
+            if (submitAnswer.PlayerNum is not (> 0 and < 3))
             {
                 var err = "The player number is not valid. Please try again.";
                 return err;
             }
 
-            if (submitAnswer.QuestionNum < 200 || submitAnswer.QuestionNum > 299)
+            if (submitAnswer.QuestionNum is < 200 or > 299)
             {
                 return "The question is not a valid round 2 question. Please try again.";
             }
@@ -87,7 +87,7 @@ namespace GeekOff.Services
             };
 
             // check if score record exists. If so, nuke it.
-            var recordExists = await _contextGo.Scoring.AnyAsync(s => s.Yevent == submitAnswer.YEvent 
+            var recordExists = await _contextGo.Scoring.AnyAsync(s => s.Yevent == submitAnswer.YEvent
                                                         && s.TeamNo == submitAnswer.TeamNum
                                                         && s.QuestionNo == submitAnswer.QuestionNum);
 
@@ -109,13 +109,13 @@ namespace GeekOff.Services
         public async Task<string> SetRound2AnswerSurvey(Round2AnswerDto submitAnswer)
         {
             // check limits
-            if (!(submitAnswer.PlayerNum > 0 && submitAnswer.PlayerNum < 3))
+            if (submitAnswer.PlayerNum is not (> 0 and < 3))
             {
                 var err = "The player number is not valid. Please try again.";
                 return err;
             }
 
-            if (submitAnswer.QuestionNum < 200 || submitAnswer.QuestionNum > 299)
+            if (submitAnswer.QuestionNum is < 200 or > 299)
             {
                 return "The question is not a valid round 2 question. Please try again.";
             }
@@ -125,7 +125,7 @@ namespace GeekOff.Services
                 return "A valid team number is required.";
             }
 
-            if (submitAnswer.AnswerNum < 0 || submitAnswer.AnswerNum > 99)
+            if (submitAnswer.AnswerNum is < 0 or > 99)
             {
                 return "A valid answer number is required.";
             }
@@ -142,13 +142,13 @@ namespace GeekOff.Services
                 TeamNo = submitAnswer.TeamNum,
                 RoundNo = 2,
                 QuestionNo = submitAnswer.QuestionNum,
-                TeamAnswer = answerText.QuestionAnswer.Substring(0,11),
+                TeamAnswer = answerText.QuestionAnswer.Substring(0, 11),
                 PlayerNum = submitAnswer.PlayerNum,
                 PointAmt = answerText.Ptsposs,
                 Updatetime = DateTime.UtcNow
             };
 
-            var recordExists = await _contextGo.Scoring.AnyAsync(s => s.Yevent == submitAnswer.YEvent 
+            var recordExists = await _contextGo.Scoring.AnyAsync(s => s.Yevent == submitAnswer.YEvent
                                                         && s.TeamNo == submitAnswer.TeamNum
                                                         && s.QuestionNo == submitAnswer.QuestionNum);
 
@@ -174,7 +174,7 @@ namespace GeekOff.Services
                 return "No event was specified.";
             }
 
-            if (roundNum < 1 || roundNum > 3)
+            if (roundNum is < 1 or > 3)
             {
                 return "Incorrect round number.";
             }
@@ -199,17 +199,17 @@ namespace GeekOff.Services
 
             // add the new records
             var scorestoAdd = (from s in totalPoints
-                                orderby s.FinalScore descending
-                                select new Roundresult()
-                                {
-                                    Yevent = yEvent,
-                                    TeamNo = s.TeamNo,
-                                    RoundNo = roundNum,
-                                    Ptswithbonus = s.FinalScore,
-                                    rnk = (from r in totalPoints
-                                            where r.FinalScore > s.FinalScore
-                                            select r).Count() + 1
-                                }).ToList();
+                               orderby s.FinalScore descending
+                               select new Roundresult()
+                               {
+                                   Yevent = yEvent,
+                                   TeamNo = s.TeamNo,
+                                   RoundNo = roundNum,
+                                   Ptswithbonus = s.FinalScore,
+                                   Rnk = (from r in totalPoints
+                                          where r.FinalScore > s.FinalScore
+                                          select r).Count() + 1
+                               }).ToList();
 
             await _contextGo.Roundresult.AddRangeAsync(scorestoAdd);
             await _contextGo.SaveChangesAsync();
@@ -237,7 +237,7 @@ namespace GeekOff.Services
                 return null;
             }
 
-            foreach(var answer in submittedAnswer)
+            foreach (var answer in submittedAnswer)
             {
                 var displayAnswer = new Round1EnteredAnswers()
                 {
@@ -266,20 +266,20 @@ namespace GeekOff.Services
             var rawListPlayer2 = rawList.Where(r => r.PlayerNum == 2).ToList();
 
             var returnDto = (from r1 in rawListPlayer1
-                            join r2 in rawListPlayer2
-                            on r1.TeamNo equals r2.TeamNo into r2j
-                            from r2o in r2j.DefaultIfEmpty()
-                            join tl in teamList
-                            on r1.TeamNo equals tl.TeamNo  
-                            select new IntroDto()
-                            {
-                                TeamNo = r1.TeamNo,
-                                TeamName = tl.Teamname,
-                                Member1 = r1.PlayerName,
-                                Member2 = r2o.PlayerName,
-                                Workgroup1 = r1.WorkgroupName,
-                                Workgroup2 = r2o.WorkgroupName
-                            }).ToList();
+                             join r2 in rawListPlayer2
+                             on r1.TeamNo equals r2.TeamNo into r2j
+                             from r2o in r2j.DefaultIfEmpty()
+                             join tl in teamList
+                             on r1.TeamNo equals tl.TeamNo
+                             select new IntroDto()
+                             {
+                                 TeamNo = r1.TeamNo,
+                                 TeamName = tl.Teamname,
+                                 Member1 = r1.PlayerName,
+                                 Member2 = r2o.PlayerName,
+                                 Workgroup1 = r1.WorkgroupName,
+                                 Workgroup2 = r2o.WorkgroupName
+                             }).ToList();
 
             return returnDto;
 
@@ -290,33 +290,27 @@ namespace GeekOff.Services
         public async Task<string> GetCurrentEvent()
         {
             var currentEvent = await _contextGo.EventMaster.SingleOrDefaultAsync(e => e.SelEvent == true);
-            if (currentEvent is null)
-            {
-                return null;
-            }
-            
-            return currentEvent.Yevent;
+            return currentEvent.Yevent ?? null;
         }
 
         public async Task<CurrentQuestionDto> GetCurrentQuestion(string yEvent)
         {
             var currentQuestion = await _contextGo.CurrentQuestion
-                                        .Where(q => q.yEvent == yEvent)
+                                        .Where(q => q.YEvent == yEvent)
                                         .OrderByDescending(q => q.QuestionTime)
-                                        .Select(q => new CurrentQuestionDto() {
+                                        .Select(q => new CurrentQuestionDto()
+                                        {
                                             QuestionNum = q.QuestionNum,
                                             Status = q.Status
                                         }).FirstOrDefaultAsync();
 
-            if (currentQuestion is null)
-            {
-                return new CurrentQuestionDto() {
+            return currentQuestion is null
+                ? new CurrentQuestionDto()
+                {
                     QuestionNum = 0,
                     Status = 0
-                };
-            }
-            
-            return currentQuestion;
+                }
+                : currentQuestion;
         }
 
         public async Task<CurrentQuestionDto> SetCurrentQuestionStatus(string yEvent, int questionId, int status)
@@ -326,14 +320,14 @@ namespace GeekOff.Services
                 return null;
             }
 
-            if (status < 0 || status > 3)
+            if (status is < 0 or > 3)
             {
                 return null;
             }
 
-            var newQuestionStatus = new CurrentQuestion() 
+            var newQuestionStatus = new CurrentQuestion()
             {
-                yEvent = yEvent,
+                YEvent = yEvent,
                 QuestionNum = questionId,
                 Status = status,
                 QuestionTime = DateTime.UtcNow
