@@ -82,6 +82,7 @@
     <button (click)="toggleBonusQuestion()">Toggle Bonus Question</button>
     <button (click)="playBuzzer()">Play Buzzer</button>
     <button (click)="playDings()">Play Dings</button>
+    <button (click)="openDialog()">Countdown</button>
   </div>
   <div id="changeDisplay" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%" style="padding: 10px;">
     <form [formGroup]="pickAnimateForm">
@@ -97,4 +98,14 @@
   </div>
 </div>
 
+<div class="control">
+  <button mat-raised-button (click)="openDialog2()">Countdown2</button>
+  <div *ngIf="countdownValue">
+    The value: <i>{{ countdownValue }}</i>
+  </div>
+</div>
+
+<div *ngIf="this.isCountdownDialog">
+  <app-round2countdown></app-round2countdown>
+</div>
 

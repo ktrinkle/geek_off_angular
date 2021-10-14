@@ -101,5 +101,29 @@ namespace GeekOff.Controllers
         public async Task<ActionResult<string>> FinalizeRoundAsync(string yEvent)
             => Ok(await _manageEventService.FinalizeRound(yEvent, 2));
 
+        // Countdown SignalR.
+        [Authorize(Roles = "admin")]
+        [HttpPut("countdown/{start}")]
+        [SwaggerOperation(Summary = "Start countdown.")]
+        public async Task<ActionResult> StartCountdown(int seconds) {
+            await _eventHub.Clients.All.SendAsync("startCountdown", seconds);
+            return Ok();
+        }
+
+        [Authorize(Roles = "admin")]
+        [HttpPut("countdown/{stop}")]
+        [SwaggerOperation(Summary = "Stop countdown.")]
+        public async Task<ActionResult> StopCountdown() {
+            await _eventHub.Clients.All.SendAsync("stopCountdown");
+            return Ok();
+        }
+
+        // [Authorize(Roles = "admin")]
+        // [HttpPut("countdonw/{set}")]
+        // [SwaggerOperation(Summary = "Set countdown.")]
+        // public async Task<ActionResult> SetCountdown(int seconds) {
+        //     await _eventHub.Clients.All.SendAsync("setCountdown", seconds);
+        //     return Ok();
+        // }
     }
 }

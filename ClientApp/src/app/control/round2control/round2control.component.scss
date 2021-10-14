@@ -1,28 +1,28 @@
     .boxed {
         border: 5em;
     }
-    
+
     .question-title {
         position: absolute;
         left: 10px;
         font-size: large;
     }
-    
+
     .answer-choice {
         position: absolute;
         left: 10px;
         font-size: small;
     }
-    
+
     button {
         color: white;
         background-color: green;
     }
-    
+
     button:hover {
         cursor: pointer;
     }
-    
+
     div.container {
         vertical-align: middle;
         min-height: 75px;
@@ -32,3 +32,4 @@
             min-height: 24px;
         }
     }
+

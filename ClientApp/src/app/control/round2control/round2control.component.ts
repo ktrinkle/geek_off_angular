@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { DataService } from '../../data.service';
 import { Store } from '@ngrx/store';
 import { round2AllSurvey } from '../../store/round2/round2.actions';
@@ -6,6 +6,9 @@ import { round2SurveyQuestions, round2SubmitAnswer, round2Answers, round23Scores
 import { FormGroup, FormControl, Validators, FormBuilder, Form } from '@angular/forms';
 import * as signalR from '@microsoft/signalr';
 import { environment } from 'src/environments/environment';
+
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import { Round2countdowndialogComponent } from 'src/app/round2/round2countdowndialog/round2countdowndialog.component';
 
 @Component({
   selector: 'app-round2control',
@@ -28,6 +31,8 @@ export class Round2controlComponent implements OnInit {
   public currentDisplayId: number = 0;
   buzzer = new Audio();
   dings = new Audio();
+  isCountdownDialog = false; // Countdown timer dialog.
+  countdownValue: number = 0;    // Countdown timer duration.
 
   public pickAnimateForm: FormGroup = new FormGroup({
     currentDisplayId: new FormControl(this.currentDisplayId)
@@ -58,7 +63,7 @@ export class Round2controlComponent implements OnInit {
   ]
 
   constructor(private store: Store, private _dataService: DataService,
-    private formBuilder: FormBuilder) { }
+    private formBuilder: FormBuilder, public dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.store.dispatch(round2AllSurvey({ yEvent: this.yevent }));
@@ -177,5 +182,21 @@ export class Round2controlComponent implements OnInit {
     // this will be values 0-20. 0 = hide all, 10 = show all player 1, 20 = show all
     var entryNum = this.pickAnimateForm.value.currentDisplayId;
     this._dataService.revealRound2Value(entryNum);
+  }
+
+  openDialog() {
+    this.isCountdownDialog = !this.isCountdownDialog;
+  }
+
+  openDialog2(): void {
+    const dialogRef = this.dialog.open(Round2countdowndialogComponent, {
+      width: '250px',
+      data: {countdownValue: this.countdownValue}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The Dialog was closed');
+      this.countdownValue = result;
+    });
   }
 }
