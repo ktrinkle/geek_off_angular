@@ -1,27 +1,30 @@
 body {
-  background-color: black;
-  color: white;
-  font-family: "round2scoreboard";
+    background-color: black;
+    color: white;
+    font-family: "round2scoreboard";
+    position: fixed;
+    height: 100%;
+    width: 100%;
 }
 
 h1 {
-  text-align: center;
+    text-align: center;
 }
 
 h3 {
-  font-size: 140%;
+    font-size: 140%;
 }
 
 mat-grid-tile {
-  text-align: center;
+    text-align: center;
 }
 
 body {
-  border: none !important;
-  margin: inherit !important;
-  padding: 0 !important;
+    border: none !important;
+    margin: inherit !important;
+    padding: 0 !important;
 }
 
 img {
-  vertical-align: flex-end !important;
+    vertical-align: flex-end !important;
 }

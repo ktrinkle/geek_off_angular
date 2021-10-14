@@ -7,7 +7,7 @@
     -o-background-size: cover;
     color: #ffff00;
     font-family: fastmoney;
-    font-size: 10vh;
+    font-size: 3.3vw;
     width: 100vw;
     height: 100vh;
 }
@@ -16,11 +16,11 @@ mat-table.mat-table {
     background-color: #000;
     color: #ffff00;
     font-family: fastmoney;
-    font-size: 10vh;
+    font-size: 3.3vw;
 }
 
 mat-cell {
-    font-size: 10vh;
+    font-size: 3.3vw;
     color: #ffff00;
     clear: all;
     font-family: fastmoney;
@@ -33,11 +33,11 @@ mat-cell {
 }
 
 .scorecell {
-    width: 20vw;
+    width: 10vw;
 }
 
 .answer {
-    font-size: 10vh;
+    font-size: 3.3vw;
     clear: all;
     font-family: fastmoney;
     border: none !important;
@@ -50,9 +50,9 @@ mat-cell {
 }
 
 .score {
-    font-size: 10vh;
+    font-size: 3.3vw;
     clear: all;
-    width: 20vw;
+    width: 10vw;
     font-family: fastmoney;
     border: none !important;
     overflow: hidden;
@@ -76,7 +76,7 @@ mat-cell {
 
 .text {
     font-family: fastmoney;
-    font-size: 10vh;
+    font-size: 3.3vw;
     height: 12.5vh;
 }
 

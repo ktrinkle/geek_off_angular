@@ -102,9 +102,11 @@ namespace GeekOff.Services
                                 }).ToListAsync();
 
             // now we need to calc the TeamScore. Rnk is not used here.
+            // team substring not liked in EF query
 
             foreach (var team in teamList)
             {
+                team.TeamName = team.TeamName[0..17];
                 team.TeamScore = team.Q.Sum(s => s.QuestionScore);
             }
 
