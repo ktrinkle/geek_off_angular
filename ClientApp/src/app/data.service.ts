@@ -151,4 +151,15 @@ export class DataService {
     var uri = this.REST_API_SERVER + '/api/round2/bigboard/reveal/' + encodeURIComponent(entryNum) + '';
     this.httpClient.get(uri).toPromise();
   }
+
+  public revealRound2Player1() {
+    var uri = this.REST_API_SERVER + '/api/round2/bigboard/playerone';
+    this.httpClient.get(uri).toPromise();
+  }
+
+  public changeRound2Team(teamNum: number) {
+    var uri = this.REST_API_SERVER + '/api/round2/bigboard/changeTeam/' + encodeURIComponent(teamNum) + '';
+    this.httpClient.get(uri).toPromise();
+  }
+
 }
