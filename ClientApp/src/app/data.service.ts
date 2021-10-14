@@ -151,4 +151,9 @@ export class DataService {
     var uri = this.REST_API_SERVER + '/api/round2/bigboard/reveal/' + encodeURIComponent(entryNum) + '';
     this.httpClient.get(uri).toPromise();
   }
+
+  public getRound2FirstPlayer(teamNum: number): Observable<any> {
+    var uri = this.REST_API_SERVER + '/api/round2/firstPlayersAnswers/' + encodeURIComponent(teamNum) + '';
+    return this.httpClient.get(uri);
+  }
 }
