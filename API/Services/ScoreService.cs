@@ -260,5 +260,26 @@ namespace GeekOff.Services
             return false;
         }
 
+        public async Task<List<Round2Answers>> GetFirstPlayersAnswers(string yEvent, int teamNum)
+        {
+            var playerNum = _contextGo.Scoring.Where(x => x.RoundNo == 2 &&
+                                                     x.TeamNo == teamNum)
+                                              .FirstOrDefault().PlayerNum;
+
+            if (playerNum is not null)
+            {
+                var answers = await _contextGo.Scoring.Where(x => x.RoundNo == 2 &&
+                                                       x.TeamNo == teamNum &&
+                                                       x.PlayerNum == playerNum)
+                                                .Select(x => new Round2Answers {
+                                                                    QuestionNum = x.QuestionNo,
+                                                                    Answer = x.TeamAnswer,
+                                                                    Score = (int)x.PointAmt
+                                                }).ToListAsync();
+                return answers;
+            }
+
+            return null;
+        }
     }
 }
