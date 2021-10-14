@@ -142,7 +142,7 @@ namespace GeekOff.Services
                 TeamNo = submitAnswer.TeamNum,
                 RoundNo = 2,
                 QuestionNo = submitAnswer.QuestionNum,
-                TeamAnswer = answerText.QuestionAnswer.Substring(0, 11),
+                TeamAnswer = answerText.QuestionAnswer[0..11],
                 PlayerNum = submitAnswer.PlayerNum,
                 PointAmt = answerText.Ptsposs,
                 Updatetime = DateTime.UtcNow

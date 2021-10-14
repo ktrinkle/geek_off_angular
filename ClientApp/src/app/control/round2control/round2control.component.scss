@@ -61,3 +61,38 @@ div.vl {
   margin-left: -3px;
   top: 50px;
 }
+=======
+    .boxed {
+        border: 5em;
+    }
+    
+    .question-title {
+        position: absolute;
+        left: 10px;
+        font-size: large;
+    }
+    
+    .answer-choice {
+        position: absolute;
+        left: 10px;
+        font-size: small;
+    }
+    
+    button {
+        color: white;
+        background-color: green;
+    }
+    
+    button:hover {
+        cursor: pointer;
+    }
+    
+    div.container {
+        vertical-align: middle;
+        min-height: 75px;
+        padding: 10px;
+        mat-row,
+        mat-footer-row {
+            min-height: 24px;
+        }
+    }

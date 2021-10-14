@@ -78,10 +78,28 @@ namespace GeekOff.Controllers
 
         [Authorize(Roles = "admin")]
         [HttpGet("bigboard/reveal/{entryNum}")]
-        [SwaggerOperation(Summary = "Send message to reveal scoreboard")]
+        [SwaggerOperation(Summary = "Send message to reveal big board answer.")]
         public async Task<ActionResult> RevealAnswerAsync(int entryNum)
         {
             await _eventHub.Clients.All.SendAsync("round2AnswerShow", entryNum);
+            return Ok();
+        }
+
+        [Authorize(Roles = "admin")]
+        [HttpGet("bigboard/playerone")]
+        [SwaggerOperation(Summary = "Send message to reveal all Player 1 answers on the big board.")]
+        public async Task<ActionResult> RevealPlayerOneAsync()
+        {
+            await _eventHub.Clients.All.SendAsync("round2ShowPlayer1");
+            return Ok();
+        }
+
+        [Authorize(Roles = "admin")]
+        [HttpGet("bigboard/changeTeam/{teamNum}")]
+        [SwaggerOperation(Summary = "Change team for the big board.")]
+        public async Task<ActionResult> ChangeDisplayBoardTeamAsync()
+        {
+            await _eventHub.Clients.All.SendAsync("round2ChangeTeam");
             return Ok();
         }
 
