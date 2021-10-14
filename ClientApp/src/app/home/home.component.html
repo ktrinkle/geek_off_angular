@@ -1,44 +1,45 @@
 <div *ngIf="!userIsLoggedIn">
-  <p>Please log in to start the game.</p>
+    <p>Please log in to start the game.</p>
 </div>
 
 <div *ngIf="userIsLoggedIn">
-  <p>Welcome to the Geek Off!</p>
-  <p><a routerLink="/round1/contestant">Start playing the game!</a></p>
+    <p>Welcome to the Geek Off!</p>
+    <p><a routerLink="/round1/contestant">Start playing the game!</a></p>
 </div>
 
 <div *ngIf="userIsAdmin && userIsLoggedIn">
-  <p>Event: {{yevent}} - Admin functions:</p>
-  <mat-grid-list cols='12' rowHeight='90px'>
-    <mat-grid-tile colspan='6' rowspan='2'>
-      <div>
-        <h4>Round 1</h4>
-        <p><a routerLink="/round1/intro/1">Start the intro screens</a></p>
-        <p><a routerLink="/round1/question/1">Start the round 1 questions</a></p>
-        <p><a routerLink="/round1/scoreboard">Show the round 1 scoreboard</a></p>
-      </div>
-    </mat-grid-tile>
-    <mat-grid-tile colspan='6' rowspan='2'>
-      <div>
-        <h4>Round 2</h4>
-        <p><a routerLink="/round2/display">Round 2 big display board</a></p>
-        <p><a routerLink="/round2/countdown">Round 2 countdown</a></p>
-        <p><a routerLink="/round2/scoreboard">Round 2 scoreboard</a></p>
-      </div>
-    </mat-grid-tile>
-    <mat-grid-tile colspan='6' rowspan='2'>
-      <div>
-        <h4>Control</h4>
-        <p><a routerLink="/control/pregame">Intro/Pregame control board</a></p>
-        <p><a routerLink="/control/round1">Round 1 control board</a></p>
-        <p><a routerLink="/control/round2">Round 2 control board</a></p>
-      </div>
-    </mat-grid-tile>
-    <mat-grid-tile colspan='6' rowspan='1'>
-      <div>
-        <h4>Host</h4>
-        <p><a routerLink="/host/round2">Round 2 host screen</a></p>
-      </div>
-    </mat-grid-tile>
-  </mat-grid-list>
+    <p>Event: {{yevent}} - Admin functions:</p>
+    <mat-grid-list cols='12' rowHeight='90px'>
+        <mat-grid-tile colspan='6' rowspan='2'>
+            <div>
+                <h4>Round 1</h4>
+                <p><a routerLink="/round1/intro/1">Start the intro screens</a></p>
+                <p><a routerLink="/round1/question/1">Start the round 1 questions</a></p>
+                <p><a routerLink="/round1/scoreboard">Show the round 1 scoreboard</a></p>
+            </div>
+        </mat-grid-tile>
+        <mat-grid-tile colspan='6' rowspan='2'>
+            <div>
+                <h4>Round 2</h4>
+                <p><a routerLink="/round2/display">Round 2 big display board</a></p>
+                <p><a routerLink="/round2/countdown">Round 2 countdown</a></p>
+                <p><a routerLink="/round2/scoreboard">Round 2 scoreboard</a></p>
+            </div>
+        </mat-grid-tile>
+        <mat-grid-tile colspan='6' rowspan='2'>
+            <div>
+                <h4>Control</h4>
+                <p><a routerLink="/control/pregame">Intro/Pregame control board</a></p>
+                <p><a routerLink="/control/round1">Round 1 control board</a></p>
+                <p><a routerLink="/control/round2">Round 2 control board</a></p>
+            </div>
+        </mat-grid-tile>
+        <mat-grid-tile colspan='6' rowspan='1'>
+            <div>
+                <h4>Host</h4>
+                <p><a routerLink="/host/round1">Round 1 host screen</a></p>
+                <p><a routerLink="/host/round2">Round 2 host screen</a></p>
+            </div>
+        </mat-grid-tile>
+    </mat-grid-list>
 </div>
