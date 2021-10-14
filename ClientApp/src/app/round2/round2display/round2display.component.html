@@ -4,7 +4,8 @@
     <ng-container matColumnDef="player1Answer">
         <mat-header-cell *matHeaderCellDef>ANSWER</mat-header-cell>
         <mat-cell *matCellDef="let row">
-            {{row.player1.answer}}
+            <span *ngIf="displayStatus > 0 " [@fadeInOut]> {{row.player1.answer}}</span>
+            <span *ngIf="displayStatus == 0 " [@fadeInOut]> ***********</span>
         </mat-cell>
     </ng-container>
 
