@@ -23,7 +23,7 @@ export interface displayRow {
       state('void', style({
         opacity: 0
       })),
-      transition('void <=> *', animate(10000)),
+      transition('void <=> *', animate(500)),
     ]),
     trigger('flipState', [
       state('active', style({
@@ -32,9 +32,9 @@ export interface displayRow {
       state('inactive', style({
         transform: 'rotateY(0)'
       })),
-      transition('active => inactive', animate('5000ms ease-out')),
+      transition('active => inactive', animate('500ms ease-out')),
       // transition('inactive => active', animate('500ms ease-in'))
-      transition('inactive => active', animate('5000ms ease-in'))
+      transition('inactive => active', animate('500ms ease-in'))
     ])
   ]
 })
@@ -70,7 +70,21 @@ export class Round2displayComponent implements OnInit, OnDestroy {
       return console.error(err.toString());
     });
 
-    connection.on("round2Answer", (data: any) => { this.getDisplayBoard(); });
+    connection.on("round2ChangeTeam", (data: any) => {
+      this.changeTeam(data);
+    });
+
+    connection.on("round2Answer", (data: any) => {
+      this.getDisplayBoard();
+    });
+
+    connection.on("round2AnswerShow", (data: any) => {
+      this.changeDisplayState(data);
+    });
+
+    connection.on("round2ShowPlayer1", (data: any) => {
+      this.revealPlayerOne();
+    });
 
     this.getDisplayBoard();
   }
@@ -96,5 +110,25 @@ export class Round2displayComponent implements OnInit, OnDestroy {
       }
       this.table.renderRows();
     });
+  }
+
+  changeDisplayState(state: number): void {
+    this.displayStatus = state;
+    console.log(this.displayStatus);
+  }
+
+  revealPlayerOne() {
+    for (let s = 1; s <= 10; s++) {
+      this.delay(500).then(()=> this.displayStatus = s);
+    }
+  }
+
+  changeTeam(teamNum: number) {
+    this.teamNumber = teamNum;
+    this.getDisplayBoard();
+  }
+
+  async delay(ms: number) {
+    await new Promise<void>(resolve => setTimeout(()=>resolve(), ms)).then(()=>console.log("fired"));
   }
 }
