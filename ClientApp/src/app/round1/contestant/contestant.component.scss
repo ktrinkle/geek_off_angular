@@ -10,7 +10,7 @@
 .contestant h2 {
     position: absolute;
     right: 10px;
-    top: 6vh;
+    top: 9vh;
     font-family: 'AmericanSans', Arial, Helvetica, sans-serif;
     font-size: 3vh;
     color: #ffffff;
@@ -26,7 +26,7 @@
 #hangTight {
     position: absolute;
     left: 3vw;
-    top: 13vh;
+    top: 16vh;
     width: 89vw;
     height: 25vh;
     vertical-align: middle;
@@ -47,9 +47,9 @@
 #hideQuestion {
     position: absolute;
     left: 3vw;
-    top: 46vh;
+    top: 49vh;
     width: 89vw;
-    height: 47vh;
+    height: 44vh;
     vertical-align: top;
     text-align: left;
     padding-left: 2vw;
@@ -67,7 +67,7 @@
 #hideQuestion {
     position: absolute;
     left: 3vw;
-    top: 46vh;
+    top: 49vh;
     width: 89vw;
     height: 20vh;
     vertical-align: top;
@@ -86,7 +86,7 @@
 #answered {
     position: absolute;
     left: 3vw;
-    top: 46vh;
+    top: 49vh;
     width: 89vw;
     height: 15vh;
     vertical-align: top;
@@ -103,8 +103,8 @@
 }
 
 .buttonSpace {
-  display: block;
-  margin-top: 10px;
-  align-items: center;
-  clear: both;
+    display: block;
+    margin-top: 10px;
+    align-items: center;
+    clear: all;
 }

@@ -113,6 +113,12 @@ const routes: Routes = [
     canActivate: [MsalGuard]
   },
   {
+    path: 'round2/scoreboard',
+    component: Round2scoreboardComponent,
+    pathMatch: 'full',
+    canActivate: [MsalGuard]
+  },
+  {
     path: 'control/round1',
     component: Round1ControlComponent,
     pathMatch: 'full',
