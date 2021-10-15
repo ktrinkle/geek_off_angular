@@ -55,37 +55,4 @@
             </td>
         </tr>
     </table>
-
-    <!--
-    TEAM NUMBER: {{ teamNumber }}
-    <mat-table [dataSource]="displayRows">
-        <ng-container matColumnDef="player1Answer">
-            <mat-cell *matCellDef="let row; let i = index of row" class="answercell">
-                <span *ngIf="displayStatus >= (i*2)+1" class="answer">{{row.player1.answer}}</span>
-                <span *ngIf="displayStatus < (i*2)+1" [@fadeInOut]> ©©©©©©©©©©©</span>
-            </mat-cell>
-        </ng-container>
-
-        <ng-container matColumnDef="player1AnswerValue">
-            <mat-cell *matCellDef="let row; let i = index of row" class="scorecell">
-                <span *ngIf="displayStatus >= (i*2)+2" class="score">{{row.player1.score}}</span>
-                <span *ngIf="displayStatus < (i*2)+2" [@fadeInOut]> ©©</span>
-            </mat-cell>
-        </ng-container>
-
-        <ng-container matColumnDef="player2AnswerValue">
-            <mat-cell *matCellDef="let row; let i = index" class="scorecell">
-                <span *ngIf="displayStatus >= (i*2)+12" class="score">{{row.player2.score}}</span>
-                <span *ngIf="displayStatus < (i*2)+12" [@fadeInOut]> ©©</span>
-            </mat-cell>
-        </ng-container>
-
-        <ng-container matColumnDef="player2Answer">
-            <mat-cell *matCellDef="let row; let i = index" class="answercell">
-                <span *ngIf="displayStatus >= (i*2)+11" class="answer">{{row.player2.answer}}</span>
-                <span *ngIf="displayStatus < (i*2)+11" [@fadeInOut]> ©©©©©©©©©©©</span> {{row.player2.answer}}
-            </mat-cell>
-        </ng-container>
-        <mat-row *matRowDef="let row; columns: ['player1Answer', 'player1AnswerValue', 'player2AnswerValue', 'player2Answer']"></mat-row>
-    </mat-table>-->
 </div>
