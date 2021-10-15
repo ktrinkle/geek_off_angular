@@ -17,6 +17,7 @@ import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms'
 export class Round1ControlComponent implements OnInit {
 
   currentQuestion: number = 0;
+  currentQuestionText: string = '';
   selectedQuestion: number = 0;
   possibleAnswers: round1QuestionControlDto[] = [];
   teamAnswers: round1EnteredAnswers[] = [];
@@ -42,6 +43,7 @@ export class Round1ControlComponent implements OnInit {
         this.selectedQuestion = c.questionNum;
         this.answerForm.patchValue({selectedQuestion: this.selectedQuestion});
       });
+      this.getCurrentQuestionText();
       this.updateScoreboard();
       this.loadTeamAnswers();
     }});
@@ -165,6 +167,13 @@ export class Round1ControlComponent implements OnInit {
   goToRound2()
   {
     this.router.navigate(['/control/round2']);
+  }
+
+  getCurrentQuestionText() {
+    this.dataService.getRound1QuestionText(this.yEvent, this.currentQuestion).subscribe(data => {
+      this.currentQuestionText = data.questionText;
+      console.log("HERE" + this.currentQuestionText);
+    });
   }
 
 }
