@@ -121,7 +121,7 @@ namespace GeekOff.Controllers
 
         // Countdown SignalR.
         [Authorize(Roles = "admin")]
-        [HttpPut("countdown/{start}")]
+        [HttpGet("countdown/start/{seconds}")]
         [SwaggerOperation(Summary = "Start countdown.")]
         public async Task<ActionResult> StartCountdown(int seconds) {
             await _eventHub.Clients.All.SendAsync("startCountdown", seconds);
@@ -129,19 +129,19 @@ namespace GeekOff.Controllers
         }
 
         [Authorize(Roles = "admin")]
-        [HttpPut("countdown/{stop}")]
-        [SwaggerOperation(Summary = "Stop countdown.")]
+        [HttpGet("countdown/stop")]
+        [SwaggerOperation(Summary = "Stops countdown.")]
         public async Task<ActionResult> StopCountdown() {
             await _eventHub.Clients.All.SendAsync("stopCountdown");
             return Ok();
         }
 
-        // [Authorize(Roles = "admin")]
-        // [HttpPut("countdonw/{set}")]
-        // [SwaggerOperation(Summary = "Set countdown.")]
-        // public async Task<ActionResult> SetCountdown(int seconds) {
-        //     await _eventHub.Clients.All.SendAsync("setCountdown", seconds);
-        //     return Ok();
-        // }
+        [Authorize(Roles = "admin")]
+        [HttpGet("countdown/set/{seconds}")]
+        [SwaggerOperation(Summary = "Sets the countdown.")]
+        public async Task<ActionResult> SetCountdown(int seconds) {
+            await _eventHub.Clients.All.SendAsync("setCountdown", seconds);
+            return Ok();
+        }
     }
 }

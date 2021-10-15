@@ -31,7 +31,8 @@ export class Round2controlComponent implements OnInit {
   public currentDisplayId: number = 0;
   buzzer = new Audio();
   dings = new Audio();
-  isCountdownDialog = false; // Countdown timer dialog.
+
+  public showCountdownDialog: boolean = false; // Countdown timer dialog.
   countdownValue: number = 0;    // Countdown timer duration.
 
   public pickAnimateForm: FormGroup = new FormGroup({
@@ -184,11 +185,11 @@ export class Round2controlComponent implements OnInit {
     this._dataService.revealRound2Value(entryNum);
   }
 
-  openDialog() {
-    this.isCountdownDialog = !this.isCountdownDialog;
-  }
+  // openDialog() {
+  //   this.isCountdownDialog = !this.isCountdownDialog;
+  // }
 
-  openDialog2(): void {
+  openDialog(): void {
     const dialogRef = this.dialog.open(Round2countdowndialogComponent, {
       width: '250px',
       data: {countdownValue: this.countdownValue}
@@ -197,6 +198,19 @@ export class Round2controlComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       console.log('The Dialog was closed');
       this.countdownValue = result;
+      this.setCountdown(result);
     });
+  }
+
+  startCountdown(){
+    this._dataService.startCountdown(this.countdownValue);
+  }
+
+  stopCountdown(){
+    this._dataService.stopCountdown();
+  }
+
+  setCountdown(seconds: number){
+    this._dataService.setCountdown(Number(seconds));
   }
 }

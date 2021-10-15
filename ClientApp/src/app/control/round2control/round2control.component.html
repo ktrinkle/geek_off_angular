@@ -98,14 +98,10 @@
   </div>
 </div>
 
-<div class="control">
-  <button mat-raised-button (click)="openDialog2()">Countdown2</button>
-  <div *ngIf="countdownValue">
-    The value: <i>{{ countdownValue }}</i>
-  </div>
-</div>
-
-<div *ngIf="this.isCountdownDialog">
+<div>
   <app-round2countdown></app-round2countdown>
+  <br>
+  <button id="startButton" (click)="startCountdown()">START</button>
+  <button id="stopButton" (click)="stopCountdown()">STOP</button>
 </div>
 

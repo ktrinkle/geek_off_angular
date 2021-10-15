@@ -50,6 +50,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatButtonToggle, MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatDialog, MatDialogContent, MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 import { CountdownModule } from 'ngx-countdown';
 import { Round2countdowndialogComponent } from './round2/round2countdowndialog/round2countdowndialog.component';
@@ -141,7 +142,8 @@ export function MSALInterceptorFactory(): MsalInterceptorConfiguration {
     MatButtonToggleModule,
     FormsModule,
     MatDialogModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+    MatInputModule
   ],
   exports: [
     FormsModule
@@ -167,7 +169,8 @@ export function MSALInterceptorFactory(): MsalInterceptorConfiguration {
     MsalService,
     MsalGuard,
     MsalBroadcastService,
-    DataService
+    DataService,
+    Round2controlComponent
   ],
   bootstrap: [AppComponent, MsalRedirectComponent]
 })

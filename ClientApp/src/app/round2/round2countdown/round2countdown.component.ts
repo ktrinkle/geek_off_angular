@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import * as signalR from '@microsoft/signalr';
 import { CountdownConfig  } from 'ngx-countdown';
-import { single } from 'rxjs/operators';
-import { Round2controlComponent } from 'src/app/control/round2control/round2control.component';
 import { environment } from 'src/environments/environment';
+
 
 @Component({
   selector: 'app-round2countdown',
@@ -15,15 +14,13 @@ export class Round2countdownComponent implements OnInit {
   // Need to make this dynamic.
   timeData: number = 0;
   config: CountdownConfig = {};
-  showStop: any;
 
-  constructor(private round2control: Round2controlComponent) {
-    this.timeData = this.round2control.countdownValue;
+  constructor() {
    }
 
   ngOnInit(): void {
     this.config = {
-      leftTime: this.timeData,
+      leftTime: 0,
       demand: true,
       // We need the below to show just the seconds.
       formatDate: ({ date }) => `${date / 1000}`
@@ -40,24 +37,33 @@ export class Round2countdownComponent implements OnInit {
       return console.error(err.toString());
     });
 
-    connection.on("startCountdown", (data: any) => {
-      this.startCountdown();
+    connection.on("startCountdown", (seconds: number) => {
+      this.startCountdown(seconds);
     });
 
     connection.on("stopCountdown", (data: any) => {
-      this.startCountdown();
+      this.stopCountdown();
+    });
+
+    connection.on("setCountdown", (seconds: number) => {
+      this.timeData = seconds;
+      this.config = {
+        leftTime: seconds,
+        demand: true,
+        // We need the below to show just the seconds.
+        formatDate: ({ date }) => `${date / 1000}`
+      };
     });
 
   }
 
-  startCountdown(){
+  startCountdown(seconds: number){
     this.config = {
-      leftTime: this.timeData,
+      leftTime: seconds,
       demand: false,
       // We need the below to show just the seconds.
       formatDate: ({ date }) => `${date / 1000}`
     };
-    this.showStop = true;
   }
 
   stopCountdown(){
@@ -67,7 +73,6 @@ export class Round2countdownComponent implements OnInit {
       // We need the below to show just the seconds.
       formatDate: ({ date }) => `${date / 1000}`
     };
-    this.showStop = false;
   }
 
   handleEvent(event: any){
