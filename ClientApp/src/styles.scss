@@ -28,6 +28,11 @@ $go-theme: mat.define-light-theme($go-primary, $go-accent, $go-warn);
     src: url('//geekoff2021static.blob.core.windows.net/fonts/arcadeclassic.ttf');
 }
 
+@font-face {
+    font-family: goudyheavy;
+    src: url('//geekoff2021static.blob.core.windows.net/fonts/goudyheavy.otf');
+}
+
 .container-app {
     width: 100%;
     height: 100%
