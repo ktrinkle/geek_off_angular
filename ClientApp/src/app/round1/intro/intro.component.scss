@@ -1,3 +1,12 @@
+#teamList {
+  background-color: navy;
+}
+
+mat-table {
+  background-color: navy;
+  width: 100%;
+}
+
 mat-list-item.mat-list-item {
   margin-bottom: 14px;
   font-size: 100%;
@@ -106,3 +115,52 @@ mat-list-item.mat-list-item {
   width: 100vw;
 }
 
+mat-cell, mat-header-cell {
+  font-family: priceIsRight;
+  font-size: larger;
+}
+
+p.teams-list-header-geek {
+  font-family: priceIsRight;
+  font-size: 400%;
+  margin: 0px;
+  margin-left: 65px;
+  color: white;
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: black;
+}
+
+p.teams-list-header-off {
+  font-family: priceIsRight;
+  font-size: 400%;
+  margin: 0px;
+  margin-left: 65px;
+  color: red;
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: black;
+}
+
+img.dollar {
+  position: absolute;
+  vertical-align: middle;
+  height: 130px;
+  width: 60px;
+  left: 22px;
+  top: 60px;
+}
+
+.red-col {
+  color: red;
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: black;
+}
+
+.yellow-col {
+  color: gold;
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: black;
+}
+
+.row-header {
+  font-size: x-large;
+}
