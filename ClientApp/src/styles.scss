@@ -35,11 +35,11 @@ $go-theme: mat.define-light-theme($go-primary, $go-accent, $go-warn);
 
 .bigbtngrnlabel {
     background: #02856b;
-    background-image: -webkit-linear-gradient(top, #02856b, #085747);
-    background-image: -moz-linear-gradient(top, #02856b, #085747);
-    background-image: -ms-linear-gradient(top, #02856b, #085747);
-    background-image: -o-linear-gradient(top, #02856b, #085747);
-    background-image: linear-gradient(to bottom, #02856b, #085747);
+    background-image: -webkit-linear-gradient(top, #00b989, #098060);
+    background-image: -moz-linear-gradient(top, #00b989, #098060);
+    background-image: -ms-linear-gradient(top, #00b989, #098060);
+    background-image: -o-linear-gradient(top, #00b989, #098060);
+    background-image: linear-gradient(to bottom, #00b989, #098060);
     -webkit-border-radius: 2;
     -moz-border-radius: 2;
     border-radius: 2px;
@@ -47,7 +47,7 @@ $go-theme: mat.define-light-theme($go-primary, $go-accent, $go-warn);
     -moz-box-shadow: 0px 1px 3px #666666;
     box-shadow: 0px 1px 3px #666666;
     font-family: Arial;
-    color: #ffff00;
+    color: #d0dae0;
     font-size: 20px;
     padding: 10px 20px 10px 20px;
     margin: 10px 10px 10px 10px;
@@ -66,11 +66,11 @@ $go-theme: mat.define-light-theme($go-primary, $go-accent, $go-warn);
 
 .bigbtngrn input:checked~.bigbtngrnlabel {
     background: #ffff00;
-    background-image: -webkit-linear-gradient(top, #04d6ac, #0fab89);
-    background-image: -moz-linear-gradient(top, #04d6ac, #0fab89);
-    background-image: -ms-linear-gradient(top, #04d6ac, #0fab89);
-    background-image: -o-linear-gradient(top, #04d6ac, #0fab89);
-    background-image: linear-gradient(to bottom, #04d6ac, #0fab89);
+    background-image: -webkit-linear-gradient(top, #0078d2, #00467f);
+    background-image: -moz-linear-gradient(top, #0078d2, #00467f);
+    background-image: -ms-linear-gradient(top, #0078d2, #00467f);
+    background-image: -o-linear-gradient(top, #0078d2, #00467f);
+    background-image: linear-gradient(to bottom, #0078d2, #00467f);
     text-decoration: none;
     color: #fff;
 }
@@ -139,7 +139,7 @@ $go-theme: mat.define-light-theme($go-primary, $go-accent, $go-warn);
     -moz-box-shadow: 0px 1px 3px #666666;
     box-shadow: 0px 1px 3px #666666;
     font-family: Arial;
-    color: #ffff00;
+    color: #fff;
     font-size: 20px;
     padding: 10px 20px 10px 20px;
     margin: 10px 10px 10px 10px;

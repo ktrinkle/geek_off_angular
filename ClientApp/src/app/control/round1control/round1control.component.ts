@@ -27,6 +27,8 @@ export class Round1ControlComponent implements OnInit {
   scoreResponse:string = '';
   finalizeState: string = 'Finalize round';
 
+  currentFilterQuestion: any = {};
+
   public answerForm: FormGroup = new FormGroup({
     selectedQuestion: new FormControl(this.currentQuestion)
   });
@@ -41,6 +43,7 @@ export class Round1ControlComponent implements OnInit {
         this.currentQuestion = c.questionNum;
         this.selectedQuestion = c.questionNum;
         this.answerForm.patchValue({selectedQuestion: this.selectedQuestion});
+        this.currentFilterQuestion = this.possibleAnswers.find(p => p.questionNum == c.questionNum);
       });
       this.updateScoreboard();
       this.loadTeamAnswers();
@@ -109,6 +112,8 @@ export class Round1ControlComponent implements OnInit {
     if (status == 0)
     {
       this.selectedQuestion = this.answerForm.value.selectedQuestion;
+      this.currentFilterQuestion = this.possibleAnswers.find(p => p.questionNum == this.answerForm.value.selectedQuestion);
+
       // reset answerform
       this.answerForm = new FormGroup({
         selectedQuestion: new FormControl(this.currentQuestion)

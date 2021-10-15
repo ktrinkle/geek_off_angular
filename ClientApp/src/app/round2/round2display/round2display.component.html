@@ -1,9 +1,9 @@
 <div id="bb">
     <table>
         <tr>
-            <th colspan="7">TEAM NUMBER: {{ teamNumber }}</th>
+            <th colspan="6">TEAM NUMBER: {{ teamNumber }}</th>
             <th>
-                <!--space for countdown-->
+                <app-round2countdown></app-round2countdown>
             </th>
         </tr>
         <tr *ngFor="let row of displayRows; let i = index">

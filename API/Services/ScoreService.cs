@@ -106,7 +106,6 @@ namespace GeekOff.Services
 
             foreach (var team in teamList)
             {
-                team.TeamName = team.TeamName[0..17];
                 team.TeamScore = team.Q.Sum(s => s.QuestionScore);
             }
 
