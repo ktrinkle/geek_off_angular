@@ -206,6 +206,7 @@ namespace GeekOff.Controllers
         public async Task<ActionResult<List<Round1Scores>>> GetScoreboardAsync(string yEvent)
             => Ok(await _scoreService.GetRound1Scores(yEvent));
 
+
         [Authorize(Roles = "admin")]
         [HttpGet("teamList/{yEvent}")]
         [SwaggerOperation(Summary = "Gets a list of all team members.")]

@@ -17,7 +17,6 @@ import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms'
 export class Round1ControlComponent implements OnInit {
 
   currentQuestion: number = 0;
-  currentQuestionText: string = '';
   selectedQuestion: number = 0;
   possibleAnswers: round1QuestionControlDto[] = [];
   teamAnswers: round1EnteredAnswers[] = [];
@@ -27,6 +26,8 @@ export class Round1ControlComponent implements OnInit {
   status: number = 0;
   scoreResponse:string = '';
   finalizeState: string = 'Finalize round';
+
+  currentFilterQuestion: any = {};
 
   public answerForm: FormGroup = new FormGroup({
     selectedQuestion: new FormControl(this.currentQuestion)
@@ -42,8 +43,8 @@ export class Round1ControlComponent implements OnInit {
         this.currentQuestion = c.questionNum;
         this.selectedQuestion = c.questionNum;
         this.answerForm.patchValue({selectedQuestion: this.selectedQuestion});
+        this.currentFilterQuestion = this.possibleAnswers.find(p => p.questionNum == c.questionNum);
       });
-      this.getCurrentQuestionText();
       this.updateScoreboard();
       this.loadTeamAnswers();
     }});
@@ -111,6 +112,8 @@ export class Round1ControlComponent implements OnInit {
     if (status == 0)
     {
       this.selectedQuestion = this.answerForm.value.selectedQuestion;
+      this.currentFilterQuestion = this.possibleAnswers.find(p => p.questionNum == this.answerForm.value.selectedQuestion);
+
       // reset answerform
       this.answerForm = new FormGroup({
         selectedQuestion: new FormControl(this.currentQuestion)
@@ -167,13 +170,6 @@ export class Round1ControlComponent implements OnInit {
   goToRound2()
   {
     this.router.navigate(['/control/round2']);
-  }
-
-  getCurrentQuestionText() {
-    this.dataService.getRound1QuestionText(this.yEvent, this.currentQuestion).subscribe(data => {
-      this.currentQuestionText = data.questionText;
-      console.log("HERE" + this.currentQuestionText);
-    });
   }
 
 }

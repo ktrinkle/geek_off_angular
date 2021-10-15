@@ -1,5 +1,5 @@
 <div id="r1header">
-    <p>Question {{currentQuestion}}: {{currentQuestionText}}</p>
+    <p>Question {{currentQuestion}}: {{currentFilterQuestion.questionText}}</p>
 </div>
 <div class="content" fxLayout="row wrap" fxLayoutGap="16px grid">
     <div id="currentAnswer" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%" style="padding: 10px;" [formGroup]="answerForm">
@@ -8,7 +8,7 @@
             <ng-container matColumnDef="teamButton">
                 <mat-header-cell *matHeaderCellDef></mat-header-cell>
                 <mat-cell *matCellDef="let row">
-                    <mat-slide-toggle color="accent" id="{{row.teamNum}}" name="{{row.teamNum}}" formControlName="{{row.teamNum}}" (change)="scoreManual(row.teamNum)"></mat-slide-toggle>
+                    <mat-slide-toggle color="primary" id="{{row.teamNum}}" name="{{row.teamNum}}" formControlName="{{row.teamNum}}" (change)="scoreManual(row.teamNum)"></mat-slide-toggle>
                 </mat-cell>
             </ng-container>
 

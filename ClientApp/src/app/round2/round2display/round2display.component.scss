@@ -7,38 +7,54 @@
     -o-background-size: cover;
     color: #ffff00;
     font-family: fastmoney;
-    font-size: 10vh;
+    font-size: 3.3vw;
     width: 100vw;
     height: 100vh;
 }
 
-mat-table.mat-table {
+table {
     background-color: #000;
     color: #ffff00;
     font-family: fastmoney;
-    font-size: 10vh;
+    font-size: 3.3vw;
 }
 
-mat-cell {
-    font-size: 10vh;
-    color: #ffff00;
+tr {
+    height: 12.5vh;
+    display: flex;
     clear: all;
-    font-family: fastmoney;
-    border: none !important;
-    flex: auto;
+}
+
+th {
+    font-weight: normal;
 }
 
 .answercell {
-    width: 40vw;
+    width: 36.7vw;
+    display: flex;
+    clear: all;
 }
 
 .scorecell {
-    width: 20vw;
+    width: 6.7vw;
+    display: flex;
+    clear: all;
+}
+
+.bigscore {
+    width: 13.4vw;
+    display: flex;
+    clear: all;
+}
+
+.spacer {
+    width: 3.3vw;
+    display: flex;
+    clear: all;
 }
 
 .answer {
-    font-size: 10vh;
-    clear: all;
+    font-size: 3.3vw;
     font-family: fastmoney;
     border: none !important;
     overflow: hidden;
@@ -47,19 +63,53 @@ mat-cell {
     /* Keeps the content on a single line */
     //letter-spacing: .17em;
     animation: reveal 0.5s steps(10, end);
+    z-index: 1;
 }
 
 .score {
-    font-size: 10vh;
-    clear: all;
-    width: 20vw;
-    font-family: fastmoney;
+    font-size: 3.3vw;
+    width: 100%;
+    text-align: right;
     border: none !important;
     overflow: hidden;
     /* Ensures the content is not revealed until the animation */
     white-space: nowrap;
     /* Keeps the content on a single line */
     animation: reveal 0.1s steps(2, end);
+    z-index: 1;
+}
+
+.score3 {
+    font-size: 3.3vw;
+    clear: all;
+    width: 100%;
+    font-family: fastmoney;
+    text-align: right;
+    border: none !important;
+    overflow: hidden;
+    /* Ensures the content is not revealed until the animation */
+    white-space: nowrap;
+    /* Keeps the content on a single line */
+    animation: reveal 0.15s steps(3, end);
+    z-index: 1;
+}
+
+.hide {
+    z-index: 5;
+}
+
+.hidescore {
+    z-index: 10;
+    text-align: right;
+    width: 100%;
+    float: right;
+}
+
+.hidescore3 {
+    z-index: 10;
+    text-align: right;
+    width: 100%;
+    float: right;
 }
 
 
@@ -72,17 +122,4 @@ mat-cell {
     to {
         width: 100%
     }
-}
-
-.text {
-    font-family: fastmoney;
-    font-size: 10vh;
-    height: 12.5vh;
-}
-
-mat-row,
-mat-header-row,
-mat-footer-row {
-    border-bottom: none;
-    height: 12.5vh;
 }
