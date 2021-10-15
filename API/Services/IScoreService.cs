@@ -12,5 +12,6 @@ namespace GeekOff.Services
         Task<List<Round23Scores>> GetRound23Scores(string yEvent, int roundNo);
         Task<string> ScoreAnswerAutomatic(string yEvent, int questionId);
         Task<bool> ScoreAnswerManual(string yEvent, int questionId, int teamNum);
+        Task<List<Round2Answers>> GetFirstPlayersAnswers(string yEvent, int teamNum);
     }
 }

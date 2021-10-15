@@ -29,6 +29,7 @@ export class Round2controlComponent implements OnInit {
   public showBonusQuestion: boolean = false;
   public scoreboard: round23Scores[] = [];
   public currentDisplayId: number = 0;
+  public firstPlayerAnswers: round2Answers[] = [];
   buzzer = new Audio();
   dings = new Audio();
 
@@ -148,9 +149,9 @@ export class Round2controlComponent implements OnInit {
     this.newEventForm.get("questionNum")?.setValue(answer.questionNum);
   }
 
-  updateRemoteScoreboard()
+  async updateRemoteScoreboard()
   {
-    this._dataService.updateScoreboardRound2();
+    await this._dataService.updateScoreboardRound2();
     this.updateScoreboard();
   }
 
@@ -212,5 +213,12 @@ export class Round2controlComponent implements OnInit {
 
   setCountdown(seconds: number){
     this._dataService.setCountdown(Number(seconds));
+  }
+
+  showFirstAnswers(form: FormGroup) {
+    console.log("Team Num: " + form.get("teamNum")?.value);
+    this._dataService.getRound2FirstPlayer(form.get("teamNum")?.value)
+                                               .subscribe((data: round2Answers[]) => this.firstPlayerAnswers = data);
+    console.log("FPA: " + this.firstPlayerAnswers);
   }
 }

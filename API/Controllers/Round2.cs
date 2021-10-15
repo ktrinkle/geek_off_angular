@@ -104,7 +104,7 @@ namespace GeekOff.Controllers
         }
 
         [Authorize(Roles = "admin")]
-        [HttpPut("updateScoreboard")]
+        [HttpGet("updateScoreboard")]
         [SwaggerOperation(Summary = "Sends message to update the scoreboard.")]
         public async Task<ActionResult> UpdateScoreboardAsync()
         {
@@ -143,5 +143,11 @@ namespace GeekOff.Controllers
             await _eventHub.Clients.All.SendAsync("setCountdown", seconds);
             return Ok();
         }
+        [Authorize(Roles = "admin")]
+        [HttpGet("firstPlayersAnswers/{teamNum}")]
+        [SwaggerOperation(Summary = "Returns the first Players answers for round 2")]
+        public async Task<ActionResult<Round23Scores>> GetFirstPlayersAnswersAsync(string yEvent, int teamNum)
+            => Ok(await _scoreService.GetFirstPlayersAnswers(yEvent, teamNum));
+
     }
 }
