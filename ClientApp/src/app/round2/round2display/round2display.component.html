@@ -1,4 +1,62 @@
 <div id="bb">
+    <table>
+        <tr>
+            <th colspan="7">TEAM NUMBER: {{ teamNumber }}</th>
+            <th>
+                <!--space for countdown-->
+            </th>
+        </tr>
+        <tr *ngFor="let row of displayRows; let i = index">
+            <td class="answercell">
+                <span *ngIf="displayStatus >= (i*2)+1" class="answer">{{row.player1.answer}}</span>
+                <span *ngIf="displayStatus < (i*2)+1" class="hide" [@fadeInOut]> ©©©©©©©©©©©</span>
+            </td>
+            <td class="spacer">
+                &nbsp;
+            </td>
+            <td class="scorecell">
+                <span *ngIf="displayStatus < (i*2)+2" class="hidescore" [@fadeInOut]> ©©</span>
+                <span *ngIf="displayStatus >= (i*2)+2" class="score">{{row.player1.score}}</span>
+            </td>
+            <td class="scorecell">
+                &nbsp;
+            </td>
+            <td class="scorecell">
+                <span *ngIf="displayStatus < (i*2)+12" class="hidescore" [@fadeInOut]> ©©</span>
+                <span *ngIf="displayStatus >= (i*2)+12" class="score">{{row.player2.score}}</span>
+            </td>
+            <td class="spacer">
+                &nbsp;
+            </td>
+            <td class="answercell">
+                <span *ngIf="displayStatus >= (i*2)+11" class="answer">{{row.player2.answer}}</span>
+                <span *ngIf="displayStatus < (i*2)+11" class="hide" [@fadeInOut]> ©©©©©©©©©©©</span>
+            </td>
+        </tr>
+        <tr>
+            <td class="answercell">
+                &nbsp;
+            </td>
+            <td class="spacer">
+                &nbsp;
+            </td>
+            <td class="scorecell">
+                &nbsp;
+            </td>
+
+            <td class="bigscore">
+                <span *ngIf="displayStatus < showTotalPlayer1 || (displayStatus > showTotalPlayer1 && displayStatus < showTotalPlayer2)" class="hidescore3" [@fadeInOut]> ©©©</span>
+                <span *ngIf="displayStatus == showTotalPlayer1 || displayStatus == showTotalPlayer2" class="score3">{{totalScore}}</span>
+            </td>
+            <td class="spacer">
+            </td>
+            <td class="answercell textRight">
+                TOTAL
+            </td>
+        </tr>
+    </table>
+
+    <!--
     TEAM NUMBER: {{ teamNumber }}
     <mat-table [dataSource]="displayRows">
         <ng-container matColumnDef="player1Answer">
@@ -28,8 +86,6 @@
                 <span *ngIf="displayStatus < (i*2)+11" [@fadeInOut]> ©©©©©©©©©©©</span> {{row.player2.answer}}
             </mat-cell>
         </ng-container>
-
-        <!-- Header and Row Declarations -->
         <mat-row *matRowDef="let row; columns: ['player1Answer', 'player1AnswerValue', 'player2AnswerValue', 'player2Answer']"></mat-row>
-    </mat-table>
+    </mat-table>-->
 </div>
