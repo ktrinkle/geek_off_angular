@@ -17,6 +17,7 @@ using Swashbuckle.AspNetCore.Annotations;
 namespace GeekOff.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("api/round1")]
     public class Round1Controller : ControllerBase
     {
@@ -206,6 +207,7 @@ namespace GeekOff.Controllers
             => Ok(await _scoreService.GetRound1Scores(yEvent));
 
 
+        [Authorize(Roles = "admin")]
         [HttpGet("teamList/{yEvent}")]
         [SwaggerOperation(Summary = "Gets a list of all team members.")]
         public async Task<ActionResult<List<IntroDto>>> GetTeamListAsync(string yEvent) =>
