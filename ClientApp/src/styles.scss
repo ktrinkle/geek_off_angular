@@ -33,6 +33,11 @@ $go-theme: mat.define-light-theme($go-primary, $go-accent, $go-warn);
     src: url('//geekoff2021static.blob.core.windows.net/fonts/goudyheavy.otf');
 }
 
+@font-face {
+    font-family: priceIsRight;
+    src: url('https://geekoff2021static.blob.core.windows.net/fonts/pricedown_bl.otf');
+}
+
 .container-app {
     width: 100%;
     height: 100%
