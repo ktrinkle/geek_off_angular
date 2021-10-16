@@ -97,3 +97,42 @@ div.container {
         min-height: 24px;
     }
 }
+
+// Little space in between the start and stop button.
+.divider {
+  width:5px;
+  height:auto;
+  min-height: 1px;
+  display:inline-block;
+}
+.countdownScreen {
+  font-size: 23em;
+  color: #ffff00;
+  text-align: center;
+  font-family: sportstype !important;
+}
+
+.countdownButtons {
+  text-align: center;
+}
+
+#startButton {
+  background-color: #00cc00 !important;
+  color: white !important;
+  font-size: 20px !important;
+  border-radius: 8px !important;
+}
+
+#stopButton {
+  background-color: #e60000 !important;
+  color: white !important;
+  font-size: 20px !important;
+  border-radius: 8px !important;
+}
+
+#setButton {
+  background-color: #00aaff !important;
+  color: white !important;
+  font-size: 20px !important;
+  border-radius: 8px !important;
+}
