@@ -31,6 +31,8 @@
             <mat-row *matRowDef="let row; columns: ['teamButton','sbteamNo', 'sbteamAnswer']"></mat-row>
         </mat-table>
         <button id="updateScoreboard" class="bigbtngrnlabel" (click)="updateRemoteScoreboard()">Send scoreboard update</button>
+        <button id="autoScore" class="bigbtnbluelabel" (click)="autoScore()">Auto-Score</button> {{scoreResponse}}
+        <div clear="both"></div>
     </div>
     <div id="currentScoreboard" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%" style="padding: 10px;">
         <h3>Round 1 Scoreboard</h3>
@@ -71,8 +73,13 @@
             <button id="goToQuestion" type="submit" class="bigbtngrnlabel" (click)="sendClientMessage(0)">Go to selected question</button>
         </form>
         <div clear="all"></div>
-        <p><button id="autoScore" class="bigbtnbluelabel" (click)="autoScore()">Auto-Score</button> {{scoreResponse}}
-        </p>
+        Think cues:
+        <button id="think1" class="bigbtngrnlabel" (click)="playThink(1)">1</button>
+        <button id="think2" class="bigbtngrnlabel" (click)="playThink(2)">2</button>
+        <button id="think3" class="bigbtngrnlabel" (click)="playThink(3)">3</button>
+        <button id="think4" class="bigbtngrnlabel" (click)="playThink(4)">4</button>
+        <button id="think5" class="bigbtngrnlabel" (click)="playThink(5)">5</button>
+        <button id="think6" class="bigbtngrnlabel" (click)="playThink(6)">6</button>
         <div clear="all"></div>
         <button id="goToNextQuestion" class="bigbtnbluelabel" (click)="sendNextClientMessage(0)">Go to next question</button>
         <button id="finalizeRound" class="bigbtnredlabel" (click)="finalizeRound()">{{finalizeState}}</button>

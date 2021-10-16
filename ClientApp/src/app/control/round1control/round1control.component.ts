@@ -27,6 +27,14 @@ export class Round1ControlComponent implements OnInit {
   scoreResponse:string = '';
   finalizeState: string = 'Finalize round';
 
+  // think cues
+  think1 = new Audio('https://geekoff2021static.blob.core.windows.net/snd/think1.mp3');
+  think2 = new Audio('https://geekoff2021static.blob.core.windows.net/snd/think2.mp3');
+  think3 = new Audio('https://geekoff2021static.blob.core.windows.net/snd/think3.mp3');
+  think4 = new Audio('https://geekoff2021static.blob.core.windows.net/snd/think4.mp3');
+  think5 = new Audio('https://geekoff2021static.blob.core.windows.net/snd/think5.mp3');
+  think6 = new Audio('https://geekoff2021static.blob.core.windows.net/snd/think6.mp3');
+
   currentFilterQuestion: any = {};
 
   public answerForm: FormGroup = new FormGroup({
@@ -51,6 +59,13 @@ export class Round1ControlComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.think1.load();
+    this.think2.load();
+    this.think3.load();
+    this.think4.load();
+    this.think5.load();
+    this.think6.load();
+
     const connection = new signalR.HubConnectionBuilder()
       .configureLogging(signalR.LogLevel.Information)
       .withUrl(environment.api_url + '/events')
@@ -170,6 +185,48 @@ export class Round1ControlComponent implements OnInit {
   goToRound2()
   {
     this.router.navigate(['/control/round2']);
+  }
+
+  playThink(cue: number)
+  {
+    switch (cue) {
+      case 1:
+        this.think1.play().then( _b => {
+          this.think1.currentTime = 0;
+          this.think1.pause;
+        });
+        break;
+      case 2:
+        this.think2.play().then( _b => {
+          this.think2.currentTime = 0;
+          this.think2.pause;
+        });
+        break;
+      case 3:
+        this.think3.play().then( _b => {
+          this.think3.currentTime = 0;
+          this.think3.pause;
+        });
+        break;
+      case 4:
+        this.think4.play().then( _b => {
+          this.think4.currentTime = 0;
+          this.think4.pause;
+        });
+        break;
+      case 5:
+        this.think5.play().then( _b => {
+          this.think5.currentTime = 0;
+          this.think5.pause;
+        });
+        break;
+      case 6:
+        this.think6.play().then( _b => {
+          this.think6.currentTime = 0;
+          this.think6.pause;
+        });
+        break;
+    }
   }
 
 }
