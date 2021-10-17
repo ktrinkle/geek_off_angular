@@ -48,8 +48,12 @@ import { PregameComponent } from './control/pregame/pregame.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatButtonToggle, MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatDialog, MatDialogContent, MatDialogModule } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 import { CountdownModule } from 'ngx-countdown';
+import { Round2countdowndialogComponent } from './round2/round2countdowndialog/round2countdowndialog.component';
 
 /**
  * Here we pass the configuration parameters to create an MSAL instance.
@@ -112,7 +116,8 @@ export function MSALInterceptorFactory(): MsalInterceptorConfiguration {
     Round1ScoreboardComponent,
     Round1ControlComponent,
     PregameComponent,
-    Round1hostComponent
+    Round1hostComponent,
+    Round2countdowndialogComponent
   ],
   imports: [
     BrowserModule,
@@ -134,7 +139,12 @@ export function MSALInterceptorFactory(): MsalInterceptorConfiguration {
     BrowserAnimationsModule,
     FlexLayoutModule,
     MatSlideToggleModule,
-    MatButtonToggleModule
+    MatButtonToggleModule,
+    MatButtonToggleModule,
+    FormsModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule
   ],
   exports: [
     FormsModule
@@ -160,7 +170,8 @@ export function MSALInterceptorFactory(): MsalInterceptorConfiguration {
     MsalService,
     MsalGuard,
     MsalBroadcastService,
-    DataService
+    DataService,
+    Round2controlComponent
   ],
   bootstrap: [AppComponent, MsalRedirectComponent]
 })
