@@ -27,6 +27,7 @@ export class Round1DisplayQuestionComponent implements OnInit, OnDestroy {
   mediaVisible: boolean = false;
   answerVisible: boolean = false;
   answerShown: boolean = false;
+  currentScreen: string = "question";
   matchString = 'xABCD'; // 1 based to make life easier ahead
   currentQuestion: currentQuestionDto = {
     questionNum: 0,
@@ -54,6 +55,7 @@ export class Round1DisplayQuestionComponent implements OnInit, OnDestroy {
     const connection = new signalR.HubConnectionBuilder()
       .configureLogging(signalR.LogLevel.Information)
       .withUrl(environment.api_url + '/events')
+      .withAutomaticReconnect()
       .build();
 
     connection.start().then(function () {
@@ -76,6 +78,10 @@ export class Round1DisplayQuestionComponent implements OnInit, OnDestroy {
 
     connection.on("round1ShowMedia", (data: any) => {
       this.showMedia();
+    });
+
+    connection.on("round1intro", (data: any) => {
+      this.changePage(data);
     });
 
     // set up our internal state
@@ -141,6 +147,10 @@ export class Round1DisplayQuestionComponent implements OnInit, OnDestroy {
     this.mediaVisible = true;
   }
 
+  changePage(page: any): void {
+    console.log('ChangePage: ' + page);
+    this.currentScreen = page;
+  }
 
   debugVals() {
     console.log("questionVisible " + this.questionVisible);

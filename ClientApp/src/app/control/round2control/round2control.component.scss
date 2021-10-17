@@ -19,10 +19,10 @@ input.answer-choice {
 }
 
 button {
-    color: #494949 !important;
+    color: #aaa7a7 !important;
     text-transform: uppercase;
     text-decoration: none;
-    background: #ffffff;
+    background: green;
     border: 2px solid #494949 !important;
     display: inline-block;
     transition: all 0.4s ease 0s;
@@ -30,8 +30,8 @@ button {
 
 button:hover {
     color: #ffffff !important;
-    background: green;
-    border-color: green !important;
+    background: limegreen;
+    border-color: limegreen !important;
     transition: all 0.4s ease 0s;
     cursor: pointer;
 }

@@ -69,6 +69,7 @@ export class Round1ControlComponent implements OnInit {
     const connection = new signalR.HubConnectionBuilder()
       .configureLogging(signalR.LogLevel.Information)
       .withUrl(environment.api_url + '/events')
+      .withAutomaticReconnect()
       .build();
 
     connection.start().then(function () {
@@ -191,22 +192,37 @@ export class Round1ControlComponent implements OnInit {
   {
     switch (cue) {
       case 1:
-        this.think1.play().then( _b => {
-          this.think1.currentTime = 0;
+        if (!this.think1.paused && this.think1.currentTime > 0) {
           this.think1.pause;
-        });
+          this.think1.currentTime =0;
+        }
+        else
+        {
+          this.think1.currentTime = 0;
+          this.think1.play();
+        };
         break;
       case 2:
-        this.think2.play().then( _b => {
-          this.think2.currentTime = 0;
+        if (!this.think2.paused && this.think2.currentTime > 0) {
           this.think2.pause;
-        });
+          this.think2.currentTime = 0;
+        }
+        else
+        {
+          this.think2.currentTime = 0;
+          this.think2.play();
+        };
         break;
       case 3:
-        this.think3.play().then( _b => {
-          this.think3.currentTime = 0;
+        if (!this.think3.paused && this.think3.currentTime > 0) {
           this.think3.pause;
-        });
+          this.think3.currentTime = 0;
+        }
+        else
+        {
+          this.think3.currentTime = 0;
+          this.think3.play();
+        };
         break;
       case 4:
         this.think4.play().then( _b => {
@@ -227,6 +243,10 @@ export class Round1ControlComponent implements OnInit {
         });
         break;
     }
+  }
+
+  changeScreen(name: string){
+    this.dataService.changeIntroPage(name);
   }
 
 }

@@ -20,7 +20,7 @@
     <div id="showForm" *ngIf="formVisible && !answerSubmitted">
         <p>Time to answer!</p>
         <form [formGroup]="answerForm" (ngSubmit)="submitAnswer()">
-            <div id="formMc" class="bigbtngrn" *ngIf="currentQuestionDto.answerType == 0">
+            <div id="formMc" class="bigbtngblue" *ngIf="currentQuestionDto.answerType == 0">
                 <div *ngFor="let answer of currentQuestionDto.answers">
                     <input type="radio" name="textAnswer" id="{{answer.answer}}" class="bigbtngrnlabel">
                     <label for="{{answer.answer}}" class="bigbtngrnlabel">{{answer.answer}}</label>

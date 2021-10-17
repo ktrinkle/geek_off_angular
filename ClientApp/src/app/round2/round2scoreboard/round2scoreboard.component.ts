@@ -32,6 +32,7 @@ export class Round2scoreboardComponent implements OnInit {
     const connection = new signalR.HubConnectionBuilder()
       .configureLogging(signalR.LogLevel.Information)
       .withUrl(`${environment.api_url}/events`)
+      .withAutomaticReconnect()
       .build();
 
     connection.start().then(() => {

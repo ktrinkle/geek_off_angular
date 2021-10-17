@@ -67,114 +67,107 @@
 
 <div id="rule1" class="rulescreen" [@fadeInOut] *ngIf="currentScreen==='rule1'">
     <h2>Three rounds</h2>
-    <mat-list class="questionBox">
-        <div *ngIf="currentItem >= 0">
-            <mat-list-item>
+    <ul class="questionBox">
+            <li *ngIf="currentItem >= 0">
                 <h4>
                     <mat-icon svgIcon="geekplane" inline="true" matListIcon></mat-icon>Round 1: Trivia</h4>
-            </mat-list-item>
-            <mat-list-item matLine>
+                  </li>
+            <ul><li>
                 <h5>
                     <mat-icon svgIcon="geekasterisk" inline="true" matListIcon></mat-icon>15 Questions</h5>
-            </mat-list-item>
-            <mat-list-item matLine>
+                  </li>
+            <li>
                 <h5>
                     <mat-icon svgIcon="geekasterisk" inline="true" matListIcon></mat-icon>6 teams advance</h5>
-            </mat-list-item>
-        </div>
-        <div *ngIf="currentItem >= 1" [@fadeInOut]>
-            <mat-list-item>
+                </li></ul>
+        <li *ngIf="currentItem >= 1" [@fadeInOut]>
                 <h4>
                     <mat-icon svgIcon="geekplane" inline="true" matListIcon></mat-icon>Round 2: Fast Points</h4>
-            </mat-list-item>
-            <mat-list-item matLine>
+            <ul><li>
                 <h5>
                     <mat-icon svgIcon="geekasterisk" inline="true" matListIcon></mat-icon>5 Questions</h5>
-            </mat-list-item>
-            <mat-list-item matLine>
+                </li>
+            <li>
                 <h5>
                     <mat-icon svgIcon="geekasterisk" inline="true" matListIcon></mat-icon>20-25 seconds per person</h5>
-            </mat-list-item>
-            <mat-list-item matLine>
+                </li>
+            <li>
                 <h5>
                     <mat-icon svgIcon="geekasterisk" inline="true" matListIcon></mat-icon>3 teams advance</h5>
-            </mat-list-item>
-        </div>
-        <div *ngIf="currentItem >= 2" [@fadeInOut]>
-            <mat-list-item>
+                </li></ul>
+              </li>
+        <li *ngIf="currentItem >= 2" [@fadeInOut]>
                 <h4>
                     <mat-icon svgIcon="geekplane" inline="true" matListIcon></mat-icon>Round 3: Jeopardy!</h4>
-            </mat-list-item>
-            <mat-list-item matLine>
+            <ul>
+            <li>
                 <h5>
                     <mat-icon svgIcon="geekasterisk" inline="true" matListIcon></mat-icon>20 Questions</h5>
-            </mat-list-item>
-            <mat-list-item matLine>
+            </li>
+            <li>
                 <h5>
                     <mat-icon svgIcon="geekasterisk" inline="true" matListIcon></mat-icon>Teams Compete to answer first</h5>
-            </mat-list-item>
-        </div>
-    </mat-list>
-</div>
-
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
 <div id="rule2" class="rulescreen" [@fadeInOut] *ngIf="currentScreen==='rule2'">
     <h2>Rules</h2>
-    <mat-list class="questionBox">
-        <mat-list-item *ngIf="currentItem >= 0" [@fadeInOut]>
+    <ul class="questionBox">
+        <li *ngIf="currentItem >= 0" [@fadeInOut]>
             <h4>
                 <mat-icon svgIcon="geekplane" inline="true" matListIcon></mat-icon>Scores will be reset after each round
             </h4>
-        </mat-list-item>
-        <div *ngIf="currentItem >= 1" [@fadeInOut]>
-            <mat-list-item>
+        </li>
+        <li *ngIf="currentItem >= 1" [@fadeInOut]>
+            <li>
                 <h4>
                     <mat-icon svgIcon="geekplane" inline="true" matListIcon></mat-icon>One bonus point for each $20 raised over $100
                 </h4>
-            </mat-list-item>
-            <mat-list-item matLine>
+            <ul>
+            <li matLine>
                 <h5>
                     <mat-icon svgIcon="geekasterisk" inline="true" matListIcon></mat-icon>Maximum of 10 bonus points awarded</h5>
-            </mat-list-item>
-        </div>
-        <mat-list-item *ngIf="currentItem >= 2" [@fadeInOut]>
+            </li>
+          </ul>
+        <li *ngIf="currentItem >= 2" [@fadeInOut]>
             <h4>
                 <mat-icon svgIcon="geekplane" inline="true" matListIcon></mat-icon>No answering before the host finishes asking the question
             </h4>
-        </mat-list-item>
-        <div *ngIf="currentItem >= 3" [@fadeInOut]>
-            <mat-list-item>
+        </li>
+        <li *ngIf="currentItem >= 3" [@fadeInOut]>
                 <h4>
                     <mat-icon svgIcon="geekmask" inline="true" matListIcon></mat-icon>Masks required at all times in the room</h4>
-            </mat-list-item>
-            <mat-list-item matLine>
+            <ul>
+            <li matLine>
                 <h5>
                     <mat-icon svgIcon="geekasterisk" inline="true" matListIcon></mat-icon>Except if you are in front of a microphone</h5>
-            </mat-list-item>
-        </div>
-    </mat-list>
+            </li>
+          </ul>
+        </ul>
 </div>
 
 <div id="rule3" class="rulescreen" [@fadeInOut] *ngIf="currentScreen==='rule3'">
     <h2>Round 1: Trivia</h2>
-    <mat-list class="questionBox">
-        <div *ngIf="currentItem >= 0" [@fadeInOut]>
-            <mat-list-item>
+    <ul class="questionBox">
+        <li *ngIf="currentItem >= 0" [@fadeInOut]>
                 <h4>
                     <mat-icon svgIcon="geekplane" inline="true" matListIcon></mat-icon>15 questions worth 10 points each</h4>
-            </mat-list-item>
-            <mat-list-item matLine>
+            <ul>
+            <li>
                 <h5>
                     <mat-icon svgIcon="geekasterisk" inline="true" matListIcon></mat-icon>Partial credit not awarded</h5>
-            </mat-list-item>
-        </div>
-        <mat-list-item *ngIf="currentItem >= 1" [@fadeInOut]>
+            </li>
+          </ul>
+        <li *ngIf="currentItem >= 1" [@fadeInOut]>
             <h4>
                 <mat-icon svgIcon="geekphone" inline="true" matListIcon></mat-icon>Answer on your cell phone before the time is up
             </h4>
-        </mat-list-item>
-        <mat-list-item *ngIf="currentItem >= 2" [@fadeInOut]>
+        </li>
+        <li *ngIf="currentItem >= 2" [@fadeInOut]>
             <h4>
                 <mat-icon svgIcon="geekplane" inline="true" matListIcon></mat-icon>Top 6 teams advance to Fast Points round</h4>
-        </mat-list-item>
-    </mat-list>
+        </li>
+      </ul>
 </div>

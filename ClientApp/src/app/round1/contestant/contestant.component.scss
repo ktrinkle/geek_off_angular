@@ -2,7 +2,7 @@
     background-image: url('../../../assets/img/contestant_bg.svg');
     background-repeat: repeat;
     height: 93vh;
-    font-family: 'AmericanSans', Arial, Helvetica, sans-serif;
+    font-family: 'goudyheavy', 'AmericanSans', 'Arial', 'Helvetica Neue';
     font-size: 2vh;
     color: #36495A;
 }
@@ -11,7 +11,7 @@
     position: absolute;
     right: 10px;
     top: 9vh;
-    font-family: 'AmericanSans', Arial, Helvetica, sans-serif;
+    font-family: 'goudyheavy', 'AmericanSans', 'Arial', 'Helvetica Neue';
     font-size: 3vh;
     color: #ffffff;
     text-align: center;
@@ -94,6 +94,25 @@ label.bigbtngrnlabel {
     margin-left: 0px;
     align-items: center;
     clear: all;
+    font-size: 2vh;
+}
+
+label.bigbtnbluelabel {
+    display: block;
+    margin-top: 10px;
+    margin-left: 0px;
+    align-items: center;
+    clear: all;
+    font-size: 2vh;
+}
+
+label.bigbtnredlabel {
+    display: block;
+    margin-top: 10px;
+    margin-left: 0px;
+    align-items: center;
+    clear: all;
+    font-size: 2vh;
 }
 
 .buttonspace {
