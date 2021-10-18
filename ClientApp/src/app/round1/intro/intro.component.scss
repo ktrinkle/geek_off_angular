@@ -181,6 +181,13 @@ img.dollar {
     font-size: x-large;
 }
 
-.mat-icon {
-  viewBox="0 0 30 30";
+mat-icon.mat-list-icon {
+  width: 24px;
+  height: 24px;
+}
+
+li {
+  list-style-type: none;
+  font-family: 'AmericanSans', 'Arial', 'Helvetica Neue', sans-serif;
+  vertical-align: baseline;
 }
