@@ -30,8 +30,8 @@
             <mat-header-row *matHeaderRowDef="['teamButton','sbteamNo', 'sbteamAnswer']"></mat-header-row>
             <mat-row *matRowDef="let row; columns: ['teamButton','sbteamNo', 'sbteamAnswer']"></mat-row>
         </mat-table>
-        <button id="updateScoreboard" class="bigbtngrnlabel" (click)="updateRemoteScoreboard()">Send scoreboard update</button>
-        <button id="autoScore" class="bigbtnbluelabel" (click)="autoScore()">Auto-Score</button> {{scoreResponse}}
+        <button id="updateScoreboard" (click)="updateRemoteScoreboard()">Send scoreboard update</button>
+        <button id="autoScore" (click)="autoScore()">Auto-Score</button> {{scoreResponse}}
         <div clear="both"></div>
     </div>
     <div id="currentScoreboard" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%" style="padding: 10px;">

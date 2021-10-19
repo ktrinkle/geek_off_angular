@@ -17,17 +17,17 @@ mat-table {
 }
 
 button {
-  color: #00b989 !important;
+  color: #ffffff !important;
   text-transform: uppercase;
   text-decoration: none;
-  background: green;
+  background: #02856b;
   border: 2px solid #00b989 !important;
   display: inline-block;
   transition: all 0.4s ease 0s;
 }
 
 button:hover {
-  color: #ffffff !important;
+  color: #000000 !important;
   background: #d1d532;
   border-color: #d1d532 !important;
   transition: all 0.4s ease 0s;
@@ -35,7 +35,7 @@ button:hover {
 }
 
 button.buttonred {
-  color: #aaa7a7 !important;
+  color: #ffffff !important;
   text-transform: uppercase;
   text-decoration: none;
   background: #c30019;
@@ -53,7 +53,7 @@ button:hover.buttonred {
 }
 
 button.buttonblue {
-  color: #aaa7a7 !important;
+  color: #ffffff !important;
   text-transform: uppercase;
   text-decoration: none;
   background: #0078d2;

@@ -110,8 +110,12 @@
   color: #d0dae0;
   font-size: 20px;
   padding: 10px 20px 10px 20px;
-  margin: 10px 10px 10px 10px;
   text-decoration: none;
+  display: block;
+  margin-top: 10px;
+  margin-left: 0px;
+  align-items: center;
+  clear: all;
 }
 
 .contbtngrnlabel:hover {
@@ -160,8 +164,13 @@
   color: #fff;
   font-size: 20px;
   padding: 10px 20px 10px 20px;
-  margin: 10px 10px 10px 10px;
   text-decoration: none;
+  display: block;
+  margin-top: 10px;
+  margin-left: 0px;
+  align-items: center;
+  clear: all;
+  width: 100%;
 }
 
 .contbtnredlabel:hover {
