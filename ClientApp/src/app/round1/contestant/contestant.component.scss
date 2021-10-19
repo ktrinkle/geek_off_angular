@@ -88,50 +88,8 @@
     font-size: 2vh;
 }
 
-label.bigbtngrnlabel {
-    display: block;
-    margin-top: 10px;
-    margin-left: 0px;
-    align-items: center;
-    clear: all;
-    font-size: 2vh;
-}
-
-label.bigbtnbluelabel {
-    display: block;
-    margin-top: 10px;
-    margin-left: 0px;
-    align-items: center;
-    clear: all;
-    font-size: 2vh;
-}
-
-label.bigbtnredlabel {
-    display: block;
-    margin-top: 10px;
-    margin-left: 0px;
-    align-items: center;
-    clear: all;
-    font-size: 2vh;
-}
-
 .buttonspace {
     clear: all;
 }
 
-input[type=radio] {
-  opacity: 0;
-  z-index: -1;
-  position: absolute;
-}
 
-.bigbtngrn input[type=radio]:checked + label:after {
-  background: #ffff00;
-  background-image: -webkit-linear-gradient(top, #0078d2, #00467f);
-  background-image: -moz-linear-gradient(top, #0078d2, #00467f);
-  background-image: -ms-linear-gradient(top, #0078d2, #00467f);
-  background-image: -o-linear-gradient(top, #0078d2, #00467f);
-  background-image: linear-gradient(to bottom, #0078d2, #00467f);
-  text-decoration: none;
-  color: #fff;
-}
