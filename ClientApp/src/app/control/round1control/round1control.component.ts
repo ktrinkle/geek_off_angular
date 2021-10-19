@@ -27,6 +27,16 @@ export class Round1ControlComponent implements OnInit {
   scoreResponse:string = '';
   finalizeState: string = 'Finalize round';
 
+  // think cues
+  think1 = new Audio('https://geekoff2021static.blob.core.windows.net/snd/think1.mp3');
+  think2 = new Audio('https://geekoff2021static.blob.core.windows.net/snd/think2.mp3');
+  think3 = new Audio('https://geekoff2021static.blob.core.windows.net/snd/think3.mp3');
+  think4 = new Audio('https://geekoff2021static.blob.core.windows.net/snd/think4.mp3');
+  think5 = new Audio('https://geekoff2021static.blob.core.windows.net/snd/think5.mp3');
+  think6 = new Audio('https://geekoff2021static.blob.core.windows.net/snd/think6.mp3');
+
+  currentFilterQuestion: any = {};
+
   public answerForm: FormGroup = new FormGroup({
     selectedQuestion: new FormControl(this.currentQuestion)
   });
@@ -41,6 +51,7 @@ export class Round1ControlComponent implements OnInit {
         this.currentQuestion = c.questionNum;
         this.selectedQuestion = c.questionNum;
         this.answerForm.patchValue({selectedQuestion: this.selectedQuestion});
+        this.currentFilterQuestion = this.possibleAnswers.find(p => p.questionNum == c.questionNum);
       });
       this.updateScoreboard();
       this.loadTeamAnswers();
@@ -48,9 +59,17 @@ export class Round1ControlComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.think1.load();
+    this.think2.load();
+    this.think3.load();
+    this.think4.load();
+    this.think5.load();
+    this.think6.load();
+
     const connection = new signalR.HubConnectionBuilder()
       .configureLogging(signalR.LogLevel.Information)
       .withUrl(environment.api_url + '/events')
+      .withAutomaticReconnect()
       .build();
 
     connection.start().then(function () {
@@ -86,11 +105,11 @@ export class Round1ControlComponent implements OnInit {
       });
 
       a.forEach((ans: round1EnteredAnswers) => {
-        console.log(a);
+        // console.log(a);
         this.answerForm.setControl(ans.teamNum.toString(), new FormControl(ans.answerStatus));
       });
 
-      console.log(this.answerForm);
+      // console.log(this.answerForm);
     });
   }
 
@@ -109,14 +128,16 @@ export class Round1ControlComponent implements OnInit {
     if (status == 0)
     {
       this.selectedQuestion = this.answerForm.value.selectedQuestion;
+      this.currentFilterQuestion = this.possibleAnswers.find(p => p.questionNum == this.answerForm.value.selectedQuestion);
+
       // reset answerform
       this.answerForm = new FormGroup({
         selectedQuestion: new FormControl(this.currentQuestion)
       });
     }
-    console.log(this.yEvent);
-    console.log(this.selectedQuestion);
-    console.log(status);
+    // console.log(this.yEvent);
+    // console.log(this.selectedQuestion);
+    // console.log(status);
     this.dataService.changeRound1QuestionStatus(this.yEvent, this.selectedQuestion, status).subscribe({next: (c => {
       this.status = c.status;
       this.currentQuestion = c.questionNum;
@@ -165,6 +186,82 @@ export class Round1ControlComponent implements OnInit {
   goToRound2()
   {
     this.router.navigate(['/control/round2']);
+  }
+
+  playThink(cue: number)
+  {
+    switch (cue) {
+      case 1:
+        if (!this.think1.paused && this.think1.currentTime > 0) {
+          this.think1.pause();
+          this.think1.currentTime = 0;
+        }
+        else
+        {
+          this.think1.currentTime = 0;
+          this.think1.play();
+        };
+        break;
+      case 2:
+        if (!this.think2.paused && this.think2.currentTime > 0) {
+          this.think2.pause();
+          this.think2.currentTime = 0;
+        }
+        else
+        {
+          this.think2.currentTime = 0;
+          this.think2.play();
+        };
+        break;
+      case 3:
+        if (!this.think3.paused && this.think3.currentTime > 0) {
+          this.think3.pause();
+          this.think3.currentTime = 0;
+        }
+        else
+        {
+          this.think3.currentTime = 0;
+          this.think3.play();
+        };
+        break;
+      case 4:
+        if (!this.think4.paused && this.think4.currentTime > 0) {
+          this.think4.pause();
+          this.think4.currentTime = 0;
+        }
+        else
+        {
+          this.think4.currentTime = 0;
+          this.think4.play();
+        };
+        break;
+      case 5:
+        if (!this.think5.paused && this.think5.currentTime > 0) {
+          this.think5.pause();
+          this.think5.currentTime = 0;
+        }
+        else
+        {
+          this.think5.currentTime = 0;
+          this.think5.play();
+        };
+        break;
+      case 6:
+        if (!this.think6.paused && this.think6.currentTime > 0) {
+          this.think6.pause();
+          this.think6.currentTime = 0;
+        }
+        else
+        {
+          this.think6.currentTime = 0;
+          this.think6.play();
+        };
+        break;
+    }
+  }
+
+  changeScreen(name: string){
+    this.dataService.changeIntroPage(name);
   }
 
 }

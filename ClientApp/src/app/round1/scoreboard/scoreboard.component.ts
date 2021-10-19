@@ -14,8 +14,7 @@ import { Router } from '@angular/router';
 export class Round1ScoreboardComponent implements OnInit {
 
   yevent: string = sessionStorage.getItem('event') ?? '';
-  headers: { property: string, display: string }[] = [];
-  displayHeaders: string[] = [];
+  headers: string[] = [];
   teamData: any[] = [];
   destroy$: Subject<boolean> = new Subject<boolean>();
 
@@ -27,6 +26,7 @@ export class Round1ScoreboardComponent implements OnInit {
     const connection = new signalR.HubConnectionBuilder()
       .configureLogging(signalR.LogLevel.Information)
       .withUrl(environment.api_url + '/events')
+      .withAutomaticReconnect()
       .build();
 
     connection.start().then(function () {
@@ -56,47 +56,36 @@ export class Round1ScoreboardComponent implements OnInit {
       }
 
       // this creates the headers to display
-      this.headers = [
-        {
-          property: 'teamNumber',
-          display: '#'
-        },
-        {
-          property: 'teamName',
-          display: 'NAME'
-        }
-      ];
+      this.headers = ['#']
+      this.headers.push('NAME');
       if (questionNumbers.length > 0) {
         for (const number of questionNumbers) {
-          this.headers.push({ property: `${number}`, display: `${number}` });
+          if (number > 15)
+          {
+            this.headers.push('T' + (number-15));
+          }
+          else
+          {
+            this.headers.push(number);
+          }
         }
       }
-      this.headers.push({
-        property: 'bonus',
-        display: 'BONUS'
-      });
-      this.headers.push({
-        property: 'total',
-        display: 'TTL'
-      });
-      this.displayHeaders = this.headers.map(h => h.display);
+      this.headers.push('BNS');
+      this.headers.push('TTL');
 
       for (let team of s) {
-        let temp = {
-          teamNumber: team.teamNum,
-          teamName: team.teamName,
-          bonus: team.bonus,
-          total: team.teamScore
-        }
+        let temp = [team.teamNum, team.teamName];
         if (questionNumbers) {
           for (const number of questionNumbers) {
             const question = team.q.filter((a: any) => a.questionId === number);
             if (question.length > 0) {
-              Object.assign(temp, { [`${number}`]: question[0].questionScore });
+              temp.push(question[0].questionScore);
             } else {
-              Object.assign(temp, { [`${number}`]: 0 });
+              temp.push(0);
             }
           }
+          temp.push(team.bonus);
+          temp.push(team.teamScore);
         }
 
         this.teamData.push(temp);

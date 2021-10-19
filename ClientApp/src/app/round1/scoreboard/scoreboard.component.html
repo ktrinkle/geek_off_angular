@@ -1,18 +1,57 @@
 <div id="bb">
-<p>A I R L I N E   G E E K   O F F</p>
-<p>=============   =======   =====</p>
-<mat-table mat-table [dataSource]="teamData">
-  <ng-container *ngFor="let header of headers" [matColumnDef]="header.display">
-    <mat-header-cell *matHeaderCellDef>
-      <p>{{header.display}}</p>
-    </mat-header-cell>
-    <mat-cell *matCellDef="let team">
-        <span>{{team[header.property]}}</span>
-    </mat-cell>
-  </ng-container>
+    <div class="centerHeader">
+        A I R L I N E &nbsp; G E E K &nbsp; O F F
+    </div>
 
-  <mat-header-row *matHeaderRowDef="displayHeaders"></mat-header-row>
-  <mat-row *matRowDef="let row; columns: displayHeaders;"></mat-row>
-</mat-table>
+    <table>
+        <tr>
+            <th *ngFor="let header of headers;let h=index" [ngClass]="{'teamname': h == 1,
+            'bonus': h == (headers.length - 2),
+            'score': h > 1 && h < (headers.length-2),
+            'teamnumber': h == 0,
+            'ttl': h == headers.length-1}">{{header}}</th>
+        </tr>
+        <tr *ngFor="let team of teamData;">
+            <td *ngFor="let data of team;let i = index" [ngClass]="{'teamname': i == 1,
+              'bonus': i == (team.length - 2),
+              'score': i > 1 && i < (team.length-2),
+              'teamnumber': i == 0,
+              'ttl': i == team.length-1}">{{data}}</td>
+        </tr>
+    </table>
+
+
+    <!--mat-table mat-table [dataSource]="teamData">
+        <ng-container *ngFor="let header of headers" [matColumnDef]="header.display">
+            <mat-header-cell *matHeaderCellDef>
+                <p>{{header.display}}</p>
+            </mat-header-cell>
+            <mat-cell *matCellDef="let team" [ngClass]="{'scoreTeam': header.property == 'teamName', 'bonus': header.property == 'bonus'}">
+                <span>{{team[header.property]}}</span>
+            </mat-cell>
+        </ng-container>
+
+        let i = index of row
+
+        <mat-header-row *matHeaderRowDef="displayHeaders"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayHeaders;"></mat-row>
+    </mat-table-->
 
 </div>
+
+<!--
+  #bb .scoreteam {
+  width: 2.2vw;
+}
+
+#bb .teamname {
+  width: 16vw;
+}
+
+#bb .score {
+  width: 2.2vw;
+}
+#bb .ttl {
+  width: 4.8vw;
+}
+-->

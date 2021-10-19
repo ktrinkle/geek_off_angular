@@ -1,108 +1,209 @@
+#teamList {
+    position: absolute;
+    background-color: #00467f;
+    background-size: cover;
+    height: 100%;
+    width: 100%;
+}
+
+mat-table {
+    background-color: #00467f;
+    width: 100%;
+}
+
 mat-list-item.mat-list-item {
-  margin-bottom: 14px;
-  font-size: 100%;
-  clear: all;
-  height: auto;
+    margin-bottom: 14px;
+    font-size: 100%;
+    clear: all;
+    height: auto;
+}
+
+#teamList mat-cell {
+    border: none;
+}
+
+.pricecontainer {
+    width: 100%;
+    height: 100%;
+    vertical-align: middle;
+    align-content: center;
 }
 
 .aablue {
-  position:fixed;
-  background-color: #0078d2;
-  color: #ffffff;
-  font-family: 'AmericanSans', Arial, Helvetica, sans-serif;
-  font-size: 10vh;
-  width: 100%;
-  height: 100%;
-  vertical-align: middle;
-  text-align: center;
+    position: fixed;
+    background-color: #0078d2;
+    color: #ffffff;
+    font-family: 'AmericanSans', Arial, Helvetica, sans-serif;
+    font-size: 10vh;
+    width: 100%;
+    height: 100%;
+    vertical-align: middle;
+    text-align: center;
 }
 
 .smaller {
-  font-size: 8vh;
+    font-size: 8vh;
 }
 
 .masksize {
-  width: 30vw;
+    width: 30vw;
 }
 
-.rulescreen{
-  position: fixed;
-  background-image: url('../../../assets/img/geek_off_21_logo.svg');
-  background-repeat: no-repeat;
-  background-size: cover;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
-  height: 100vh;
-  width: 100vw;
+.rulescreen {
+    position: fixed;
+    background-image: url('../../../assets/img/geek_off_21_logo.svg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    height: 100vh;
+    width: 100vw;
 }
 
-.rulescreen h2{
-  text-align: center;
-  font-family: 'AmericanSans', Arial, Helvetica, sans-serif;
-  font-size: 6vh;
-  color: #ffffff;
-  -webkit-text-stroke: 1px #C30019;
-  text-shadow: 5px 5px 3px #36495A;
+.rulescreen h2 {
+    text-align: center;
+    font-family: 'AmericanSans', Arial, Helvetica, sans-serif;
+    font-size: 6vh;
+    color: #ffffff;
+    -webkit-text-stroke: 1px #C30019;
+    text-shadow: 5px 5px 3px #36495A;
 }
 
-.questionBox{
-  position: fixed;
-  left: 10%;
-  top: 15%;
-  width: 80%;
-  height: 55%;
-  vertical-align: middle;
-  text-align: left;
-  padding-left: 2%;
-  padding-right: 2%;
-  padding-top: 2%;
-  padding-bottom: 2%;
-  background-blend-mode: overlay;
-  border-radius: 10px;
-  border: 0.3vw solid #36495A;
-  background-color: antiquewhite;
+.questionBox {
+    position: fixed;
+    left: 10%;
+    top: 15%;
+    width: 80%;
+    height: 55%;
+    vertical-align: middle;
+    text-align: left;
+    padding-left: 2%;
+    padding-right: 2%;
+    padding-top: 2%;
+    padding-bottom: 2%;
+    background-blend-mode: overlay;
+    border-radius: 10px;
+    border: 0.3vw solid #36495A;
+    background-color: antiquewhite;
 }
 
-.questionBox mat-list-item{
-  color: #36495A;
-  font-family: 'AmericanSans',Arial, Helvetica, sans-serif;
-  margin-bottom: 0px;
+.questionBox mat-list-item {
+    color: #36495A;
+    font-family: 'AmericanSans', Arial, Helvetica, sans-serif;
+    margin-bottom: 0px;
 }
 
-.questionBox h4{
-  font-size: 5vh;
-  line-height: 5.5vh;
+.questionBox h4 {
+    font-size: 5vh;
+    line-height: 5.5vh;
 }
 
-.questionBox h4 .mat-icon{
+.questionBox h4 .mat-icon {
     transform: scale(2);
     margin-right: 8px;
 }
 
-.questionBox h5 .mat-icon{
-  margin-left: 10px;
-  margin-right: 10px;
+.questionBox h5 .mat-icon {
+    margin-left: 10px;
+    margin-right: 10px;
 }
 
-.questionBox mat-list-item h5{
-  font-size: 3vh;
-  line-height: 3.2vh;
-  margin-block-start: 0em;
-  margin-block-end: 0em;
+.questionBox mat-list-item h5 {
+    font-size: 3vh;
+    line-height: 3.2vh;
+    margin-block-start: 0em;
+    margin-block-end: 0em;
 }
 
 #intro0 {
-  position: fixed;
-  background-image: url('../../../assets/img/seatbelt_off.png');
-  background-repeat: no-repeat;
-  background-size: cover;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
-  height: 100vh;
-  width: 100vw;
+    position: fixed;
+    background-image: url('../../../assets/img/seatbelt_off.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    height: 100vh;
+    width: 100vw;
 }
+
+mat-cell,
+mat-header-cell {
+    font-family: priceIsRight;
+    font-size: larger;
+}
+
+p.teams-list-header-geek {
+    font-family: priceIsRight;
+    font-size: 400%;
+    margin: 0px;
+    margin-left: 65px;
+    color: white;
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: black;
+}
+
+p.teams-list-header-off {
+    font-family: priceIsRight;
+    font-size: 400%;
+    margin: 0px;
+    margin-left: 65px;
+    color: red;
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: black;
+}
+
+img.dollar {
+    position: absolute;
+    vertical-align: middle;
+    height: 130px;
+    width: 60px;
+    left: 22px;
+    top: 60px;
+}
+
+.red-col {
+    color: red;
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: black;
+}
+
+.yellow-col {
+    color: gold;
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: black;
+}
+
+.row-header {
+    font-size: x-large;
+}
+
+mat-icon.mat-list-icon {
+  width: 24px;
+  height: 24px;
+  padding-right: 6px;
+}
+
+li {
+  list-style-type: none;
+  font-family: 'AmericanSans', 'Arial', 'Helvetica Neue', sans-serif;
+  color: #36495A;
+  display: flex;
+  align-items:center;
+  margin-top: 10px;
+}
+
+li.middleSize {
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+li.largeSize {
+  font-size: 2em;
+  font-weight: bold;
+}
+
 

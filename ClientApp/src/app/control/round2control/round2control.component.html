@@ -37,6 +37,13 @@
           <button id="revealAnswer" type="submit" (click)="showDisplayBoardValue()">Show Answer</button>
       </form>
       </div>
+      <div>
+        <button id="setButton" (click)="openDialog()">Set Countdown</button>
+        <div class="divider"></div>
+        <button id="startButton" (click)="startCountdown()">START</button>
+        <div class="divider"></div>
+        <button id="stopButton" (click)="stopCountdown()">STOP</button>
+      </div>
     </div>
   </mat-grid-tile>
   <div class='vl'></div>
@@ -121,4 +128,7 @@
   </div>
 </form>
 
+<div class="countdownScreen">
+  <app-round2countdown></app-round2countdown>
+</div>
 

@@ -85,7 +85,7 @@ namespace GeekOff.Services
             var teamList = await _contextGo.Teamreference.Where(tr => tr.Yevent == yEvent)
                                 .Select(tr => new Round1Scores()
                                 {
-                                    TeamName = tr.Teamname,
+                                    TeamName = tr.Teamname.ToUpper(),
                                     TeamNum = tr.TeamNo,
                                     Bonus = tr.Dollarraised >= 200 ? 10 : tr.Dollarraised > 100 ? (int)(tr.Dollarraised - 100) / 10 : 0,
                                     Q = (from q in _contextGo.QuestionAns
@@ -102,6 +102,7 @@ namespace GeekOff.Services
                                 }).ToListAsync();
 
             // now we need to calc the TeamScore. Rnk is not used here.
+            // team substring not liked in EF query
 
             foreach (var team in teamList)
             {

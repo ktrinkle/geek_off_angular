@@ -1,8 +1,5 @@
-<div id="countdownDiv">
-  <countdown id="countdownScreen" [config]="config" (event)="handleEvent($event)"></countdown>
-  <br>
-  <button id="startButton" (click)="start()">START</button>
-  <button id="stopButton" *ngIf="showStop" (click)="stop()">STOP</button>
+<div class="countdownDiv">
+  <countdown [config]="config" (event)="handleEvent($event)"></countdown>
 </div>
 
 

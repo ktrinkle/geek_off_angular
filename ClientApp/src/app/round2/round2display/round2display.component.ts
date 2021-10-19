@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import * as signalR from '@microsoft/signalr';
 import { environment } from 'src/environments/environment';
-import { MatTable } from '@angular/material/table';
 import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -40,11 +39,14 @@ export interface displayRow {
 })
 
 export class Round2displayComponent implements OnInit, OnDestroy {
-  @ViewChild(MatTable, { static: true }) table!: MatTable<any>;
+
   destroy$: Subject<boolean> = new Subject<boolean>();
   yEvent = sessionStorage.getItem('event') ?? '';
   displayStatus = 0;
   teamNumber = 2;
+  totalScore = 0;
+  showTotalPlayer1 = 10;
+  showTotalPlayer2 = 20;
   displayObject: round2Display = {
     teamNo: 0,
     player1Answers: [],
@@ -62,6 +64,7 @@ export class Round2displayComponent implements OnInit, OnDestroy {
     const connection = new signalR.HubConnectionBuilder()
       .configureLogging(signalR.LogLevel.Information)
       .withUrl(environment.api_url + '/events')
+      .withAutomaticReconnect()
       .build();
 
     connection.start().then(function () {
@@ -97,6 +100,7 @@ export class Round2displayComponent implements OnInit, OnDestroy {
   getDisplayBoard(): void {
     this.dataService.getRound2DisplayBoard(this.yEvent, this.teamNumber).pipe(takeUntil(this.destroy$)).subscribe(x => {
       this.teamNumber = x.teamNo;
+      this.totalScore = x.finalScore;
       let questionNumbers = [...new Set([...x.player1Answers.map((q: round2Answers) => q.questionNum), ...x.player2Answers.map((q: round2Answers) => q.questionNum)])];
       questionNumbers = questionNumbers.sort((a, b) => (a > b) ? 1 : -1);
       for (let questionNumber of questionNumbers) {
@@ -108,7 +112,6 @@ export class Round2displayComponent implements OnInit, OnDestroy {
             player2: player2Answer.length > 0 ? player2Answer[0] : { questionNum: questionNumber, answer: '', score: null }
           });
       }
-      this.table.renderRows();
     });
   }
 

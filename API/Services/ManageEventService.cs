@@ -276,9 +276,9 @@ namespace GeekOff.Services
                                  TeamNo = r1.TeamNo,
                                  TeamName = tl.Teamname,
                                  Member1 = r1.PlayerName,
-                                 Member2 = r2o.PlayerName,
+                                 Member2 = r2o is null ? "" : r2o.PlayerName,
                                  Workgroup1 = r1.WorkgroupName,
-                                 Workgroup2 = r2o.WorkgroupName
+                                 Workgroup2 = r2o is null ? "" : r2o.WorkgroupName
                              }).ToList();
 
             return returnDto;
@@ -333,7 +333,7 @@ namespace GeekOff.Services
                 QuestionTime = DateTime.UtcNow
             };
 
-            await _contextGo.CurrentQuestion.AddAsync(newQuestionStatus);
+            _contextGo.CurrentQuestion.Add(newQuestionStatus);
             await _contextGo.SaveChangesAsync();
 
             return new CurrentQuestionDto()

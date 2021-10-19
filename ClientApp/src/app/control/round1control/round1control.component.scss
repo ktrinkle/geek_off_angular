@@ -1,0 +1,89 @@
+.content,
+#r1header {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+h3 {
+    font-size: large;
+}
+
+mat-row,
+mat-footer-row {
+    min-height: 24px;
+}
+
+mat-table {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+button {
+  color: #ffffff !important;
+  text-transform: uppercase;
+  text-decoration: none;
+  background: #02856b;
+  border: 2px solid #00b989 !important;
+  display: inline-block;
+  transition: all 0.4s ease 0s;
+}
+
+button:hover {
+  color: #000000 !important;
+  background: #d1d532;
+  border-color: #d1d532 !important;
+  transition: all 0.4s ease 0s;
+  cursor: pointer;
+}
+
+button.buttonred {
+  color: #ffffff !important;
+  text-transform: uppercase;
+  text-decoration: none;
+  background: #c30019;
+  border: 2px solid #c30019 !important;
+  display: inline-block;
+  transition: all 0.4s ease 0s;
+}
+
+button:hover.buttonred {
+  color: #ffffff !important;
+  background: #ff7318;
+  border-color: #ff7318 !important;
+  transition: all 0.4s ease 0s;
+  cursor: pointer;
+}
+
+button.buttonblue {
+  color: #ffffff !important;
+  text-transform: uppercase;
+  text-decoration: none;
+  background: #0078d2;
+  border: 2px solid #0078d2 !important;
+  display: inline-block;
+  transition: all 0.4s ease 0s;
+}
+
+button:hover.buttonblue {
+  color: #ffffff !important;
+  background: #0078d2;
+  border-color: #0078d2 !important;
+  transition: all 0.4s ease 0s;
+  cursor: pointer;
+}
+
+button.buttondarkblue {
+  color: #d0dae0 !important;
+  text-transform: uppercase;
+  text-decoration: none;
+  background: #00467f;
+  border: 2px solid #00467f !important;
+  display: inline-block;
+  transition: all 0.4s ease 0s;
+}
+
+button:hover.buttondarkblue {
+  color: #ffffff !important;
+  background: #0078d2;
+  border-color: #0078d2 !important;
+  transition: all 0.4s ease 0s;
+  cursor: pointer;
+}

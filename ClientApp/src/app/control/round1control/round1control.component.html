@@ -1,5 +1,5 @@
 <div id="r1header">
-    <p>Question {{currentQuestion}}</p>
+    <p>Question {{currentQuestion}}: {{currentFilterQuestion.questionText}}</p>
 </div>
 <div class="content" fxLayout="row wrap" fxLayoutGap="16px grid">
     <div id="currentAnswer" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%" style="padding: 10px;" [formGroup]="answerForm">
@@ -8,7 +8,7 @@
             <ng-container matColumnDef="teamButton">
                 <mat-header-cell *matHeaderCellDef></mat-header-cell>
                 <mat-cell *matCellDef="let row">
-                    <mat-slide-toggle color="accent" id="{{row.teamNum}}" name="{{row.teamNum}}" formControlName="{{row.teamNum}}" (change)="scoreManual(row.teamNum)"></mat-slide-toggle>
+                    <mat-slide-toggle color="primary" id="{{row.teamNum}}" name="{{row.teamNum}}" formControlName="{{row.teamNum}}" (change)="scoreManual(row.teamNum)"></mat-slide-toggle>
                 </mat-cell>
             </ng-container>
 
@@ -30,7 +30,9 @@
             <mat-header-row *matHeaderRowDef="['teamButton','sbteamNo', 'sbteamAnswer']"></mat-header-row>
             <mat-row *matRowDef="let row; columns: ['teamButton','sbteamNo', 'sbteamAnswer']"></mat-row>
         </mat-table>
-        <button id="updateScoreboard" class="bigbtngrnlabel" (click)="updateRemoteScoreboard()">Send scoreboard update</button>
+        <button id="updateScoreboard" (click)="updateRemoteScoreboard()">Send scoreboard update</button>
+        <button id="autoScore" (click)="autoScore()">Auto-Score</button> {{scoreResponse}}
+        <div clear="both"></div>
     </div>
     <div id="currentScoreboard" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%" style="padding: 10px;">
         <h3>Round 1 Scoreboard</h3>
@@ -65,18 +67,27 @@
             {{answer.questionNum}}
           </option>
         </select>
-            <button id="showAnswer" class="bigbtngrnlabel" (click)="sendClientMessage(1)">Show Answer</button>
-            <button id="openAnswer" class="bigbtngrnlabel" (click)="sendClientMessage(2)">Open Answer</button>
-            <button id="closeAnswer" class="bigbtngrnlabel" (click)="sendClientMessage(3)">Close Answer</button>
-            <button id="goToQuestion" type="submit" class="bigbtngrnlabel" (click)="sendClientMessage(0)">Go to selected question</button>
+            <button id="showAnswer" (click)="sendClientMessage(1)">Show Answer</button>
+            <button id="openAnswer" (click)="sendClientMessage(2)">Open Answer</button>
+            <button id="closeAnswer" (click)="sendClientMessage(3)">Close Answer</button>
+            <button id="goToQuestion" (click)="sendClientMessage(0)">Go to selected question</button>
+            <button id="goToNextQuestion" class="buttonblue" (click)="sendNextClientMessage(0)">Go to next question</button>
+
         </form>
         <div clear="all"></div>
-        <p><button id="autoScore" class="bigbtnbluelabel" (click)="autoScore()">Auto-Score</button> {{scoreResponse}}
-        </p>
+        Think cues:
+        <button id="think1" (click)="playThink(1)">1</button>
+        <button id="think2" (click)="playThink(2)">2</button>
+        <button id="think3" (click)="playThink(3)">3</button>
+        <button id="think4" (click)="playThink(4)">4</button>
+        <button id="think5" (click)="playThink(5)">5</button>
+        <button id="think6" (click)="playThink(6)">6</button>
         <div clear="all"></div>
-        <button id="goToNextQuestion" class="bigbtnbluelabel" (click)="sendNextClientMessage(0)">Go to next question</button>
-        <button id="finalizeRound" class="bigbtnredlabel" (click)="finalizeRound()">{{finalizeState}}</button>
-        <button id="round2" class="bigbtnredlabel" (click)="goToRound2()">Go to round 2 control</button>
+        Finalize round:
+        <button id="finalizeRound" class="buttonred" (click)="finalizeRound()">{{finalizeState}}</button>
+        <button id="showPrize1" (click)="changeScreen('prize1')">Prize screen 1</button>
+        <button id="showPrize2" (click)="changeScreen('prize2')">Prize screen 2</button>
+        <button id="round2" class="buttondarkblue" (click)="goToRound2()">Go to round 2 control</button>
 
     </div>
 </div>

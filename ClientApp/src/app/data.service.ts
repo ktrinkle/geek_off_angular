@@ -166,4 +166,19 @@ export class DataService {
     var uri = this.REST_API_SERVER + '/api/round2/bigboard/changeTeam/' + encodeURIComponent(teamNum) + '';
     this.httpClient.get(uri).toPromise();
   }
+
+  public startCountdown(seconds: number) {
+    var uri = this.REST_API_SERVER + '/api/round2/countdown/start/' + + encodeURIComponent(seconds);
+    this.httpClient.get(uri).toPromise();
+  }
+
+  public stopCountdown() {
+    var uri = this.REST_API_SERVER + '/api/round2/countdown/stop';
+    this.httpClient.get(uri).toPromise();
+  }
+
+  public setCountdown(seconds: number) {
+    var uri = this.REST_API_SERVER + '/api/round2/countdown/set/' + encodeURIComponent(seconds);
+    this.httpClient.get(uri).toPromise();
+  }
 }

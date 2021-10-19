@@ -1,21 +1,26 @@
 span.right {
-  float: right;
+    float: right;
 }
 
 mat-toolbar {
-  height: 15vh;
-  margin: 0;
+    height: 15vh;
+    margin: 0;
 }
 
 span.spacer {
-  flex: 1 1 auto;
+    flex: 1 1 auto;
 }
 
 .btn-login {
-  height: 2rem;
-  float: right;
+    height: 2rem;
+    float: right;
 }
 
 a:visited {
-  color: white;
+    color: white;
+}
+
+.username {
+    font-size: 9pt;
+    color: white;
 }
