@@ -22,8 +22,8 @@
         <form [formGroup]="answerForm" (ngSubmit)="submitAnswer()">
             <div id="formMc" *ngIf="currentQuestionDto.answerType == 0">
                 <div *ngFor="let answer of currentQuestionDto.answers">
-                    <input type="radio" name="textAnswer" id="{{answer.answer}}" class="bigbtngrn">
-                    <label for="{{answer.answer}}" class="bigbtngrnlabel">{{answer.answer}}</label>
+                    <input type="radio" name="textAnswer" id="{{answer.answer}}" class="contbtngrn">
+                    <label for="{{answer.answer}}" class="contbtngrnlabel">{{answer.answer}}</label>
                     <div class="buttonSpace"></div>
                 </div>
                 <!--mat-button-toggle-group formControlName="textAnswer">
@@ -70,7 +70,7 @@
                 <label for="textAnswer">Your answer:</label>
                 <input id="textAnswer" name="textAnswer" formControlName="textAnswer" type="text">
             </div>
-            <button mat-button mat-accent type="submit" class="bigbtnredlabel">Save your answer</button>
+            <button mat-button mat-accent type="submit" class="contbtnredlabel">Save your answer</button>
         </form>
     </div>
     <div id="answered" *ngIf="answerSubmitted">
