@@ -69,6 +69,7 @@ export class Round1ControlComponent implements OnInit {
     const connection = new signalR.HubConnectionBuilder()
       .configureLogging(signalR.LogLevel.Information)
       .withUrl(environment.api_url + '/events')
+      .withAutomaticReconnect()
       .build();
 
     connection.start().then(function () {
@@ -104,11 +105,11 @@ export class Round1ControlComponent implements OnInit {
       });
 
       a.forEach((ans: round1EnteredAnswers) => {
-        console.log(a);
+        // console.log(a);
         this.answerForm.setControl(ans.teamNum.toString(), new FormControl(ans.answerStatus));
       });
 
-      console.log(this.answerForm);
+      // console.log(this.answerForm);
     });
   }
 
@@ -134,9 +135,9 @@ export class Round1ControlComponent implements OnInit {
         selectedQuestion: new FormControl(this.currentQuestion)
       });
     }
-    console.log(this.yEvent);
-    console.log(this.selectedQuestion);
-    console.log(status);
+    // console.log(this.yEvent);
+    // console.log(this.selectedQuestion);
+    // console.log(status);
     this.dataService.changeRound1QuestionStatus(this.yEvent, this.selectedQuestion, status).subscribe({next: (c => {
       this.status = c.status;
       this.currentQuestion = c.questionNum;
@@ -191,42 +192,76 @@ export class Round1ControlComponent implements OnInit {
   {
     switch (cue) {
       case 1:
-        this.think1.play().then( _b => {
+        if (!this.think1.paused && this.think1.currentTime > 0) {
+          this.think1.pause();
           this.think1.currentTime = 0;
-          this.think1.pause;
-        });
+        }
+        else
+        {
+          this.think1.currentTime = 0;
+          this.think1.play();
+        };
         break;
       case 2:
-        this.think2.play().then( _b => {
+        if (!this.think2.paused && this.think2.currentTime > 0) {
+          this.think2.pause();
           this.think2.currentTime = 0;
-          this.think2.pause;
-        });
+        }
+        else
+        {
+          this.think2.currentTime = 0;
+          this.think2.play();
+        };
         break;
       case 3:
-        this.think3.play().then( _b => {
+        if (!this.think3.paused && this.think3.currentTime > 0) {
+          this.think3.pause();
           this.think3.currentTime = 0;
-          this.think3.pause;
-        });
+        }
+        else
+        {
+          this.think3.currentTime = 0;
+          this.think3.play();
+        };
         break;
       case 4:
-        this.think4.play().then( _b => {
+        if (!this.think4.paused && this.think4.currentTime > 0) {
+          this.think4.pause();
           this.think4.currentTime = 0;
-          this.think4.pause;
-        });
+        }
+        else
+        {
+          this.think4.currentTime = 0;
+          this.think4.play();
+        };
         break;
       case 5:
-        this.think5.play().then( _b => {
+        if (!this.think5.paused && this.think5.currentTime > 0) {
+          this.think5.pause();
           this.think5.currentTime = 0;
-          this.think5.pause;
-        });
+        }
+        else
+        {
+          this.think5.currentTime = 0;
+          this.think5.play();
+        };
         break;
       case 6:
-        this.think6.play().then( _b => {
+        if (!this.think6.paused && this.think6.currentTime > 0) {
+          this.think6.pause();
           this.think6.currentTime = 0;
-          this.think6.pause;
-        });
+        }
+        else
+        {
+          this.think6.currentTime = 0;
+          this.think6.play();
+        };
         break;
     }
+  }
+
+  changeScreen(name: string){
+    this.dataService.changeIntroPage(name);
   }
 
 }

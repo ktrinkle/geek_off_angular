@@ -31,6 +31,7 @@ export class Round1hostComponent implements OnInit {
     const connection = new signalR.HubConnectionBuilder()
       .configureLogging(signalR.LogLevel.Information)
       .withUrl(environment.api_url + '/events')
+      .withAutomaticReconnect()
       .build();
 
     connection.start().then(function () {

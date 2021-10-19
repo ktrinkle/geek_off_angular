@@ -1,4 +1,5 @@
 <div class="geekofflogo">
+  <div *ngIf="currentScreen == 'question'">
     <div class="questionBox" *ngIf="questionVisible" [@fadeIn]>
         <div class="topright">{{currentQuestion.questionNum}}</div>
         {{currentQuestionDto.questionText}}
@@ -29,4 +30,14 @@
     <div class="answerBox" *ngIf="answerShown && (currentQuestionDto.answerType == questionText)" [@fadeIn]>
         {{currentQuestionDto.correctAnswer}}
     </div>
+  </div>
+
+  <div class="prize" *ngIf="currentScreen == 'prize1'">
+    This is where prize 1 goes.
+  </div>
+
+  <div class="prize" *ngIf="currentScreen == 'prize2'">
+    This is where prize 2 goes.
+  </div>
 </div>
+
