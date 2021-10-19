@@ -11,7 +11,7 @@
     position: absolute;
     right: 10px;
     top: 9vh;
-    font-family: 'goudyheavy', 'AmericanSans', 'Arial', 'Helvetica Neue';
+    font-family: 'Arial', 'Helvetica Neue', sans-serif;
     font-size: 3vh;
     color: #ffffff;
     text-align: center;
@@ -117,4 +117,21 @@ label.bigbtnredlabel {
 
 .buttonspace {
     clear: all;
+}
+
+input[type=radio] {
+  opacity: 0;
+  z-index: -1;
+  position: absolute;
+}
+
+.bigbtngrn input[type=radio]:checked + label:after {
+  background: #ffff00;
+  background-image: -webkit-linear-gradient(top, #0078d2, #00467f);
+  background-image: -moz-linear-gradient(top, #0078d2, #00467f);
+  background-image: -ms-linear-gradient(top, #0078d2, #00467f);
+  background-image: -o-linear-gradient(top, #0078d2, #00467f);
+  background-image: linear-gradient(to bottom, #0078d2, #00467f);
+  text-decoration: none;
+  color: #fff;
 }

@@ -184,10 +184,25 @@ img.dollar {
 mat-icon.mat-list-icon {
   width: 24px;
   height: 24px;
+  padding-right: 6px;
 }
 
 li {
   list-style-type: none;
   font-family: 'AmericanSans', 'Arial', 'Helvetica Neue', sans-serif;
-  vertical-align: baseline;
+  display: flex;
+  align-items:center;
+  margin-top: 10px;
 }
+
+li.middleSize {
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+li.largeSize {
+  font-size: 2em;
+  font-weight: bold;
+}
+
+
