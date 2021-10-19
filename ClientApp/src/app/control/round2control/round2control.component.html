@@ -84,7 +84,7 @@
         <input id="playerNum" name="playerNum" formControlName="playerNum" type="number" class="answer-choice">
       </mat-grid-tile>
     </mat-grid-list>
-    <mat-grid-list cols='3' rowHeight='350px'>
+    <mat-grid-list cols='5' rowHeight='350px'>
       <mat-grid-tile colspan='1' *ngFor="let question of surveyMasterList">
         <mat-grid-list cols="12" rowHeight="30px" class="boxed question">
           <div *ngIf="question.questionNum < 206 || showBonusQuestion">
@@ -118,7 +118,7 @@
               <input id="score{{question.questionNum}}" name="score" formControlName="score" type="number" class="answer-choice">
             </mat-grid-tile>
             <br>
-            <mat-grid-tile colspan="3">
+            <mat-grid-tile colspan="6">
               <button type="submit" class="answer-choice" id="sumbit{{question.questionNum}}" (click)="saveUserAnswer(question)">Submit</button>
             </mat-grid-tile>
           </div>
