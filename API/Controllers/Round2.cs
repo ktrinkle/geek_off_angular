@@ -129,7 +129,7 @@ namespace GeekOff.Controllers
         [Authorize(Roles = "admin")]
         [HttpGet("countdown/start/{seconds}")]
         [SwaggerOperation(Summary = "Start countdown.")]
-        public async Task<ActionResult> StartCountdown(int seconds) {
+        public async Task<ActionResult> StartCountdownAsync(int seconds) {
             await _eventHub.Clients.All.SendAsync("startCountdown", seconds);
             return Ok();
         }
@@ -137,7 +137,7 @@ namespace GeekOff.Controllers
         [Authorize(Roles = "admin")]
         [HttpGet("countdown/stop")]
         [SwaggerOperation(Summary = "Stops countdown.")]
-        public async Task<ActionResult> StopCountdown() {
+        public async Task<ActionResult> StopCountdownAsync() {
             await _eventHub.Clients.All.SendAsync("stopCountdown");
             return Ok();
         }
@@ -145,7 +145,7 @@ namespace GeekOff.Controllers
         [Authorize(Roles = "admin")]
         [HttpGet("countdown/set/{seconds}")]
         [SwaggerOperation(Summary = "Sets the countdown.")]
-        public async Task<ActionResult> SetCountdown(int seconds) {
+        public async Task<ActionResult> SetCountdownAsync(int seconds) {
             await _eventHub.Clients.All.SendAsync("setCountdown", seconds);
             return Ok();
         }
