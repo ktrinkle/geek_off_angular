@@ -17,6 +17,7 @@ import { Round1hostComponent } from './host/round1host/round1host.component';
 import { Round1IntroComponent } from './round1/intro/intro.component';
 import { Round1DisplayQuestionComponent } from './round1/display-question/display-question.component';
 import { Round1ScoreboardComponent } from './round1/scoreboard/scoreboard.component';
+import { MsalComponent } from './msal-component/msal.component'
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -104,6 +105,7 @@ export function MSALInterceptorFactory(): MsalInterceptorConfiguration {
 @NgModule({
   declarations: [
     AppComponent,
+    MsalComponent,
     Round2countdownComponent,
     Round2displayComponent,
     Round2hostComponent,
@@ -175,4 +177,19 @@ export function MSALInterceptorFactory(): MsalInterceptorConfiguration {
   ],
   bootstrap: [AppComponent, MsalRedirectComponent]
 })
-export class AppModule { }
+export class AppModule {
+
+ ngDoBootstrap(ref: any) {
+    if (window !== window.parent && !window.opener)
+    {
+      console.log("Bootstrap: MSAL");
+      ref.bootstrap(MsalComponent);
+    }
+    else
+    {
+    //this.router.resetConfig(RouterModule);
+      console.log("Bootstrap: App");
+      ref.bootstrap(AppComponent);
+    }
+  }
+}

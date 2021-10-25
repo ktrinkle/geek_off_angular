@@ -1,10 +1,7 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ElementRef, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { trigger, state, style, animate, transition } from '@angular/animations';
-import { Store } from '@ngrx/store';
-import { round1AllTeams, round1AllTeamsSuccess } from '../../store/round1/round1.actions';
 import { introDto } from '../../data/data';
-import { selectRound1Teams } from 'src/app/store';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { MatIconRegistry } from '@angular/material/icon';
@@ -12,7 +9,6 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { DataService } from 'src/app/data.service';
 import * as signalR from '@microsoft/signalr';
 import { environment } from 'src/environments/environment';
-
 
 @Component({
   selector: 'app-intro',
@@ -27,14 +23,19 @@ import { environment } from 'src/environments/environment';
     ]),
   ]
 })
+
 export class Round1IntroComponent implements OnInit, OnDestroy {
+
+  @ViewChild('introVideo', { static: true }) introVideo: ElementRef | undefined;
 
   currentScreen: string = "";
   currentItem: number = 0;
   seatBelt: boolean = false;
   public yevent: string = sessionStorage.getItem('event') ?? '';
   public teamMasterList: introDto[] = [];
-  constructor(private store: Store, private route: ActivatedRoute, private router: Router, private matIconRegistry: MatIconRegistry, private domSanitzer: DomSanitizer, private dataService: DataService) {
+  // introVid = new HTMLVideoElement();
+  constructor(private route: ActivatedRoute,
+    private router: Router, private matIconRegistry: MatIconRegistry, private domSanitzer: DomSanitizer, private dataService: DataService) {
     //this.store.dispatch(round1AllTeams({ yEvent: 'e21' }));
 
     this.matIconRegistry
@@ -92,9 +93,13 @@ export class Round1IntroComponent implements OnInit, OnDestroy {
   }
 
   changePage(page: any): void {
-    console.log('ChangePage: ' + page);
     this.currentItem = 0;
     this.currentScreen = page;
+  }
+
+  playVid() {
+    console.log('Playing video');
+    this.introVideo?.nativeElement.play();
   }
 
   goToQuestions(question: number): void {
