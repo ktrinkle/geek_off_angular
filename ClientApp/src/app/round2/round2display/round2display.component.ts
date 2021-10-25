@@ -53,6 +53,7 @@ export class Round2displayComponent implements OnInit, OnDestroy {
     player2Answers: [],
     finalScore: 0
   };
+  currentScreen = 'question';
 
   displayRows: displayRow[] = [];
 
