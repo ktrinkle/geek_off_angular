@@ -221,7 +221,7 @@ export class Round2controlComponent implements OnInit {
 
   changeScreen(name: string){
     this._dataService.changeRound2Page(name);
-    if(name == 'prize')
+    if(name == 'prize1')
     {
       this.consolation.play();
     }
