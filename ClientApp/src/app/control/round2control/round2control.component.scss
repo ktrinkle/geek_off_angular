@@ -115,11 +115,14 @@ div.container {
   min-height: 1px;
   display: inline-block;
 }
+
 .countdownScreen {
-  font-size: 23em;
+  font-size: 2.5vh;
   color: #ffff00;
   text-align: center;
   font-family: sportstype !important;
+  position:absolute;
+
 }
 
 .countdownButtons {

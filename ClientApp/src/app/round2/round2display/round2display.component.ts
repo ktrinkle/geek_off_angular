@@ -53,6 +53,7 @@ export class Round2displayComponent implements OnInit, OnDestroy {
     player2Answers: [],
     finalScore: 0
   };
+  currentScreen = 'question';
 
   displayRows: displayRow[] = [];
 
@@ -87,6 +88,10 @@ export class Round2displayComponent implements OnInit, OnDestroy {
 
     connection.on("round2ShowPlayer1", (data: any) => {
       this.revealPlayerOne();
+    });
+
+    connection.on("round2ChangePage", (data: any) => {
+      this.changePage(data);
     });
 
     this.getDisplayBoard();
@@ -129,6 +134,10 @@ export class Round2displayComponent implements OnInit, OnDestroy {
   changeTeam(teamNum: number) {
     this.teamNumber = teamNum;
     this.getDisplayBoard();
+  }
+
+  changePage(page: any): void {
+    this.currentScreen = page;
   }
 
   async delay(ms: number) {

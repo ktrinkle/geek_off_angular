@@ -34,6 +34,7 @@ export class Round1ControlComponent implements OnInit {
   think4 = new Audio('https://geekoff2021static.blob.core.windows.net/snd/think4.mp3');
   think5 = new Audio('https://geekoff2021static.blob.core.windows.net/snd/think5.mp3');
   think6 = new Audio('https://geekoff2021static.blob.core.windows.net/snd/think6.mp3');
+  consolation = new Audio('https://geekoff2021static.blob.core.windows.net/snd/r1_consolation.m4a');
 
   currentFilterQuestion: any = {};
 
@@ -65,6 +66,7 @@ export class Round1ControlComponent implements OnInit {
     this.think4.load();
     this.think5.load();
     this.think6.load();
+    this.consolation.load();
 
     const connection = new signalR.HubConnectionBuilder()
       .configureLogging(signalR.LogLevel.Information)
@@ -185,6 +187,7 @@ export class Round1ControlComponent implements OnInit {
 
   goToRound2()
   {
+    this.consolation.pause();
     this.router.navigate(['/control/round2']);
   }
 
@@ -262,6 +265,10 @@ export class Round1ControlComponent implements OnInit {
 
   changeScreen(name: string){
     this.dataService.changeIntroPage(name);
+    if(name == 'prize1')
+    {
+      this.consolation.play();
+    }
   }
 
 }

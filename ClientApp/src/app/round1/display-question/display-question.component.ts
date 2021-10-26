@@ -19,6 +19,10 @@ import { currentQuestionDto, round1QDisplay } from 'src/app/data/data';
       })),
       transition('void => *', animate(1000)),
     ]),
+    trigger('slideLeft', [
+      transition(':enter', [style({ width: 0 }), animate('500 ease-in')]),
+      transition(':leave', [animate('500 ease-in', style({ width: 0 }))]),
+    ]),
   ]
 })
 export class Round1DisplayQuestionComponent implements OnInit, OnDestroy {
@@ -82,6 +86,10 @@ export class Round1DisplayQuestionComponent implements OnInit, OnDestroy {
 
     connection.on("round1intro", (data: any) => {
       this.changePage(data);
+    });
+
+    connection.on("round2ChangeTeam", (data: any) => {
+      this.router.navigate(['/round2/display']);
     });
 
     // set up our internal state

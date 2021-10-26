@@ -32,12 +32,12 @@
     </div>
   </div>
 
-  <div class="prize" *ngIf="currentScreen == 'prize1'">
-    This is where prize 1 goes.
+  <div class="prize" *ngIf="currentScreen == 'prize1'" [@slideLeft]>
+    <img src="https://geekoff2021static.blob.core.windows.net/images/R1_Olive.jpg" class="fullscreen" />
   </div>
 
-  <div class="prize" *ngIf="currentScreen == 'prize2'">
-    This is where prize 2 goes.
+  <div class="prize" *ngIf="currentScreen == 'prize2'" [@slideLeft]>
+    <img src="https://geekoff2021static.blob.core.windows.net/images/r1_prize2.jpg" class="fullscreen" />
   </div>
 </div>
 

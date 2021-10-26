@@ -181,4 +181,9 @@ export class DataService {
     var uri = this.REST_API_SERVER + '/api/round2/countdown/set/' + encodeURIComponent(seconds);
     this.httpClient.get(uri).toPromise();
   }
+
+  public changeRound2Page(page: string): Promise<any> {
+    var uri = this.REST_API_SERVER + '/api/round2/changePage/' + encodeURIComponent(page) + '';
+    return this.httpClient.put(uri, {responseType: 'json'}).toPromise();
+  }
 }

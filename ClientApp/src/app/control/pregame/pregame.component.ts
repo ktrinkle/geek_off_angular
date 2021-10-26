@@ -63,8 +63,6 @@ export class PregameComponent implements OnInit {
   changeScreen(){
     this.dataService.changeIntroPage(this.pageForm.value.pageName);
     this.currentPage = this.pageForm.value.pageName;
-    var currentPageList = this.listofPages.filter(p => p.key == this.currentPage);
-    console.log(currentPageList);
   }
 
   changeSeatBelt() {
