@@ -31,6 +31,7 @@ export class Round2controlComponent implements OnInit {
   public firstPlayerAnswers: round2Answers[] = [];
   buzzer = new Audio();
   dings = new Audio();
+  consolation = new Audio('https://geekoff2021static.blob.core.windows.net/snd/r2_consolation.m4a');
 
   countdownValue: number = 0;   // Countdown timer duration.
 
@@ -71,6 +72,7 @@ export class Round2controlComponent implements OnInit {
     this.dings.src = 'https://geekoff2021static.blob.core.windows.net/snd/feud-fm-dings.mp3';
     this.buzzer.load();
     this.dings.load();
+    this.consolation.load();
 
     const connection = new signalR.HubConnectionBuilder()
       .configureLogging(signalR.LogLevel.Information)
@@ -192,11 +194,6 @@ export class Round2controlComponent implements OnInit {
     console.log("FPA: " + this.firstPlayerAnswers);
   }
 
-  // openDialog() {
-  // This will toggle show and hide.
-  //   this.isCountdownDialog = !this.isCountdownDialog;
-  // }
-
   openDialog(): void {
     const dialogRef = this.dialog.open(Round2countdowndialogComponent, {
       width: '250px',
@@ -221,4 +218,13 @@ export class Round2controlComponent implements OnInit {
   setCountdown(seconds: number){
     this._dataService.setCountdown(Number(seconds));
   }
+
+  changeScreen(name: string){
+    this._dataService.changeRound2Page(name);
+    if(name == 'prize1')
+    {
+      this.consolation.play();
+    }
+  }
+
 }
