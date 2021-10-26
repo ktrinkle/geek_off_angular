@@ -90,6 +90,10 @@ export class Round2displayComponent implements OnInit, OnDestroy {
       this.revealPlayerOne();
     });
 
+    connection.on("round2ChangePage", (data: any) => {
+      this.changePage(data);
+    });
+
     this.getDisplayBoard();
   }
 
@@ -130,6 +134,10 @@ export class Round2displayComponent implements OnInit, OnDestroy {
   changeTeam(teamNum: number) {
     this.teamNumber = teamNum;
     this.getDisplayBoard();
+  }
+
+  changePage(page: any): void {
+    this.currentScreen = page;
   }
 
   async delay(ms: number) {

@@ -150,5 +150,15 @@ namespace GeekOff.Controllers
             return Ok();
         }
 
+        [Authorize(Roles = "admin")]
+        [HttpPut("changePage/{page}")]
+        [SwaggerOperation(Summary = "Sends message to change the page.")]
+        public async Task<ActionResult> ChangeIntroPageAsync(string page)
+        {
+            // add in controller here
+            await _eventHub.Clients.All.SendAsync("round2ChangePage", page);
+            return Ok();
+        }
+
     }
 }
