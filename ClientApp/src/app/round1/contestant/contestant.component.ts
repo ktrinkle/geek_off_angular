@@ -77,10 +77,6 @@ export class Round1ContestantComponent implements OnInit {
       this.openForm();
     });
 
-    connection.on("round1PlayerAnswer", (data: any) => {
-      this.closeForm();
-    });
-
     connection.on("round1CloseAnswer", (data: any) => {
       this.closeForm();
     });
