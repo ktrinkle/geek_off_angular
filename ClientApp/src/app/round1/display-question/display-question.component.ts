@@ -20,8 +20,8 @@ import { currentQuestionDto, round1QDisplay } from 'src/app/data/data';
       transition('void => *', animate(1000)),
     ]),
     trigger('slideLeft', [
-      transition(':enter', [style({ width: 0 }), animate('500 ease-in')]),
-      transition(':leave', [animate('500 ease-in', style({ width: 0 }))]),
+      transition(':enter', [style({ width: 0 }), animate(300)]),
+      transition(':leave', [animate(300, style({ width: 0 }))]),
     ]),
   ]
 })
