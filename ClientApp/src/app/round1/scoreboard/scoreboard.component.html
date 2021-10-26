@@ -20,38 +20,4 @@
         </tr>
     </table>
 
-
-    <!--mat-table mat-table [dataSource]="teamData">
-        <ng-container *ngFor="let header of headers" [matColumnDef]="header.display">
-            <mat-header-cell *matHeaderCellDef>
-                <p>{{header.display}}</p>
-            </mat-header-cell>
-            <mat-cell *matCellDef="let team" [ngClass]="{'scoreTeam': header.property == 'teamName', 'bonus': header.property == 'bonus'}">
-                <span>{{team[header.property]}}</span>
-            </mat-cell>
-        </ng-container>
-
-        let i = index of row
-
-        <mat-header-row *matHeaderRowDef="displayHeaders"></mat-header-row>
-        <mat-row *matRowDef="let row; columns: displayHeaders;"></mat-row>
-    </mat-table-->
-
 </div>
-
-<!--
-  #bb .scoreteam {
-  width: 2.2vw;
-}
-
-#bb .teamname {
-  width: 16vw;
-}
-
-#bb .score {
-  width: 2.2vw;
-}
-#bb .ttl {
-  width: 4.8vw;
-}
--->
