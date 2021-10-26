@@ -117,12 +117,12 @@ div.container {
 }
 
 .countdownScreen {
-  font-size: 2.5vh;
+  font-size: 5vh;
   color: #ffff00;
   text-align: center;
   font-family: sportstype !important;
-  position:absolute;
-
+  border: 10px;
+  border-color: #000;
 }
 
 .countdownButtons {
