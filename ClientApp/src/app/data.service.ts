@@ -102,7 +102,7 @@ export class DataService {
 
   public updateScoreboardDisplay() {
     var uri = this.REST_API_SERVER + '/api/round1/updateScoreboard';
-    this.httpClient.get(uri);
+    this.httpClient.put(uri, {}).toPromise();
   }
 
   public async updateScoreboardRound2(): Promise<void> {
@@ -152,8 +152,8 @@ export class DataService {
     this.httpClient.get(uri).toPromise();
   }
 
-  public getRound2FirstPlayer(teamNum: number): Observable<any> {
-    var uri = this.REST_API_SERVER + '/api/round2/firstPlayersAnswers/' + encodeURIComponent(teamNum) + '';
+  public getRound2FirstPlayer(yEvent: string, teamNum: number): Observable<any> {
+    var uri = this.REST_API_SERVER + '/api/round2/firstPlayersAnswers/' + encodeURIComponent(yEvent) + '/'+ encodeURIComponent(teamNum) + '';
     return this.httpClient.get(uri);
   }
 

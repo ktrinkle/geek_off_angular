@@ -47,6 +47,7 @@ export class Round1ControlComponent implements OnInit {
       this.possibleAnswers = q;
     }),
     complete: () => {
+      this.possibleAnswers.sort(a => a.questionNum);
       this.dataService.getCurrentQuestion(this.yEvent).subscribe(c => {
         this.status = c.status;
         this.currentQuestion = c.questionNum;
@@ -79,11 +80,6 @@ export class Round1ControlComponent implements OnInit {
     }).catch(function (err) {
       return console.error(err.toString());
     });
-
-    // used to keep SignalR happy and not throwing warnings
-    connection.on("round1ShowAnswerChoices", (data: any) => {});
-
-    connection.on("round1OpenAnswer", (data: any) => {});
 
     connection.on("round1PlayerAnswer", (data: any) => {
       this.loadTeamAnswers();
@@ -137,9 +133,9 @@ export class Round1ControlComponent implements OnInit {
         selectedQuestion: new FormControl(this.currentQuestion)
       });
     }
-    // console.log(this.yEvent);
-    // console.log(this.selectedQuestion);
-    // console.log(status);
+    console.log(this.yEvent);
+    console.log(this.selectedQuestion);
+    console.log(status);
     this.dataService.changeRound1QuestionStatus(this.yEvent, this.selectedQuestion, status).subscribe({next: (c => {
       this.status = c.status;
       this.currentQuestion = c.questionNum;
@@ -163,6 +159,7 @@ export class Round1ControlComponent implements OnInit {
   updateRemoteScoreboard()
   {
     this.dataService.updateScoreboardDisplay();
+    // this actually fires twice
     this.updateScoreboard();
   }
 

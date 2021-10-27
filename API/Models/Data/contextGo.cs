@@ -15,6 +15,7 @@ namespace GeekOff.Data
         public virtual DbSet<CurrentTeam> CurrentTeam { get; set; }
         public virtual DbSet<EventMaster> EventMaster { get; set; }
         public virtual DbSet<FundraisingTotal> FundraisingTotal { get; set; }
+        public virtual DbSet<LogError> LogError { get; set; }
         public virtual DbSet<QuestionAns> QuestionAns { get; set; }
         public virtual DbSet<Roundresult> Roundresult { get; set; }
         public virtual DbSet<Scoreposs> Scoreposs { get; set; }

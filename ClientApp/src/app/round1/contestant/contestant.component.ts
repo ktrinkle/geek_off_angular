@@ -23,6 +23,7 @@ export class Round1ContestantComponent implements OnInit {
   formVisible: boolean = false;
   answerSubmitted: boolean = false;
   answerReturn: string = '';
+  multichoiceButton: any;
   currentQuestion: currentQuestionDto = {
     questionNum: 0,
     status: 0
@@ -61,12 +62,13 @@ export class Round1ContestantComponent implements OnInit {
 
     connection.start().then(function () {
       console.log('SignalR Connected!');
+
     }).catch(function (err) {
       return console.error(err.toString());
     });
 
     connection.on("round1question", (data: any) => {
-      this.loadQuestion(data);
+      this.loadQuestion(data, false);
     });
 
     connection.on("round1ShowAnswerChoices", (data: any) => {
@@ -87,7 +89,7 @@ export class Round1ContestantComponent implements OnInit {
       this.currentQuestion = initialQ;
     }), complete: () => {
       if (this.currentQuestion.questionNum > 0) {
-        this.loadQuestion(this.currentQuestion.questionNum);
+        this.loadQuestion(this.currentQuestion.questionNum, true);
 
         console.log(this.currentQuestion);
         if (this.currentQuestion.questionNum > 0 && this.currentQuestion.questionNum < 120)
@@ -118,10 +120,10 @@ export class Round1ContestantComponent implements OnInit {
     }});
   }
 
-  loadQuestion(questionId: number): void{
+  loadQuestion(questionId: number, loadState: boolean): void{
     this.currentQuestion = {
       questionNum: questionId,
-      status: 0
+      status: loadState ? 0 : this.currentQuestion.status
     };
     this.hangTight = true;
     this.questionVisible = false;
@@ -173,9 +175,17 @@ export class Round1ContestantComponent implements OnInit {
     var answerText;
     var questionNum = this.currentQuestionDto?.questionNum ?? 0;
 
-    if (this.currentQuestionDto?.answerType != 1)
+    if (this.currentQuestionDto?.answerType == 2)
     {
-      // multiple guess and fill in process
+      // fill in process
+      answerText = this.answerForm.value.textAnswer;
+      console.log(answerText);
+    }
+
+    if (this.currentQuestionDto?.answerType == 0)
+    {
+      console.log(this.answerForm);
+      // multiple guess process
       answerText = this.answerForm.value.textAnswer;
       console.log(answerText);
     }

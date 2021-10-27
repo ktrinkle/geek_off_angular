@@ -189,7 +189,7 @@ export class Round2controlComponent implements OnInit {
 
   showFirstAnswers(form: FormGroup) {
     console.log("Team Num: " + form.get("teamNum")?.value);
-    this._dataService.getRound2FirstPlayer(form.get("teamNum")?.value)
+    this._dataService.getRound2FirstPlayer(this.yevent, form.get("teamNum")?.value)
                                                .subscribe((data: round2Answers[]) => this.firstPlayerAnswers = data);
     console.log("FPA: " + this.firstPlayerAnswers);
   }

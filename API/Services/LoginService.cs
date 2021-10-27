@@ -22,11 +22,15 @@ namespace GeekOff.Services
 
         public async Task<UserInfoDto> Login(string userId)
         {
-            var loginInfo = await _contextGo.TeamUser.SingleOrDefaultAsync(u => u.Username == userId);
+            var loginInfo = await _contextGo.TeamUser.FirstOrDefaultAsync(u => u.Username == userId);
             if (loginInfo is null)
             {
                 return null;
             }
+
+            loginInfo.LoginTime = DateTime.UtcNow;
+            _contextGo.TeamUser.Update(loginInfo);
+            await _contextGo.SaveChangesAsync();
 
             if (loginInfo.AdminFlag == true)
             {

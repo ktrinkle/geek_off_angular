@@ -36,6 +36,7 @@ export class Round1ScoreboardComponent implements OnInit {
     });
 
     connection.on("round1ScoreUpdate", (data: any) => {
+      console.log('Updating scoreboard');
       this.getScoreboard();
     });
 
@@ -72,6 +73,9 @@ export class Round1ScoreboardComponent implements OnInit {
       }
       this.headers.push('BNS');
       this.headers.push('TTL');
+
+      // reset teamData
+      this.teamData = [];
 
       for (let team of s) {
         let temp = [team.teamNum, team.teamName];
