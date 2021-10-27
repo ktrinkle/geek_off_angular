@@ -67,6 +67,7 @@
             {{answer.questionNum}}
           </option>
         </select>
+        {{answerForm.value.selectedQuestion}}
             <button id="showAnswer" (click)="sendClientMessage(1)">Show Answer</button>
             <button id="openAnswer" (click)="sendClientMessage(2)">Open Answer</button>
             <button id="closeAnswer" (click)="sendClientMessage(3)">Close Answer</button>

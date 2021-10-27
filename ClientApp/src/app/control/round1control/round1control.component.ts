@@ -133,9 +133,9 @@ export class Round1ControlComponent implements OnInit {
         selectedQuestion: new FormControl(this.currentQuestion)
       });
     }
-    // console.log(this.yEvent);
-    // console.log(this.selectedQuestion);
-    // console.log(status);
+    console.log(this.yEvent);
+    console.log(this.selectedQuestion);
+    console.log(status);
     this.dataService.changeRound1QuestionStatus(this.yEvent, this.selectedQuestion, status).subscribe({next: (c => {
       this.status = c.status;
       this.currentQuestion = c.questionNum;
@@ -159,6 +159,7 @@ export class Round1ControlComponent implements OnInit {
   updateRemoteScoreboard()
   {
     this.dataService.updateScoreboardDisplay();
+    // this actually fires twice
     this.updateScoreboard();
   }
 

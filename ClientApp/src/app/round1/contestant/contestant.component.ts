@@ -23,6 +23,7 @@ export class Round1ContestantComponent implements OnInit {
   formVisible: boolean = false;
   answerSubmitted: boolean = false;
   answerReturn: string = '';
+  multichoiceButton: any;
   currentQuestion: currentQuestionDto = {
     questionNum: 0,
     status: 0
@@ -174,9 +175,17 @@ export class Round1ContestantComponent implements OnInit {
     var answerText;
     var questionNum = this.currentQuestionDto?.questionNum ?? 0;
 
-    if (this.currentQuestionDto?.answerType != 1)
+    if (this.currentQuestionDto?.answerType == 2)
     {
-      // multiple guess and fill in process
+      // fill in process
+      answerText = this.answerForm.value.textAnswer;
+      console.log(answerText);
+    }
+
+    if (this.currentQuestionDto?.answerType == 0)
+    {
+      console.log(this.answerForm);
+      // multiple guess process
       answerText = this.answerForm.value.textAnswer;
       console.log(answerText);
     }
