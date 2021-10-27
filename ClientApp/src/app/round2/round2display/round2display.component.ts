@@ -104,6 +104,7 @@ export class Round2displayComponent implements OnInit, OnDestroy {
 
   getDisplayBoard(): void {
     this.dataService.getRound2DisplayBoard(this.yEvent, this.teamNumber).pipe(takeUntil(this.destroy$)).subscribe(x => {
+      this.displayRows = [];
       this.teamNumber = x.teamNo;
       this.totalScore = x.finalScore;
       let questionNumbers = [...new Set([...x.player1Answers.map((q: round2Answers) => q.questionNum), ...x.player2Answers.map((q: round2Answers) => q.questionNum)])];
@@ -116,7 +117,8 @@ export class Round2displayComponent implements OnInit, OnDestroy {
             player1: player1Answer.length > 0 ? player1Answer[0] : { questionNum: questionNumber, answer: '', score: null },
             player2: player2Answer.length > 0 ? player2Answer[0] : { questionNum: questionNumber, answer: '', score: null }
           });
-      }
+      };
+      console.log(this.displayRows);
     });
   }
 
