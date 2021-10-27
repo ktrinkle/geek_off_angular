@@ -68,7 +68,7 @@
     </mat-grid-tile>
 </mat-grid-list>
 <hr size="1" width="90%" color="black">
-<form [formGroup]="newEventForm">
+<form [formGroup]="newEventForm" *ngIf="newEventForm.contains('teamNum')">
     <div style="vertical-align: middle; min-height: 75px; padding: 10px;">
         <mat-grid-list class="grid-layout-custom" cols="24" rowHeight="30px" gutterSize="10px">
             <mat-grid-tile colspan="24">
@@ -111,7 +111,7 @@
                             <label for="answer" class="answer-choice">Answer:</label>
                         </mat-grid-tile>
                         <mat-grid-tile colspan="8">
-                            <input id="answer{{question.questionNum}}" name="answer" formControlName="answer" type="text" class="answer-choice">
+                            <input id="answer{{question.questionNum}}" name="answer" formControlName="answer{{question.questionNum}}" type="text" class="answer-choice">
                         </mat-grid-tile>
                         <br>
                         <br>
@@ -122,11 +122,16 @@
                             <label for="score" class="answer-choice">Score:</label>
                         </mat-grid-tile>
                         <mat-grid-tile colspan="8">
-                            <input id="score{{question.questionNum}}" name="score" formControlName="score" type="number" class="answer-choice">
+                            <input id="score{{question.questionNum}}" name="score" formControlName="score{{question.questionNum}}" type="number" class="answer-choice">
                         </mat-grid-tile>
                         <br>
                         <mat-grid-tile colspan="6">
                             <button type="submit" class="answer-choice" id="sumbit{{question.questionNum}}" (click)="saveUserAnswer(question)">Submit</button>
+                        </mat-grid-tile>
+                        <mat-grid-tile colspan="6">
+                            <!-- <div id="submission{{question.questionNum}}">
+                              Not submitted
+                            </div> -->
                         </mat-grid-tile>
                     </div>
                 </mat-grid-list>

@@ -96,8 +96,6 @@ export class Round2controlComponent implements OnInit {
     this.newEventForm = new FormGroup({
       teamNum: new FormControl('', [Validators.pattern('[0-9]*')]),
       playerNum: new FormControl('', [Validators.pattern('1|2')]),
-      answer: new FormControl(''),
-      score: new FormControl('', [Validators.pattern('[0-9]*')])
     });
   }
 
@@ -105,7 +103,15 @@ export class Round2controlComponent implements OnInit {
   getSurveyQuestions(yevent: string) {
     this._dataService.getAllRound2SurveyQuestions(yevent).subscribe((data: round2SurveyQuestions[]) => {
       this.surveyMasterList = data;
-      console.log(this.surveyMasterList);
+      this.surveyMasterList.forEach(question => {
+        var answerControl = `answer${question.questionNum}`;
+        var scoreControl = `score${question.questionNum}`;
+
+        console.log(`HERE: ${answerControl}, ${scoreControl}`)
+
+        this.newEventForm.addControl(answerControl, new FormControl(''));
+        this.newEventForm.addControl(scoreControl, new FormControl('', [Validators.pattern('[0-9]*')]));
+      });
     });
   }
 
@@ -118,8 +124,8 @@ export class Round2controlComponent implements OnInit {
       questionNum: question.questionNum,
       playerNum: this.newEventForm.value.playerNum,
       teamNum: this.newEventForm.value.teamNum,
-      answer: this.newEventForm.value.answer,
-      score: this.newEventForm.value.score
+      answer: this.newEventForm.get(`answer${question.questionNum}`)?.value,
+      score: this.newEventForm.get(`score${question.questionNum}`)?.value
     };
 
     console.log(submitAnswer);
@@ -128,8 +134,8 @@ export class Round2controlComponent implements OnInit {
                                               this.apiResponse = data;
     });
 
-    this.newEventForm.get("answer")?.reset();
-    this.newEventForm.get("score")?.reset();
+    this.newEventForm.get(`answer${question.questionNum}`)?.reset();
+    this.newEventForm.get(`score${question.questionNum}`)?.reset();
     this.newEventForm.get("questionNum")?.reset();
 
   }
@@ -145,8 +151,8 @@ export class Round2controlComponent implements OnInit {
   }
 
   presetAnswer(answer: round2Answers) {
-    this.newEventForm.get("answer")?.setValue(answer.answer);
-    this.newEventForm.get("score")?.setValue(answer.score);
+    this.newEventForm.get(`answer${answer.questionNum}`)?.setValue(answer.answer);
+    this.newEventForm.get(`score${answer.questionNum}`)?.setValue(answer.score);
     this.newEventForm.get("questionNum")?.setValue(answer.questionNum);
   }
 
