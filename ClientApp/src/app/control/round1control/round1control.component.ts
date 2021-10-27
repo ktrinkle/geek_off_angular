@@ -47,6 +47,7 @@ export class Round1ControlComponent implements OnInit {
       this.possibleAnswers = q;
     }),
     complete: () => {
+      this.possibleAnswers.sort(a => a.questionNum);
       this.dataService.getCurrentQuestion(this.yEvent).subscribe(c => {
         this.status = c.status;
         this.currentQuestion = c.questionNum;
@@ -79,11 +80,6 @@ export class Round1ControlComponent implements OnInit {
     }).catch(function (err) {
       return console.error(err.toString());
     });
-
-    // used to keep SignalR happy and not throwing warnings
-    connection.on("round1ShowAnswerChoices", (data: any) => {});
-
-    connection.on("round1OpenAnswer", (data: any) => {});
 
     connection.on("round1PlayerAnswer", (data: any) => {
       this.loadTeamAnswers();

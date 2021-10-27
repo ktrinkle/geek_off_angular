@@ -177,16 +177,19 @@ namespace GeekOff.Services
             // test values
             if (questionId is < 1 or > 99)
             {
+                _logger.LogDebug("Bad Question - Question {0} User ID {1} YEvent {2}", questionId.ToString(), answerUser, yEvent);
                 return false;
             }
 
             if (answerText is null or "")
             {
+                _logger.LogDebug("Null answer - Question {0} User ID {1} YEvent {2}", questionId.ToString(), answerUser, yEvent);
                 return false;
             }
 
             if (answerUser is null or "000000")
             {
+                _logger.LogDebug("Bad answerUser - Question {0} User ID {1} YEvent {2}", questionId.ToString(), answerUser, yEvent);
                 return false;
             }
 
@@ -195,6 +198,7 @@ namespace GeekOff.Services
 
             if (playerInfo is null)
             {
+                _logger.LogDebug("Player not found - Question {0} User ID {1} YEvent {2}", questionId.ToString(), answerUser, yEvent);
                 return false;
             }
 
