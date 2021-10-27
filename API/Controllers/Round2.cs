@@ -120,7 +120,7 @@ namespace GeekOff.Controllers
             => Ok(await _manageEventService.FinalizeRound(yEvent, 2));
 
         [Authorize(Roles = "admin")]
-        [HttpGet("firstPlayersAnswers/{teamNum}")]
+        [HttpGet("firstPlayersAnswers/{yEvent}/{teamNum}")]
         [SwaggerOperation(Summary = "Returns the first Players answers for round 2")]
         public async Task<ActionResult<Round23Scores>> GetFirstPlayersAnswersAsync(string yEvent, int teamNum)
             => Ok(await _scoreService.GetFirstPlayersAnswers(yEvent, teamNum));
