@@ -177,16 +177,28 @@ namespace GeekOff.Services
             // test values
             if (questionId is < 1 or > 99)
             {
+                var errorMsg = $"Bad Question - Question {questionId} User ID {answerUser} YEvent {yEvent}";
+                _logger.LogDebug(errorMsg);
+                _contextGo.LogError.Add(new LogError(){ErrorMessage = errorMsg});
+                await _contextGo.SaveChangesAsync();
                 return false;
             }
 
             if (answerText is null or "")
             {
+                var errorMsg = $"Null answer - Question {questionId} User ID {answerUser} YEvent {yEvent}";
+                _logger.LogDebug(errorMsg);
+                _contextGo.LogError.Add(new LogError(){ErrorMessage = errorMsg});
+                await _contextGo.SaveChangesAsync();
                 return false;
             }
 
             if (answerUser is null or "000000")
             {
+                var errorMsg = $"Zero user - Question {questionId} User ID {answerUser} YEvent {yEvent}";
+                _logger.LogDebug(errorMsg);
+                _contextGo.LogError.Add(new LogError(){ErrorMessage = errorMsg});
+                await _contextGo.SaveChangesAsync();
                 return false;
             }
 
@@ -195,6 +207,10 @@ namespace GeekOff.Services
 
             if (playerInfo is null)
             {
+                var errorMsg = $"No player info - Question {questionId} User ID {answerUser} YEvent {yEvent}";
+                _logger.LogDebug(errorMsg);
+                _contextGo.LogError.Add(new LogError(){ErrorMessage = errorMsg});
+                await _contextGo.SaveChangesAsync();
                 return false;
             }
 
