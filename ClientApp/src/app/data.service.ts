@@ -102,7 +102,7 @@ export class DataService {
 
   public updateScoreboardDisplay() {
     var uri = this.REST_API_SERVER + '/api/round1/updateScoreboard';
-    this.httpClient.get(uri);
+    this.httpClient.put(uri, {}).toPromise();
   }
 
   public async updateScoreboardRound2(): Promise<void> {
