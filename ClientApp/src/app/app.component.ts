@@ -68,6 +68,7 @@ export class AppComponent {
         takeUntil(this._destroying$)
       )
       .subscribe(() => {
+        console.log('Broadcast service in progress');
         this.setLoginDisplay();
       });
   }
