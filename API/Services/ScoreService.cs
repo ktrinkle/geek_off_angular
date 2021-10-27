@@ -32,6 +32,8 @@ namespace GeekOff.Services
                 return null;
             }
 
+            var allQuestion = await _contextGo.QuestionAns.Where(q => q.RoundNo == 2).OrderBy(q => q.QuestionNo).ToListAsync();
+
             var player1Result = currentScore.Where(s => s.PlayerNum == 1).OrderBy(s => s.QuestionNo);
             var player2Result = currentScore.Where(s => s.PlayerNum == 2).OrderBy(s => s.QuestionNo);
 
@@ -39,18 +41,37 @@ namespace GeekOff.Services
             var player2 = new List<Round2Answers>();
             var totalScore = new int();
 
-            foreach (var playerScore in player1Result)
+            if (player1Result.Any())
             {
-                var result = new Round2Answers()
+                foreach (var playerScore in player1Result)
                 {
-                    QuestionNum = playerScore.QuestionNo,
-                    Answer = playerScore.TeamAnswer.ToUpper(),
-                    Score = (int)playerScore.PointAmt
-                };
-                totalScore += result.Score;
-                player1.Add(result);
+                    var result = new Round2Answers()
+                    {
+                        QuestionNum = playerScore.QuestionNo,
+                        Answer = playerScore.TeamAnswer.ToUpper(),
+                        Score = (int)playerScore.PointAmt
+                    };
+                    totalScore += result.Score;
+                    player1.Add(result);
+                }
             }
 
+            // this will always give us something if no answers are present so we keep the display.
+            if (!player1Result.Any())
+            {
+                foreach (var emptyScore in allQuestion)
+                {
+                    var result = new Round2Answers()
+                    {
+                        QuestionNum = emptyScore.QuestionNo
+                    };
+                    player1.Add(result);
+                    player2.Add(result);
+                };
+                totalScore = 0;
+            }
+
+            // by design we cannot have a player 2 without a player 1.
             foreach (var playerScore in player2Result)
             {
                 var result = new Round2Answers()
