@@ -3,6 +3,7 @@ import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular
 import { environment } from './../environments/environment';
 import { round2SurveyList, round2SubmitAnswer } from './data/data';
 import { Observable } from 'rxjs';
+import * as internal from 'stream';
 
 @Injectable({
   providedIn: 'root'
@@ -193,5 +194,10 @@ export class DataService {
   public changeRound2Page(page: string): Promise<any> {
     var uri = this.REST_API_SERVER + '/api/round2/changePage/' + encodeURIComponent(page) + '';
     return this.httpClient.put(uri, { responseType: 'json' }).toPromise();
+  }
+
+  public changeContestantStatus(questionNum: number, status: number) {
+    var uri = this.REST_API_SERVER + '/api/round1/updateState/' + encodeURIComponent(questionNum) + '/' + encodeURIComponent(status) + '';
+    this.httpClient.put(uri, {}, {responseType: 'json'}).toPromise();
   }
 }

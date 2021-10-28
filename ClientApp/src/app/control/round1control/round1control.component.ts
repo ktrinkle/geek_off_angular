@@ -26,6 +26,7 @@ export class Round1ControlComponent implements OnInit {
   status: number = 0;
   scoreResponse:string = '';
   finalizeState: string = 'Finalize round';
+  statusText = '';
 
   // think cues
   think1 = new Audio('https://geekoff2021static.blob.core.windows.net/snd/think1.mp3');
@@ -127,6 +128,7 @@ export class Round1ControlComponent implements OnInit {
     {
       this.selectedQuestion = this.answerForm.value.selectedQuestion;
       this.currentFilterQuestion = this.possibleAnswers.find(p => p.questionNum == this.answerForm.value.selectedQuestion);
+      this.scoreResponse = '';
 
       // reset answerform
       this.answerForm = new FormGroup({
@@ -140,6 +142,23 @@ export class Round1ControlComponent implements OnInit {
       this.status = c.status;
       this.currentQuestion = c.questionNum;
       this.selectedQuestion = c.questionNum;
+
+      if (status == 0)
+      {
+        this.statusText = 'Question displayed';
+      }
+      if (status == 1)
+      {
+        this.statusText = 'Answers displayed';
+      }
+      if (status == 2)
+      {
+        this.statusText = 'Answers open';
+      }
+      if (status == 3)
+      {
+        this.statusText = 'Correct answer displayed';
+      }
       }), complete: () => {
         // drops old answers
         this.loadTeamAnswers();
