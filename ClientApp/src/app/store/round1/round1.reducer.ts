@@ -29,7 +29,7 @@ export const round1Reducer = createReducer(
 
   on(round1AllQuestionsSuccess, (state, { allQuestions }) => ({
     ...state,
-    allQuestion: allQuestions
+    allQuestions: allQuestions
   }))
 );
 
