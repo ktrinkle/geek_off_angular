@@ -151,7 +151,6 @@ namespace GeekOff.Controllers
         [SwaggerOperation(Summary = "Sends message to update the question display. This message gets sent to change slides, so to speak. It won't show the answers.")]
         public async Task<ActionResult> ChangeQuestionAsync(int questionId)
         {
-            // add in controller here
             await _eventHub.Clients.All.SendAsync("round1question", questionId);
             return Ok();
         }
@@ -161,8 +160,16 @@ namespace GeekOff.Controllers
         [SwaggerOperation(Summary = "Sends message to animate intro screen text.")]
         public async Task<ActionResult> ShowMediaAsync()
         {
-            // add in controller here
             await _eventHub.Clients.All.SendAsync("round1Animate");
+            return Ok();
+        }
+
+        [Authorize(Roles = "admin")]
+        [HttpPut("refreshState/{currentQuestion}/{status}")]
+        [SwaggerOperation(Summary = "Sends message to animate intro screen text.")]
+        public async Task<ActionResult> RefreshClientStateAsync(int currentQuestion, int status)
+        {
+            await _eventHub.Clients.All.SendAsync("round1RefreshContestant", currentQuestion, status);
             return Ok();
         }
 
