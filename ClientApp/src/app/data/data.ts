@@ -91,16 +91,14 @@ export interface currentQuestionDto {
   status: number
 }
 
-export interface round1QuestionControlDto
-{
+export interface round1QuestionControlDto {
   questionNum: number,
   questionText: string,
   questionAnswerType: number,
   answerText: string
 }
 
-export interface round1EnteredAnswers
-{
+export interface round1EnteredAnswers {
   yEvent: string,
   teamNum: number,
   questionNum: number,
