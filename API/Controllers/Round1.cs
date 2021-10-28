@@ -49,6 +49,12 @@ namespace GeekOff.Controllers
         public async Task<ActionResult<Round1QuestionDto>> GetRound1AnswersAsync(string yEvent, int questionId)
             => Ok(await _questionService.GetRound1QuestionWithAnswer(yEvent, questionId));
 
+        [Authorize(Roles = "admin,player")]
+        [HttpGet("getAnswerList/{yEvent}")]
+        [SwaggerOperation(Summary = "Get a single round 1 question and answer for the contestants.")]
+        public async Task<ActionResult<List<Round1QuestionDto>>> GetRound1AnswerListAsync(string yEvent)
+            => Ok(await _questionService.GetRound1QuestionListWithAnswers(yEvent));
+
         [Authorize(Roles = "admin")]
         [HttpGet("getAllQuestions/{yEvent}")]
         [SwaggerOperation(Summary = "Get all of the survey questions and answers for use of the operators.")]

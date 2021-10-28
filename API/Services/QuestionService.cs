@@ -133,6 +133,67 @@ namespace GeekOff.Services
             return questionReturn;
         }
 
+        public async Task<List<Round1QuestionDto>> GetRound1QuestionListWithAnswers(string yEvent)
+        {
+            var questionList = await _contextGo.QuestionAns.Where(q => q.Yevent == yEvent
+                                                                            && q.RoundNo == 1).ToListAsync();
+
+            if (questionList is null)
+            {
+                return null;
+            }
+
+            var questionReturn = new List<Round1QuestionDto>();
+
+            foreach (var question in questionList)
+            {
+                var currentQuestion = new Round1QuestionDto() {
+                    QuestionNum = question.QuestionNo,
+                    QuestionText = question.TextQuestion,
+                    Answers = new List<Round1Answers>()
+                };
+
+                if (question.MultipleChoice == true)
+                {
+                    currentQuestion.Answers.Add(new Round1Answers()
+                    {
+                        AnswerId = 1,
+                        Answer = question.TextAnswer,
+                    });
+
+                    currentQuestion.Answers.Add(new Round1Answers()
+                    {
+                        AnswerId = 2,
+                        Answer = question.TextAnswer2,
+                    });
+
+                    currentQuestion.Answers.Add(new Round1Answers()
+                    {
+                        AnswerId = 3,
+                        Answer = question.TextAnswer3,
+                    });
+
+                    currentQuestion.Answers.Add(new Round1Answers()
+                    {
+                        AnswerId = 4,
+                        Answer = question.TextAnswer4,
+                    });
+
+                    currentQuestion.AnswerType = question.MatchQuestion == true ? QuestionAnswerType.Match : QuestionAnswerType.MultipleChoice;
+                }
+
+                if (question.MultipleChoice == false)
+                {
+                    currentQuestion.AnswerType = QuestionAnswerType.FreeText;
+                }
+
+                questionReturn.Add(currentQuestion);
+
+            }
+
+            return questionReturn;
+        }
+
         public async Task<List<Round1QuestionControlDto>> GetAllRound1Questions(string yEvent)
         {
             var returnList = new List<Round1QuestionControlDto>();
