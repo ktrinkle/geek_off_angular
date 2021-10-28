@@ -74,7 +74,7 @@ namespace GeekOff.Controllers
         }
 
         [Authorize(Roles = "admin")]
-        [HttpGet("showAnswerChoices")]
+        [HttpGet("updateAnswerState/{questionNum}/{status}")]
         [SwaggerOperation(Summary = "Show answer choices to contestants and on big board.")]
         public async Task<ActionResult> ShowAnswersToEventAsync()
         {
@@ -165,11 +165,16 @@ namespace GeekOff.Controllers
         }
 
         [Authorize(Roles = "admin")]
-        [HttpPut("refreshState/{currentQuestion}/{status}")]
+        [HttpPut("updateState/{currentQuestion}/{status}")]
         [SwaggerOperation(Summary = "Sends message to animate intro screen text.")]
         public async Task<ActionResult> RefreshClientStateAsync(int currentQuestion, int status)
         {
-            await _eventHub.Clients.All.SendAsync("round1RefreshContestant", currentQuestion, status);
+            var payload = new CurrentQuestionDto()
+            {
+                QuestionNum = currentQuestion,
+                Status = status
+            };
+            await _eventHub.Clients.All.SendAsync("round1UpdateContestant", payload);
             return Ok();
         }
 
