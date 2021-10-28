@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Actions, createEffect, Effect, ofType } from '@ngrx/effects';
-import { catchError, map, mergeMap, switchMap } from 'rxjs/operators';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { catchError, map, switchMap } from 'rxjs/operators';
 import { round1AllQuestions, round1AllQuestionsSuccess, round1AllTeams, round1AllTeamsSuccess } from './round1.actions';
 import { DataService } from 'src/app/data.service';
 import { of } from 'rxjs';
