@@ -29,6 +29,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
 import { EffectsModule } from '@ngrx/effects';
 import { Round2Effects } from './store/round2/round2.effects';
+import { Round1Effects } from './store/round1/round1.effects';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { IPublicClientApplication, PublicClientApplication, InteractionType } from '@azure/msal-browser';
@@ -60,7 +61,7 @@ import { Round2countdowndialogComponent } from './round2/round2countdowndialog/r
  * Here we pass the configuration parameters to create an MSAL instance.
  * For more info, visit: https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-angular/docs/v2-docs/configuration.md
  */
- export function MSALInstanceFactory(): IPublicClientApplication {
+export function MSALInstanceFactory(): IPublicClientApplication {
   return new PublicClientApplication(msalConfig);
 }
 
@@ -69,7 +70,7 @@ import { Round2countdowndialogComponent } from './round2/round2countdowndialog/r
  * added to protectedResourceMap. For more info, visit:
  * https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-angular/docs/v2-docs/initialization.md#get-tokens-for-web-api-calls
  */
- export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
+export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
   const protectedResourceMap = new Map<string, Array<string>>();
 
   protectedResourceMap.set(protectedResources.geekOffApi.endpoint, protectedResources.geekOffApi.scopes);
@@ -89,16 +90,16 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
     interactionType: InteractionType.Redirect,
     authRequest: {
       scopes: ['user.read']
-      },
+    },
   };
 }
 
 export function MSALInterceptorFactory(): MsalInterceptorConfiguration {
   return {
-      interactionType: InteractionType.Redirect,
-      protectedResourceMap: new Map([
-          ['https://graph.microsoft.com/v1.0/me', ['user.read']]
-      ])
+    interactionType: InteractionType.Redirect,
+    protectedResourceMap: new Map([
+      ['https://graph.microsoft.com/v1.0/me', ['user.read']]
+    ])
   }
 }
 
@@ -127,7 +128,7 @@ export function MSALInterceptorFactory(): MsalInterceptorConfiguration {
     HttpClientModule,
     StoreModule.forRoot(reducers, { metaReducers }),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
-    EffectsModule.forRoot([Round2Effects]),
+    EffectsModule.forRoot([Round2Effects, Round1Effects]),
     ReactiveFormsModule,
     MsalModule,
     MatToolbarModule,
@@ -179,15 +180,13 @@ export function MSALInterceptorFactory(): MsalInterceptorConfiguration {
 })
 export class AppModule {
 
- ngDoBootstrap(ref: any) {
-    if (window !== window.parent && !window.opener)
-    {
+  ngDoBootstrap(ref: any) {
+    if (window !== window.parent && !window.opener) {
       console.log("Bootstrap: MSAL");
       ref.bootstrap(MsalComponent);
     }
-    else
-    {
-    //this.router.resetConfig(RouterModule);
+    else {
+      //this.router.resetConfig(RouterModule);
       console.log("Bootstrap: App");
       ref.bootstrap(AppComponent);
     }

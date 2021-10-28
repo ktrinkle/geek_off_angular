@@ -9,6 +9,7 @@ import { environment } from 'src/environments/environment';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { selectRound1AllQuestionsAndAnswers } from 'src/app/store';
+import { round1AllQuestions } from 'src/app/store/round1/round1.actions';
 
 @Component({
   selector: 'app-contestant',
@@ -54,6 +55,8 @@ export class Round1ContestantComponent implements OnInit {
   constructor(private route: ActivatedRoute, private dataService: DataService, private store: Store) { }
 
   ngOnInit(): void {
+
+    this.store.dispatch(round1AllQuestions({ yEvent: this.yEvent }));
 
     const connection = new signalR.HubConnectionBuilder()
       .configureLogging(signalR.LogLevel.Information)
