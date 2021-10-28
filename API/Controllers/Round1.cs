@@ -49,6 +49,12 @@ namespace GeekOff.Controllers
         public async Task<ActionResult<Round1QuestionDto>> GetRound1AnswersAsync(string yEvent, int questionId)
             => Ok(await _questionService.GetRound1QuestionWithAnswer(yEvent, questionId));
 
+        [Authorize(Roles = "admin,player")]
+        [HttpGet("getAnswerList/{yEvent}")]
+        [SwaggerOperation(Summary = "Get a single round 1 question and answer for the contestants.")]
+        public async Task<ActionResult<List<Round1QuestionDto>>> GetRound1AnswerListAsync(string yEvent)
+            => Ok(await _questionService.GetRound1QuestionListWithAnswers(yEvent));
+
         [Authorize(Roles = "admin")]
         [HttpGet("getAllQuestions/{yEvent}")]
         [SwaggerOperation(Summary = "Get all of the survey questions and answers for use of the operators.")]
@@ -68,7 +74,7 @@ namespace GeekOff.Controllers
         }
 
         [Authorize(Roles = "admin")]
-        [HttpGet("showAnswerChoices")]
+        [HttpGet("updateAnswerState/{questionNum}/{status}")]
         [SwaggerOperation(Summary = "Show answer choices to contestants and on big board.")]
         public async Task<ActionResult> ShowAnswersToEventAsync()
         {
@@ -145,7 +151,6 @@ namespace GeekOff.Controllers
         [SwaggerOperation(Summary = "Sends message to update the question display. This message gets sent to change slides, so to speak. It won't show the answers.")]
         public async Task<ActionResult> ChangeQuestionAsync(int questionId)
         {
-            // add in controller here
             await _eventHub.Clients.All.SendAsync("round1question", questionId);
             return Ok();
         }
@@ -155,8 +160,21 @@ namespace GeekOff.Controllers
         [SwaggerOperation(Summary = "Sends message to animate intro screen text.")]
         public async Task<ActionResult> ShowMediaAsync()
         {
-            // add in controller here
             await _eventHub.Clients.All.SendAsync("round1Animate");
+            return Ok();
+        }
+
+        [Authorize(Roles = "admin")]
+        [HttpPut("updateState/{currentQuestion}/{status}")]
+        [SwaggerOperation(Summary = "Sends message to animate intro screen text.")]
+        public async Task<ActionResult> RefreshClientStateAsync(int currentQuestion, int status)
+        {
+            var payload = new CurrentQuestionDto()
+            {
+                QuestionNum = currentQuestion,
+                Status = status
+            };
+            await _eventHub.Clients.All.SendAsync("round1UpdateContestant", payload);
             return Ok();
         }
 
