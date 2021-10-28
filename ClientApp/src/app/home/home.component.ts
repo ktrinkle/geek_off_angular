@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MsalBroadcastService, MsalService } from '@azure/msal-angular';
-import { EventMessage, EventType, InteractionStatus } from '@azure/msal-browser';
+import { AuthenticationResult, EventMessage, EventType, InteractionStatus } from '@azure/msal-browser';
 import { filter } from 'rxjs/operators';
 import { PlayerGuard } from '../player.guard';
-
 
 @Component({
   selector: 'app-home',
@@ -28,15 +27,17 @@ export class HomeComponent implements OnInit {
     )
     .subscribe((result: EventMessage) => {
       console.log(result);
+      const payload = result.payload as AuthenticationResult;
+      this.authService.instance.setActiveAccount(payload.account);
     });
 
     this.msalBroadcastService.inProgress$
-    .pipe(
-      filter((status: InteractionStatus) => status === InteractionStatus.None)
-    )
-    .subscribe(() => {
-      this.setHeaderDisplay();
-    })
+      .pipe(
+        filter((status: InteractionStatus) => status === InteractionStatus.None)
+      )
+      .subscribe(() => {
+        this.setHeaderDisplay();
+      })
   }
 
   setHeaderDisplay() {

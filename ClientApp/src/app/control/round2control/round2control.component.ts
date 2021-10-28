@@ -61,6 +61,11 @@ export class Round2controlComponent implements OnInit {
     { key: 20, value: 'Player 2 Score 5' },
   ]
 
+  playerNumbers: number[] = [
+    1,
+    2
+  ];
+
   constructor(private store: Store, private _dataService: DataService,
     private formBuilder: FormBuilder, public dialog: MatDialog) { }
 
@@ -206,10 +211,19 @@ export class Round2controlComponent implements OnInit {
   }
 
   showFirstAnswers(form: FormGroup) {
-    console.log("Team Num: " + form.get("teamNum")?.value);
-    this._dataService.getRound2FirstPlayer(this.yevent, form.get("teamNum")?.value)
+    this._dataService.getRound2FirstPlayer(this.yevent, this.newEventForm.get("teamNum")?.value)
       .subscribe((data: round2Answers[]) => this.firstPlayerAnswers = data);
     console.log("FPA: " + this.firstPlayerAnswers);
+  }
+
+  changeTeamPlayer() {
+    var teamNum = this.newEventForm.get("teamNum")?.value;
+    this._dataService.changeRound2Team(teamNum);
+
+    if (this.newEventForm.get("teamNum")?.value == 2)
+    {
+      this.showFirstAnswers(this.newEventForm);
+    }
   }
 
   openDialog(): void {
