@@ -169,7 +169,12 @@ namespace GeekOff.Controllers
         [SwaggerOperation(Summary = "Sends message to animate intro screen text.")]
         public async Task<ActionResult> RefreshClientStateAsync(int currentQuestion, int status)
         {
-            await _eventHub.Clients.All.SendAsync("round1RefreshContestant", currentQuestion, status);
+            var payload = new CurrentQuestionDto()
+            {
+                QuestionNum = currentQuestion,
+                Status = status
+            }
+            await _eventHub.Clients.All.SendAsync("round1RefreshContestant", payload);
             return Ok();
         }
 
