@@ -20,7 +20,7 @@ export class Round1Effects {
   getRound1AllQuestions$ = createEffect(() => this.actions$.pipe(
     ofType(round1AllQuestions),
     switchMap(payload =>
-      this.dataService.getAllRound1Questions(payload.yEvent).pipe(map(allQuestions =>
+      this.dataService.getAllRound1QuestionsAndAnswers(payload.yEvent).pipe(map(allQuestions =>
         round1AllQuestionsSuccess({ allQuestions: allQuestions }) // todo: add catchError
       )))));
 }
