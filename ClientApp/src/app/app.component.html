@@ -3,7 +3,7 @@
         <a class="title" href="/">{{ title }} Home</a>
 
         <span class="spacer"></span>
-        <div class="username" *ngIf="profile">{{profile.playerName}}
+        <div class="username" *ngIf="profile && loginDisplay">{{profile.playerName}}
           <span *ngIf="profile.teamNum != 0">, Team #{{profile.teamNum}}</span>
         <span *ngIf="profile.teamNum == 0">- Admin</span></div>
         <span class="spacer"></span>

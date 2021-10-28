@@ -34,7 +34,11 @@ export interface displayRow {
       transition('active => inactive', animate('500ms ease-out')),
       // transition('inactive => active', animate('500ms ease-in'))
       transition('inactive => active', animate('500ms ease-in'))
-    ])
+    ]),
+    trigger('slideLeft', [
+      transition(':enter', [style({ width: 0 }), animate(300)]),
+      transition(':leave', [animate(300, style({ width: 0 }))]),
+    ]),
   ]
 })
 
@@ -134,6 +138,7 @@ export class Round2displayComponent implements OnInit, OnDestroy {
   }
 
   changeTeam(teamNum: number) {
+    console.log(teamNum);
     this.teamNumber = teamNum;
     this.getDisplayBoard();
   }

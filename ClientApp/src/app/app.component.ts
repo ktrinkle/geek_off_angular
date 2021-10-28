@@ -1,10 +1,11 @@
 import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
 import { Router, NavigationStart, NavigationEnd } from '@angular/router';
 import { MsalService, MsalBroadcastService, MSAL_GUARD_CONFIG, MsalGuardConfiguration } from '@azure/msal-angular';
-import { AuthenticationResult, InteractionStatus, InteractionType, PopupRequest, RedirectRequest } from '@azure/msal-browser';
+import { AuthenticationResult, BrowserUtils, InteractionStatus, InteractionType, PopupRequest, RedirectRequest } from '@azure/msal-browser';
 import { Subject, BehaviorSubject, Observable } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { DataService } from './data.service';
+import { Location } from '@angular/common';
 
 type ProfileType = {
   playerName: string,
@@ -22,7 +23,7 @@ type ProfileType = {
 export class AppComponent {
   title = 'Geek Off';
   isIframe = false;
-  loginDisplay = false;
+  public loginDisplay = false;
   showLoginBar = true;
   pagesToShowLogin = [
     '/round1/contestant',
@@ -42,7 +43,8 @@ export class AppComponent {
     private authService: MsalService,
     private msalBroadcastService: MsalBroadcastService,
     private dataService: DataService,
-    private router: Router) {
+    private router: Router,
+    private location: Location) {
       router.events.forEach((event) => {
         if (event instanceof NavigationEnd) {
           console.log(event.url);
@@ -52,6 +54,7 @@ export class AppComponent {
       });
       this.dataService.getCurrentEvent().subscribe(event => {
         sessionStorage.setItem('event', event);
+        this.dataService.eventLoaded = true;
       });
 
       this.currentEventSubject = new BehaviorSubject<any>(sessionStorage.getItem('event'));
@@ -60,7 +63,9 @@ export class AppComponent {
     }
 
   ngOnInit(): void {
-    this.isIframe = window !== window.parent && !window.opener;
+    const currentPath = this.location.path();
+    this.isIframe = BrowserUtils.isInIframe() && !window.opener && currentPath.indexOf("logout") < 0;
+    this.setLoginDisplay();
 
     this.msalBroadcastService.inProgress$
       .pipe(
@@ -68,7 +73,9 @@ export class AppComponent {
         takeUntil(this._destroying$)
       )
       .subscribe(() => {
+        console.log('Broadcast service in progress');
         this.setLoginDisplay();
+        this.checkAndSetActiveAccount();
       });
   }
 
@@ -95,6 +102,20 @@ export class AppComponent {
     }
     else{
       this.loginDisplay = false;
+    }
+  }
+
+  checkAndSetActiveAccount(){
+    /**
+     * If no active account set but there are accounts signed in, sets first account to active account
+     * To use active account set here, subscribe to inProgress$ first in your component
+     * Note: Basic usage demonstrated. Your app may require more complicated account selection logic
+     */
+    let activeAccount = this.authService.instance.getActiveAccount();
+
+    if (!activeAccount && this.authService.instance.getAllAccounts().length > 0) {
+      let accounts = this.authService.instance.getAllAccounts();
+      this.authService.instance.setActiveAccount(accounts[0]);
     }
   }
 

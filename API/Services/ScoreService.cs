@@ -123,11 +123,11 @@ namespace GeekOff.Services
                                 }).ToListAsync();
 
             // now we need to calc the TeamScore. Rnk is not used here.
-            // team substring not liked in EF query
+            // team substring not liked in EF query. Forgot to add the bonus, whoops
 
             foreach (var team in teamList)
             {
-                team.TeamScore = team.Q.Sum(s => s.QuestionScore);
+                team.TeamScore = team.Q.Sum(s => s.QuestionScore) + team.Bonus;
             }
 
             return teamList;
@@ -282,15 +282,15 @@ namespace GeekOff.Services
 
         public async Task<List<Round2Answers>> GetFirstPlayersAnswers(string yEvent, int teamNum)
         {
-            var playerNum = _contextGo.Scoring.Where(x => x.RoundNo == 2 &&
-                                                     x.TeamNo == teamNum)
-                                              .FirstOrDefault().PlayerNum;
+            var playerList = await _contextGo.Scoring.Where(x => x.RoundNo == 2 &&
+                                                     x.TeamNo == teamNum && x.Yevent == yEvent)
+                                              .FirstOrDefaultAsync();
 
-            if (playerNum is not null)
+            if (playerList.PlayerNum is not null)
             {
                 var answers = await _contextGo.Scoring.Where(x => x.RoundNo == 2 &&
                                                        x.TeamNo == teamNum &&
-                                                       x.PlayerNum == playerNum)
+                                                       x.PlayerNum == playerList.PlayerNum)
                                                 .Select(x => new Round2Answers {
                                                                     QuestionNum = x.QuestionNo,
                                                                     Answer = x.TeamAnswer,
