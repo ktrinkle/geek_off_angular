@@ -12,6 +12,7 @@ import { PlayerGuard } from '../player.guard';
 export class HomeComponent implements OnInit {
   userIsLoggedIn: boolean = false;
   userIsAdmin: boolean = false;
+  isIframe = false;
   public yevent: string = sessionStorage.getItem('event') ?? '';
 
   constructor(
@@ -21,6 +22,8 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     // authentication handling
+
+    this.isIframe = window !== window.parent && !window.opener;
     this.msalBroadcastService.msalSubject$
     .pipe(
       filter((msg: EventMessage) => msg.eventType === EventType.LOGIN_SUCCESS),

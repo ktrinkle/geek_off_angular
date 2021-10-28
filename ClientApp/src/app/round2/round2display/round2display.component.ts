@@ -138,6 +138,7 @@ export class Round2displayComponent implements OnInit, OnDestroy {
   }
 
   changeTeam(teamNum: number) {
+    console.log(teamNum);
     this.teamNumber = teamNum;
     this.getDisplayBoard();
   }

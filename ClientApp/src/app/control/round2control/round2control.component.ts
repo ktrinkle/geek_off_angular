@@ -78,7 +78,7 @@ export class Round2controlComponent implements OnInit {
     this.consolation.load();
 
     const connection = new signalR.HubConnectionBuilder()
-      .configureLogging(signalR.LogLevel.Information)
+      .configureLogging(signalR.LogLevel.Debug)
       .withUrl(environment.api_url + '/events')
       .withAutomaticReconnect()
       .build();
@@ -218,9 +218,10 @@ export class Round2controlComponent implements OnInit {
 
   changeTeamPlayer() {
     var teamNum = this.newEventForm.get("teamNum")?.value;
+    console.log ('Got team number ' + teamNum);
     this._dataService.changeRound2Team(teamNum);
 
-    if (this.newEventForm.get("teamNum")?.value == 2)
+    if (this.newEventForm.get("teamNum")?.value == "2")
     {
       this.showFirstAnswers(this.newEventForm);
     }

@@ -54,6 +54,7 @@ export class AppComponent {
       });
       this.dataService.getCurrentEvent().subscribe(event => {
         sessionStorage.setItem('event', event);
+        this.dataService.eventLoaded = true;
       });
 
       this.currentEventSubject = new BehaviorSubject<any>(sessionStorage.getItem('event'));

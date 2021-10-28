@@ -12,6 +12,8 @@ export class DataService {
   private REST_API_SERVER = environment.api_url;
   public currentEvent: string = '';
 
+  public eventLoaded = false;
+
   constructor(private httpClient: HttpClient) { }
 
   public getAzureAuth() {
@@ -162,7 +164,8 @@ export class DataService {
     this.httpClient.get(uri).toPromise();
   }
 
-  public changeRound2Team(teamNum: number) {
+  public changeRound2Team(teamNum: any) {
+    console.log('Dataservice TeamNum:' + teamNum);
     var uri = this.REST_API_SERVER + '/api/round2/bigboard/changeTeam/' + encodeURIComponent(teamNum) + '';
     this.httpClient.get(uri).toPromise();
   }
