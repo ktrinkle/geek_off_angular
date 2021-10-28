@@ -49,9 +49,9 @@ namespace GeekOff.Controllers
         public async Task<ActionResult<Round1QuestionDto>> GetRound1AnswersAsync(string yEvent, int questionId)
             => Ok(await _questionService.GetRound1QuestionWithAnswer(yEvent, questionId));
 
-        [Authorize(Roles = "admin,player")]
+        [Authorize(Roles = "player")]
         [HttpGet("getAnswerList/{yEvent}")]
-        [SwaggerOperation(Summary = "Get a single round 1 question and answer for the contestants.")]
+        [SwaggerOperation(Summary = "Get a list of round 1 question and answers for the contestants.")]
         public async Task<ActionResult<List<Round1QuestionDto>>> GetRound1AnswerListAsync(string yEvent)
             => Ok(await _questionService.GetRound1QuestionListWithAnswers(yEvent));
 
@@ -165,20 +165,6 @@ namespace GeekOff.Controllers
         }
 
         [Authorize(Roles = "admin")]
-        [HttpPut("updateState/{currentQuestion}/{status}")]
-        [SwaggerOperation(Summary = "Sends message to animate intro screen text.")]
-        public async Task<ActionResult> RefreshClientStateAsync(int currentQuestion, int status)
-        {
-            var payload = new CurrentQuestionDto()
-            {
-                QuestionNum = currentQuestion,
-                Status = status
-            };
-            await _eventHub.Clients.All.SendAsync("round1UpdateContestant", payload);
-            return Ok();
-        }
-
-        [Authorize(Roles = "admin")]
         [HttpPut("animateSeatbelt")]
         [SwaggerOperation(Summary = "Sends message to animate intro screen text.")]
         public async Task<ActionResult> ChangeIntroSeatBeltAsync()
@@ -205,16 +191,12 @@ namespace GeekOff.Controllers
         {
             var returnDto = await _manageEventService.SetCurrentQuestionStatus(yEvent, questionId, status);
 
-            var messageToSend = status switch
+            var payload = new CurrentQuestionDto()
             {
-                0 => "round1Question",
-                1 => "round1ShowAnswerChoices",
-                2 => "round1OpenAnswer",
-                3 => "round1CloseAnswer",
-                _ => ""
+                QuestionNum = questionId,
+                Status = status
             };
-
-            await _eventHub.Clients.All.SendAsync(messageToSend, questionId);
+            await _eventHub.Clients.All.SendAsync("round1UpdateContestant", payload);
             return Ok(returnDto);
         }
 

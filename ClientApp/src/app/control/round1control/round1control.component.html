@@ -1,5 +1,6 @@
 <div id="r1header">
     <p>Question {{currentQuestion}}: {{currentFilterQuestion.questionText}}</p>
+    <p>{{statusText}}</p>
 </div>
 <div class="content" fxLayout="row wrap" fxLayoutGap="16px grid">
     <div id="currentAnswer" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%" style="padding: 10px;" [formGroup]="answerForm">
@@ -66,8 +67,7 @@
           <option *ngFor="let answer of possibleAnswers" [value]="answer.questionNum">
             {{answer.questionNum}}
           </option>
-        </select>
-        {{answerForm.value.selectedQuestion}}
+        </select> {{answerForm.value.selectedQuestion}}
             <button id="showAnswer" (click)="sendClientMessage(1)">Show Answer</button>
             <button id="openAnswer" (click)="sendClientMessage(2)">Open Answer</button>
             <button id="closeAnswer" (click)="sendClientMessage(3)">Close Answer</button>
