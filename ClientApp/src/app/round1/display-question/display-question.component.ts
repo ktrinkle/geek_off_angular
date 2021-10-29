@@ -42,7 +42,7 @@ export class Round1DisplayQuestionComponent implements OnInit, OnDestroy {
     questionNum: 0,
     status: 0
   };
-  yEvent = sessionStorage.getItem('event') ?? '';
+  yEvent: string = '';
   public currentQuestionDto: round1QDisplay = {
     questionNum: 0,
     questionText: '',
@@ -55,7 +55,6 @@ export class Round1DisplayQuestionComponent implements OnInit, OnDestroy {
   questionMatch: number = 1;
   questionMulti: number = 0;
   questionText: number = 2;
-
   destroy$: Subject<boolean> = new Subject<boolean>();
 
   constructor(private route: ActivatedRoute, private router: Router, private dataService: DataService, private store: Store) { }
@@ -177,5 +176,4 @@ export class Round1DisplayQuestionComponent implements OnInit, OnDestroy {
     this.destroy$.next(true);
     this.destroy$.unsubscribe();
   }
-
 }

@@ -22,7 +22,7 @@ export class Round1ControlComponent implements OnInit, OnDestroy {
   possibleAnswers: round1QuestionControlDto[] = [];
   teamAnswers: round1EnteredAnswers[] = [];
   scoreboard: round1Scores[] = [];
-  yEvent = sessionStorage.getItem('event') ?? '';
+  yEvent: string = '';
   statusEnum: string[] = [''];
   status: number = 0;
   scoreResponse: string = '';

@@ -126,7 +126,6 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    sessionStorage.removeItem('event');
     this._destroying$.next(undefined);
     this._destroying$.complete();
     this.destroy$.next(true);

@@ -31,7 +31,7 @@ export class Round1ContestantComponent implements OnInit {
   };
   allQuestionsAndAnwers: round1QADto[] = [];
   hideTime: Date = new Date;
-  yEvent = sessionStorage.getItem('event') ?? '';
+  yEvent = '';
   public currentQuestionDto: round1QADto = {
     questionNum: 0,
     questionText: '',

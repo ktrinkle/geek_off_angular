@@ -1,18 +1,22 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { round1QADto, round1EnteredAnswers, currentQuestionDto } from 'src/app/data/data';
 import { DataService } from 'src/app/data.service';
 import * as signalR from '@microsoft/signalr';
+import { Store } from '@ngrx/store';
 import { environment } from 'src/environments/environment';
+import { Subject } from 'rxjs';
+import { selectCurrentEvent } from 'src/app/store';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-round1host',
   templateUrl: './round1host.component.html',
   styleUrls: ['./round1host.component.scss']
 })
-export class Round1hostComponent implements OnInit {
+export class Round1hostComponent implements OnInit, OnDestroy {
 
   teamAnswers: round1EnteredAnswers[] = [];
-  yEvent = sessionStorage.getItem('event') ?? '';
+  yEvent: string = '';
   public currentQuestion: currentQuestionDto = {
     questionNum: 0,
     status: 0
@@ -24,8 +28,9 @@ export class Round1hostComponent implements OnInit {
     answerType: -1,
     expireTime: new Date()
   };
+  destroy$: Subject<boolean> = new Subject<boolean>();
 
-  constructor(private dataService: DataService) { }
+  constructor(private dataService: DataService, private store: Store) { }
 
   ngOnInit(): void {
     const connection = new signalR.HubConnectionBuilder()
@@ -48,29 +53,40 @@ export class Round1hostComponent implements OnInit {
       this.loadTeamAnswers();
     });
 
-    this.dataService.getCurrentQuestion(this.yEvent).subscribe({next: (initialQ => {
-      this.currentQuestion = initialQ;
-    }), complete: () => {
-      console.log(this.currentQuestion);
-      if (this.currentQuestion.questionNum > 0) {
-        this.loadQuestion(this.currentQuestion.questionNum);
-        this.loadTeamAnswers();
-      };
-    }});
+    this.store.select(selectCurrentEvent).pipe(takeUntil(this.destroy$)).subscribe(currentEvent => {
+      this.yEvent = currentEvent;
+      if (this.yEvent && this.yEvent.length > 0) {
+        this.dataService.getCurrentQuestion(this.yEvent).subscribe({
+          next: (initialQ => {
+            this.currentQuestion = initialQ;
+          }), complete: () => {
+            console.log(this.currentQuestion);
+            if (this.currentQuestion.questionNum > 0) {
+              this.loadQuestion(this.currentQuestion.questionNum);
+              this.loadTeamAnswers();
+            };
+          }
+        });
+      }
+    });
 
     // connection.on("round1CloseAnswer", (data: any) => {});
   }
 
-  loadTeamAnswers()
-  {
+  loadTeamAnswers() {
     this.dataService.getAllEnteredAnswers(this.yEvent, this.currentQuestion.questionNum).subscribe(a => {
       this.teamAnswers = a;
     });
   }
 
-  loadQuestion(questionId: number): void{
+  loadQuestion(questionId: number): void {
     this.dataService.getRound1QuestionAnswer(this.yEvent, questionId).subscribe(q => {
-        this.currentQuestionDto = q;
-      });
+      this.currentQuestionDto = q;
+    });
   };
+
+  ngOnDestroy() {
+    this.destroy$.next(true);
+    this.destroy$.unsubscribe();
+  }
 }
