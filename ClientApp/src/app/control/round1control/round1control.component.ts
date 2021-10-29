@@ -124,7 +124,7 @@ export class Round1ControlComponent implements OnInit {
 
   resyncStatus()
   {
-    this.sendClientMessage(this.status);
+    this.dataService.changeRound1QuestionStatus(this.yEvent, this.selectedQuestion, this.status).subscribe();
   }
 
   sendClientMessage(status: number)
