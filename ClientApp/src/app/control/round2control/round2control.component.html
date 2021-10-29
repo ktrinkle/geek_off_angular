@@ -78,7 +78,7 @@
                 <label for="teamNum" class="answer-choice">Team Number</label>
             </mat-grid-tile>
             <mat-grid-tile colspan="7">
-                <select id="teamNum" formControlName="teamNum" (change)="showFirstAnswers(this.newEventForm)" class="answer-choice">
+                <select id="teamNum" formControlName="teamNum" (change)="changeTeamPlayer()" class="answer-choice">
             <option>--</option>
             <option *ngFor="let list of scoreboard" [value]="list.teamNo">
               {{list.teamNo}} ({{list.teamName}})
@@ -94,7 +94,7 @@
                 <label for="playerNum" class="answer-choice">Player Number</label>
             </mat-grid-tile>
             <mat-grid-tile colspan="7">
-                <select id="playerNum" formControlName="playerNum" (change)="changeTeamPlayer()" class="answer-choice">
+                <select id="playerNum" formControlName="playerNum" (change)="showFirstAnswers(this.newEventForm)" class="answer-choice">
           <option>--</option>
           <option *ngFor="let list of playerNumbers" [value]="list">
             {{list}}
