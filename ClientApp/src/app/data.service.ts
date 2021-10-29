@@ -52,8 +52,8 @@ export class DataService {
     return this.httpClient.get(uri);
   }
 
-  public getRound1QuestionText(yEvent: string, questionId: number): Observable<any> {
-    var uri = this.REST_API_SERVER + '/api/round1/getQuestion/' + encodeURIComponent(yEvent) + '/' + encodeURIComponent(questionId) + '';
+  public getRound1BigDisplay(yEvent: string, questionId: number): Observable<any> {
+    var uri = this.REST_API_SERVER + '/api/round1/bigDisplay/' + encodeURIComponent(yEvent) + '/' + encodeURIComponent(questionId) + '';
     return this.httpClient.get(uri);
   }
 
@@ -198,6 +198,6 @@ export class DataService {
 
   public changeContestantStatus(questionNum: number, status: number) {
     var uri = this.REST_API_SERVER + '/api/round1/updateState/' + encodeURIComponent(questionNum) + '/' + encodeURIComponent(status) + '';
-    this.httpClient.put(uri, {}, {responseType: 'json'}).toPromise();
+    this.httpClient.put(uri, {}, { responseType: 'json' }).toPromise();
   }
 }
