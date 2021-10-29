@@ -90,36 +90,11 @@ export class Round1DisplayQuestionComponent implements OnInit, OnDestroy {
           this.showAnswer();
         }
 
-        // if (data.status == 2) {
-        //   this.openForm();
-        // }
-
-        if (data.status == 1) {
+        if (data.status == 1 || data.status == 2) {
           this.showChoices();
         }
       };
-
-      // if (data.questionNum == 0) {
-      //   this.hangTight = true;
-      // }
-
     });
-
-    // connection.on("round1question", (data: any) => {
-    //   this.loadQuestion(data);
-    // });
-
-    // connection.on("round1ShowAnswerChoices", (data: any) => {
-    //   this.showChoices();
-    // });
-
-    // connection.on("round1CloseAnswer", (data: any) => {
-    //   this.showAnswer();
-    // });
-
-    // connection.on("round1ShowMedia", (data: any) => {
-    //   this.showMedia();
-    // });
 
     connection.on("round1intro", (data: any) => {
       this.changePage(data);
