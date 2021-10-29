@@ -25,4 +25,5 @@ export const selectRound1Teams = createSelector(selectRound1State, (state: fromR
 export const selectRound2State = createFeatureSelector<fromRound2.State>(fromRound2.round2FeatureKey);
 export const selectRound2AllSurvey = createSelector(selectRound2State, (state: fromRound2.State) => state.surveyList);
 export const selectRound1AllQuestionsAndAnswers = createSelector(selectRound1State, (state: fromRound1.State) => state.allQuestions);
+export const selectRound1BigDisplay = createSelector(selectRound1State, (state: fromRound1.State) => state.bigDisplay);
 

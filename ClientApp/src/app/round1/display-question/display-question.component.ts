@@ -7,6 +7,9 @@ import { DataService } from 'src/app/data.service';
 import * as signalR from '@microsoft/signalr';
 import { environment } from 'src/environments/environment';
 import { currentQuestionDto, round1QDisplay } from 'src/app/data/data';
+import { Store } from '@ngrx/store';
+import { selectRound1BigDisplay } from 'src/app/store';
+import { round1BigDisplay } from 'src/app/store/round1/round1.actions';
 
 @Component({
   selector: 'app-display-question',
@@ -25,9 +28,11 @@ import { currentQuestionDto, round1QDisplay } from 'src/app/data/data';
     ]),
   ]
 })
+
 export class Round1DisplayQuestionComponent implements OnInit, OnDestroy {
   // internal management since users won't leave this page
-  questionVisible:boolean = false;
+  bigDisplay: round1QDisplay[] = [];
+  questionVisible: boolean = false;
   mediaVisible: boolean = false;
   answerVisible: boolean = false;
   answerShown: boolean = false;
@@ -53,9 +58,16 @@ export class Round1DisplayQuestionComponent implements OnInit, OnDestroy {
 
   destroy$: Subject<boolean> = new Subject<boolean>();
 
-  constructor(private route: ActivatedRoute, private router: Router, private dataService: DataService) { }
+  constructor(private route: ActivatedRoute, private router: Router, private dataService: DataService, private store: Store) { }
 
   ngOnInit(): void {
+
+    this.store.dispatch(round1BigDisplay({ yEvent: this.yEvent }));
+
+    this.store.select(selectRound1BigDisplay).pipe(takeUntil(this.destroy$)).subscribe(bigDisplay =>
+      this.bigDisplay = bigDisplay as round1QDisplay[]
+    );
+
     const connection = new signalR.HubConnectionBuilder()
       .configureLogging(signalR.LogLevel.Information)
       .withUrl(environment.api_url + '/events')
@@ -68,21 +80,46 @@ export class Round1DisplayQuestionComponent implements OnInit, OnDestroy {
       return console.error(err.toString());
     });
 
-    connection.on("round1question", (data: any) => {
-      this.loadQuestion(data);
+    connection.on("round1UpdateContestant", (data: currentQuestionDto) => {
+      this.currentQuestion = data;
+      this.loadCurrentQuestion(data.questionNum);
+
+      if (data.questionNum > 0 && data.questionNum < 120) {
+        // we have already loaded in the init so we have our state here. In theory.
+        if (data.status == 3) {
+          this.showAnswer();
+        }
+
+        // if (data.status == 2) {
+        //   this.openForm();
+        // }
+
+        if (data.status == 1) {
+          this.showChoices();
+        }
+      };
+
+      // if (data.questionNum == 0) {
+      //   this.hangTight = true;
+      // }
+
     });
 
-    connection.on("round1ShowAnswerChoices", (data: any) => {
-      this.showChoices();
-    });
+    // connection.on("round1question", (data: any) => {
+    //   this.loadQuestion(data);
+    // });
 
-    connection.on("round1CloseAnswer", (data: any) => {
-      this.showAnswer();
-    });
+    // connection.on("round1ShowAnswerChoices", (data: any) => {
+    //   this.showChoices();
+    // });
 
-    connection.on("round1ShowMedia", (data: any) => {
-      this.showMedia();
-    });
+    // connection.on("round1CloseAnswer", (data: any) => {
+    //   this.showAnswer();
+    // });
+
+    // connection.on("round1ShowMedia", (data: any) => {
+    //   this.showMedia();
+    // });
 
     connection.on("round1intro", (data: any) => {
       this.changePage(data);
@@ -93,47 +130,65 @@ export class Round1DisplayQuestionComponent implements OnInit, OnDestroy {
     });
 
     // set up our internal state
-    this.dataService.getCurrentQuestion(this.yEvent).subscribe({next: (initialQ => {
-      this.currentQuestion = initialQ;
-    }), complete: () => {
-      if (this.currentQuestion.questionNum > 0) {
-        this.loadQuestion(this.currentQuestion.questionNum);
+    // this.dataService.getCurrentQuestion(this.yEvent).subscribe({
+    //   next: (initialQ => {
+    //     this.currentQuestion = initialQ;
+    //   }), complete: () => {
+    //     if (this.currentQuestion.questionNum > 0) {
+    //       this.loadQuestion(this.currentQuestion.questionNum);
 
-        if (this.currentQuestion.questionNum > 0 && this.currentQuestion.questionNum < 120)
-        {
-          // we have already loaded in the init so we have our state here. In theory.
-          if (this.currentQuestion.status == 3)
-          {
-            this.showAnswer();
-          }
+    //       if (this.currentQuestion.questionNum > 0 && this.currentQuestion.questionNum < 120) {
+    //         // we have already loaded in the init so we have our state here. In theory.
+    //         if (this.currentQuestion.status == 3) {
+    //           this.showAnswer();
+    //         }
 
-          if (this.currentQuestion.status == 1)
-          {
-            this.showChoices();
-          }
-        };
-      };
-    }});
+    //         if (this.currentQuestion.status == 1) {
+    //           this.showChoices();
+    //         }
+    //       };
+    //     };
+    //   }
+    // });
   }
 
-  loadQuestion(questionId: number): void{
+  loadCurrentQuestion(questionNum: number) {
     this.currentQuestion = {
-      questionNum: questionId,
+      questionNum: questionNum,
       status: 0
     };
+
     this.questionVisible = true;
     this.answerVisible = false;
     this.answerShown = false;
-    this.dataService.getRound1QuestionText(this.yEvent, questionId).pipe(takeUntil(this.destroy$))
-        .subscribe(q => {
-          this.currentQuestionDto = q;
-          if (q.answerType == 1)
-          {
-            this.matchString = 'x' + this.convertStringToAnswer(q.correctAnswer);
-          }
-      });
-      this.debugVals();
-  };
+    const currentQuestion = this.bigDisplay.filter(x => x.questionNum == questionNum);
+    if (currentQuestion.length > 0) {
+      this.currentQuestionDto = currentQuestion[0];
+      if (this.currentQuestionDto.answerType == 1) {
+        this.matchString = 'x' + this.convertStringToAnswer(this.currentQuestionDto.correctAnswer);
+      }
+    }
+    this.debugVals();
+  }
+
+  // loadQuestion(questionId: number): void {
+
+  //   this.currentQuestion = {
+  //     questionNum: questionId,
+  //     status: 0
+  //   };
+  //   this.questionVisible = true;
+  //   this.answerVisible = false;
+  //   this.answerShown = false;
+  //   this.dataService.getRound1BigDisplay(this.yEvent, questionId).pipe(takeUntil(this.destroy$))
+  //     .subscribe(q => {
+  //       this.currentQuestionDto = q;
+  //       if (q.answerType == 1) {
+  //         this.matchString = 'x' + this.convertStringToAnswer(q.correctAnswer);
+  //       }
+  //     });
+  //   this.debugVals();
+  // };
 
   showChoices() {
     this.questionVisible = true;
@@ -168,7 +223,7 @@ export class Round1DisplayQuestionComponent implements OnInit, OnDestroy {
     console.log(this.currentQuestionDto);
   }
 
-  convertStringToAnswer(input: string):string {
+  convertStringToAnswer(input: string): string {
     // shift all ascii bytes up by 16 to convert numbers to letters
     let newS = '';
     for (let i = 0; i < input.length; ++i) {
