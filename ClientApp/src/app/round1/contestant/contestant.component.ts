@@ -8,7 +8,7 @@ import * as signalR from '@microsoft/signalr';
 import { environment } from 'src/environments/environment';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { selectRound1AllQuestionsAndAnswers } from 'src/app/store';
+import { selectRound1AllQuestionsAndAnswers, selectRound1BigDisplay } from 'src/app/store';
 import { round1AllQuestions } from 'src/app/store/round1/round1.actions';
 
 @Component({
@@ -113,7 +113,6 @@ export class Round1ContestantComponent implements OnInit {
       if (data.questionNum == 0) {
         this.hangTight = true;
       }
-
     });
 
     this.store.select(selectRound1AllQuestionsAndAnswers).pipe(takeUntil(this.destroy$)).subscribe(allQandA =>
