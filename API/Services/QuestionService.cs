@@ -19,59 +19,66 @@ namespace GeekOff.Services
             _contextGo = context;
         }
 
-        public async Task<Round1QuestionDisplay> GetRound1Question(string yEvent, int questionNo)
+        public async Task<List<Round1QuestionDisplay>> GetRound1QuestionAsync(string yEvent)
         {
-            var question = await _contextGo.QuestionAns.SingleOrDefaultAsync(q => q.QuestionNo == questionNo
-                                                                            && q.Yevent == yEvent
-                                                                            && q.RoundNo == 1);
+            var questionList = await _contextGo.QuestionAns.Where(q => q.Yevent == yEvent
+                                                            && q.RoundNo == 1).ToListAsync();
 
-            if (question is null)
+            if (questionList is null)
             {
                 return null;
             }
 
-            var questionReturn = new Round1QuestionDisplay()
+            var questionReturn = new List<Round1QuestionDisplay>();
+
+            foreach (var question in questionList)
             {
-                QuestionNum = questionNo,
-                QuestionText = question.TextQuestion,
-                Answers = new List<Round1Answers>(),
-                MediaFile = question.MediaFile,
-                MediaType = question.MediaType,
-                CorrectAnswer = question.CorrectAnswer
-            };
+                var qDisplay = new Round1QuestionDisplay()
+                    {
+                        QuestionNum = question.QuestionNo,
+                        QuestionText = question.TextQuestion,
+                        Answers = new List<Round1Answers>(),
+                        MediaFile = question.MediaFile,
+                        MediaType = question.MediaType,
+                        CorrectAnswer = question.CorrectAnswer
+                    };
 
-            if (question.MultipleChoice == true)
-            {
-                questionReturn.Answers.Add(new Round1Answers()
+                if (question.MultipleChoice == true)
                 {
-                    AnswerId = 1,
-                    Answer = question.TextAnswer,
-                });
+                    qDisplay.Answers.Add(new Round1Answers()
+                    {
+                        AnswerId = 1,
+                        Answer = question.TextAnswer,
+                    });
 
-                questionReturn.Answers.Add(new Round1Answers()
+                    qDisplay.Answers.Add(new Round1Answers()
+                    {
+                        AnswerId = 2,
+                        Answer = question.TextAnswer2,
+                    });
+
+                    qDisplay.Answers.Add(new Round1Answers()
+                    {
+                        AnswerId = 3,
+                        Answer = question.TextAnswer3,
+                    });
+
+                    qDisplay.Answers.Add(new Round1Answers()
+                    {
+                        AnswerId = 4,
+                        Answer = question.TextAnswer4,
+                    });
+
+                    qDisplay.AnswerType = question.MatchQuestion == true ? QuestionAnswerType.Match : QuestionAnswerType.MultipleChoice;
+                }
+
+                if (question.MultipleChoice == false)
                 {
-                    AnswerId = 2,
-                    Answer = question.TextAnswer2,
-                });
+                    qDisplay.AnswerType = QuestionAnswerType.FreeText;
+                }
 
-                questionReturn.Answers.Add(new Round1Answers()
-                {
-                    AnswerId = 3,
-                    Answer = question.TextAnswer3,
-                });
+                questionReturn.Add(qDisplay);
 
-                questionReturn.Answers.Add(new Round1Answers()
-                {
-                    AnswerId = 4,
-                    Answer = question.TextAnswer4,
-                });
-
-                questionReturn.AnswerType = question.MatchQuestion == true ? QuestionAnswerType.Match : QuestionAnswerType.MultipleChoice;
-            }
-
-            if (question.MultipleChoice == false)
-            {
-                questionReturn.AnswerType = QuestionAnswerType.FreeText;
             }
 
             return questionReturn;
