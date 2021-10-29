@@ -7,6 +7,7 @@ import { takeUntil } from 'rxjs/operators';
 import { DataService } from 'src/app/data.service';
 import { round2Answers, round2Display, round2SurveyList } from 'src/app/data/data';
 import { trigger, state, style, animate, transition } from '@angular/animations';
+import { selectCurrentEvent } from 'src/app/store';
 
 export interface displayRow {
   player1: round2Answers;
@@ -45,7 +46,7 @@ export interface displayRow {
 export class Round2displayComponent implements OnInit, OnDestroy {
 
   destroy$: Subject<boolean> = new Subject<boolean>();
-  yEvent = sessionStorage.getItem('event') ?? '';
+  yEvent = '';
   displayStatus = 0;
   teamNumber = 2;
   totalScore = 0;
@@ -58,11 +59,10 @@ export class Round2displayComponent implements OnInit, OnDestroy {
     finalScore: 0
   };
   currentScreen = 'question';
-
   displayRows: displayRow[] = [];
 
 
-  constructor(private dataService: DataService) {
+  constructor(private dataService: DataService, private store: Store) {
   }
 
   ngOnInit(): void {
@@ -98,12 +98,12 @@ export class Round2displayComponent implements OnInit, OnDestroy {
       this.changePage(data);
     });
 
-    this.getDisplayBoard();
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next(true);
-    this.destroy$.unsubscribe();
+    this.store.select(selectCurrentEvent).pipe(takeUntil(this.destroy$)).subscribe(currentEvent => {
+      this.yEvent = currentEvent;
+      if (this.yEvent && this.yEvent.length > 0) {
+        this.getDisplayBoard();
+      }
+    });
   }
 
   getDisplayBoard(): void {
@@ -133,7 +133,7 @@ export class Round2displayComponent implements OnInit, OnDestroy {
 
   revealPlayerOne() {
     for (let s = 1; s <= 10; s++) {
-      this.delay(500).then(()=> this.displayStatus = s);
+      this.delay(500).then(() => this.displayStatus = s);
     }
   }
 
@@ -148,6 +148,11 @@ export class Round2displayComponent implements OnInit, OnDestroy {
   }
 
   async delay(ms: number) {
-    await new Promise<void>(resolve => setTimeout(()=>resolve(), ms)).then(()=>console.log("fired"));
+    await new Promise<void>(resolve => setTimeout(() => resolve(), ms)).then(() => console.log("fired"));
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next(true);
+    this.destroy$.unsubscribe();
   }
 }

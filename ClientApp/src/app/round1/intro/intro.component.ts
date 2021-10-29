@@ -9,6 +9,8 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { DataService } from 'src/app/data.service';
 import * as signalR from '@microsoft/signalr';
 import { environment } from 'src/environments/environment';
+import { Store } from '@ngrx/store';
+import { selectCurrentEvent } from 'src/app/store';
 
 @Component({
   selector: 'app-intro',
@@ -31,11 +33,17 @@ export class Round1IntroComponent implements OnInit, OnDestroy {
   currentScreen: string = "";
   currentItem: number = 0;
   seatBelt: boolean = false;
-  public yevent: string = sessionStorage.getItem('event') ?? '';
+  public yEvent: string = '';
   public teamMasterList: introDto[] = [];
+  destroy$: Subject<boolean> = new Subject<boolean>();
+
   // introVid = new HTMLVideoElement();
   constructor(private route: ActivatedRoute,
-    private router: Router, private matIconRegistry: MatIconRegistry, private domSanitzer: DomSanitizer, private dataService: DataService) {
+    private router: Router,
+    private matIconRegistry: MatIconRegistry,
+    private domSanitzer: DomSanitizer,
+    private dataService: DataService,
+    private store: Store) {
     //this.store.dispatch(round1AllTeams({ yEvent: 'e21' }));
 
     this.matIconRegistry
@@ -43,9 +51,7 @@ export class Round1IntroComponent implements OnInit, OnDestroy {
       .addSvgIcon('geekphone', this.domSanitzer.bypassSecurityTrustResourceUrl('/assets/icon/icon_phone_aa.svg'))
       .addSvgIcon('geekmask', this.domSanitzer.bypassSecurityTrustResourceUrl('/assets/icon/icon_facemask_blue.svg'))
       .addSvgIcon('geekasterisk', this.domSanitzer.bypassSecurityTrustResourceUrl('/assets/icon/icon_gtasterisk.svg'));
-   }
-
-   destroy$: Subject<boolean> = new Subject<boolean>();
+  }
 
   ngOnInit(): void {
     //this.store.select(selectRound1Teams).pipe(takeUntil(this.destroy$)).subscribe(x =>
@@ -58,9 +64,14 @@ export class Round1IntroComponent implements OnInit, OnDestroy {
     });
 
     // grab list of teams
-    this.dataService.getRound1IntroTeamList(this.yevent).pipe(takeUntil(this.destroy$)).subscribe(t =>
-      this.teamMasterList = t
-    );
+    this.store.select(selectCurrentEvent).pipe(takeUntil(this.destroy$)).subscribe(currentEvent => {
+      this.yEvent = currentEvent;
+      if (this.yEvent && this.yEvent.length > 0) {
+        this.dataService.getRound1IntroTeamList(this.yEvent).pipe(takeUntil(this.destroy$)).subscribe(t =>
+          this.teamMasterList = t
+        );
+      }
+    });
 
     const connection = new signalR.HubConnectionBuilder()
       .configureLogging(signalR.LogLevel.Information)
@@ -78,7 +89,7 @@ export class Round1IntroComponent implements OnInit, OnDestroy {
       this.changePage(data);
     });
 
-    connection.on("introSeatbelt", (data:any) => {
+    connection.on("introSeatbelt", (data: any) => {
       this.changeSeatbelt;
     })
 

@@ -11,9 +11,6 @@ import * as internal from 'stream';
 export class DataService {
 
   private REST_API_SERVER = environment.api_url;
-  public currentEvent: string = '';
-
-  public eventLoaded = false;
 
   constructor(private httpClient: HttpClient) { }
 

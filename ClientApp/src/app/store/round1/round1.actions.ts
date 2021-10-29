@@ -1,6 +1,15 @@
 import { createAction, props } from '@ngrx/store';
 import { introDto, round1QADto, round1QDisplay } from '../../data/data';
 
+
+export const currentEvent = createAction(
+  '[Round1] getCurrentEvent');
+
+export const currentEventSuccess = createAction(
+  '[Round1] LoadCurrentEvent',
+  props<{ currentEvent: string }>()
+);
+
 export const round1AllTeams = createAction(
   '[Round1] GetAllTeams',
   props<{ yEvent: string }>()
