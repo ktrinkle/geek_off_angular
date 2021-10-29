@@ -93,6 +93,14 @@ export class Round2controlComponent implements OnInit {
       this.updateScoreboard();
     })
 
+    connection.on("round2ChangeTeam", (data: any) => {
+      console.log(data);
+    })
+
+    connection.on("round2Answer", (data: any) => {})
+
+    connection.on("round2AnswerShow", (data: any) => {})
+
     this.getSurveyQuestions(this.yevent);
     this.updateScoreboard();
 
@@ -211,20 +219,19 @@ export class Round2controlComponent implements OnInit {
   }
 
   showFirstAnswers(form: FormGroup) {
-    this._dataService.getRound2FirstPlayer(this.yevent, this.newEventForm.get("teamNum")?.value)
+    if (this.newEventForm.get("playerNum")?.value == "2")
+    {
+      this._dataService.getRound2FirstPlayer(this.yevent, this.newEventForm.get("teamNum")?.value)
       .subscribe((data: round2Answers[]) => this.firstPlayerAnswers = data);
-    console.log("FPA: " + this.firstPlayerAnswers);
+      console.log("FPA: " + this.firstPlayerAnswers);
+    }
   }
 
   changeTeamPlayer() {
-    var teamNum = this.newEventForm.get("teamNum")?.value;
+    var teamNum = this.newEventForm.get("playerNum")?.value;
     console.log ('Got team number ' + teamNum);
     this._dataService.changeRound2Team(teamNum);
-
-    if (this.newEventForm.get("teamNum")?.value == "2")
-    {
-      this.showFirstAnswers(this.newEventForm);
-    }
+    this.newEventForm.patchValue({"playerNum":"1"});
   }
 
   openDialog(): void {
