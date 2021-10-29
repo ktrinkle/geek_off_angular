@@ -79,7 +79,9 @@ export class AppComponent {
       });
   }
 
-  login() {
+  async login() {
+    await this.authService.instance.handleRedirectPromise();
+
     if (this.msalGuardConfig.authRequest){
       console.log('loginRedirect with wait');
       this.authService.loginRedirect({...this.msalGuardConfig.authRequest} as RedirectRequest);
@@ -95,6 +97,7 @@ export class AppComponent {
 
   setLoginDisplay() {
     console.log('setLoginDisplay');
+
     if (this.authService.instance.getAllAccounts().length > 0)
     {
       this.getAdInfo();
