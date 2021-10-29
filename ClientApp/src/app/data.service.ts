@@ -52,8 +52,8 @@ export class DataService {
     return this.httpClient.get(uri);
   }
 
-  public getRound1BigDisplay(yEvent: string, questionId: number): Observable<any> {
-    var uri = this.REST_API_SERVER + '/api/round1/bigDisplay/' + encodeURIComponent(yEvent) + '/' + encodeURIComponent(questionId) + '';
+  public getRound1BigDisplay(yEvent: string): Observable<any> {
+    var uri = this.REST_API_SERVER + '/api/round1/bigDisplay/' + encodeURIComponent(yEvent) + '';
     return this.httpClient.get(uri);
   }
 
