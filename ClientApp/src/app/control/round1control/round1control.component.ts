@@ -71,7 +71,7 @@ export class Round1ControlComponent implements OnInit {
     this.consolation.load();
 
     const connection = new signalR.HubConnectionBuilder()
-      .configureLogging(signalR.LogLevel.Information)
+      .configureLogging(signalR.LogLevel.Debug)
       .withUrl(environment.api_url + '/events')
       .withAutomaticReconnect()
       .build();
@@ -122,6 +122,11 @@ export class Round1ControlComponent implements OnInit {
   });
   }
 
+  resyncStatus()
+  {
+    this.dataService.changeRound1QuestionStatus(this.yEvent, this.selectedQuestion, this.status).subscribe();
+  }
+
   sendClientMessage(status: number)
   {
     if (status == 0)
@@ -170,6 +175,9 @@ export class Round1ControlComponent implements OnInit {
   {
     // brute force for now, this should become more elegant
     this.selectedQuestion = this.currentQuestion + 1;
+    if (!this.possibleAnswers.find(p => p.questionNum == this.answerForm.value.selectedQuestion)) {
+      this.selectedQuestion = 1;
+    }
     this.currentQuestion = this.selectedQuestion;
     this.answerForm.patchValue({selectedQuestion: this.selectedQuestion});
     this.sendClientMessage(status);
