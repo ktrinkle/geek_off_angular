@@ -1,19 +1,20 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { Subject } from 'rxjs';
+import { Store } from '@ngrx/store';
 import * as signalR from '@microsoft/signalr';
 import { round23Scores } from 'src/app/data/data';
 import { environment } from 'src/environments/environment';
 import { DataService } from '../../data.service';
+import { selectCurrentEvent } from 'src/app/store';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-round2-scoreboard',
   templateUrl: './round2scoreboard.component.html',
   styleUrls: ['./round2scoreboard.component.scss']
 })
-export class Round2scoreboardComponent implements OnInit {
-
-  constructor(private _dataService: DataService) { }
-
-  yEvent = sessionStorage.getItem('event') ?? '';
+export class Round2scoreboardComponent implements OnInit, OnDestroy {
+  yEvent = '';
   public roundNo: number = 2;
   public scores: round23Scores[] = [];
   public colors: string[] = [
@@ -24,9 +25,19 @@ export class Round2scoreboardComponent implements OnInit {
     'sandybrown',
     'plum',
   ]
+  destroy$: Subject<boolean> = new Subject<boolean>();
+
+  constructor(private _dataService: DataService, private store: Store) { }
 
   ngOnInit(): void {
-    this.getScoreboardInfo(this.yEvent);
+
+    this.store.select(selectCurrentEvent).pipe(takeUntil(this.destroy$)).subscribe(currentEvent => {
+      this.yEvent = currentEvent;
+      if (this.yEvent && this.yEvent.length > 0) {
+        this.getScoreboardInfo(this.yEvent);
+      }
+    });
+
     console.log("End of Init");
 
     const connection = new signalR.HubConnectionBuilder()
@@ -48,7 +59,7 @@ export class Round2scoreboardComponent implements OnInit {
 
   public getScoreboardInfo(yevent: string) {
     this._dataService.getRound2Scores(yevent).subscribe((data: round23Scores[]) => {
-      this.scores = data.sort((a, b) => a.teamScore? - (b.teamScore || 0) : 0);
+      this.scores = data.sort((a, b) => a.teamScore ? - (b.teamScore || 0) : 0);
 
       this.scores.forEach((score, index) => {
         score.color = this.colors[index];
@@ -56,5 +67,10 @@ export class Round2scoreboardComponent implements OnInit {
 
       console.log(this.scores);
     });
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next(true);
+    this.destroy$.unsubscribe();
   }
 }

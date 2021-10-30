@@ -10,8 +10,3 @@ export const round2AllSurveySuccess = createAction(
   '[Round2] LoadAllSurvey',
   props<{ allSurvey: round2SurveyList[] }>()
 );
-
-// export const round2AllSurveyFailure = createAction(
-//   '[Round2] FailAllSurvey',
-//   props<{ error: any }>()
-// );

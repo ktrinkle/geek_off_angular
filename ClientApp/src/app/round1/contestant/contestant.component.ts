@@ -6,9 +6,9 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import * as signalR from '@microsoft/signalr';
 import { environment } from 'src/environments/environment';
-import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { selectRound1AllQuestionsAndAnswers, selectRound1BigDisplay } from 'src/app/store';
+import { selectCurrentEvent, selectRound1AllQuestionsAndAnswers } from 'src/app/store';
 import { round1AllQuestions } from 'src/app/store/round1/round1.actions';
 
 @Component({
@@ -31,7 +31,7 @@ export class Round1ContestantComponent implements OnInit {
   };
   allQuestionsAndAnwers: round1QADto[] = [];
   hideTime: Date = new Date;
-  yEvent = sessionStorage.getItem('event') ?? '';
+  yEvent = '';
   public currentQuestionDto: round1QADto = {
     questionNum: 0,
     questionText: '',
@@ -56,7 +56,16 @@ export class Round1ContestantComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.store.dispatch(round1AllQuestions({ yEvent: this.yEvent }));
+    this.store.select(selectCurrentEvent).pipe(takeUntil(this.destroy$)).subscribe(currentEvent => {
+      this.yEvent = currentEvent;
+      if (this.yEvent && this.yEvent.length > 0) {
+        this.store.dispatch(round1AllQuestions({ yEvent: this.yEvent }));
+      }
+    });
+
+    this.store.select(selectRound1AllQuestionsAndAnswers).pipe(takeUntil(this.destroy$)).subscribe(allQandA =>
+      this.allQuestionsAndAnwers = allQandA as round1QADto[]
+    );
 
     const connection = new signalR.HubConnectionBuilder()
       .configureLogging(signalR.LogLevel.Information)
@@ -71,26 +80,6 @@ export class Round1ContestantComponent implements OnInit {
       return console.error(err.toString());
     });
 
-    // connection.on("round1question", (data: any) => {
-    //   this.loadQuestion(data, false);
-    // });
-
-    // connection.on("round1ShowAnswerChoices", (data: any) => {
-    //   this.showChoices();
-    // });
-
-    // connection.on("round1OpenAnswer", (data: any) => {
-    //   this.openForm();
-    // });
-
-    // connection.on("round1CloseAnswer", (data: any) => {
-    //   this.closeForm();
-    // });
-
-    // currentQuestionDto {
-    //   questionNum: number,
-    //   status: number
-    // }
     connection.on("round1UpdateContestant", (data: currentQuestionDto) => {
       this.currentQuestion = data;
       this.getCurrentQuestion(data.questionNum);
@@ -114,44 +103,6 @@ export class Round1ContestantComponent implements OnInit {
         this.hangTight = true;
       }
     });
-
-    this.store.select(selectRound1AllQuestionsAndAnswers).pipe(takeUntil(this.destroy$)).subscribe(allQandA =>
-      this.allQuestionsAndAnwers = allQandA as round1QADto[]
-    );
-
-    // set up our internal state
-    // this is not working as we desire on reloads of the component, need to review
-
-    // this.dataService.getCurrentQuestion(this.yEvent).subscribe({
-    //   next: (initialQ => {
-    //     this.currentQuestion = initialQ;
-    //   }), complete: () => {
-    //     if (this.currentQuestion.questionNum > 0) {
-    //       this.loadQuestion(this.currentQuestion.questionNum, true);
-
-    //       console.log(this.currentQuestion);
-    //       if (this.currentQuestion.questionNum > 0 && this.currentQuestion.questionNum < 120) {
-    //         // we have already loaded in the init so we have our state here. In theory.
-    //         if (this.currentQuestion.status == 3) {
-    //           this.closeForm();
-    //         }
-
-    //         if (this.currentQuestion.status == 2) {
-    //           this.openForm();
-    //         }
-
-    //         if (this.currentQuestion.status == 1) {
-    //           this.showChoices();
-    //         }
-    //       };
-
-    //       if (this.currentQuestion.questionNum == 0) {
-    //         this.hangTight = true;
-    //       }
-
-    //     };
-    //   }
-    // });
   }
 
   getCurrentQuestion(questionNum: number) {
@@ -167,32 +118,6 @@ export class Round1ContestantComponent implements OnInit {
       this.currentQuestionDto = currentQuestion[0];
     }
   }
-
-  // loadQuestion(questionId: number, loadState: boolean): void {
-  //   this.currentQuestion = {
-  //     questionNum: questionId,
-  //     status: loadState ? 0 : this.currentQuestion.status
-  //   };
-  //   this.hangTight = true;
-  //   this.questionVisible = false;
-  //   this.answerSubmitted = false;
-  //   this.answerReturn = '';
-
-  //   this.dataService.getRound1QuestionAnswer(this.yEvent, questionId).pipe(takeUntil(this.destroy$))
-  //     .subscribe(q => {
-  //       this.resetForm(); // confirm this does what we expect.
-  //       this.currentQuestionDto = q;
-  //       this.answerForm.patchValue({
-  //         questionNum: q.questionId
-  //       });
-
-  //       if (q.questionAnswerType < 2) {
-  //         this.parseDtoToForm();
-  //       }
-  //       console.log(this.answerForm);
-  //     });
-  //   this.debugVals();
-  // };
 
   showChoices() {
     this.hangTight = false;

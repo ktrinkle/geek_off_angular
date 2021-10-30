@@ -1,9 +1,11 @@
 import { round2SurveyList } from './../../data/data';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { DataService } from '../../data.service';
-// import { round2SurveyQuestions, round2Answers } from '../../data/data';
-import { round2SurveyQuestions} from '../../data/data';
-import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
+import { Store } from '@ngrx/store';
+import { Subject } from 'rxjs';
+import { selectCurrentEvent } from 'src/app/store';
+import { takeUntil } from 'rxjs/operators';
+
 
 @Component({
   selector: 'app-round2host',
@@ -11,22 +13,29 @@ import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms'
   styleUrls: ['./round2host.component.scss']
 })
 
+export class Round2hostComponent implements OnInit, OnDestroy {
 
-export class Round2hostComponent implements OnInit {
-
-  public yevent: string = sessionStorage.getItem('event') ?? '';
+  public yEvent: string = '';
   public surveyMasterList: round2SurveyList[] = [];
+  destroy$: Subject<boolean> = new Subject<boolean>();
 
-  constructor(private _dataService: DataService,
-    private formBuilder: FormBuilder) { }
+  constructor(private _dataService: DataService, private store: Store) { }
 
 
   ngOnInit(): void {
-  // Grabs all the questions.
-    this._dataService.getAllRound2SurveyQuestions(this.yevent).subscribe((data: round2SurveyList[]) => {
-      this.surveyMasterList = data;
+    // Grabs all the questions.
+    this.store.select(selectCurrentEvent).pipe(takeUntil(this.destroy$)).subscribe(currentEvent => {
+      this.yEvent = currentEvent;
+      if (this.yEvent && this.yEvent.length > 0) {
+        this._dataService.getAllRound2SurveyQuestions(this.yEvent).subscribe((data: round2SurveyList[]) => {
+          this.surveyMasterList = data;
+        });
+      }
     });
+  }
 
-
+  ngOnDestroy() {
+    this.destroy$.next(true);
+    this.destroy$.unsubscribe();
   }
 }

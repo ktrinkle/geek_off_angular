@@ -8,7 +8,7 @@ import * as signalR from '@microsoft/signalr';
 import { environment } from 'src/environments/environment';
 import { currentQuestionDto, round1QDisplay } from 'src/app/data/data';
 import { Store } from '@ngrx/store';
-import { selectRound1BigDisplay } from 'src/app/store';
+import { selectCurrentEvent, selectRound1BigDisplay } from 'src/app/store';
 import { round1BigDisplay } from 'src/app/store/round1/round1.actions';
 
 @Component({
@@ -42,7 +42,7 @@ export class Round1DisplayQuestionComponent implements OnInit, OnDestroy {
     questionNum: 0,
     status: 0
   };
-  yEvent = sessionStorage.getItem('event') ?? '';
+  yEvent: string = '';
   public currentQuestionDto: round1QDisplay = {
     questionNum: 0,
     questionText: '',
@@ -55,14 +55,18 @@ export class Round1DisplayQuestionComponent implements OnInit, OnDestroy {
   questionMatch: number = 1;
   questionMulti: number = 0;
   questionText: number = 2;
-
   destroy$: Subject<boolean> = new Subject<boolean>();
 
   constructor(private route: ActivatedRoute, private router: Router, private dataService: DataService, private store: Store) { }
 
   ngOnInit(): void {
 
-    this.store.dispatch(round1BigDisplay({ yEvent: this.yEvent }));
+    this.store.select(selectCurrentEvent).pipe(takeUntil(this.destroy$)).subscribe(currentEvent => {
+      this.yEvent = currentEvent;
+      if (this.yEvent && this.yEvent.length > 0) {
+        this.store.dispatch(round1BigDisplay({ yEvent: this.yEvent }));
+      }
+    });
 
     this.store.select(selectRound1BigDisplay).pipe(takeUntil(this.destroy$)).subscribe(bigDisplay =>
       this.bigDisplay = bigDisplay as round1QDisplay[]
@@ -103,28 +107,6 @@ export class Round1DisplayQuestionComponent implements OnInit, OnDestroy {
     connection.on("round2ChangeTeam", (data: any) => {
       this.router.navigate(['/round2/display']);
     });
-
-    // set up our internal state
-    // this.dataService.getCurrentQuestion(this.yEvent).subscribe({
-    //   next: (initialQ => {
-    //     this.currentQuestion = initialQ;
-    //   }), complete: () => {
-    //     if (this.currentQuestion.questionNum > 0) {
-    //       this.loadQuestion(this.currentQuestion.questionNum);
-
-    //       if (this.currentQuestion.questionNum > 0 && this.currentQuestion.questionNum < 120) {
-    //         // we have already loaded in the init so we have our state here. In theory.
-    //         if (this.currentQuestion.status == 3) {
-    //           this.showAnswer();
-    //         }
-
-    //         if (this.currentQuestion.status == 1) {
-    //           this.showChoices();
-    //         }
-    //       };
-    //     };
-    //   }
-    // });
   }
 
   loadCurrentQuestion(questionNum: number) {
@@ -145,25 +127,6 @@ export class Round1DisplayQuestionComponent implements OnInit, OnDestroy {
     }
     this.debugVals();
   }
-
-  // loadQuestion(questionId: number): void {
-
-  //   this.currentQuestion = {
-  //     questionNum: questionId,
-  //     status: 0
-  //   };
-  //   this.questionVisible = true;
-  //   this.answerVisible = false;
-  //   this.answerShown = false;
-  //   this.dataService.getRound1BigDisplay(this.yEvent, questionId).pipe(takeUntil(this.destroy$))
-  //     .subscribe(q => {
-  //       this.currentQuestionDto = q;
-  //       if (q.answerType == 1) {
-  //         this.matchString = 'x' + this.convertStringToAnswer(q.correctAnswer);
-  //       }
-  //     });
-  //   this.debugVals();
-  // };
 
   showChoices() {
     this.questionVisible = true;
@@ -209,7 +172,8 @@ export class Round1DisplayQuestionComponent implements OnInit, OnDestroy {
     return newS;
   }
 
-  ngOnDestroy(): void {
+  ngOnDestroy() {
+    this.destroy$.next(true);
+    this.destroy$.unsubscribe();
   }
-
 }

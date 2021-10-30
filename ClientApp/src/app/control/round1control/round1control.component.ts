@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { DataService } from 'src/app/data.service';
 import { round1QuestionControlDto, round1Scores, round1EnteredAnswers } from 'src/app/data/data';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
@@ -7,26 +7,28 @@ import { takeUntil } from 'rxjs/operators';
 import * as signalR from '@microsoft/signalr';
 import { environment } from 'src/environments/environment';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
-
+import { selectCurrentEvent } from 'src/app/store';
+import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-round1',
   templateUrl: './round1control.component.html',
   styleUrls: ['./round1control.component.scss']
 })
-export class Round1ControlComponent implements OnInit {
+export class Round1ControlComponent implements OnInit, OnDestroy {
 
   currentQuestion: number = 0;
   selectedQuestion: number = 0;
   possibleAnswers: round1QuestionControlDto[] = [];
   teamAnswers: round1EnteredAnswers[] = [];
   scoreboard: round1Scores[] = [];
-  yEvent = sessionStorage.getItem('event') ?? '';
-  statusEnum:string[] = [''];
+  yEvent: string = '';
+  statusEnum: string[] = [''];
   status: number = 0;
-  scoreResponse:string = '';
+  scoreResponse: string = '';
   finalizeState: string = 'Finalize round';
   statusText = '';
+  destroy$: Subject<boolean> = new Subject<boolean>();
 
   // think cues
   think1 = new Audio('https://geekoff2021static.blob.core.windows.net/snd/think1.mp3');
@@ -43,22 +45,30 @@ export class Round1ControlComponent implements OnInit {
     selectedQuestion: new FormControl(this.currentQuestion)
   });
 
-  constructor(private dataService: DataService, private router:Router, private formBuilder: FormBuilder) {
-    this.dataService.getAllRound1Questions(this.yEvent).subscribe({next: (q => {
-      this.possibleAnswers = q;
-    }),
-    complete: () => {
-      this.possibleAnswers.sort(a => a.questionNum);
-      this.dataService.getCurrentQuestion(this.yEvent).subscribe(c => {
-        this.status = c.status;
-        this.currentQuestion = c.questionNum;
-        this.selectedQuestion = c.questionNum;
-        this.answerForm.patchValue({selectedQuestion: this.selectedQuestion});
-        this.currentFilterQuestion = this.possibleAnswers.find(p => p.questionNum == c.questionNum);
-      });
-      this.updateScoreboard();
-      this.loadTeamAnswers();
-    }});
+  constructor(private dataService: DataService, private router: Router, private formBuilder: FormBuilder, private store: Store) {
+
+    this.store.select(selectCurrentEvent).pipe(takeUntil(this.destroy$)).subscribe(currentEvent => {
+      this.yEvent = currentEvent;
+      if (this.yEvent && this.yEvent.length > 0) {
+        this.dataService.getAllRound1Questions(this.yEvent).subscribe({
+          next: (q => {
+            this.possibleAnswers = q;
+          }),
+          complete: () => {
+            this.possibleAnswers.sort(a => a.questionNum);
+            this.dataService.getCurrentQuestion(this.yEvent).subscribe(c => {
+              this.status = c.status;
+              this.currentQuestion = c.questionNum;
+              this.selectedQuestion = c.questionNum;
+              this.answerForm.patchValue({ selectedQuestion: this.selectedQuestion });
+              this.currentFilterQuestion = this.possibleAnswers.find(p => p.questionNum == c.questionNum);
+            });
+            this.updateScoreboard();
+            this.loadTeamAnswers();
+          }
+        });
+      }
+    });
   }
 
   ngOnInit(): void {
@@ -93,8 +103,7 @@ export class Round1ControlComponent implements OnInit {
     // connection.on("round1CloseAnswer", (data: any) => {});
   }
 
-  loadTeamAnswers()
-  {
+  loadTeamAnswers() {
     this.dataService.getAllEnteredAnswers(this.yEvent, this.currentQuestion).subscribe(a => {
       this.teamAnswers = a;
 
@@ -104,33 +113,27 @@ export class Round1ControlComponent implements OnInit {
       });
 
       a.forEach((ans: round1EnteredAnswers) => {
-        // console.log(a);
         this.answerForm.setControl(ans.teamNum.toString(), new FormControl(ans.answerStatus));
       });
-
-      // console.log(this.answerForm);
     });
   }
 
-  updateScoreboard()
-  {
-    this.dataService.getRound1Scores(this.yEvent).subscribe({next: (a => {
-      this.scoreboard = a;
-    }), complete: () => {
-      this.scoreboard.sort((a,b) => 0 - ((a.teamScore ?? 0) > (b.teamScore ?? 0) ? 1 : -1));
-    }
-  });
+  updateScoreboard() {
+    this.dataService.getRound1Scores(this.yEvent).subscribe({
+      next: (a => {
+        this.scoreboard = a;
+      }), complete: () => {
+        this.scoreboard.sort((a, b) => 0 - ((a.teamScore ?? 0) > (b.teamScore ?? 0) ? 1 : -1));
+      }
+    });
   }
 
-  resyncStatus()
-  {
+  resyncStatus() {
     this.dataService.changeRound1QuestionStatus(this.yEvent, this.selectedQuestion, this.status).subscribe();
   }
 
-  sendClientMessage(status: number)
-  {
-    if (status == 0)
-    {
+  sendClientMessage(status: number) {
+    if (status == 0) {
       this.selectedQuestion = this.answerForm.value.selectedQuestion;
       this.currentFilterQuestion = this.possibleAnswers.find(p => p.questionNum == this.answerForm.value.selectedQuestion);
       this.scoreResponse = '';
@@ -143,27 +146,24 @@ export class Round1ControlComponent implements OnInit {
     console.log(this.yEvent);
     console.log(this.selectedQuestion);
     console.log(status);
-    this.dataService.changeRound1QuestionStatus(this.yEvent, this.selectedQuestion, status).subscribe({next: (c => {
-      this.status = c.status;
-      this.currentQuestion = c.questionNum;
-      this.selectedQuestion = c.questionNum;
+    this.dataService.changeRound1QuestionStatus(this.yEvent, this.selectedQuestion, status).subscribe({
+      next: (c => {
+        this.status = c.status;
+        this.currentQuestion = c.questionNum;
+        this.selectedQuestion = c.questionNum;
 
-      if (status == 0)
-      {
-        this.statusText = 'Question displayed';
-      }
-      if (status == 1)
-      {
-        this.statusText = 'Answers displayed';
-      }
-      if (status == 2)
-      {
-        this.statusText = 'Answers open';
-      }
-      if (status == 3)
-      {
-        this.statusText = 'Correct answer displayed';
-      }
+        if (status == 0) {
+          this.statusText = 'Question displayed';
+        }
+        if (status == 1) {
+          this.statusText = 'Answers displayed';
+        }
+        if (status == 2) {
+          this.statusText = 'Answers open';
+        }
+        if (status == 3) {
+          this.statusText = 'Correct answer displayed';
+        }
       }), complete: () => {
         // drops old answers
         this.loadTeamAnswers();
@@ -171,60 +171,52 @@ export class Round1ControlComponent implements OnInit {
     });
   }
 
-  sendNextClientMessage(status: number)
-  {
+  sendNextClientMessage(status: number) {
     // brute force for now, this should become more elegant
     this.selectedQuestion = this.currentQuestion + 1;
     if (!this.possibleAnswers.find(p => p.questionNum == this.answerForm.value.selectedQuestion)) {
       this.selectedQuestion = 1;
     }
     this.currentQuestion = this.selectedQuestion;
-    this.answerForm.patchValue({selectedQuestion: this.selectedQuestion});
+    this.answerForm.patchValue({ selectedQuestion: this.selectedQuestion });
     this.sendClientMessage(status);
   }
 
-  updateRemoteScoreboard()
-  {
+  updateRemoteScoreboard() {
     this.dataService.updateScoreboardDisplay();
     // this actually fires twice
     this.updateScoreboard();
   }
 
-  autoScore()
-  {
+  autoScore() {
     this.dataService.round1AutoScore(this.yEvent, this.currentQuestion).subscribe(as => {
       this.scoreResponse = as;
     });
   }
 
-  scoreManual(team: number)
-  {
+  scoreManual(team: number) {
     this.dataService.round1ManualScore(this.yEvent, this.currentQuestion, team);
   }
 
-  finalizeRound()
-  {
+  finalizeRound() {
     this.dataService.finalizeRound1(this.yEvent).subscribe(data => {
       this.finalizeState = data;
     });
   }
 
-  goToRound2()
-  {
+  goToRound2() {
     this.consolation.pause();
     this.router.navigate(['/control/round2']);
   }
 
-  playThink(cue: number)
-  {
+  playThink(cue: number) {
     switch (cue) {
       case 1:
         if (!this.think1.paused && this.think1.currentTime > 0) {
           this.think1.pause();
           this.think1.currentTime = 0;
         }
-        else
-        {
+        else {
           this.think1.currentTime = 0;
           this.think1.play();
         };
@@ -234,8 +226,7 @@ export class Round1ControlComponent implements OnInit {
           this.think2.pause();
           this.think2.currentTime = 0;
         }
-        else
-        {
+        else {
           this.think2.currentTime = 0;
           this.think2.play();
         };
@@ -245,8 +236,7 @@ export class Round1ControlComponent implements OnInit {
           this.think3.pause();
           this.think3.currentTime = 0;
         }
-        else
-        {
+        else {
           this.think3.currentTime = 0;
           this.think3.play();
         };
@@ -256,8 +246,7 @@ export class Round1ControlComponent implements OnInit {
           this.think4.pause();
           this.think4.currentTime = 0;
         }
-        else
-        {
+        else {
           this.think4.currentTime = 0;
           this.think4.play();
         };
@@ -267,8 +256,7 @@ export class Round1ControlComponent implements OnInit {
           this.think5.pause();
           this.think5.currentTime = 0;
         }
-        else
-        {
+        else {
           this.think5.currentTime = 0;
           this.think5.play();
         };
@@ -278,8 +266,7 @@ export class Round1ControlComponent implements OnInit {
           this.think6.pause();
           this.think6.currentTime = 0;
         }
-        else
-        {
+        else {
           this.think6.currentTime = 0;
           this.think6.play();
         };
@@ -287,12 +274,16 @@ export class Round1ControlComponent implements OnInit {
     }
   }
 
-  changeScreen(name: string){
+  changeScreen(name: string) {
     this.dataService.changeIntroPage(name);
-    if(name == 'prize1')
-    {
+    if (name == 'prize1') {
       this.consolation.play();
     }
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next(true);
+    this.destroy$.unsubscribe();
   }
 
 }

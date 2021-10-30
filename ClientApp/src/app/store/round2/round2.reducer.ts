@@ -17,10 +17,6 @@ export const initialState: State = {
 export const round2Reducer = createReducer(
   initialState,
 
-  // on(round2AllSurvey, (state) => ({
-  //   ...state,
-  // })),
-
   on(round2AllSurveySuccess, (state, { allSurvey }) => ({
     ...state,
     surveyList: allSurvey
