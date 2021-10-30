@@ -236,10 +236,14 @@ export class Round2controlComponent implements OnInit, OnDestroy {
   }
 
   changeTeamPlayer() {
-    var teamNum = this.newEventForm.get("playerNum")?.value;
+    var teamNum = this.newEventForm.get("teamNum")?.value;
     console.log('Got team number ' + teamNum);
-    this._dataService.changeRound2Team(teamNum);
-    this.newEventForm.patchValue({ "playerNum": "1" });
+
+    if (teamNum != '--')
+    {
+      this._dataService.changeRound2Team(teamNum);
+      this.newEventForm.patchValue({ "playerNum": "1" });
+    }
   }
 
   openDialog(): void {

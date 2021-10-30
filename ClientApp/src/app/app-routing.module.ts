@@ -156,13 +156,13 @@ const routes: Routes = [
   },
   // these do not need MSAL guards and should be open to all
   {
-    path: 'home',
+    path: '',
     component: HomeComponent,
     pathMatch: 'full'
   },
   {
-    path: '',
-    redirectTo: 'home',
+    path: 'home',
+    component: HomeComponent,
     pathMatch: 'full'
   },
 ];
