@@ -79,6 +79,8 @@ export class Round2displayComponent implements OnInit, OnDestroy {
     });
 
     connection.on("round2ChangeTeam", (data: any) => {
+      console.log('round2ChangeTeam');
+      console.log(data);
       this.changeTeam(data);
     });
 
