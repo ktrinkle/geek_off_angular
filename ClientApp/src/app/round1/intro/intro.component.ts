@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, ElementRef, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { trigger, state, style, animate, transition } from '@angular/animations';
-import { introDto } from '../../data/data';
+import { introDto, currentQuestionDto } from '../../data/data';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { MatIconRegistry } from '@angular/material/icon';
@@ -99,6 +99,10 @@ export class Round1IntroComponent implements OnInit, OnDestroy {
 
     connection.on("round1Animate", (data: any) => {
       this.changeText();
+    });
+
+    connection.on("round1UpdateContestant", (data: currentQuestionDto) => {
+      this.goToQuestions(data.questionNum);
     });
 
   }

@@ -102,7 +102,7 @@ export class PregameComponent implements OnInit, OnDestroy {
   }
 
   moveToRound1() {
-    this.dataService.changeRound1QuestionStatus(this.yEvent, 1, 0).subscribe(c => { });
+    this.dataService.changeRound1QuestionStatus(this.yEvent, 1, 0).subscribe(_ => {});
     this.router.navigate(['/control/round1']);
   }
 
