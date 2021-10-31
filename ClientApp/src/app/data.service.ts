@@ -205,12 +205,12 @@ export class DataService {
   }
 
   public getAllRound3Questions(yevent: string): Observable<any> {
-    var uri = this.REST_API_SERVER + '/api/allQuestions/' + encodeURIComponent(yevent) + '';
+    var uri = this.REST_API_SERVER + '/api/round3/allQuestions/' + encodeURIComponent(yevent) + '';
     return this.httpClient.get(uri);
   }
 
   public getAllRound3Teams(yevent: string): Observable<any> {
-    var uri = this.REST_API_SERVER + '/api/allTeams/' + encodeURIComponent(yevent) + '';
+    var uri = this.REST_API_SERVER + '/api/round3/allTeams/' + encodeURIComponent(yevent) + '';
     return this.httpClient.get(uri);
   }
 
