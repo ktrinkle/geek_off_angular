@@ -1,6 +1,6 @@
 <div class="geekofflogo">
   <div *ngIf="currentScreen == 'question'">
-    <div class="questionBox" *ngIf="questionVisible" [@fadeIn]>
+    <div class="questionBox {{longText}}" *ngIf="questionVisible" [@fadeIn]>
         <div class="topright">{{currentQuestion.questionNum}}</div>
         {{currentQuestionDto.questionText}}
     </div>
@@ -10,7 +10,7 @@
             <div *ngFor="let question of currentQuestionDto.answers" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%" style="padding: 10px;">
                 <span *ngIf="!answerShown" class="answer">{{question.answer}}</span>
                 <span *ngIf="answerShown && question.answer != currentQuestionDto.correctAnswer" class="wrongAnswer" [@fadeIn]>{{question.answer}}</span>
-                <span class="correctAnswer" *ngIf="answerShown && question.answer == currentQuestionDto.correctAnswer" [@fadeIn]>
+                <span class="correctAnswer" *ngIf="answerShown && question.answer == currentQuestionDto.correctAnswer" [@fadeIn] class="answer">
           {{currentQuestionDto.correctAnswer}}
         </span>
             </div>

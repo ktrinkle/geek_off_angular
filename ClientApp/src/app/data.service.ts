@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
 import { environment } from './../environments/environment';
-import { round2SurveyList, round2SubmitAnswer } from './data/data';
+import { round2SurveyList, round2SubmitAnswer, round3AnswerDto, round3QuestionDto } from './data/data';
 import { Observable } from 'rxjs';
 import * as internal from 'stream';
 
@@ -197,4 +197,36 @@ export class DataService {
     var uri = this.REST_API_SERVER + '/api/round1/updateState/' + encodeURIComponent(questionNum) + '/' + encodeURIComponent(status) + '';
     this.httpClient.put(uri, {}, { responseType: 'json' }).toPromise();
   }
+
+  public updateDollarAmount(yevent: string, teamNum: number, dollarAmount: number): Observable<any> {
+    var params = new HttpParams().set('dollarAmount', dollarAmount);
+    var uri = this.REST_API_SERVER + '/api/eventstatus/dollarAmount/' + encodeURIComponent(yevent) + '/' + encodeURIComponent(teamNum) + '';
+    return this.httpClient.put(uri, {}, { params: params, responseType: 'text' });
+  }
+
+  public getAllRound3Questions(yevent: string): Observable<any> {
+    var uri = this.REST_API_SERVER + '/api/allQuestions/' + encodeURIComponent(yevent) + '';
+    return this.httpClient.get(uri);
+  }
+
+  public getAllRound3Teams(yevent: string): Observable<any> {
+    var uri = this.REST_API_SERVER + '/api/allTeams/' + encodeURIComponent(yevent) + '';
+    return this.httpClient.get(uri);
+  }
+
+  public getRound3Scores(yEvent: string): Observable<any> {
+    var uri = this.REST_API_SERVER + '/api/round3/scoreboard/' + encodeURIComponent(yEvent);
+    return this.httpClient.get(uri);
+  }
+
+  public async updateScoreboardRound3(): Promise<void> {
+    var uri = this.REST_API_SERVER + '/api/round3/updateScoreboard';
+    await this.httpClient.get(uri).toPromise();
+  }
+
+  public finalizeRound3(yEvent: string): Observable<any> {
+    var uri = this.REST_API_SERVER + '/api/round3/finalize/' + encodeURIComponent(yEvent) + '';
+    return this.httpClient.put(uri, {}, { responseType: 'text' });
+  }
+
 }

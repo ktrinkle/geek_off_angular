@@ -365,5 +365,101 @@ namespace GeekOff.Services
 
             return "The dollar amount is successfully updated.";
         }
+
+        public async Task<string> ResetEvent(string yEvent)
+        {
+            if (yEvent is null)
+            {
+                return "No event was submitted to clean.";
+            }
+
+            // set up stuff to remove
+            var currentQuestion = new CurrentQuestion() {
+                YEvent = yEvent
+            };
+
+            var roundResult = new Roundresult() {
+                Yevent = yEvent
+            };
+
+            var score = new Scoring(){
+                Yevent = yEvent
+            };
+
+            var userAnswer = new UserAnswer() {
+                Yevent = yEvent
+            };
+
+            _contextGo.CurrentQuestion.Remove(currentQuestion);
+            _contextGo.Roundresult.Remove(roundResult);
+            _contextGo.Scoring.Remove(score);
+            _contextGo.UserAnswer.Remove(userAnswer);
+
+            await _contextGo.SaveChangesAsync();
+
+            return $"Event {yEvent} results were removed from the system.";
+
+        }
+
+        public async Task<string> SetRound3Answer(List<Round3AnswerDto> round3Answers)
+        {
+            if (round3Answers is null)
+            {
+                return "No answers were submitted.";
+            }
+
+            var dbAnswer = new List<Scoring>();
+
+            foreach(var submitAnswer in round3Answers)
+            {
+                var scoreRecord = new Scoring()
+                {
+                    Yevent = submitAnswer.YEvent,
+                    TeamNo = submitAnswer.TeamNum,
+                    RoundNo = 3,
+                    QuestionNo = submitAnswer.QuestionNum,
+                    PointAmt = submitAnswer.Score,
+                    Round3neg = submitAnswer.Round3neg,
+                    Updatetime = DateTime.UtcNow
+                };
+
+                dbAnswer.Add(scoreRecord);
+            }
+
+            await _contextGo.Scoring.AddRangeAsync(dbAnswer);
+            await _contextGo.SaveChangesAsync();
+
+            return "Scores were added to the system.";
+        }
+
+        public async Task<List<Round3QuestionDto>> GetRound3Master(string yEvent)
+        {
+            var round3Questions = await _contextGo.Scoreposs.Where(s => s.Yevent == yEvent && s.RoundNo == 3 && s.QuestionNo < 350)
+                                        .Select(s => new Round3QuestionDto() {
+                                            QuestionNum = s.QuestionNo,
+                                            SortOrder = (decimal)s.QuestionNo % 10 * 10,
+                                            Score = s.Ptsposs
+                                        }).ToListAsync();
+
+            var round3Return = round3Questions.OrderBy(s => new {s.SortOrder, s.QuestionNum}).ToList();
+
+            return round3Return;
+        }
+
+        public async Task<List<IntroDto>> GetRound3Teams(string yEvent)
+        {
+            var round3Teams = await (from rr in _contextGo.Roundresult
+                                     join tr in _contextGo.Teamreference
+                                     on new{rr.TeamNo, rr.Yevent} equals new{tr.TeamNo, tr.Yevent}
+                                     where rr.RoundNo == 2
+                                     && rr.Rnk < 4
+                                     orderby rr.Rnk
+                                     select new IntroDto(){
+                                        TeamName = tr.Teamname,
+                                        TeamNo = tr.TeamNo
+                                     }).ToListAsync();
+
+            return round3Teams;
+        }
     }
 }

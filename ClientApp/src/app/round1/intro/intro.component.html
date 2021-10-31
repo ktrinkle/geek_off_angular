@@ -29,69 +29,46 @@
 </div>
 
 <div id="teamList" [@fadeInOut] *ngIf="currentScreen === 'teamList'">
-  <mat-grid-list cols="4">
-    <mat-grid-tile colspan="1">
-      <div class="pricecontainer">
+  <table>
+    <tr>
+      <td class="pricecontainer">
         <div>
           <img
             src="../../../assets/img/1200px-TPIR_dollar_sign.svg.png"
             class="dollar"
           />
-          <p class="teams-list-header-geek">GEEK</p>
-          <p class="teams-list-header-off">OFF</p>
+          <span class="geektext">
+            <span class="teams-list-header-geek">GEEK</span><br />
+            <span class="teams-list-header-off">OFF</span>
+          </span>
         </div>
-      </div>
-    </mat-grid-tile>
-    <mat-grid-tile colspan="3">
-      <mat-table class="teamList" [dataSource]="teamMasterList">
-        <ng-container matColumnDef="teamNo">
-          <mat-header-cell *matHeaderCellDef class="red-col row-header">
-            Team
-          </mat-header-cell>
-          <mat-cell *matCellDef="let row" class="red-col">
-            {{ row.teamNo }}
-          </mat-cell>
-        </ng-container>
-
-        <ng-container matColumnDef="teamName">
-          <mat-header-cell *matHeaderCellDef class="yellow-col row-header">
-            Team Name
-          </mat-header-cell>
-          <mat-cell *matCellDef="let row" class="yellow-col">
-            {{ row.teamName }}
-          </mat-cell>
-        </ng-container>
-
-        <ng-container matColumnDef="member1">
-          <mat-header-cell *matHeaderCellDef class="red-col row-header">
-            Player 1
-          </mat-header-cell>
-          <mat-cell *matCellDef="let row" class="red-col">
-            {{ row.member1 }}
-          </mat-cell>
-        </ng-container>
-
-        <ng-container matColumnDef="member2">
-          <mat-header-cell *matHeaderCellDef class="red-col row-header">
-            Player 2
-          </mat-header-cell>
-          <mat-cell *matCellDef="let row" class="red-col">
-            {{ row.member2 }}
-          </mat-cell>
-        </ng-container>
-        <!-- Header and Row Declarations -->
-        <mat-header-row
-          *matHeaderRowDef="['teamNo', 'teamName', 'member1', 'member2']"
-        ></mat-header-row>
-        <mat-row
-          *matRowDef="
-            let row;
-            columns: ['teamNo', 'teamName', 'member1', 'member2']
-          "
-        ></mat-row>
-      </mat-table>
-    </mat-grid-tile>
-  </mat-grid-list>
+      </td>
+      <td valign="top">
+        <table class="teamList">
+          <tr>
+            <th class="red-col row-header">Team</th>
+            <th class="yellow-col row-header">Team Name</th>
+            <th class="red-col row-header">Player 1</th>
+            <th class="red-col row-header">Player 2</th>
+          </tr>
+          <tr *ngFor="let row of teamMasterList">
+            <td class="red-col">
+              {{ row.teamNo }}
+            </td>
+            <td class="yellow-col">
+              {{ row.teamName }}
+            </td>
+            <td class="white-col">
+              {{ row.member1 }}
+            </td>
+            <td class="white-col">
+              {{ row.member2 }}
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
 </div>
 
 <div
