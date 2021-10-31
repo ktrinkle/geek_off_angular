@@ -4,10 +4,10 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import * as signalR from '@microsoft/signalr';
 import { environment } from 'src/environments/environment';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { DataService } from 'src/app/data.service';
 import { Store } from '@ngrx/store';
-import { selectCurrentEvent } from 'src/app/store';
+import { selectCurrentEvent, selectRound1Teams } from 'src/app/store';
 
 @Component({
   selector: 'app-pregame',
@@ -18,6 +18,7 @@ export class PregameComponent implements OnInit, OnDestroy {
 
   currentPage: string = '1';
   currentPageName: string = 'Intro page 1';
+  teamList: any = [];
   seatBelt: boolean = false;
   yEvent = '';
   audio = new Audio();
@@ -36,6 +37,12 @@ export class PregameComponent implements OnInit, OnDestroy {
   pageForm: FormGroup = new FormGroup({
     pageName: new FormControl('')
   });
+
+  fundForm: FormGroup = new FormGroup({
+    teamNumber: new FormControl(''),
+    dollarAmount: new FormControl('', Validators.pattern('[0-9].'))
+  });
+
   destroy$: Subject<boolean> = new Subject<boolean>();
 
   constructor(private router: Router, private dataService: DataService, private store: Store) { }
@@ -44,6 +51,10 @@ export class PregameComponent implements OnInit, OnDestroy {
 
     this.store.select(selectCurrentEvent).pipe(takeUntil(this.destroy$)).subscribe(currentEvent => {
       this.yEvent = currentEvent;
+    });
+
+    this.store.select(selectRound1Teams).pipe(takeUntil(this.destroy$)).subscribe(teamList => {
+      this.teamList = teamList;
     });
 
     this.audio.src = 'https://geekoff2021static.blob.core.windows.net/snd/top_of_hour.mp3';

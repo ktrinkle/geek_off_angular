@@ -69,6 +69,8 @@ export class Round2controlComponent implements OnInit, OnDestroy {
     2
   ];
 
+  finalizeState: string = 'Finalize Round';
+
   constructor(private store: Store, private _dataService: DataService,
     private formBuilder: FormBuilder, public dialog: MatDialog) { }
 
@@ -276,6 +278,12 @@ export class Round2controlComponent implements OnInit, OnDestroy {
     if (name == 'prize1') {
       this.consolation.play();
     }
+  }
+
+  finalizeRound() {
+    this._dataService.finalizeRound2(this.yEvent).subscribe(data => {
+      this.finalizeState = data;
+    });
   }
 
   ngOnDestroy() {
