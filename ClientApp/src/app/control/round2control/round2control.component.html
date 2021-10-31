@@ -104,9 +104,8 @@
             </mat-grid-tile>
         </mat-grid-list>
 
-        <div formArrayName="questions">
-            <mat-grid-list cols='5' rowHeight='350px'>
-                <mat-grid-tile colspan='1' *ngFor="let question of getQuestions(newEventForm); let i = index" [formGroupName]="i">
+        <div formArrayName="questions" fxLayout="row wrap" fxLayoutGap="16px grid">
+            <div fxFlex="20%" *ngFor="let question of getQuestions(newEventForm); let i = index" [formGroupName]="i">
                     <mat-grid-list cols="12" rowHeight="30px" class="boxed question">
                         <div *ngIf="question.value.questionNum < 206 || showBonusQuestion">
                             <mat-grid-tile colspan="12"></mat-grid-tile>
@@ -120,7 +119,7 @@
                   </button> {{answer.answer}}: {{answer.score}} points
                                 </div>
                             </mat-grid-tile>
-                            <mat-grid-tile colspan="3">
+                            <mat-grid-tile colspan="2">
                                 <label for="answer" class="answer-choice">Answer:</label>
                             </mat-grid-tile>
                             <mat-grid-tile colspan="8">
@@ -131,7 +130,7 @@
                             <input id="questionNum{{question.value.questionNum}}" name="questionNum" type="hidden" value={{question.value.questionNum}}>
                             <br>
                             <mat-grid-tile></mat-grid-tile>
-                            <mat-grid-tile colspan="3">
+                            <mat-grid-tile colspan="2">
                                 <label for="score" class="answer-choice">Score:</label>
                             </mat-grid-tile>
                             <mat-grid-tile colspan="8">
@@ -143,8 +142,7 @@
                             </mat-grid-tile>
                         </div>
                     </mat-grid-list>
-                </mat-grid-tile>
-            </mat-grid-list>
         </div>
+    </div>
     </div>
 </form>

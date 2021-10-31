@@ -197,4 +197,10 @@ export class DataService {
     var uri = this.REST_API_SERVER + '/api/round1/updateState/' + encodeURIComponent(questionNum) + '/' + encodeURIComponent(status) + '';
     this.httpClient.put(uri, {}, { responseType: 'json' }).toPromise();
   }
+
+  public updateDollarAmount(yevent: string, teamNum: number, dollarAmount: number): Observable<any> {
+    var params = new HttpParams().set('dollarAmount', dollarAmount);
+    var uri = this.REST_API_SERVER + '/api/eventstatus/dollarAmount/' + encodeURIComponent(yevent) + '/' + encodeURIComponent(teamNum) + '';
+    return this.httpClient.put(uri, {}, { params: params, responseType: 'text' });
+  }
 }

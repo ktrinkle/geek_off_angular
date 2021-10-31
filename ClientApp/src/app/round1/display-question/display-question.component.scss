@@ -57,6 +57,7 @@
     border-radius: 10px;
     border: 0.3vw solid #36495A;
     background-color: antiquewhite;
+    color: #36495A;
 }
 
 .answer {
@@ -75,4 +76,8 @@
   width: 100%;
   height: 100%;
   align-content: center;
+}
+
+.longQuestion {
+  font-size: 6vh;
 }

@@ -43,6 +43,8 @@ export class PregameComponent implements OnInit, OnDestroy {
     dollarAmount: new FormControl('', Validators.pattern('[0-9].'))
   });
 
+  fundFormStatus: string = '';
+
   destroy$: Subject<boolean> = new Subject<boolean>();
 
   constructor(private router: Router, private dataService: DataService, private store: Store) { }
@@ -51,10 +53,11 @@ export class PregameComponent implements OnInit, OnDestroy {
 
     this.store.select(selectCurrentEvent).pipe(takeUntil(this.destroy$)).subscribe(currentEvent => {
       this.yEvent = currentEvent;
-    });
-
-    this.store.select(selectRound1Teams).pipe(takeUntil(this.destroy$)).subscribe(teamList => {
-      this.teamList = teamList;
+      if (this.yEvent && this.yEvent.length > 0) {
+        this.dataService.getRound1IntroTeamList(this.yEvent).pipe(takeUntil(this.destroy$)).subscribe(t =>
+          this.teamList = t
+        );
+      }
     });
 
     this.audio.src = 'https://geekoff2021static.blob.core.windows.net/snd/top_of_hour.mp3';
@@ -101,6 +104,14 @@ export class PregameComponent implements OnInit, OnDestroy {
   moveToRound1() {
     this.dataService.changeRound1QuestionStatus(this.yEvent, 1, 0).subscribe(c => { });
     this.router.navigate(['/control/round1']);
+  }
+
+  updateDollarRaised() {
+    var teamNum = this.fundForm.value.teamNumber;
+    var dollarAmount = this.fundForm.value.dollarAmount;
+    this.dataService.updateDollarAmount(this.yEvent, teamNum, dollarAmount).subscribe(data => {
+      this.fundFormStatus = data;
+    });
   }
 
   ngOnDestroy() {

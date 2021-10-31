@@ -57,6 +57,9 @@ export class Round1DisplayQuestionComponent implements OnInit, OnDestroy {
   questionText: number = 2;
   destroy$: Subject<boolean> = new Subject<boolean>();
 
+  // hack to force the text size smaller if the question is >110 chars
+  longText: string = '';
+
   constructor(private route: ActivatedRoute, private router: Router, private dataService: DataService, private store: Store) { }
 
   ngOnInit(): void {
@@ -118,9 +121,13 @@ export class Round1DisplayQuestionComponent implements OnInit, OnDestroy {
     this.questionVisible = true;
     this.answerVisible = false;
     this.answerShown = false;
+    this.longText = '';
     const currentQuestion = this.bigDisplay.filter(x => x.questionNum == questionNum);
     if (currentQuestion.length > 0) {
       this.currentQuestionDto = currentQuestion[0];
+      if (currentQuestion[0].questionText.length > 100) {
+        this.longText = 'longQuestion';
+      }
       if (this.currentQuestionDto.answerType == 1) {
         this.matchString = 'x' + this.convertStringToAnswer(this.currentQuestionDto.correctAnswer);
       }

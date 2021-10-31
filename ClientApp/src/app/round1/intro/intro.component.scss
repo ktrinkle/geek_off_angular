@@ -6,8 +6,7 @@
     width: 100%;
 }
 
-mat-table {
-    background-color: #00467f;
+#teamList table {
     width: 100%;
 }
 
@@ -18,12 +17,16 @@ mat-list-item.mat-list-item {
     height: auto;
 }
 
-#teamList mat-cell {
-    border: none;
+#teamList tr {
+  height: 4.0vh;
+  font-family: priceIsRight;
+  font-size: 3vh;
+  text-align: left;
 }
 
+
 .pricecontainer {
-    width: 100%;
+    width: 25%;
     height: 100%;
     vertical-align: middle;
     align-content: center;
@@ -130,39 +133,35 @@ mat-list-item.mat-list-item {
     width: 100vw;
 }
 
-mat-cell,
-mat-header-cell {
-    font-family: priceIsRight;
-    font-size: larger;
-}
-
-p.teams-list-header-geek {
+.teams-list-header-geek {
     font-family: priceIsRight;
     font-size: 400%;
     margin: 0px;
-    margin-left: 65px;
+    margin-left: 20px;
     color: white;
     -webkit-text-stroke-width: 1px;
     -webkit-text-stroke-color: black;
 }
 
-p.teams-list-header-off {
+.teams-list-header-off {
     font-family: priceIsRight;
     font-size: 400%;
     margin: 0px;
-    margin-left: 65px;
+    margin-left: 20px;
     color: red;
     -webkit-text-stroke-width: 1px;
     -webkit-text-stroke-color: black;
 }
 
+.geektext {
+  vertical-align: middle;
+}
+
 img.dollar {
-    position: absolute;
     vertical-align: middle;
     height: 130px;
     width: 60px;
-    left: 22px;
-    top: 60px;
+    float: left;
 }
 
 .red-col {
@@ -175,6 +174,12 @@ img.dollar {
     color: gold;
     -webkit-text-stroke-width: 1px;
     -webkit-text-stroke-color: black;
+}
+
+.white-col {
+  color: white;
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: black;
 }
 
 .row-header {

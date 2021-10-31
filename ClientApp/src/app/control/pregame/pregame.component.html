@@ -1,6 +1,7 @@
 <h2>Geek Off Pregame Control</h2>
 <div class="content" fxLayout="row wrap" fxLayoutGap="16px grid">
   <div id="buttonScreen" fxFlex="30%" fxFlex.xs="100%" fxFlex.sm="100%" style="padding: 10px;">
+    <h3>Control screens</h3>
     <form [formGroup]="pageForm">
         <label for="pageName">Select a screen:</label>
         <select id="pageName" formControlName="pageName">
@@ -22,5 +23,19 @@
     </div>
     </div>
     <div id="infoScreen" fxFlex="70%" fxFlex.xs="100%" fxFlex.sm="100%" style="padding: 10px;">
+      <h3>Update team information</h3>
+      <form [formGroup]="fundForm">
+        <label for="teamNumber">Team number:</label>
+        <select id="teamNumber" formControlName="teamNumber" (change)="fundFormStatus = ''">
+          <option>--</option>
+          <option *ngFor="let team of teamList" [value]="team.teamNo">
+            {{team.teamNo}} - {{team.teamName}}
+          </option>
+        </select>
+        <label for="dollarAmount">Dollars raised:</label>
+        <input id="dollarAmount" formControlName="dollarAmount" name="dollarAmount" type="number">
+      <button type="submit" class="bigbtngrnlabel" (click)="updateDollarRaised()">Update dollar amount</button>
+      <div>{{fundFormStatus}}</div>
+    </form>
     </div>
     </div>
