@@ -55,7 +55,7 @@ export class Round3scoreboardComponent implements OnInit, OnDestroy {
   }
 
   public getScoreboardInfo(yevent: string) {
-    this._dataService.getRound2Scores(yevent).subscribe((data: round23Scores[]) => {
+    this._dataService.getRound3Scores(yevent).subscribe((data: round23Scores[]) => {
 
       this.scores = data;
       this.scores.forEach((score, index) => {

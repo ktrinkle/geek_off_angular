@@ -105,3 +105,17 @@ export interface round1EnteredAnswers {
   textAnswer: string,
   answerStatus: boolean
 }
+
+export interface round3QuestionDto {
+  questionNum: number,
+  sortOrder: number,
+  score: number
+}
+
+export interface round3AnswerDto {
+  yEvent: string,
+  questionNum: number,
+  teamNum: number,
+  score: number,
+  round3neg: number
+}

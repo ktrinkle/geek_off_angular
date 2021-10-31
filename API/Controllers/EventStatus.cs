@@ -57,5 +57,11 @@ namespace GeekOff.Controllers
         public async Task<ActionResult<string>> UpdateFundAmountAsync(string yEvent, int teamNum, decimal? dollarAmount)
             => Ok(await _manageEventService.UpdateFundAmountAsync(yEvent, teamNum, dollarAmount));
 
+        [Authorize(Roles = "admin")]
+        [HttpPut("cleanEvent/{yEvent}")]
+        [SwaggerOperation(Summary = "Clean all results out of system for this event.")]
+        public async Task<ActionResult<string>> ResetEventAsync(string yEvent)
+            => Ok(await _manageEventService.ResetEvent(yEvent));
+
     }
 }
