@@ -51,5 +51,11 @@ namespace GeekOff.Controllers
             return userId == null ? null : (ActionResult<UserInfoDto>)await _loginService.Login(userId);
         }
 
+        [Authorize(Roles = "admin")]
+        [HttpPut("dollarAmount/{yEvent}/{teamNum}")]
+        [SwaggerOperation(Summary = "Get current user and team info from database based on logged in user.")]
+        public async Task<ActionResult<string>> UpdateFundAmountAsync(string yEvent, int teamNum, decimal? dollarAmount)
+            => Ok(await _manageEventService.UpdateFundAmountAsync(yEvent, teamNum, dollarAmount));
+
     }
 }

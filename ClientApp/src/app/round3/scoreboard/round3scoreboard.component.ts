@@ -7,28 +7,24 @@ import { environment } from 'src/environments/environment';
 import { DataService } from '../../data.service';
 import { selectCurrentEvent } from 'src/app/store';
 import { takeUntil } from 'rxjs/operators';
-import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-round2-scoreboard',
-  templateUrl: './round2scoreboard.component.html',
-  styleUrls: ['./round2scoreboard.component.scss']
+  selector: 'app-round3-scoreboard',
+  templateUrl: './round3scoreboard.component.html',
+  styleUrls: ['./round3scoreboard.component.scss']
 })
-export class Round2scoreboardComponent implements OnInit, OnDestroy {
+export class Round3scoreboardComponent implements OnInit, OnDestroy {
   yEvent = '';
   public roundNo: number = 2;
   public scores: round23Scores[] = [];
   public colors: string[] = [
-    'coral',
-    'steelblue',
-    'gold',
-    'lightgreen',
-    'sandybrown',
-    'plum',
+    'red',
+    'green',
+    'blue',
   ]
   destroy$: Subject<boolean> = new Subject<boolean>();
 
-  constructor(private _dataService: DataService, private store: Store, private _router: Router) { }
+  constructor(private _dataService: DataService, private store: Store) { }
 
   ngOnInit(): void {
 
@@ -53,19 +49,15 @@ export class Round2scoreboardComponent implements OnInit, OnDestroy {
       return console.error(err.toString());
     });
 
-    connection.on("round2ScoreUpdate", (_: any) => {
-      this.getScoreboardInfo(this.yEvent);
-    })
-
     connection.on("round3ScoreUpdate", (_: any) => {
-      this._router.navigate(['/round3/scoreboard']);
+      this.getScoreboardInfo(this.yEvent);
     })
   }
 
   public getScoreboardInfo(yevent: string) {
     this._dataService.getRound2Scores(yevent).subscribe((data: round23Scores[]) => {
-      this.scores = data.sort((a, b) => a.teamScore ? - (b.teamScore || 0) : 0);
 
+      this.scores = data;
       this.scores.forEach((score, index) => {
         score.color = this.colors[index];
       });

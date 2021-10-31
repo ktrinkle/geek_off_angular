@@ -45,7 +45,8 @@
                 <button id="stopButton" (click)="stopCountdown()">STOP</button>
             </div>
             <div>
-                <button id="showPrize1" (click)="changeScreen('prize1')">Prize screen 1</button>
+              <button id="finalizeRound" class="buttonred" (click)="finalizeRound()">{{finalizeState}}</button>
+              <button id="showPrize1" (click)="changeScreen('prize1')">Prize screen 1</button>
             </div>
         </div>
     </mat-grid-tile>

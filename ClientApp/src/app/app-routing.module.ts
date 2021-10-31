@@ -15,6 +15,7 @@ import { Round1DisplayQuestionComponent } from './round1/display-question/displa
 import { Round1ScoreboardComponent } from './round1/scoreboard/scoreboard.component';
 import { Round1ControlComponent } from './control/round1control/round1control.component';
 import { Round1hostComponent } from './host/round1host/round1host.component';
+import { Round3scoreboardComponent } from './round3/scoreboard/round3scoreboard.component';
 
 import { MsalGuard, MsalRedirectComponent } from '@azure/msal-angular';
 import { BrowserUtils } from '@azure/msal-browser';
@@ -91,6 +92,15 @@ const routes: Routes = [
   {
     path: 'control/pregame',
     component: PregameComponent,
+    pathMatch: 'full',
+    canActivate: [MsalGuard, PlayerGuard],
+    data: {
+      expectedRole: roles.Admin
+    }
+  },
+  {
+    path: 'round3/scoreboard',
+    component: Round3scoreboardComponent,
     pathMatch: 'full',
     canActivate: [MsalGuard, PlayerGuard],
     data: {

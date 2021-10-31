@@ -342,5 +342,28 @@ namespace GeekOff.Services
                 Status = status
             };
         }
+
+        public async Task<string> UpdateFundAmountAsync(string yEvent, int teamNum, decimal? dollarAmount)
+        {
+            if (dollarAmount is not null and < 0)
+            {
+                return "You can't have a fundraising amount less than zero.";
+            }
+
+            // validate team number
+            var teamInfo = await _contextGo.Teamreference.FirstOrDefaultAsync(tr => tr.Yevent == yEvent
+                                                                                && tr.TeamNo == teamNum);
+
+            if (teamInfo is null)
+            {
+                return "Invalid team number is entered.";
+            }
+
+            teamInfo.Dollarraised = dollarAmount;
+            _contextGo.Teamreference.Update(teamInfo);
+            await _contextGo.SaveChangesAsync();
+
+            return "The dollar amount is successfully updated.";
+        }
     }
 }

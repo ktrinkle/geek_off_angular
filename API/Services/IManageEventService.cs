@@ -17,5 +17,6 @@ namespace GeekOff.Services
         Task<string> GetCurrentEvent();
         Task<CurrentQuestionDto> GetCurrentQuestion(string yEvent);
         Task<CurrentQuestionDto> SetCurrentQuestionStatus(string yEvent, int questionId, int status);
+        Task<string> UpdateFundAmountAsync(string yEvent, int teamNum, decimal? dollarAmount);
     }
 }
