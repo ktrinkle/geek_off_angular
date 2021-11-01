@@ -205,7 +205,7 @@ export class DataService {
   }
 
   public updateRound3Scores(scores: round3AnswerDto[]): Observable<any> {
-    var uri = this.REST_API_SERVER + '/api/round3/teamAnswer/';
+    var uri = this.REST_API_SERVER + '/api/round3/teamAnswer';
     return this.httpClient.post(uri, scores, { responseType: 'text' });
   }
 

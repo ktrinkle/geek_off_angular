@@ -416,18 +416,20 @@ namespace GeekOff.Services
 
             foreach (var submitAnswer in round3Answers)
             {
-                var scoreRecord = new Scoring()
-                {
-                    Yevent = submitAnswer.YEvent,
-                    TeamNo = submitAnswer.TeamNum,
-                    RoundNo = 3,
-                    QuestionNo = submitAnswer.QuestionNum,
-                    PointAmt = submitAnswer.Score,
-                    Round3neg = submitAnswer.Round3neg,
-                    Updatetime = DateTime.UtcNow
-                };
+                if (submitAnswer.Score is not null and (>0 or <0) ) {
+                    var scoreRecord = new Scoring()
+                    {
+                        Yevent = submitAnswer.YEvent,
+                        TeamNo = submitAnswer.TeamNum,
+                        RoundNo = 3,
+                        QuestionNo = submitAnswer.QuestionNum,
+                        PointAmt = submitAnswer.Score,
+                        Updatetime = DateTime.UtcNow
+                    };
 
-                dbAnswer.Add(scoreRecord);
+                    dbAnswer.Add(scoreRecord);
+                }
+
             }
 
             await _contextGo.Scoring.AddRangeAsync(dbAnswer);
