@@ -438,15 +438,17 @@ namespace GeekOff.Services
 
         public async Task<List<Round3QuestionDto>> GetRound3Master(string yEvent)
         {
-            var round3Questions = await _contextGo.Scoreposs.Where(s => s.Yevent == yEvent && s.RoundNo == 3).ToListAsync();
+            var round3Questions = await _contextGo.Scoreposs.Where(s => s.Yevent == yEvent && s.RoundNo == 3 && s.QuestionNo < 350)
+                .Select(s => new Round3QuestionDto()
+                {
+                    QuestionNum = s.QuestionNo,
+                    SortOrder = (decimal)s.QuestionNo % 10,
+                    Score = s.Ptsposs
+                }).ToListAsync();
 
-            var round3Return = round3Questions.Select(s => new Round3QuestionDto()
-            {
-                QuestionNum = s.QuestionNo,
-                SortOrder = (decimal)s.QuestionNo % 10,
-                Score = s.Ptsposs
-            })
-            .OrderBy(s => new { s.SortOrder, s.QuestionNum }).ToList();
+            var round3Return = round3Questions
+                .OrderBy(s => s.QuestionNum).OrderBy(s => s.SortOrder).ToList();
+
 
             return round3Return;
         }
