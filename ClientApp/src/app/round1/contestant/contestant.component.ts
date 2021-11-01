@@ -208,15 +208,4 @@ export class Round1ContestantComponent implements OnInit {
     })
   }
 
-
-
-  /*
-  * Future state:
-  * 3a. Watch time based on time sent by API
-  * 4. Pass answer back from UI
-  * 5. Wait for next question to hit and do it all again, with internal state management
-  * 7. Limit if question = 117, don't continue.
-  */
-
-
 }
