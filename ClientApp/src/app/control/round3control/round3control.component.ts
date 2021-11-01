@@ -22,6 +22,13 @@ export class Round3controlComponent implements OnInit, OnDestroy {
     teams: new FormArray([]),
     questionNum: new FormControl(''),
   });
+
+  public finalJepForm: FormGroup = new FormGroup({
+    teams: new FormArray([]),
+    questionNum: new FormControl('350'),
+  });
+
+  public selectedScore: number = 0;
   public apiResponse: string = '';
   public scoreboard: round23Scores[] = [];
   public teamList: introDto[] = [];
@@ -80,7 +87,6 @@ export class Round3controlComponent implements OnInit, OnDestroy {
         tArray.push(
           this.formBuilder.group({
             teamNum: new FormControl(team.teamNo),
-            teamName: new FormControl(team.teamName),
             score: new FormControl('', [Validators.pattern('[0-9]*')])
           })
         );
@@ -91,6 +97,11 @@ export class Round3controlComponent implements OnInit, OnDestroy {
         teams: tArray,
         questionNum: new FormControl('', [Validators.pattern('[0-9]*')])
       });
+
+      this.finalJepForm = new FormGroup({
+        teams: tArray,
+        questionNum: new FormControl('350')
+      });
     });
   }
 
@@ -100,6 +111,7 @@ export class Round3controlComponent implements OnInit, OnDestroy {
 
   getScore(questionNumber: any) {
     const question = this.round3Questions.find(x => x.questionNum == questionNumber);
+    this.selectedScore = question?.score ?? 0;
     return question?.score;
   }
 
@@ -115,7 +127,7 @@ export class Round3controlComponent implements OnInit, OnDestroy {
   }
 
   // Get user answer and store in DB (see)
-  saveUserAnswer() {
+  saveUserAnswer(form: FormGroup) {
    /*var submitAnswer: round3AnswerDto = {
       yEvent: this.yEvent,
       questionNum: questionGroup.get('questionNum').value,

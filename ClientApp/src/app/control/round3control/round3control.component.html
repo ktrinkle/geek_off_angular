@@ -1,20 +1,55 @@
-<p>round3control works!</p>
-<div class="content" fxLayout="row wrap" fxLayoutGap="16px grid">
-  <form [formGroup]="round3Form" (ngSubmit)="saveUserAnswer()">
-  <div id="buttonScreen" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="100%"
-  style="padding: 10px;" *ngFor="let question of round3Questions">
-  <input
-  type="radio"
-  name="questionNum"
-  id="{{ question.questionNum }}"
-  value= "{{ question.questionNum }}"
-  formControlName="questionNum"
-  class="bigbtnblue"
-/>
-<label for="{{ question.questionNum }}" class="bigbluebtnlbl">{{
-  question.score
-}}</label>
-  </div>
+<h2>Round 3 - Jeopardy!</h2>
+<div id="round3Control" fxLayout="row wrap" fxLayoutGap="16px grid">
+    <div fxFlex="60%">
+        <form [formGroup]="round3Form" (ngSubmit)="saveUserAnswer(round3Form)">
+            <div fxLayout="row wrap" fxLayoutGap="16px grid">
+                <div fxFlex="20%" *ngFor="let question of round3Questions">
+                    <input type="radio" name="questionNum" id="{{ question.questionNum }}" value="{{ question.questionNum }}" formControlName="questionNum" class="bigbtnblue" (click)="getScore(question.questionNum)" />
+                    <label for="{{ question.questionNum }}" class="bigbtnblue bigbtnbluelabel">{{ question.score }}</label>
+                </div>
+                <div class="clear: all;">
+                </div>
+                <hr width="90%">
+                <div class="teamBox" fxFlex="25%" *ngFor="let team of teamList; let i = index" formArrayName="teams">
+                    <input type="hidden" id="teamNum" name="teamNum" formControlName="teamNum" value="{{team.teamNo}}">
+                    <p>{{team.teamNo}} - {{team.teamName}}</p>
+                    <input type="radio" id="teamScore" name="score" formControlName="score" value="{{selectedScore*-1}}">
+                    <label for="teamScoreMinus">{{selectedScore*-1}}</label>
+                    <input type="radio" id="teamScore" name="score" formControlName="score" value="{{selectedScore}}">
+                    <label for="teamScorePlus">{{selectedScore}}</label>
+                    <input type="number" id="textScore" formControlName="score">
+                </div>
+            </div>
+        </form>
+    </div>
+    <div fxFlex="40%">
+        <mat-table class="round3ControlScoreboard" [dataSource]="scoreboard">
+            <ng-container matColumnDef="teamNo">
+                <mat-header-cell *matHeaderCellDef> Team # </mat-header-cell>
+                <mat-cell *matCellDef="let row">
+                    {{row.teamNo}}
+                </mat-cell>
+            </ng-container>
 
-</form>
+            <ng-container matColumnDef="teamScore">
+                <mat-header-cell *matHeaderCellDef> Team Score </mat-header-cell>
+                <mat-cell *matCellDef="let row">
+                    {{row.teamScore}}
+                </mat-cell>
+            </ng-container>
+
+            <!-- Header and Row Declarations -->
+            <mat-header-row *matHeaderRowDef="['teamNo', 'teamScore']"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: ['teamNo', 'teamScore']"></mat-row>
+        </mat-table>
+        <button id="updateScoreboard" (click)="updateRemoteScoreboard()">Send scoreboard update</button>
+        <div class="clear: all"></div>
+        <h3>Final Jeopardy</h3>
+        <form [formGroup]="finalJepForm" (ngSubmit)="saveUserAnswer(finalJepForm)">
+            <div *ngFor="let team of teamList; let i = index" formArrayName="teams">
+                <input type="hidden" id="finalteamNum" name="finalteamNum" formControlName="teamNum" value="{{team.teamNo}}"> {{team.teamNo}}
+                <input type="number" id="finalJepScore" name="finalJepScore" formControlName="score">
+            </div>
+        </form>
+    </div>
 </div>
