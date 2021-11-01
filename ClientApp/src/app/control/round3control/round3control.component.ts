@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, ComponentFactoryResolver, OnDestroy, OnInit, Pipe, PipeTransform } from '@angular/core';
 import { DataService } from '../../data.service';
 import { Store } from '@ngrx/store';
 import { round3AnswerDto, round3QuestionDto, round23Scores, introDto } from '../../data/data';
@@ -9,6 +9,17 @@ import { MatDialog } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { selectCurrentEvent } from 'src/app/store';
+
+@Pipe({ name: 'displayTeamInfo' })
+export class DisplayTeamInfoPipe implements PipeTransform {
+  transform(teamList: introDto[], teamNumber: number): string {
+    const team = teamList.filter(x => x.teamNo === teamNumber);
+    if (team.length === 0) {
+      return '';
+    }
+    return `${team[0].teamNo} - ${team[0].teamName}`;
+  }
+}
 
 @Component({
   selector: 'app-round3control',
@@ -57,6 +68,20 @@ export class Round3controlComponent implements OnInit, OnDestroy {
         })
         this.updateScoreboard();
       }
+
+      // // mock data for testing
+      // this.teamList = [];
+      // for (let i = 0; i < 3; i++) {
+      //   this.teamList.push({
+      //     teamNo: i,
+      //     teamName: 'Frustrating',
+      //     member1: 'Sarah',
+      //     member2: 'John',
+      //     workgroup1: '',
+      //     workgroup2: ''
+      //   });
+      // }
+
     });
 
     const connection = new signalR.HubConnectionBuilder()
@@ -77,9 +102,23 @@ export class Round3controlComponent implements OnInit, OnDestroy {
 
   }
 
+  getTeamsFromForm(form: any) {
+    return form?.get('teams')?.controls;
+  }
+
   getRound3Questions(yevent: string) {
     this._dataService.getAllRound3Questions(yevent).subscribe((data: round3QuestionDto[]) => {
       this.round3Questions = data;
+
+      // // mock data for testing
+      // this.round3Questions = [];
+      // for (let i = 0; i < 10; i++) {
+      //   this.round3Questions.push({
+      //     questionNum: i,
+      //     sortOrder: i,
+      //     score: i * 100
+      //   });
+      // }
 
       // creates the formArray of the formGroup of question controls
       const tArray = this.formBuilder.array([]);
@@ -105,10 +144,6 @@ export class Round3controlComponent implements OnInit, OnDestroy {
     });
   }
 
-  getQuestions(form: any) {
-    return form?.get('questions').controls;
-  }
-
   getScore(questionNumber: any) {
     const question = this.round3Questions.find(x => x.questionNum == questionNumber);
     this.selectedScore = question?.score ?? 0;
@@ -122,30 +157,34 @@ export class Round3controlComponent implements OnInit, OnDestroy {
 
   updateScoreboard() {
     this._dataService.getRound3Scores(this.yEvent).subscribe(a => {
-        this.scoreboard = a;
-      });
+      this.scoreboard = a;
+    });
   }
 
-  // Get user answer and store in DB (see)
+  // Get user answer and store in DB
   saveUserAnswer(form: FormGroup) {
-   /*var submitAnswer: round3AnswerDto = {
-      yEvent: this.yEvent,
-      questionNum: questionGroup.get('questionNum').value,
-      playerNum: this.newEventForm.get('playerNum')?.value,
-      teamNum: this.newEventForm.get('teamNum')?.value,
-      answer: questionGroup.get('answer').value,
-      score: questionGroup.get('score').value
-    };
+    const submitArray = [];
+    const teamFormArray = form?.get('teams') as FormArray;
+    for (const team of teamFormArray.controls) {
+      const teamScore: round3AnswerDto = {
+        yEvent: this.yEvent,
+        questionNum: form.get('questionNum')?.value as number,
+        teamNum: team.get('teamNum')?.value,
+        score: team.get('score')?.value,
+        round3neg: 0
+      };
+      submitArray.push(teamScore);
+      team.get('score')?.reset();
+    }
 
-    console.log(submitAnswer);
+    console.log(submitArray);
 
-    this._dataService.sendRound2AnswerText(submitAnswer).subscribe((data: string) => {
+    this._dataService.updateRound3Scores(submitArray).subscribe((data: string) => {
       this.apiResponse = data;
     });
 
-    questionGroup.get('answer').reset();
-    questionGroup.get('score').reset();
-    // this.newEventForm.get("questionNum")?.reset();*/
+    form.get('questionNum')?.reset();
+    this.selectedScore = 0;
   }
 
   finalizeRound() {
