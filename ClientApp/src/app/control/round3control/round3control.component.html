@@ -10,16 +10,21 @@
                 <div class="clear: all;">
                 </div>
                 <hr width="90%">
-                <div class="teamBox" fxFlex="25%" *ngFor="let team of teamList; let i = index" formArrayName="teams">
-                    <input type="hidden" id="teamNum" name="teamNum" formControlName="teamNum" value="{{team.teamNo}}">
-                    <p>{{team.teamNo}} - {{team.teamName}}</p>
-                    <input type="radio" id="teamScore" name="score" formControlName="score" value="{{selectedScore*-1}}">
-                    <label for="teamScoreMinus">{{selectedScore*-1}}</label>
-                    <input type="radio" id="teamScore" name="score" formControlName="score" value="{{selectedScore}}">
-                    <label for="teamScorePlus">{{selectedScore}}</label>
-                    <input type="number" id="textScore" formControlName="score">
+                <div formarrayName="teams">
+                    <div class="teamBox" fxFlex="25%" *ngFor="let team of teamList; let i = index" [formGroupName]="i">
+                        <input type="hidden" id="teamNum" name="teamNum" formControlName="teamNum" value="{{team.teamNo}}">
+                        <p>{{team.teamNo}} - {{team.teamName}}</p>
+                        <input type="radio" id="teamScoreMinus{{i}}" name="score" formControlName="score" value="{{selectedScore*-1}}">
+                        <label for="teamScoreMinus{{i}}">{{selectedScore*-1}}</label>
+                        <input type="radio" id="teamScoreZero{{i}}" name="score" formControlName="score" value="0">
+                        <label for="teamScoreZero{{i}}">0</label>
+                        <input type="radio" id="teamScorePlus{{i}}" name="score" formControlName="score" value="{{selectedScore}}">
+                        <label for="teamScorePlus{{i}}">{{selectedScore}}</label>
+                        <input type="number" id="textScore" formControlName="score">
+                    </div>
                 </div>
             </div>
+            <button type="submit" class="answer-choice" id="saveUserAnswer">Save answer</button>
         </form>
     </div>
     <div fxFlex="40%">
@@ -46,9 +51,11 @@
         <div class="clear: all"></div>
         <h3>Final Jeopardy</h3>
         <form [formGroup]="finalJepForm" (ngSubmit)="saveUserAnswer(finalJepForm)">
-            <div *ngFor="let team of teamList; let i = index" formArrayName="teams">
-                <input type="hidden" id="finalteamNum" name="finalteamNum" formControlName="teamNum" value="{{team.teamNo}}"> {{team.teamNo}}
-                <input type="number" id="finalJepScore" name="finalJepScore" formControlName="score">
+            <div formArrayName="teams">
+                <div *ngFor="let team of teamList; let i = index" [formGroupName]="i">
+                    <input type="hidden" id="finalteamNum" name="finalteamNum" formControlName="teamNum" value="{{team.teamNo}}"> {{team.teamNo}}
+                    <input type="number" id="finalJepScore" name="finalJepScore" formControlName="score">
+                </div>
             </div>
         </form>
     </div>
