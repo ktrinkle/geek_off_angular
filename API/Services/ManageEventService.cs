@@ -374,19 +374,23 @@ namespace GeekOff.Services
             }
 
             // set up stuff to remove
-            var currentQuestion = new CurrentQuestion() {
+            var currentQuestion = new CurrentQuestion()
+            {
                 YEvent = yEvent
             };
 
-            var roundResult = new Roundresult() {
+            var roundResult = new Roundresult()
+            {
                 Yevent = yEvent
             };
 
-            var score = new Scoring(){
+            var score = new Scoring()
+            {
                 Yevent = yEvent
             };
 
-            var userAnswer = new UserAnswer() {
+            var userAnswer = new UserAnswer()
+            {
                 Yevent = yEvent
             };
 
@@ -410,7 +414,7 @@ namespace GeekOff.Services
 
             var dbAnswer = new List<Scoring>();
 
-            foreach(var submitAnswer in round3Answers)
+            foreach (var submitAnswer in round3Answers)
             {
                 var scoreRecord = new Scoring()
                 {
@@ -434,14 +438,15 @@ namespace GeekOff.Services
 
         public async Task<List<Round3QuestionDto>> GetRound3Master(string yEvent)
         {
-            var round3Questions = await _contextGo.Scoreposs.Where(s => s.Yevent == yEvent && s.RoundNo == 3 && s.QuestionNo < 350)
-                                        .Select(s => new Round3QuestionDto() {
-                                            QuestionNum = s.QuestionNo,
-                                            SortOrder = (decimal)s.QuestionNo % 10 * 10,
-                                            Score = s.Ptsposs
-                                        }).ToListAsync();
+            var round3Questions = await _contextGo.Scoreposs.Where(s => s.Yevent == yEvent && s.RoundNo == 3).ToListAsync();
 
-            var round3Return = round3Questions.OrderBy(s => new {s.SortOrder, s.QuestionNum}).ToList();
+            var round3Return = round3Questions.Select(s => new Round3QuestionDto()
+            {
+                QuestionNum = s.QuestionNo,
+                SortOrder = (decimal)s.QuestionNo % 10,
+                Score = s.Ptsposs
+            })
+            .OrderBy(s => new { s.SortOrder, s.QuestionNum }).ToList();
 
             return round3Return;
         }
@@ -450,13 +455,14 @@ namespace GeekOff.Services
         {
             var round3Teams = await (from rr in _contextGo.Roundresult
                                      join tr in _contextGo.Teamreference
-                                     on new{rr.TeamNo, rr.Yevent} equals new{tr.TeamNo, tr.Yevent}
+                                     on new { rr.TeamNo, rr.Yevent } equals new { tr.TeamNo, tr.Yevent }
                                      where rr.RoundNo == 2
                                      && rr.Rnk < 4
                                      orderby rr.Rnk
-                                     select new IntroDto(){
-                                        TeamName = tr.Teamname,
-                                        TeamNo = tr.TeamNo
+                                     select new IntroDto()
+                                     {
+                                         TeamName = tr.Teamname,
+                                         TeamNo = tr.TeamNo
                                      }).ToListAsync();
 
             return round3Teams;
