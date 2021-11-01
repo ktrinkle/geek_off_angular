@@ -69,19 +69,6 @@ export class Round3controlComponent implements OnInit, OnDestroy {
         this.updateScoreboard();
       }
 
-      // // mock data for testing
-      // this.teamList = [];
-      // for (let i = 0; i < 3; i++) {
-      //   this.teamList.push({
-      //     teamNo: i,
-      //     teamName: 'Frustrating',
-      //     member1: 'Sarah',
-      //     member2: 'John',
-      //     workgroup1: '',
-      //     workgroup2: ''
-      //   });
-      // }
-
     });
 
     const connection = new signalR.HubConnectionBuilder()
@@ -170,8 +157,7 @@ export class Round3controlComponent implements OnInit, OnDestroy {
         yEvent: this.yEvent,
         questionNum: form.get('questionNum')?.value as number,
         teamNum: team.get('teamNum')?.value,
-        score: team.get('score')?.value,
-        round3neg: 0
+        score: team.get('score')?.value as number ?? 0
       };
       submitArray.push(teamScore);
       team.get('score')?.reset();

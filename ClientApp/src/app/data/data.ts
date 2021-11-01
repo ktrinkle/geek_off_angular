@@ -116,6 +116,5 @@ export interface round3AnswerDto {
   yEvent: string,
   questionNum: number,
   teamNum: number,
-  score: number,
-  round3neg: number
+  score: number
 }
