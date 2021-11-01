@@ -145,6 +145,7 @@ export class Round3controlComponent implements OnInit, OnDestroy {
   }
 
   getScore(questionNumber: any) {
+    this.resetSelections(this.round3Form);
     const question = this.round3Questions.find(x => x.questionNum == questionNumber);
     this.selectedScore = question?.score ?? 0;
     return question?.score;
@@ -161,6 +162,14 @@ export class Round3controlComponent implements OnInit, OnDestroy {
     });
   }
 
+  resetSelections(form: FormGroup) {
+    const teamFormArray = form.get('teams') as FormArray;
+    for (const team of teamFormArray.controls) {
+      team.get('score')?.reset();
+    }
+    this.selectedScore = 0;
+  }
+
   // Get user answer and store in DB
   saveUserAnswer(form: FormGroup) {
     const submitArray = [];
@@ -174,7 +183,6 @@ export class Round3controlComponent implements OnInit, OnDestroy {
         round3neg: 0
       };
       submitArray.push(teamScore);
-      team.get('score')?.reset();
     }
 
     console.log(submitArray);
@@ -183,8 +191,9 @@ export class Round3controlComponent implements OnInit, OnDestroy {
       this.apiResponse = data;
     });
 
+    this.resetSelections(form);
     form.get('questionNum')?.reset();
-    this.selectedScore = 0;
+
   }
 
   finalizeRound() {
