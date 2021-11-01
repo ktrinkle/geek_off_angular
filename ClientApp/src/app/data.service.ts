@@ -229,4 +229,9 @@ export class DataService {
     return this.httpClient.put(uri, {}, { responseType: 'text' });
   }
 
+  public cleanEventData(yEvent: string): Promise<any> {
+    var uri = this.REST_API_SERVER + '/api/eventstatus/cleanEvent/' + encodeURIComponent(yEvent) + '';
+    return this.httpClient.put(uri, {}, { responseType: 'text' }).toPromise();
+  }
+
 }

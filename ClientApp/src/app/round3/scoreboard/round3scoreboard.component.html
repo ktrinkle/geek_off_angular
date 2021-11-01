@@ -1,14 +1,15 @@
 <div id="jeopardy">
-  <div id="dynscore">
-    <div style="height: 50vh" fxLayout="row wrap" fxLayoutGap="16px grid">
-      <div fxFlex="33%" *ngFor="let score of scores">
-        <div class="score_j score_{{ score.color }}">
-          {{ score.teamScore }}:
+    <div id="dynscore">
+        <div style="height: 45vh"></div>
+        <div style="height: 50vh" fxLayout="row wrap" fxLayoutGap="16px grid">
+            <div fxFlex="33%" *ngFor="let score of scores">
+                <div class="score_j score_{{ score.color }}">
+                    {{ score.teamScore }}:
+                </div>
+                <div class="name_j name_j_{{ score.color }}">
+                    {{ score.teamName }}
+                </div>
+            </div>
         </div>
-        <div class="name_j name_j_{{ score.color }}">
-          {{ score.teamName }}
-        </div>
-      </div>
     </div>
-  </div>
 </div>
