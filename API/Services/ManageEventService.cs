@@ -461,6 +461,7 @@ namespace GeekOff.Services
                                      join tr in _contextGo.Teamreference
                                      on new { rr.TeamNo, rr.Yevent } equals new { tr.TeamNo, tr.Yevent }
                                      where rr.RoundNo == 2
+                                     && rr.Yevent == yEvent
                                      && rr.Rnk < 4
                                      orderby rr.Rnk
                                      select new IntroDto()
