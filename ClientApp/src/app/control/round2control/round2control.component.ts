@@ -140,6 +140,8 @@ export class Round2controlComponent implements OnInit, OnDestroy {
         playerNum: new FormControl('', [Validators.pattern('1|2')]),
         questions: qArray,
       });
+
+      console.log(this.newEventForm);
     });
   }
 

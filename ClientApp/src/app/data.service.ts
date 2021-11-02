@@ -204,6 +204,11 @@ export class DataService {
     return this.httpClient.put(uri, {}, { params: params, responseType: 'text' });
   }
 
+  public updateRound3Scores(scores: round3AnswerDto[]): Observable<any> {
+    var uri = this.REST_API_SERVER + '/api/round3/teamAnswer';
+    return this.httpClient.post(uri, scores, { responseType: 'text' });
+  }
+
   public getAllRound3Questions(yevent: string): Observable<any> {
     var uri = this.REST_API_SERVER + '/api/round3/allQuestions/' + encodeURIComponent(yevent) + '';
     return this.httpClient.get(uri);
