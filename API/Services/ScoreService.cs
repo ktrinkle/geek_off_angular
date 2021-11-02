@@ -24,7 +24,7 @@ namespace GeekOff.Services
             // looks up current team from DB for state
             // calculates total and places in DTO
 
-            var currentScore = await _contextGo.Scoring.Where(s => s.RoundNo == 2 && s.TeamNo == teamNo && s.Yevent == yEvent)
+            var currentScore = await _contextGo.Scoring.Where(s => s.RoundNo == 2 && s.TeamNo == teamNo && s.Yevent == yEvent && s.QuestionNo != 206)
                                 .OrderBy(s => s.QuestionNo).OrderBy(s => s.PlayerNum).ToListAsync();
 
             if (currentScore is null)
@@ -32,7 +32,8 @@ namespace GeekOff.Services
                 return null;
             }
 
-            var allQuestion = await _contextGo.QuestionAns.Where(q => q.RoundNo == 2).OrderBy(q => q.QuestionNo).ToListAsync();
+            var allQuestion = await _contextGo.QuestionAns.Where(q => q.RoundNo == 2 && q.QuestionNo != 206 && q.Yevent == yEvent)
+                                .OrderBy(q => q.QuestionNo).ToListAsync();
 
             var player1Result = currentScore.Where(s => s.PlayerNum == 1).OrderBy(s => s.QuestionNo);
             var player2Result = currentScore.Where(s => s.PlayerNum == 2).OrderBy(s => s.QuestionNo);
