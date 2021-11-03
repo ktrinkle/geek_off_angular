@@ -135,7 +135,7 @@ namespace GeekOff.Services
 
         }
 
-        public async Task<List<Round23Scores>> GetRound23Scores(string yEvent, int roundNo)
+        public async Task<List<Round23Scores>> GetRound23Scores(string yEvent, int roundNo, int maxRnk)
         {
             if (yEvent == null || roundNo < 2 || roundNo > 3)
             {
@@ -147,6 +147,7 @@ namespace GeekOff.Services
                                   on new { rr.TeamNo, rr.Yevent } equals new { t.TeamNo, t.Yevent }
                                   where rr.RoundNo == roundNo - 1
                                   && rr.Yevent == yEvent
+                                  && rr.rnk <= maxRnk
                                   orderby rr.Rnk
                                   select new Round23Scores()
                                   {
