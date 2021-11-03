@@ -70,29 +70,14 @@ Automated testing is not enforced or required.
 
 # Work to be completed
 
-## Round 2
+## General
 
-1. Store (ngrx) - library installed but that's it
-2. Countdown timer screen/component - Diyalo
-  * Supports countdown from 20 or 25 seconds
-  * Import something and style?
-  * Kicks off from control screen
-3. Results component - Kristin (people see this - big screen)
-  * Shows columns of answers and scores
-  * API: /api/round2/bigBoard/{yEvent}/{teamNo}
-  * Text should be animated
-4. Control screen (behind the scenes) - Grant
-  * Show list of questions and answers from database. API: /api/round2/allSurvey/{yEvent}
-  * Enter answer that team gives for question and points. API: /api/round2/teamAnswer/text, /api/round2/teamAnswer/survey from button
-  * Finalize the round. /api/round2/finalize/{yevent}
-5. Host screen (host cellphone) - Dan - completed.
-  * Show questions on the phone. API: /api/round2/allQuestions/{yEvent}
-6. Scoreboard (lower priority) - completed
-  * API: /api/round2/scoreboard/{yEvent}
-
-## Round 1
-
-1. CSS - cleaning up formatting
-2. Implementing timeout protection for SignalR connections
-3. Fixing the manual scoring form in round1control
-4. Scoreboard - Kristin helping
+* Improve loading of current question state on resync to SignalR - round1/contestant
+* Convert contestants to QR code scan and generate QR codes - remove contestants from login
+* Autoplay intro video if it's even possible
+* Edit teams and participants
+* Round 1 - manual answers if needed
+* Round 2 and 3 team load from roundresult - limit to 6/3 teams
+* Round 2 - improve UI and reduce confusion on second player. Don't allow loading for first player after complete
+* Round 3 - move slides into system
+* Round 3 - Geekomatic refactor and control questions from here, SignalR factor to Python
