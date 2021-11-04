@@ -148,6 +148,7 @@ namespace GeekOff.Services
                                   where rr.RoundNo == roundNo - 1
                                   && rr.Yevent == yEvent
                                   && rr.Rnk <= maxRnk
+
                                   orderby rr.Rnk
                                   select new Round23Scores()
                                   {

@@ -123,7 +123,7 @@ namespace GeekOff.Controllers
         [HttpGet("firstPlayersAnswers/{yEvent}/{teamNum}")]
         [SwaggerOperation(Summary = "Returns the first Players answers for round 2")]
         public async Task<ActionResult<Round23Scores>> GetFirstPlayersAnswersAsync(string yEvent, int teamNum)
-            => Ok(await _scoreService.GetFirstPlayersAnswers(yEvent, teamNum));
+            => Ok(await _scoreService.GetFirstPlayersAnswers(yEvent, teamNum, 6));
 
         // Countdown SignalR.
         [Authorize(Roles = "admin")]
