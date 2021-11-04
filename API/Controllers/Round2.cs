@@ -74,7 +74,7 @@ namespace GeekOff.Controllers
         [HttpGet("scoreboard/{yEvent}")]
         [SwaggerOperation(Summary = "Returns the scoreboard for round 2")]
         public async Task<ActionResult<Round23Scores>> GetRound23ScoresAsync(string yEvent)
-            => Ok(await _scoreService.GetRound23Scores(yEvent, 2));
+            => Ok(await _scoreService.GetRound23Scores(yEvent, 2, 6));
 
         [Authorize(Roles = "admin")]
         [HttpGet("bigboard/reveal/{entryNum}")]
@@ -123,7 +123,7 @@ namespace GeekOff.Controllers
         [HttpGet("firstPlayersAnswers/{yEvent}/{teamNum}")]
         [SwaggerOperation(Summary = "Returns the first Players answers for round 2")]
         public async Task<ActionResult<Round23Scores>> GetFirstPlayersAnswersAsync(string yEvent, int teamNum)
-            => Ok(await _scoreService.GetFirstPlayersAnswers(yEvent, teamNum, 6));
+            => Ok(await _scoreService.GetFirstPlayersAnswers(yEvent, teamNum));
 
         // Countdown SignalR.
         [Authorize(Roles = "admin")]
