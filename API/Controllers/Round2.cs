@@ -99,7 +99,7 @@ namespace GeekOff.Controllers
         [SwaggerOperation(Summary = "Change team for the big board.")]
         public async Task<ActionResult> ChangeDisplayBoardTeamAsync(int teamNum)
         {
-            await _eventHub.Clients.All.SendAsync("round2ChangeTeam", teamNum);
+            await _eventHub.Clients.All.SendAsync("round2ChangeTeam", teamNum, 6);
             return Ok();
         }
 
@@ -123,7 +123,7 @@ namespace GeekOff.Controllers
         [HttpGet("firstPlayersAnswers/{yEvent}/{teamNum}")]
         [SwaggerOperation(Summary = "Returns the first Players answers for round 2")]
         public async Task<ActionResult<Round23Scores>> GetFirstPlayersAnswersAsync(string yEvent, int teamNum)
-            => Ok(await _scoreService.GetFirstPlayersAnswers(yEvent, teamNum, 6));
+            => Ok(await _scoreService.GetFirstPlayersAnswers(yEvent, teamNum));
 
         // Countdown SignalR.
         [Authorize(Roles = "admin")]
