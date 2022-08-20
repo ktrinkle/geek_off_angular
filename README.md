@@ -4,7 +4,7 @@ Replacement for round 1 & 2 of the Geek Off at my employer. A work in progress.
 
 # Requirements
 
-* .NET Core 5.x SDK
+* .NET 6.x SDK
 * NPM/Node 14+
 * Azure account to support Azure AD - if installing from the repo without using any established infrastructure, you will need to set up the application in Azure AD. Refer to Microsoft documentation to establish the tenant and client ID required below.
 
@@ -35,6 +35,7 @@ Fonts used in the scoreboard are not included for copyright reasons. These fonts
 | sportstype.ttf | http://tpirepguide.com/qwizx/tpirfonts/sportstype.zip | Round 3 scores | Rename the file from "Sports Type Full.ttf" |
 | fast-money-three.ttf | https://fontstruct.com/fontstructions/show/1181116/fast_money_three | Round 2 board | |
 | ARCADECLASSIC.ttf | https://dl.dafont.com/dl/?f=arcade_classic_2 | Round 2 Scoreboard | |
+| korinna.otf | Commercial font | Round 3 questions | ITC Korinna |
 
 These, along with required media files, are stored in an Azure Storage account. Fonts are required to be open to the public, but other items behind authentication may be kept behind AD auth (if there aren't any issues...)
 
@@ -62,7 +63,11 @@ SignalR communication uses the endpoint `/events`.
 
 # Authentication
 
-Logins are handled via the standard Microsoft Authentication Library (MSAL). Logins are restricted to the Geekoff active directory - contact Kevin Trinkle to obtain a login.
+Current: Logins are handled via the standard Microsoft Authentication Library (MSAL). Logins are restricted to the Geekoff active directory - contact Kevin Trinkle to obtain a login.
+
+Future: There are two paths to be followed:
+1. Contestant login will be handled via QR code. 
+1. Admin login will be handled via home grown code, or possibly MSAL...? Need to ponder this.
 
 # Automated tests
 

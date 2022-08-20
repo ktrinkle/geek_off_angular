@@ -9,6 +9,6 @@ namespace GeekOff.Data
     {
         [Key]
         public int Id { get; set; }
-        public string ErrorMessage { get; set; }
+        public string? ErrorMessage { get; set; }
     }
 }

@@ -9,11 +9,11 @@ namespace GeekOff.Data
     {
         [MaxLength(6)]
         public string Yevent { get; set; }
-        public int TeamNo { get; set; }
-        public int QuestionNo { get; set; }
-        public int? RoundNo { get; set; }
-        public string TextAnswer { get; set; }
-        public string AnswerUser { get; set; }
+        public int TeamNum { get; set; }
+        public int QuestionNum { get; set; }
+        public int? RoundNum { get; set; }
+        public string? TextAnswer { get; set; }
+        public string? AnswerUser { get; set; }
         public DateTime AnswerTime { get; set; }
     }
 }

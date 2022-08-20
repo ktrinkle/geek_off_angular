@@ -58,6 +58,10 @@ import { CountdownModule } from 'ngx-countdown';
 import { Round2countdowndialogComponent } from './round2/round2countdowndialog/round2countdowndialog.component';
 import { Round3scoreboardComponent } from './round3/scoreboard/round3scoreboard.component';
 import { DisplayTeamInfoPipe, Round3controlComponent } from './control/round3control/round3control.component';
+import { TeamsetupComponent } from './eventsetup/teamsetup/teamsetup.component';
+import { TeamstatsComponent } from './eventsetup/teamstats/teamstats.component';
+import { TeamlinkComponent } from './eventsetup/teamlink/teamlink.component';
+import { EventchooserComponent } from './eventsetup/eventchooser/eventchooser.component';
 
 /**
  * Here we pass the configuration parameters to create an MSAL instance.
@@ -125,7 +129,11 @@ export function MSALInterceptorFactory(): MsalInterceptorConfiguration {
     Round2countdowndialogComponent,
     Round3scoreboardComponent,
     Round3controlComponent,
-    DisplayTeamInfoPipe
+    DisplayTeamInfoPipe,
+    TeamsetupComponent,
+    TeamstatsComponent,
+    TeamlinkComponent,
+    EventchooserComponent
   ],
   imports: [
     BrowserModule,

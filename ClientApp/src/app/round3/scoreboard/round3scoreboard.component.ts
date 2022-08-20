@@ -15,7 +15,7 @@ import { takeUntil } from 'rxjs/operators';
 })
 export class Round3scoreboardComponent implements OnInit, OnDestroy {
   yEvent = '';
-  public roundNo: number = 2;
+  public RoundNum: number = 2;
   public scores: round23Scores[] = [];
   public colors: string[] = [
     'red',

@@ -16,7 +16,7 @@ import { Router } from '@angular/router';
 })
 export class Round2scoreboardComponent implements OnInit, OnDestroy {
   yEvent = '';
-  public roundNo: number = 2;
+  public roundNum: number = 2;
   public scores: round23Scores[] = [];
   public colors: string[] = [
     'coral',

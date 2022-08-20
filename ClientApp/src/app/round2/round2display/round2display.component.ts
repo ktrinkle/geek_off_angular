@@ -53,7 +53,7 @@ export class Round2displayComponent implements OnInit, OnDestroy {
   showTotalPlayer1 = 10;
   showTotalPlayer2 = 20;
   displayObject: round2Display = {
-    teamNo: 0,
+    teamNum: 0,
     player1Answers: [],
     player2Answers: [],
     finalScore: 0
@@ -111,7 +111,7 @@ export class Round2displayComponent implements OnInit, OnDestroy {
   getDisplayBoard(): void {
     this.dataService.getRound2DisplayBoard(this.yEvent, this.teamNumber).pipe(takeUntil(this.destroy$)).subscribe(x => {
       this.displayRows = [];
-      this.teamNumber = x.teamNo;
+      this.teamNumber = x.teamNum;
       this.totalScore = x.finalScore;
       let questionNumbers = [...new Set([...x.player1Answers.map((q: round2Answers) => q.questionNum), ...x.player2Answers.map((q: round2Answers) => q.questionNum)])];
       questionNumbers = questionNumbers.sort((a, b) => (a > b) ? 1 : -1);

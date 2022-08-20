@@ -28,8 +28,8 @@
         <label for="teamNumber">Team number:</label>
         <select id="teamNumber" formControlName="teamNumber" (change)="fundFormStatus = ''">
           <option>--</option>
-          <option *ngFor="let team of teamList" [value]="team.teamNo">
-            {{team.teamNo}} - {{team.teamName}}
+          <option *ngFor="let team of teamList" [value]="team.teamNum">
+            {{team.teamNum}} - {{team.teamName}}
           </option>
         </select>
         <label for="dollarAmount">Dollars raised:</label>

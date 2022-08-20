@@ -39,15 +39,15 @@ namespace GeekOff.Data
             }
 
             // handle composite PK
-            modelBuilder.Entity<QuestionAns>(entity => entity.HasKey(k => new { k.Yevent, k.RoundNo, k.QuestionNo }));
+            modelBuilder.Entity<QuestionAns>(entity => entity.HasKey(k => new { k.Yevent, k.RoundNum, k.QuestionNum }));
 
-            modelBuilder.Entity<Scoreposs>(entity => entity.HasKey(k => new { k.Yevent, k.RoundNo, k.QuestionNo, k.SurveyOrder }));
+            modelBuilder.Entity<Scoreposs>(entity => entity.HasKey(k => new { k.Yevent, k.RoundNum, k.QuestionNum, k.SurveyOrder }));
 
-            modelBuilder.Entity<Roundresult>(entity => entity.HasKey(k => new { k.Yevent, k.RoundNo, k.TeamNo }));
+            modelBuilder.Entity<Roundresult>(entity => entity.HasKey(k => new { k.Yevent, k.RoundNum, k.TeamNum }));
 
-            modelBuilder.Entity<Teamreference>(entity => entity.HasKey(k => new { k.Yevent, k.TeamNo }));
+            modelBuilder.Entity<Teamreference>(entity => entity.HasKey(k => new { k.Yevent, k.TeamNum }));
 
-            modelBuilder.Entity<UserAnswer>(entity => entity.HasKey(k => new { k.Yevent, k.RoundNo, k.TeamNo, k.QuestionNo }));
+            modelBuilder.Entity<UserAnswer>(entity => entity.HasKey(k => new { k.Yevent, k.RoundNum, k.TeamNum, k.QuestionNum }));
 
             modelBuilder.CreateEventMasterData();
             modelBuilder.CreateQuestionAnsData();

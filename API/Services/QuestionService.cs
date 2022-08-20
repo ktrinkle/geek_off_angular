@@ -22,7 +22,7 @@ namespace GeekOff.Services
         public async Task<List<Round1QuestionDisplay>> GetRound1QuestionAsync(string yEvent)
         {
             var questionList = await _contextGo.QuestionAns.Where(q => q.Yevent == yEvent
-                                                            && q.RoundNo == 1).ToListAsync();
+                                                            && q.RoundNum == 1).ToListAsync();
 
             if (questionList is null)
             {
@@ -35,7 +35,7 @@ namespace GeekOff.Services
             {
                 var qDisplay = new Round1QuestionDisplay()
                     {
-                        QuestionNum = question.QuestionNo,
+                        QuestionNum = question.QuestionNum,
                         QuestionText = question.TextQuestion,
                         Answers = new List<Round1Answers>(),
                         MediaFile = question.MediaFile,
@@ -84,11 +84,11 @@ namespace GeekOff.Services
             return questionReturn;
         }
 
-        public async Task<Round1QuestionDto> GetRound1QuestionWithAnswer(string yEvent, int questionNo)
+        public async Task<Round1QuestionDto> GetRound1QuestionWithAnswer(string yEvent, int QuestionNum)
         {
-            var question = await _contextGo.QuestionAns.SingleOrDefaultAsync(q => q.QuestionNo == questionNo
+            var question = await _contextGo.QuestionAns.SingleOrDefaultAsync(q => q.QuestionNum == QuestionNum
                                                                             && q.Yevent == yEvent
-                                                                            && q.RoundNo == 1);
+                                                                            && q.RoundNum == 1);
 
             if (question is null)
             {
@@ -97,7 +97,7 @@ namespace GeekOff.Services
 
             var questionReturn = new Round1QuestionDto()
             {
-                QuestionNum = questionNo,
+                QuestionNum = QuestionNum,
                 QuestionText = question.TextQuestion,
                 Answers = new List<Round1Answers>(),
                 ExpireTime = DateTime.UtcNow.AddSeconds(60)
@@ -143,7 +143,7 @@ namespace GeekOff.Services
         public async Task<List<Round1QuestionDto>> GetRound1QuestionListWithAnswers(string yEvent)
         {
             var questionList = await _contextGo.QuestionAns.Where(q => q.Yevent == yEvent
-                                                                            && q.RoundNo == 1).ToListAsync();
+                                                                            && q.RoundNum == 1).ToListAsync();
 
             if (questionList is null)
             {
@@ -155,7 +155,7 @@ namespace GeekOff.Services
             foreach (var question in questionList)
             {
                 var currentQuestion = new Round1QuestionDto() {
-                    QuestionNum = question.QuestionNo,
+                    QuestionNum = question.QuestionNum,
                     QuestionText = question.TextQuestion,
                     Answers = new List<Round1Answers>()
                 };
@@ -206,7 +206,7 @@ namespace GeekOff.Services
             var returnList = new List<Round1QuestionControlDto>();
 
             var questions = await _contextGo.QuestionAns.Where(q => q.Yevent == yEvent
-                                                        && q.RoundNo == 1).ToListAsync();
+                                                        && q.RoundNum == 1).ToListAsync();
 
             foreach (var question in questions)
             {
@@ -228,7 +228,7 @@ namespace GeekOff.Services
 
                 var transformedQuestion = new Round1QuestionControlDto()
                 {
-                    QuestionNum = question.QuestionNo,
+                    QuestionNum = question.QuestionNum,
                     QuestionText = question.TextQuestion,
                     AnswerType = answerType,
                     AnswerText = question.TextAnswer
@@ -282,7 +282,7 @@ namespace GeekOff.Services
                 return false;
             }
 
-            var existAnswer = await _contextGo.UserAnswer.Where(u => u.QuestionNo == questionId && u.TeamNo == playerInfo.TeamNo && u.Yevent == yEvent).ToListAsync();
+            var existAnswer = await _contextGo.UserAnswer.Where(u => u.QuestionNum == questionId && u.TeamNum == playerInfo.TeamNum && u.Yevent == yEvent).ToListAsync();
             if (existAnswer is not null)
             {
                 _contextGo.UserAnswer.RemoveRange(existAnswer);
@@ -292,10 +292,10 @@ namespace GeekOff.Services
             var newAnswer = new UserAnswer()
             {
                 Yevent = yEvent,
-                TeamNo = playerInfo.TeamNo,
-                QuestionNo = questionId,
+                TeamNum = playerInfo.TeamNum,
+                QuestionNum = questionId,
                 TextAnswer = answerText,
-                RoundNo = 1,
+                RoundNum = 1,
                 AnswerTime = DateTime.UtcNow,
                 AnswerUser = answerUser
             };

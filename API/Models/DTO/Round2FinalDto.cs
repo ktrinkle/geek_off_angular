@@ -7,7 +7,7 @@ namespace GeekOff.Models
 {
     public class Round2FinalDto
     {
-        public int TeamNo { get; set; }
+        public int TeamNum { get; set; }
         public int? FinalScore { get; set; }
     }
 

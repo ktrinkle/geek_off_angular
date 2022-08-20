@@ -34,7 +34,7 @@ namespace GeekOff.Controllers
         [HttpGet("currentEvent")]
         [SwaggerOperation(Summary = "Get the current event. Called as part of app.component.ts.")]
         public async Task<ActionResult<string>> GetCurrentEventAsync()
-            => Ok(await _manageEventService.GetCurrentEvent());
+            => Ok(await _manageEventService.GetCurrentEventAsync());
 
         [Authorize(Roles = "admin,player")]
         [HttpGet("currentQuestion/{yEvent}")]
@@ -56,12 +56,6 @@ namespace GeekOff.Controllers
         [SwaggerOperation(Summary = "Get current user and team info from database based on logged in user.")]
         public async Task<ActionResult<string>> UpdateFundAmountAsync(string yEvent, int teamNum, decimal? dollarAmount)
             => Ok(await _manageEventService.UpdateFundAmountAsync(yEvent, teamNum, dollarAmount));
-
-        [Authorize(Roles = "admin")]
-        [HttpPut("cleanEvent/{yEvent}")]
-        [SwaggerOperation(Summary = "Clean all results out of system for this event.")]
-        public async Task<ActionResult<string>> ResetEventAsync(string yEvent)
-            => Ok(await _manageEventService.ResetEvent(yEvent));
 
     }
 }

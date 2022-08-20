@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
 import { environment } from './../environments/environment';
-import { round2SurveyList, round2SubmitAnswer, round3AnswerDto, round3QuestionDto } from './data/data';
+import { round2SurveyList, round2SubmitAnswer, round3AnswerDto, round3QuestionDto, eventMaster, apiResponse } from './data/data';
 import { Observable } from 'rxjs';
 import * as internal from 'stream';
 
@@ -27,6 +27,21 @@ export class DataService {
   public getCurrentEvent(): Observable<any> {
     var uri = this.REST_API_SERVER + '/api/eventStatus/currentEvent';
     return this.httpClient.get(uri, { responseType: "text" });
+  }
+
+  public getAllEvents(): Observable<any> {
+    var uri = this.REST_API_SERVER + '/api/eventmanage/eventList';
+    return this.httpClient.get(uri);
+  }
+
+  public setCurrentEvent(yevent: string): Observable<any> {
+    var uri = this.REST_API_SERVER + '/api/eventmanage/setEvent/' + encodeURIComponent(yevent) + '';
+    return this.httpClient.put(uri, {});
+  }
+
+  public addNewEvent(newEvent: eventMaster): Observable<any> {
+    var uri = this.REST_API_SERVER + '/api/eventmanage/addEvent';
+    return this.httpClient.post(uri, newEvent);
   }
 
   public getCurrentQuestion(yevent: string): Observable<any> {
@@ -235,7 +250,7 @@ export class DataService {
   }
 
   public cleanEventData(yEvent: string): Promise<any> {
-    var uri = this.REST_API_SERVER + '/api/eventstatus/cleanEvent/' + encodeURIComponent(yEvent) + '';
+    var uri = this.REST_API_SERVER + '/api/eventmanage/cleanEvent/' + encodeURIComponent(yEvent) + '';
     return this.httpClient.put(uri, {}, { responseType: 'text' }).toPromise();
   }
 

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using GeekOff.Models;
+using GeekOff.Data;
 
 namespace GeekOff.Services
 {
@@ -14,7 +15,10 @@ namespace GeekOff.Services
         Task<string> FinalizeRound(string yEvent, int roundNum);
         Task<List<Round1EnteredAnswers>> ShowRound1TeamEnteredAnswers(string yEvent, int questionId);
         Task<List<IntroDto>> GetTeamList(string yEvent);
-        Task<string> GetCurrentEvent();
+        Task<string> GetCurrentEventAsync();
+        Task<List<EventMaster>> GetAllEventsAsync();
+        Task<ApiResponse> AddEventAsync(EventMaster newEvent);
+        Task<ApiResponse> SetCurrentEventAsync(string yEvent);
         Task<CurrentQuestionDto> GetCurrentQuestion(string yEvent);
         Task<CurrentQuestionDto> SetCurrentQuestionStatus(string yEvent, int questionId, int status);
         Task<string> UpdateFundAmountAsync(string yEvent, int teamNum, decimal? dollarAmount);

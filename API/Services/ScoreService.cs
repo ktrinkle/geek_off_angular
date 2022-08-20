@@ -19,24 +19,24 @@ namespace GeekOff.Services
             _contextGo = context;
         }
 
-        public async Task<Round2BoardDto> GetRound2DisplayBoard(string yEvent, int teamNo)
+        public async Task<Round2BoardDto> GetRound2DisplayBoard(string yEvent, int TeamNum)
         {
             // looks up current team from DB for state
             // calculates total and places in DTO
 
-            var currentScore = await _contextGo.Scoring.Where(s => s.RoundNo == 2 && s.TeamNo == teamNo && s.Yevent == yEvent)
-                                .OrderBy(s => s.QuestionNo).OrderBy(s => s.PlayerNum).ToListAsync();
+            var currentScore = await _contextGo.Scoring.Where(s => s.RoundNum == 2 && s.TeamNum == TeamNum && s.Yevent == yEvent)
+                                .OrderBy(s => s.QuestionNum).OrderBy(s => s.PlayerNum).ToListAsync();
 
             if (currentScore is null)
             {
                 return null;
             }
 
-            var allQuestion = await _contextGo.QuestionAns.Where(q => q.RoundNo == 2 && q.QuestionNo < 206 && q.Yevent == yEvent)
-                                .OrderBy(q => q.QuestionNo).ToListAsync();
+            var allQuestion = await _contextGo.QuestionAns.Where(q => q.RoundNum == 2 && q.QuestionNum < 206 && q.Yevent == yEvent)
+                                .OrderBy(q => q.QuestionNum).ToListAsync();
 
-            var player1Result = currentScore.Where(s => s.PlayerNum == 1).OrderBy(s => s.QuestionNo);
-            var player2Result = currentScore.Where(s => s.PlayerNum == 2).OrderBy(s => s.QuestionNo);
+            var player1Result = currentScore.Where(s => s.PlayerNum == 1).OrderBy(s => s.QuestionNum);
+            var player2Result = currentScore.Where(s => s.PlayerNum == 2).OrderBy(s => s.QuestionNum);
 
             var player1 = new List<Round2Answers>();
             var player2 = new List<Round2Answers>();
@@ -48,7 +48,7 @@ namespace GeekOff.Services
                 {
                     var result = new Round2Answers()
                     {
-                        QuestionNum = playerScore.QuestionNo,
+                        QuestionNum = playerScore.QuestionNum,
                         Answer = playerScore.TeamAnswer.ToUpper(),
                         Score = (int)playerScore.PointAmt
                     };
@@ -64,7 +64,7 @@ namespace GeekOff.Services
                 {
                     var result = new Round2Answers()
                     {
-                        QuestionNum = emptyScore.QuestionNo
+                        QuestionNum = emptyScore.QuestionNum
                     };
                     player1.Add(result);
                     player2.Add(result);
@@ -77,7 +77,7 @@ namespace GeekOff.Services
             {
                 var result = new Round2Answers()
                 {
-                    QuestionNum = playerScore.QuestionNo,
+                    QuestionNum = playerScore.QuestionNum,
                     Answer = playerScore.TeamAnswer.ToUpper(),
                     Score = (int)playerScore.PointAmt
                 };
@@ -87,7 +87,7 @@ namespace GeekOff.Services
 
             var returnResult = new Round2BoardDto()
             {
-                TeamNo = teamNo,
+                TeamNum = TeamNum,
                 Player1Answers = player1,
                 Player2Answers = player2,
                 FinalScore = totalScore
@@ -108,17 +108,17 @@ namespace GeekOff.Services
                                 .Select(tr => new Round1Scores()
                                 {
                                     TeamName = tr.Teamname.ToUpper(),
-                                    TeamNum = tr.TeamNo,
+                                    TeamNum = tr.TeamNum,
                                     Bonus = tr.Dollarraised >= 200 ? 10 : tr.Dollarraised > 100 ? (int)(tr.Dollarraised - 100) / 10 : 0,
                                     Q = (from q in _contextGo.QuestionAns
                                          join s in _contextGo.Scoring
-                                         on new { q.RoundNo, q.QuestionNo, q.Yevent, tr.TeamNo }
-                                         equals new { s.RoundNo, s.QuestionNo, s.Yevent, s.TeamNo } into sq
+                                         on new { q.RoundNum, q.QuestionNum, q.Yevent, tr.TeamNum }
+                                         equals new { s.RoundNum, s.QuestionNum, s.Yevent, s.TeamNum } into sq
                                          from sqi in sq.DefaultIfEmpty()
-                                         where q.RoundNo == 1 && q.Yevent == tr.Yevent
+                                         where q.RoundNum == 1 && q.Yevent == tr.Yevent
                                          select new Round1ScoreDetail()
                                          {
-                                             QuestionId = q.QuestionNo,
+                                             QuestionId = q.QuestionNum,
                                              QuestionScore = sqi.PointAmt
                                          }).ToList()
                                 }).ToListAsync();
@@ -135,17 +135,17 @@ namespace GeekOff.Services
 
         }
 
-        public async Task<List<Round23Scores>> GetRound23Scores(string yEvent, int roundNo, int maxRnk)
+        public async Task<List<Round23Scores>> GetRound23Scores(string yEvent, int RoundNum, int maxRnk)
         {
-            if (yEvent == null || roundNo < 2 || roundNo > 3)
+            if (yEvent == null || RoundNum < 2 || RoundNum > 3)
             {
                 return null;
             }
 
             var teamList = await (from rr in _contextGo.Roundresult
                                   join t in _contextGo.Teamreference
-                                  on new { rr.TeamNo, rr.Yevent } equals new { t.TeamNo, t.Yevent }
-                                  where rr.RoundNo == roundNo - 1
+                                  on new { rr.TeamNum, rr.Yevent } equals new { t.TeamNum, t.Yevent }
+                                  where rr.RoundNum == RoundNum - 1
                                   && rr.Yevent == yEvent
                                   && rr.Rnk <= maxRnk
 
@@ -153,23 +153,23 @@ namespace GeekOff.Services
                                   select new Round23Scores()
                                   {
                                       TeamName = t.Teamname,
-                                      TeamNo = t.TeamNo
+                                      TeamNum = t.TeamNum
                                   }).ToListAsync();
 
             // the join was nasty and required a view, so this way avoids that.
 
-            var returnList = await _contextGo.Scoring.Where(s => s.Yevent == yEvent && s.RoundNo == roundNo)
-                                                    .GroupBy(s => s.TeamNo)
+            var returnList = await _contextGo.Scoring.Where(s => s.Yevent == yEvent && s.RoundNum == RoundNum)
+                                                    .GroupBy(s => s.TeamNum)
                                                     .Select(s => new Round23Scores
                                                     {
-                                                        TeamNo = s.Key,
+                                                        TeamNum = s.Key,
                                                         TeamScore = s.Sum(x => (int)x.PointAmt)
                                                     }).ToListAsync();
 
             // merge the 2
             foreach (var team in teamList)
             {
-                var thisTeam = returnList.Find(t => t.TeamNo == team.TeamNo);
+                var thisTeam = returnList.Find(t => t.TeamNum == team.TeamNum);
                 if (thisTeam is not null)
                 {
                     team.TeamScore = thisTeam.TeamScore;
@@ -192,21 +192,21 @@ namespace GeekOff.Services
                 return "Invalid question.";
             }
 
-            var submittedAnswers = await _contextGo.UserAnswer.Where(u => u.QuestionNo == questionId && u.Yevent == yEvent).ToListAsync();
-            var questionInfo = await _contextGo.QuestionAns.FirstOrDefaultAsync(u => u.QuestionNo == questionId && u.Yevent == yEvent);
+            var submittedAnswers = await _contextGo.UserAnswer.Where(u => u.QuestionNum == questionId && u.Yevent == yEvent).ToListAsync();
+            var questionInfo = await _contextGo.QuestionAns.FirstOrDefaultAsync(u => u.QuestionNum == questionId && u.Yevent == yEvent);
 
             if (questionInfo is null)
             {
                 return "Unable to load question.";
             }
 
-            var submittedTeams = submittedAnswers.Select(t => t.TeamNo).ToList();
+            var submittedTeams = submittedAnswers.Select(t => t.TeamNum).ToList();
 
             var correctAnswer = questionInfo.CorrectAnswer;
             var scoring = new List<Scoring>();
 
             // remove existing answers for the auto-score process
-            var answersToRemove = await _contextGo.Scoring.Where(s => s.Yevent == yEvent && s.RoundNo == 1 && submittedTeams.Contains(s.TeamNo) && s.QuestionNo == questionId).ToListAsync();
+            var answersToRemove = await _contextGo.Scoring.Where(s => s.Yevent == yEvent && s.RoundNum == 1 && submittedTeams.Contains(s.TeamNum) && s.QuestionNum == questionId).ToListAsync();
 
             if (answersToRemove is not null)
             {
@@ -221,9 +221,9 @@ namespace GeekOff.Services
                     var teamScore = new Scoring()
                     {
                         Yevent = answer.Yevent,
-                        TeamNo = answer.TeamNo,
-                        RoundNo = 1,
-                        QuestionNo = answer.QuestionNo,
+                        TeamNum = answer.TeamNum,
+                        RoundNum = 1,
+                        QuestionNum = answer.QuestionNum,
                         TeamAnswer = answer.TextAnswer,
                         PointAmt = 10,
                         Updatetime = answer.AnswerTime
@@ -243,7 +243,7 @@ namespace GeekOff.Services
         {
             // we don't need to look at the answer since a human has done so. But we are flipping the score if it exists.
 
-            var scoring = await _contextGo.Scoring.Where(s => s.Yevent == yEvent && s.TeamNo == teamNum && s.QuestionNo == questionId).ToListAsync();
+            var scoring = await _contextGo.Scoring.Where(s => s.Yevent == yEvent && s.TeamNum == teamNum && s.QuestionNum == questionId).ToListAsync();
 
             if (scoring.Count > 0)
             {
@@ -256,7 +256,7 @@ namespace GeekOff.Services
 
             if (scoring.Count == 0)
             {
-                var teamAnswer = await _contextGo.UserAnswer.FirstOrDefaultAsync(u => u.Yevent == yEvent && u.QuestionNo == questionId && u.TeamNo == teamNum);
+                var teamAnswer = await _contextGo.UserAnswer.FirstOrDefaultAsync(u => u.Yevent == yEvent && u.QuestionNum == questionId && u.TeamNum == teamNum);
 
                 if (teamAnswer is not null)
                 {
@@ -264,9 +264,9 @@ namespace GeekOff.Services
                     var teamScore = new Scoring()
                     {
                         Yevent = yEvent,
-                        TeamNo = teamNum,
-                        RoundNo = 1,
-                        QuestionNo = questionId,
+                        TeamNum = teamNum,
+                        RoundNum = 1,
+                        QuestionNum = questionId,
                         TeamAnswer = teamAnswer.TextAnswer,
                         PointAmt = 10,
                         Updatetime = teamAnswer.AnswerTime
@@ -286,17 +286,17 @@ namespace GeekOff.Services
 
         public async Task<List<Round2Answers>> GetFirstPlayersAnswers(string yEvent, int teamNum)
         {
-            var playerList = await _contextGo.Scoring.Where(x => x.RoundNo == 2 &&
-                                                     x.TeamNo == teamNum && x.Yevent == yEvent)
+            var playerList = await _contextGo.Scoring.Where(x => x.RoundNum == 2 &&
+                                                     x.TeamNum == teamNum && x.Yevent == yEvent)
                                               .FirstOrDefaultAsync();
 
             if (playerList.PlayerNum is not null)
             {
-                var answers = await _contextGo.Scoring.Where(x => x.RoundNo == 2 &&
-                                                       x.TeamNo == teamNum &&
+                var answers = await _contextGo.Scoring.Where(x => x.RoundNum == 2 &&
+                                                       x.TeamNum == teamNum &&
                                                        x.PlayerNum == playerList.PlayerNum)
                                                 .Select(x => new Round2Answers {
-                                                                    QuestionNum = x.QuestionNo,
+                                                                    QuestionNum = x.QuestionNum,
                                                                     Answer = x.TeamAnswer,
                                                                     Score = (int)x.PointAmt
                                                 }).ToListAsync();

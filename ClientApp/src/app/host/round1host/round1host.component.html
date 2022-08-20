@@ -5,7 +5,7 @@
     <hr />
     <h3>Round 1 - Current team answers</h3>
     <mat-table class="round1ControlScoreboard" [dataSource]="teamAnswers">
-        <ng-container matColumnDef="sbteamNo">
+        <ng-container matColumnDef="sbteamNum">
             <mat-header-cell *matHeaderCellDef> Team # </mat-header-cell>
             <mat-cell *matCellDef="let row">
                 {{row.teamNum}}
@@ -20,7 +20,7 @@
         </ng-container>
 
         <!-- Header and Row Declarations -->
-        <mat-header-row *matHeaderRowDef="['sbteamNo', 'sbteamAnswer']"></mat-header-row>
-        <mat-row *matRowDef="let row; columns: ['sbteamNo', 'sbteamAnswer']"></mat-row>
+        <mat-header-row *matHeaderRowDef="['sbteamNum', 'sbteamAnswer']"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: ['sbteamNum', 'sbteamAnswer']"></mat-row>
     </mat-table>
 </div>

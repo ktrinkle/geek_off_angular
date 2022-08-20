@@ -49,7 +49,7 @@ namespace GeekOff.Services
             {
                 PlayerName = loginInfo.PlayerName,
                 UserName = loginInfo.Username,
-                TeamNum = loginInfo.TeamNo,
+                TeamNum = loginInfo.TeamNum,
                 PlayerNum = loginInfo.PlayerNum
             };
 

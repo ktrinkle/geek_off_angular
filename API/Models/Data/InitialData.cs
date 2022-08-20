@@ -26,8 +26,8 @@ namespace GeekOff.Data
             new QuestionAns()
             {
                 Yevent = "e21",
-                QuestionNo = 201,
-                RoundNo = 2,
+                QuestionNum = 201,
+                RoundNum = 2,
                 TextQuestion = "Name your favorite developer."
             }
         };
@@ -37,8 +37,8 @@ namespace GeekOff.Data
             new Scoreposs()
             {
                 Yevent = "e21",
-                RoundNo = 2,
-                QuestionNo = 201,
+                RoundNum = 2,
+                QuestionNum = 201,
                 SurveyOrder = 1,
                 QuestionAnswer = "Kevin",
                 Ptsposs = 8
@@ -46,8 +46,8 @@ namespace GeekOff.Data
             new Scoreposs()
             {
                 Yevent = "e21",
-                RoundNo = 2,
-                QuestionNo = 201,
+                RoundNum = 2,
+                QuestionNum = 201,
                 SurveyOrder = 2,
                 QuestionAnswer = "Kristin",
                 Ptsposs = 7
@@ -55,8 +55,8 @@ namespace GeekOff.Data
             new Scoreposs()
             {
                 Yevent = "e21",
-                RoundNo = 2,
-                QuestionNo = 201,
+                RoundNum = 2,
+                QuestionNum = 201,
                 SurveyOrder = 3,
                 QuestionAnswer = "Diyalo",
                 Ptsposs = 6
@@ -64,8 +64,8 @@ namespace GeekOff.Data
             new Scoreposs()
             {
                 Yevent = "e21",
-                RoundNo = 2,
-                QuestionNo = 201,
+                RoundNum = 2,
+                QuestionNum = 201,
                 SurveyOrder = 5,
                 QuestionAnswer = "Li",
                 Ptsposs = 2
@@ -73,8 +73,8 @@ namespace GeekOff.Data
             new Scoreposs()
             {
                 Yevent = "e21",
-                RoundNo = 2,
-                QuestionNo = 201,
+                RoundNum = 2,
+                QuestionNum = 201,
                 SurveyOrder = 4,
                 QuestionAnswer = "Dan",
                 Ptsposs = 5
@@ -86,13 +86,10 @@ namespace GeekOff.Data
             new Teamreference()
             {
                 Yevent = "e21",
-                TeamNo = 1,
+                TeamNum = 1,
                 Teamname = "Go Aggies",
-                Member1 = "Grant Hill",
-                Member2 = "Brandon Heath",
                 Dollarraised = 1000,
-                Workgroup1 = "IT",
-                Workgroup2 = "IT"
+                TeamGuid = new Guid()
             }
         };
 
@@ -102,7 +99,7 @@ namespace GeekOff.Data
             {
                 Id = 100,
                 Yevent = "e21",
-                TeamNo = 0,
+                TeamNum = 0,
                 Username = "362525@geekoff.onmicrosoft.com",
                 PlayerName = "Kevin Trinkle",
                 AdminFlag = true
@@ -111,7 +108,7 @@ namespace GeekOff.Data
             {
                 Id = 101,
                 Yevent = "e21",
-                TeamNo = 0,
+                TeamNum = 0,
                 Username = "446792@geekoff.onmicrosoft.com",
                 PlayerName = "Kristin Russell",
                 AdminFlag = true
@@ -120,7 +117,7 @@ namespace GeekOff.Data
             {
                 Id = 102,
                 Yevent = "e21",
-                TeamNo = 0,
+                TeamNum = 0,
                 Username = "226250@geekoff.onmicrosoft.com",
                 PlayerName = "Diyalo Manral",
                 AdminFlag = true
@@ -129,7 +126,7 @@ namespace GeekOff.Data
             {
                 Id = 103,
                 Yevent = "e21",
-                TeamNo = 0,
+                TeamNum = 0,
                 Username = "288132@geekoff.onmicrosoft.com",
                 PlayerName = "Dan Mullings",
                 AdminFlag = true
@@ -138,7 +135,7 @@ namespace GeekOff.Data
             {
                 Id = 104,
                 Yevent = "e21",
-                TeamNo = 1,
+                TeamNum = 1,
                 BadgeId = "285557",
                 Username = "285557@geekoff.onmicrosoft.com",
                 PlayerName = "Grant Hill",
@@ -150,7 +147,7 @@ namespace GeekOff.Data
             {
                 Id = 105,
                 Yevent = "e21",
-                TeamNo = 0,
+                TeamNum = 0,
                 Username = "jay.cox_aa.com#EXT#@geekoff.onmicrosoft.com",
                 PlayerName = "Jay Cox",
                 AdminFlag = true
@@ -159,7 +156,7 @@ namespace GeekOff.Data
             {
                 Id = 106,
                 Yevent = "e21",
-                TeamNo = 1,
+                TeamNum = 1,
                 Username = "641903@geekoff.onmicrosoft.com",
                 PlayerName = "Brandon Heath",
                 PlayerNum = 2,
@@ -170,7 +167,7 @@ namespace GeekOff.Data
             {
                 Id = 107,
                 Yevent = "e21",
-                TeamNo = 2,
+                TeamNum = 2,
                 Username = "991023@geekoff.onmicrosoft.com",
                 PlayerName = "Roger Marsolek",
                 PlayerNum = 1,
@@ -181,7 +178,7 @@ namespace GeekOff.Data
             {
                 Id = 108,
                 Yevent = "e21",
-                TeamNo = 0,
+                TeamNum = 0,
                 Username = "kevin.trinkle_aa.com#EXT#@geekoff.onmicrosoft.com",
                 PlayerName = "Kevin Trinkle",
                 PlayerNum = 0,

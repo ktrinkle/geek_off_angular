@@ -13,11 +13,11 @@ import { selectCurrentEvent } from 'src/app/store';
 @Pipe({ name: 'displayTeamInfo' })
 export class DisplayTeamInfoPipe implements PipeTransform {
   transform(teamList: introDto[], teamNumber: number): string {
-    const team = teamList.filter(x => x.teamNo === teamNumber);
+    const team = teamList.filter(x => x.teamNum === teamNumber);
     if (team.length === 0) {
       return '';
     }
-    return `${team[0].teamNo} - ${team[0].teamName}`;
+    return `${team[0].teamNum} - ${team[0].teamName}`;
   }
 }
 
@@ -112,7 +112,7 @@ export class Round3controlComponent implements OnInit, OnDestroy {
       for (let team of this.teamList) {
         tArray.push(
           this.formBuilder.group({
-            teamNum: new FormControl(team.teamNo),
+            teamNum: new FormControl(team.teamNum),
             score: new FormControl('', [Validators.pattern('[0-9]*')])
           })
         );

@@ -6,6 +6,8 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
+#nullable disable
+
 namespace geek_off_angular.Migrations
 {
     [DbContext(typeof(ContextGo))]
@@ -15,24 +17,26 @@ namespace geek_off_angular.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("Relational:MaxIdentifierLength", 63)
-                .HasAnnotation("ProductVersion", "5.0.9")
-                .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                .HasAnnotation("ProductVersion", "6.0.8")
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
+
+            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("GeekOff.Data.CurrentQuestion", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
-                        .HasColumnName("id")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("QuestionNum")
                         .HasColumnType("integer")
                         .HasColumnName("question_num");
 
                     b.Property<DateTime>("QuestionTime")
-                        .HasColumnType("timestamp without time zone")
+                        .HasColumnType("timestamp with time zone")
                         .HasColumnName("question_time");
 
                     b.Property<int>("Status")
@@ -40,6 +44,7 @@ namespace geek_off_angular.Migrations
                         .HasColumnName("status");
 
                     b.Property<string>("YEvent")
+                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("y_event");
 
@@ -53,16 +58,17 @@ namespace geek_off_angular.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
-                        .HasColumnName("id")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                        .HasColumnName("id");
 
-                    b.Property<int>("RoundNo")
-                        .HasColumnType("integer")
-                        .HasColumnName("round_no");
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("TeamNo")
+                    b.Property<int>("RoundNum")
                         .HasColumnType("integer")
-                        .HasColumnName("team_no");
+                        .HasColumnName("round_num");
+
+                    b.Property<int>("TeamNum")
+                        .HasColumnType("integer")
+                        .HasColumnName("team_num");
 
                     b.HasKey("Id");
 
@@ -77,6 +83,7 @@ namespace geek_off_angular.Migrations
                         .HasColumnName("yevent");
 
                     b.Property<string>("EventName")
+                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("event_name");
 
@@ -123,8 +130,9 @@ namespace geek_off_angular.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
-                        .HasColumnName("id")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ErrorMessage")
                         .HasColumnType("text")
@@ -142,17 +150,21 @@ namespace geek_off_angular.Migrations
                         .HasColumnType("character varying(6)")
                         .HasColumnName("yevent");
 
-                    b.Property<int>("RoundNo")
+                    b.Property<int>("RoundNum")
                         .HasColumnType("integer")
-                        .HasColumnName("round_no");
+                        .HasColumnName("round_num");
 
-                    b.Property<int>("QuestionNo")
+                    b.Property<int>("QuestionNum")
                         .HasColumnType("integer")
-                        .HasColumnName("question_no");
+                        .HasColumnName("question_num");
 
                     b.Property<string>("CorrectAnswer")
                         .HasColumnType("text")
                         .HasColumnName("correct_answer");
+
+                    b.Property<bool>("DailyDouble")
+                        .HasColumnType("boolean")
+                        .HasColumnName("daily_double");
 
                     b.Property<bool?>("MatchQuestion")
                         .HasColumnType("boolean")
@@ -190,7 +202,7 @@ namespace geek_off_angular.Migrations
                         .HasColumnType("text")
                         .HasColumnName("text_question");
 
-                    b.HasKey("Yevent", "RoundNo", "QuestionNo");
+                    b.HasKey("Yevent", "RoundNum", "QuestionNum");
 
                     b.ToTable("question_ans");
 
@@ -198,8 +210,9 @@ namespace geek_off_angular.Migrations
                         new
                         {
                             Yevent = "e21",
-                            RoundNo = 2,
-                            QuestionNo = 201,
+                            RoundNum = 2,
+                            QuestionNum = 201,
+                            DailyDouble = false,
                             TextQuestion = "Name your favorite developer."
                         });
                 });
@@ -211,13 +224,13 @@ namespace geek_off_angular.Migrations
                         .HasColumnType("character varying(6)")
                         .HasColumnName("yevent");
 
-                    b.Property<int>("RoundNo")
+                    b.Property<int>("RoundNum")
                         .HasColumnType("integer")
-                        .HasColumnName("round_no");
+                        .HasColumnName("round_num");
 
-                    b.Property<int>("TeamNo")
+                    b.Property<int>("TeamNum")
                         .HasColumnType("integer")
-                        .HasColumnName("team_no");
+                        .HasColumnName("team_num");
 
                     b.Property<decimal?>("Ptswithbonus")
                         .HasColumnType("numeric")
@@ -227,7 +240,7 @@ namespace geek_off_angular.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("rnk");
 
-                    b.HasKey("Yevent", "RoundNo", "TeamNo");
+                    b.HasKey("Yevent", "RoundNum", "TeamNum");
 
                     b.ToTable("roundresult");
                 });
@@ -239,13 +252,13 @@ namespace geek_off_angular.Migrations
                         .HasColumnType("character varying(6)")
                         .HasColumnName("yevent");
 
-                    b.Property<int>("RoundNo")
+                    b.Property<int>("RoundNum")
                         .HasColumnType("integer")
-                        .HasColumnName("round_no");
+                        .HasColumnName("round_num");
 
-                    b.Property<int>("QuestionNo")
+                    b.Property<int>("QuestionNum")
                         .HasColumnType("integer")
-                        .HasColumnName("question_no");
+                        .HasColumnName("question_num");
 
                     b.Property<int>("SurveyOrder")
                         .HasColumnType("integer")
@@ -259,7 +272,7 @@ namespace geek_off_angular.Migrations
                         .HasColumnType("text")
                         .HasColumnName("question_answer");
 
-                    b.HasKey("Yevent", "RoundNo", "QuestionNo", "SurveyOrder");
+                    b.HasKey("Yevent", "RoundNum", "QuestionNum", "SurveyOrder");
 
                     b.ToTable("scoreposs");
 
@@ -267,8 +280,8 @@ namespace geek_off_angular.Migrations
                         new
                         {
                             Yevent = "e21",
-                            RoundNo = 2,
-                            QuestionNo = 201,
+                            RoundNum = 2,
+                            QuestionNum = 201,
                             SurveyOrder = 1,
                             Ptsposs = 8,
                             QuestionAnswer = "Kevin"
@@ -276,8 +289,8 @@ namespace geek_off_angular.Migrations
                         new
                         {
                             Yevent = "e21",
-                            RoundNo = 2,
-                            QuestionNo = 201,
+                            RoundNum = 2,
+                            QuestionNum = 201,
                             SurveyOrder = 2,
                             Ptsposs = 7,
                             QuestionAnswer = "Kristin"
@@ -285,8 +298,8 @@ namespace geek_off_angular.Migrations
                         new
                         {
                             Yevent = "e21",
-                            RoundNo = 2,
-                            QuestionNo = 201,
+                            RoundNum = 2,
+                            QuestionNum = 201,
                             SurveyOrder = 3,
                             Ptsposs = 6,
                             QuestionAnswer = "Diyalo"
@@ -294,8 +307,8 @@ namespace geek_off_angular.Migrations
                         new
                         {
                             Yevent = "e21",
-                            RoundNo = 2,
-                            QuestionNo = 201,
+                            RoundNum = 2,
+                            QuestionNum = 201,
                             SurveyOrder = 5,
                             Ptsposs = 2,
                             QuestionAnswer = "Li"
@@ -303,8 +316,8 @@ namespace geek_off_angular.Migrations
                         new
                         {
                             Yevent = "e21",
-                            RoundNo = 2,
-                            QuestionNo = 201,
+                            RoundNum = 2,
+                            QuestionNum = 201,
                             SurveyOrder = 4,
                             Ptsposs = 5,
                             QuestionAnswer = "Dan"
@@ -316,8 +329,9 @@ namespace geek_off_angular.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
-                        .HasColumnName("id")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int?>("FinalJep")
                         .HasColumnType("integer")
@@ -331,31 +345,32 @@ namespace geek_off_angular.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("point_amt");
 
-                    b.Property<int>("QuestionNo")
+                    b.Property<int>("QuestionNum")
                         .HasColumnType("integer")
-                        .HasColumnName("question_no");
+                        .HasColumnName("question_num");
 
                     b.Property<int?>("Round3neg")
                         .HasColumnType("integer")
                         .HasColumnName("round3neg");
 
-                    b.Property<int>("RoundNo")
+                    b.Property<int>("RoundNum")
                         .HasColumnType("integer")
-                        .HasColumnName("round_no");
+                        .HasColumnName("round_num");
 
                     b.Property<string>("TeamAnswer")
                         .HasColumnType("text")
                         .HasColumnName("team_answer");
 
-                    b.Property<int>("TeamNo")
+                    b.Property<int>("TeamNum")
                         .HasColumnType("integer")
-                        .HasColumnName("team_no");
+                        .HasColumnName("team_num");
 
                     b.Property<DateTime>("Updatetime")
-                        .HasColumnType("timestamp without time zone")
+                        .HasColumnType("timestamp with time zone")
                         .HasColumnName("updatetime");
 
                     b.Property<string>("Yevent")
+                        .IsRequired()
                         .HasMaxLength(6)
                         .HasColumnType("character varying(6)")
                         .HasColumnName("yevent");
@@ -365,13 +380,52 @@ namespace geek_off_angular.Migrations
                     b.ToTable("scoring");
                 });
 
+            modelBuilder.Entity("GeekOff.Data.Teamreference", b =>
+                {
+                    b.Property<string>("Yevent")
+                        .HasMaxLength(6)
+                        .HasColumnType("character varying(6)")
+                        .HasColumnName("yevent");
+
+                    b.Property<int>("TeamNum")
+                        .HasColumnType("integer")
+                        .HasColumnName("team_num");
+
+                    b.Property<decimal?>("Dollarraised")
+                        .HasColumnType("numeric")
+                        .HasColumnName("dollarraised");
+
+                    b.Property<Guid>("TeamGuid")
+                        .HasColumnType("uuid")
+                        .HasColumnName("team_guid");
+
+                    b.Property<string>("Teamname")
+                        .HasColumnType("text")
+                        .HasColumnName("teamname");
+
+                    b.HasKey("Yevent", "TeamNum");
+
+                    b.ToTable("team_reference");
+
+                    b.HasData(
+                        new
+                        {
+                            Yevent = "e21",
+                            TeamNum = 1,
+                            Dollarraised = 1000m,
+                            TeamGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Teamname = "Go Aggies"
+                        });
+                });
+
             modelBuilder.Entity("GeekOff.Data.TeamUser", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint")
-                        .HasColumnName("id")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<bool>("AdminFlag")
                         .HasColumnType("boolean")
@@ -382,7 +436,7 @@ namespace geek_off_angular.Migrations
                         .HasColumnName("badge_id");
 
                     b.Property<DateTime>("LoginTime")
-                        .HasColumnType("timestamp without time zone")
+                        .HasColumnType("timestamp with time zone")
                         .HasColumnName("login_time");
 
                     b.Property<string>("PlayerName")
@@ -393,9 +447,13 @@ namespace geek_off_angular.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("player_num");
 
-                    b.Property<int>("TeamNo")
+                    b.Property<Guid>("SessionId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("session_id");
+
+                    b.Property<int>("TeamNum")
                         .HasColumnType("integer")
-                        .HasColumnName("team_no");
+                        .HasColumnName("team_num");
 
                     b.Property<string>("Username")
                         .HasColumnType("text")
@@ -406,6 +464,7 @@ namespace geek_off_angular.Migrations
                         .HasColumnName("workgroup_name");
 
                     b.Property<string>("Yevent")
+                        .IsRequired()
                         .HasMaxLength(6)
                         .HasColumnType("character varying(6)")
                         .HasColumnName("yevent");
@@ -421,7 +480,8 @@ namespace geek_off_angular.Migrations
                             AdminFlag = true,
                             LoginTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             PlayerName = "Kevin Trinkle",
-                            TeamNo = 0,
+                            SessionId = new Guid("00000000-0000-0000-0000-000000000000"),
+                            TeamNum = 0,
                             Username = "362525@geekoff.onmicrosoft.com",
                             Yevent = "e21"
                         },
@@ -431,7 +491,8 @@ namespace geek_off_angular.Migrations
                             AdminFlag = true,
                             LoginTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             PlayerName = "Kristin Russell",
-                            TeamNo = 0,
+                            SessionId = new Guid("00000000-0000-0000-0000-000000000000"),
+                            TeamNum = 0,
                             Username = "446792@geekoff.onmicrosoft.com",
                             Yevent = "e21"
                         },
@@ -441,7 +502,8 @@ namespace geek_off_angular.Migrations
                             AdminFlag = true,
                             LoginTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             PlayerName = "Diyalo Manral",
-                            TeamNo = 0,
+                            SessionId = new Guid("00000000-0000-0000-0000-000000000000"),
+                            TeamNum = 0,
                             Username = "226250@geekoff.onmicrosoft.com",
                             Yevent = "e21"
                         },
@@ -451,7 +513,8 @@ namespace geek_off_angular.Migrations
                             AdminFlag = true,
                             LoginTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             PlayerName = "Dan Mullings",
-                            TeamNo = 0,
+                            SessionId = new Guid("00000000-0000-0000-0000-000000000000"),
+                            TeamNum = 0,
                             Username = "288132@geekoff.onmicrosoft.com",
                             Yevent = "e21"
                         },
@@ -463,7 +526,8 @@ namespace geek_off_angular.Migrations
                             LoginTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             PlayerName = "Grant Hill",
                             PlayerNum = 1,
-                            TeamNo = 1,
+                            SessionId = new Guid("00000000-0000-0000-0000-000000000000"),
+                            TeamNum = 1,
                             Username = "285557@geekoff.onmicrosoft.com",
                             WorkgroupName = "Information Technology",
                             Yevent = "e21"
@@ -474,7 +538,8 @@ namespace geek_off_angular.Migrations
                             AdminFlag = true,
                             LoginTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             PlayerName = "Jay Cox",
-                            TeamNo = 0,
+                            SessionId = new Guid("00000000-0000-0000-0000-000000000000"),
+                            TeamNum = 0,
                             Username = "jay.cox_aa.com#EXT#@geekoff.onmicrosoft.com",
                             Yevent = "e21"
                         },
@@ -485,7 +550,8 @@ namespace geek_off_angular.Migrations
                             LoginTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             PlayerName = "Brandon Heath",
                             PlayerNum = 2,
-                            TeamNo = 1,
+                            SessionId = new Guid("00000000-0000-0000-0000-000000000000"),
+                            TeamNum = 1,
                             Username = "641903@geekoff.onmicrosoft.com",
                             WorkgroupName = "Information Technology",
                             Yevent = "e21"
@@ -497,7 +563,8 @@ namespace geek_off_angular.Migrations
                             LoginTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             PlayerName = "Roger Marsolek",
                             PlayerNum = 1,
-                            TeamNo = 2,
+                            SessionId = new Guid("00000000-0000-0000-0000-000000000000"),
+                            TeamNum = 2,
                             Username = "991023@geekoff.onmicrosoft.com",
                             WorkgroupName = "Information Technology",
                             Yevent = "e21"
@@ -509,63 +576,11 @@ namespace geek_off_angular.Migrations
                             LoginTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             PlayerName = "Kevin Trinkle",
                             PlayerNum = 0,
-                            TeamNo = 0,
+                            SessionId = new Guid("00000000-0000-0000-0000-000000000000"),
+                            TeamNum = 0,
                             Username = "kevin.trinkle_aa.com#EXT#@geekoff.onmicrosoft.com",
                             WorkgroupName = "Information Technology",
                             Yevent = "e21"
-                        });
-                });
-
-            modelBuilder.Entity("GeekOff.Data.Teamreference", b =>
-                {
-                    b.Property<string>("Yevent")
-                        .HasMaxLength(6)
-                        .HasColumnType("character varying(6)")
-                        .HasColumnName("yevent");
-
-                    b.Property<int>("TeamNo")
-                        .HasColumnType("integer")
-                        .HasColumnName("team_no");
-
-                    b.Property<decimal?>("Dollarraised")
-                        .HasColumnType("numeric")
-                        .HasColumnName("dollarraised");
-
-                    b.Property<string>("Member1")
-                        .HasColumnType("text")
-                        .HasColumnName("member1");
-
-                    b.Property<string>("Member2")
-                        .HasColumnType("text")
-                        .HasColumnName("member2");
-
-                    b.Property<string>("Teamname")
-                        .HasColumnType("text")
-                        .HasColumnName("teamname");
-
-                    b.Property<string>("Workgroup1")
-                        .HasColumnType("text")
-                        .HasColumnName("workgroup1");
-
-                    b.Property<string>("Workgroup2")
-                        .HasColumnType("text")
-                        .HasColumnName("workgroup2");
-
-                    b.HasKey("Yevent", "TeamNo");
-
-                    b.ToTable("team_reference");
-
-                    b.HasData(
-                        new
-                        {
-                            Yevent = "e21",
-                            TeamNo = 1,
-                            Dollarraised = 1000m,
-                            Member1 = "Grant Hill",
-                            Member2 = "Brandon Heath",
-                            Teamname = "Go Aggies",
-                            Workgroup1 = "IT",
-                            Workgroup2 = "IT"
                         });
                 });
 
@@ -576,20 +591,20 @@ namespace geek_off_angular.Migrations
                         .HasColumnType("character varying(6)")
                         .HasColumnName("yevent");
 
-                    b.Property<int?>("RoundNo")
+                    b.Property<int?>("RoundNum")
                         .HasColumnType("integer")
-                        .HasColumnName("round_no");
+                        .HasColumnName("round_num");
 
-                    b.Property<int>("TeamNo")
+                    b.Property<int>("TeamNum")
                         .HasColumnType("integer")
-                        .HasColumnName("team_no");
+                        .HasColumnName("team_num");
 
-                    b.Property<int>("QuestionNo")
+                    b.Property<int>("QuestionNum")
                         .HasColumnType("integer")
-                        .HasColumnName("question_no");
+                        .HasColumnName("question_num");
 
                     b.Property<DateTime>("AnswerTime")
-                        .HasColumnType("timestamp without time zone")
+                        .HasColumnType("timestamp with time zone")
                         .HasColumnName("answer_time");
 
                     b.Property<string>("AnswerUser")
@@ -600,7 +615,7 @@ namespace geek_off_angular.Migrations
                         .HasColumnType("text")
                         .HasColumnName("text_answer");
 
-                    b.HasKey("Yevent", "RoundNo", "TeamNo", "QuestionNo");
+                    b.HasKey("Yevent", "RoundNum", "TeamNum", "QuestionNum");
 
                     b.ToTable("user_answer");
                 });

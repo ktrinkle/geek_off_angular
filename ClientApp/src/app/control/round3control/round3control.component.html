@@ -32,10 +32,10 @@
   </div>
   <div fxFlex="40%">
     <mat-table class="round3ControlScoreboard" [dataSource]="scoreboard">
-      <ng-container matColumnDef="teamNo">
+      <ng-container matColumnDef="teamNum">
         <mat-header-cell *matHeaderCellDef> Team # </mat-header-cell>
         <mat-cell *matCellDef="let row">
-          {{row.teamNo}}
+          {{row.teamNum}}
         </mat-cell>
       </ng-container>
 
@@ -47,8 +47,8 @@
       </ng-container>
 
       <!-- Header and Row Declarations -->
-      <mat-header-row *matHeaderRowDef="['teamNo', 'teamScore']"></mat-header-row>
-      <mat-row *matRowDef="let row; columns: ['teamNo', 'teamScore']"></mat-row>
+      <mat-header-row *matHeaderRowDef="['teamNum', 'teamScore']"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: ['teamNum', 'teamScore']"></mat-row>
     </mat-table>
     <button id="updateScoreboard" (click)="updateRemoteScoreboard()">Send scoreboard update</button>
     <div class="clear: all"></div>
@@ -57,7 +57,7 @@
       <div formArrayName="teams">
         <div *ngFor="let team of getTeamsFromForm(finalJepForm); let i = index" [formGroupName]="i">
           <input type="hidden" id="finalteamNum" name="finalteamNum" formControlName="teamNum"
-            value="{{team.value.teamNo}}">
+            value="{{team.value.teamNum}}">
           {{team.value.teamNum}}
           <input type="number" id="finalJepScore" name="finalJepScore" formControlName="score">
         </div>

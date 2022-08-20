@@ -10,7 +10,7 @@ export interface round2Answers {
 }
 
 export interface round2Display {
-  teamNo: number,
+  teamNum: number,
   player1Answers: round2Answers[],
   player2Answers?: round2Answers[],
   finalScore: number
@@ -31,7 +31,7 @@ export interface round1ScoreDetail {
 }
 
 export interface round23Scores {
-  teamNo: number,
+  teamNum: number,
   teamName: string,
   teamScore?: number,
   rnk?: number,
@@ -55,7 +55,7 @@ export interface round2SubmitAnswer {
 }
 
 export interface introDto {
-  teamNo: number,
+  teamNum: number,
   teamName: string,
   member1: string,
   member2?: string,
@@ -117,4 +117,15 @@ export interface round3AnswerDto {
   questionNum: number,
   teamNum: number,
   score: number
+}
+
+export interface eventMaster {
+  yEvent: string,
+  eventName: string,
+  selEvent: boolean
+}
+
+export interface apiResponse {
+  successInd: boolean,
+  response: string
 }

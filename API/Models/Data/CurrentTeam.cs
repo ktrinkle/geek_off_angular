@@ -8,7 +8,7 @@ namespace GeekOff.Data
     {
         [Key]
         public int Id { get; set; }
-        public int RoundNo { get; set; }
-        public int TeamNo { get; set; }
+        public int RoundNum { get; set; }
+        public int TeamNum { get; set; }
     }
 }
