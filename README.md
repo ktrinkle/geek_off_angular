@@ -5,7 +5,7 @@ Replacement for round 1 & 2 of the Geek Off at my employer. A work in progress.
 # Requirements
 
 * .NET 6.x SDK
-* NPM/Node 14+
+* NPM/Node 16+
 * Azure account to support Azure AD - if installing from the repo without using any established infrastructure, you will need to set up the application in Azure AD. Refer to Microsoft documentation to establish the tenant and client ID required below.
 
 # Initial setup
@@ -21,6 +21,8 @@ Replacement for round 1 & 2 of the Geek Off at my employer. A work in progress.
 | AzureAd:Domain | Azure AD domain |
 | AzureAd:TenantId | Azure AD Tenant ID |
 | AzureAd:ClientId | Azure AD Client ID |
+
+**User secrets will be shifting as we move to home grown authentication.**
 
 * Add ClientApp/src/auth/auth-config.ts (must be sent from Kevin)
 * Run the initial database migration
