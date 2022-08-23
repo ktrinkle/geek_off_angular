@@ -9,6 +9,7 @@ namespace GeekOff.Services
 {
     public interface ILoginService
     {
-        Task<UserInfoDto> Login(string userId);
+        Task<BearerDto> PlayerLoginAsync(string yEvent, Guid teamGuid);
+        Task<BearerDto> AdminLoginAsync(string userName);
     }
 }

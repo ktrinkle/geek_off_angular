@@ -48,7 +48,7 @@ namespace GeekOff.Controllers
         public async Task<ActionResult<UserInfoDto>> GetUserInfoAsync()
         {
             var userId = User.UserId();
-            return userId == null ? null : (ActionResult<UserInfoDto>)await _loginService.Login(userId);
+            return userId == null ? null : (ActionResult<UserInfoDto>)await _loginService.LoginAD(userId);
         }
 
         [Authorize(Roles = "admin")]
@@ -56,6 +56,11 @@ namespace GeekOff.Controllers
         [SwaggerOperation(Summary = "Get current user and team info from database based on logged in user.")]
         public async Task<ActionResult<string>> UpdateFundAmountAsync(string yEvent, int teamNum, decimal? dollarAmount)
             => Ok(await _manageEventService.UpdateFundAmountAsync(yEvent, teamNum, dollarAmount));
+
+        [HttpPut("playerLogin")]
+        [SwaggerOperation(Summary = "Login based on QR code.")]
+        public async Task<ActionResult<string>> PlayerLoginAsync(string yEvent, Guid teamGuid)
+            => Ok(await _loginService.PlayerLoginAsync(yEvent, teamGuid));
 
     }
 }

@@ -1,16 +1,14 @@
 using GeekOff.Config;
 using GeekOff.Data;
 using GeekOff.Services;
+using GeekOff.Models;
 using Microsoft.AspNetCore.Authentication.Certificate;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.Identity.Web;
 using Microsoft.OpenApi.Models;
 
@@ -38,6 +36,7 @@ namespace GeekOff
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddMicrosoftIdentityWebApi(Configuration);
 
+            services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
 
             services.AddAuthorization();
 
@@ -53,7 +52,7 @@ namespace GeekOff
             #region swagger
             services.AddSwaggerGen(c => {
                 c.EnableAnnotations();
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Geek Off API", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Geek Off API", Version = "v1.1" });
                 //future c.TagActionsBy();
 
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme

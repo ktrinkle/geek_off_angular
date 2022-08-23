@@ -11,6 +11,7 @@ namespace GeekOff.Data
         public ContextGo(DbContextOptions<ContextGo> options)
             : base(options) { }
 
+        public virtual DbSet<AdminUser> AdminUser { get; set; }
         public virtual DbSet<CurrentQuestion> CurrentQuestion { get; set; }
         public virtual DbSet<CurrentTeam> CurrentTeam { get; set; }
         public virtual DbSet<EventMaster> EventMaster { get; set; }
@@ -54,7 +55,7 @@ namespace GeekOff.Data
             modelBuilder.CreateScorepossData();
             modelBuilder.CreateTeamReferenceData();
             modelBuilder.CreateTeamUserData();
-
+            modelBuilder.CreateAdminUserData();
         }
     }
 }

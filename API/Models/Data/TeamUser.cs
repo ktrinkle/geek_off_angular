@@ -17,7 +17,6 @@ namespace GeekOff.Data
         public string? PlayerName { get; set; }
         public string? WorkgroupName { get; set; }
         public int? PlayerNum { get; set; }
-        public bool AdminFlag { get; set; }
         public DateTime LoginTime { get; set; }
         public Guid SessionId { get; set; }
     }

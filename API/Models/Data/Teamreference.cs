@@ -13,5 +13,6 @@ namespace GeekOff.Data
         public string? Teamname { get; set; }
         public decimal? Dollarraised { get; set; }
         public Guid TeamGuid { get; set; }
+        public DateTime LoginTime { get; set; }
     }
 }

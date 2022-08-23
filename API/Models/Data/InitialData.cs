@@ -97,42 +97,6 @@ namespace GeekOff.Data
         {
             new TeamUser()
             {
-                Id = 100,
-                Yevent = "e21",
-                TeamNum = 0,
-                Username = "362525@geekoff.onmicrosoft.com",
-                PlayerName = "Kevin Trinkle",
-                AdminFlag = true
-            },
-            new TeamUser()
-            {
-                Id = 101,
-                Yevent = "e21",
-                TeamNum = 0,
-                Username = "446792@geekoff.onmicrosoft.com",
-                PlayerName = "Kristin Russell",
-                AdminFlag = true
-            },
-            new TeamUser()
-            {
-                Id = 102,
-                Yevent = "e21",
-                TeamNum = 0,
-                Username = "226250@geekoff.onmicrosoft.com",
-                PlayerName = "Diyalo Manral",
-                AdminFlag = true
-            },
-            new TeamUser()
-            {
-                Id = 103,
-                Yevent = "e21",
-                TeamNum = 0,
-                Username = "288132@geekoff.onmicrosoft.com",
-                PlayerName = "Dan Mullings",
-                AdminFlag = true
-            },
-            new TeamUser()
-            {
                 Id = 104,
                 Yevent = "e21",
                 TeamNum = 1,
@@ -141,16 +105,6 @@ namespace GeekOff.Data
                 PlayerName = "Grant Hill",
                 PlayerNum = 1,
                 WorkgroupName = "Information Technology",
-                AdminFlag = true
-            },
-            new TeamUser()
-            {
-                Id = 105,
-                Yevent = "e21",
-                TeamNum = 0,
-                Username = "jay.cox_aa.com#EXT#@geekoff.onmicrosoft.com",
-                PlayerName = "Jay Cox",
-                AdminFlag = true
             },
             new TeamUser()
             {
@@ -161,7 +115,6 @@ namespace GeekOff.Data
                 PlayerName = "Brandon Heath",
                 PlayerNum = 2,
                 WorkgroupName = "Information Technology",
-                AdminFlag = false
             },
             new TeamUser()
             {
@@ -172,18 +125,40 @@ namespace GeekOff.Data
                 PlayerName = "Roger Marsolek",
                 PlayerNum = 1,
                 WorkgroupName = "Information Technology",
-                AdminFlag = false
             },
-            new TeamUser()
+        };
+
+        public static readonly List<AdminUser> AdminUser = new()
+        {
+            new AdminUser()
             {
-                Id = 108,
-                Yevent = "e21",
-                TeamNum = 0,
-                Username = "kevin.trinkle_aa.com#EXT#@geekoff.onmicrosoft.com",
-                PlayerName = "Kevin Trinkle",
-                PlayerNum = 0,
-                WorkgroupName = "Information Technology",
-                AdminFlag = true
+                Id = 100,
+                Username = "362525",
+                AdminName = "Kevin Trinkle",
+            },
+            new AdminUser()
+            {
+                Id = 101,
+                Username = "446792",
+                AdminName = "Kristin Russell",
+            },
+            new AdminUser()
+            {
+                Id = 102,
+                Username = "226250",
+                AdminName = "Diyalo Manral",
+            },
+            new AdminUser()
+            {
+                Id = 103,
+                Username = "288132",
+                AdminName = "Dan Mullings",
+            },
+            new AdminUser()
+            {
+                Id = 105,
+                Username = "jay.cox",
+                AdminName = "Jay Cox",
             },
         };
 
@@ -196,6 +171,8 @@ namespace GeekOff.Data
         public static void CreateTeamReferenceData(this ModelBuilder modelBuilder) => modelBuilder.Entity<Teamreference>().HasData(TeamReference.ToArray());
 
         public static void CreateTeamUserData(this ModelBuilder modelBuilder) => modelBuilder.Entity<TeamUser>().HasData(TeamUser.ToArray());
+
+        public static void CreateAdminUserData(this ModelBuilder modelBuilder) => modelBuilder.Entity<AdminUser>().HasData(AdminUser.ToArray());
     }
 
 
