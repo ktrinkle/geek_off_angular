@@ -10,7 +10,7 @@ namespace GeekOff.Models
         public string Yevent { get; set; }
         public int TeamNum { get; set; }
         public int QuestionNum { get; set; }
-        public string TextAnswer { get; set; }
+        public string? TextAnswer { get; set; }
         public bool? AnswerStatus { get; set; }
     }
 }

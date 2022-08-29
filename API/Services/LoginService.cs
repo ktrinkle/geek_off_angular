@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Text;
 using GeekOff.Data;
+using GeekOff.Entities;
 using GeekOff.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -43,7 +44,7 @@ namespace GeekOff.Services
             {
                 TeamNum = loginInfo.TeamNum,
                 TeamName = loginInfo.Teamname,
-                BearerToken = GenerateToken(teamGuid, false, loginInfo.TeamNum, null)
+                BearerToken = await GenerateTokenAsync(teamGuid, false, loginInfo.TeamNum, null)
             };
 
             return returnUser;
@@ -69,48 +70,75 @@ namespace GeekOff.Services
                 TeamNum = 0,
                 UserName = loginInfo.Username,
                 HumanName = loginInfo.AdminName,
-                BearerToken = GenerateToken(new Guid(), true, 0, loginInfo.Username)
+                BearerToken = await GenerateTokenAsync(new Guid(), true, 0, loginInfo.Username)
             };
 
             return returnAdmin;
         }
 
-        private string GenerateToken(Guid sessionGuid, bool adminFlag, int teamId, string? adminUsername)
+        public async Task<int> GetSessionIdAsync(Guid? teamGuid)
         {
-            var appSecret = _appSettings.Secret!;
-            var appSecurityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(appSecret));
+            var teamEntry = await _contextGo.Teamreference.FirstOrDefaultAsync(tr => tr.TeamGuid == teamGuid);
+
+            if (teamEntry is null)
+            {
+                return 0;
+            }
+
+            return teamEntry.TeamNum;
+        }
+
+
+        public async Task<string?> GetAdminUserAsync(string userName)
+        {
+            var adminUser = await _contextGo.AdminUser.FirstOrDefaultAsync(tr => tr.Username == userName);
+
+            if (adminUser is null)
+            {
+                return null;
+            }
+
+            return adminUser.AdminName;
+
+        }
+
+        private async Task<string> GenerateTokenAsync(Guid sessionGuid, bool adminFlag, int teamId, string? adminUsername)
+        {
+            var appSecret = Encoding.ASCII.GetBytes(_appSettings.Secret!);
+            var appSecurityKey = new SymmetricSecurityKey(appSecret);
 
             var appIssuer = _appSettings.Issuer;
             var appAudience = _appSettings.Audience;
 
             var claims = new ClaimsIdentity(new Claim[]
             {
-                new Claim("sessionId", sessionGuid.ToString()),
-                new Claim("teamId", teamId.ToString())
+                new Claim("sessionid", sessionGuid.ToString()),
+                new Claim("teamnum", teamId.ToString()),
+                new Claim("username", adminUsername ?? ""),
             });
 
             if (adminFlag)
             {
-                claims.AddClaims(new Claim[]
-                {
-                    new Claim("username", adminUsername),
-                    new Claim(ClaimTypes.Role, "admin")
-                });
+                claims.AddClaim(new Claim(ClaimTypes.Role, "admin"));
+                var realname = await _contextGo.AdminUser.FirstOrDefaultAsync(au => au.Username == adminUsername);
+                claims.AddClaim(new Claim("realname", realname.AdminName));
             }
 
             if (!adminFlag)
             {
                 claims.AddClaim(new Claim(ClaimTypes.Role, "player"));
+                claims.AddClaim(new Claim("realname", ""));
             }
 
             var tokenHandler = new JwtSecurityTokenHandler();
+            var key = appSecret;
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = claims,
-                Expires = DateTime.UtcNow.AddHours(3),
+                Expires = DateTime.UtcNow.AddHours(4),
                 Issuer = appIssuer,
                 Audience = appAudience,
-                SigningCredentials = new SigningCredentials(appSecurityKey, SecurityAlgorithms.HmacSha256Signature)
+                SigningCredentials = new SigningCredentials(appSecurityKey, SecurityAlgorithms.HmacSha512Signature)
             };
 
             var token = tokenHandler.CreateToken(tokenDescriptor);

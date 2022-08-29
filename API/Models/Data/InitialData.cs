@@ -157,7 +157,7 @@ namespace GeekOff.Data
             new AdminUser()
             {
                 Id = 105,
-                Username = "jay.cox",
+                Username = "jaycox",
                 AdminName = "Jay Cox",
             },
         };

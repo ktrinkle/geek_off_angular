@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GeekOff.Entities;
 using GeekOff.Models;
 using GeekOff.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -32,19 +33,19 @@ namespace GeekOff.Controllers
             _eventHub = eventHub;
         }
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Role.admin)]
         [HttpGet("allQuestions/{yEvent}")]
         [SwaggerOperation(Summary = "Get all of the questions and points for use of the operators.")]
         public async Task<ActionResult<List<Round3QuestionDto>>> GetRound3MasterAsync(string yEvent)
             => Ok(await _manageEventService.GetRound3Master(yEvent));
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Role.admin)]
         [HttpGet("allTeams/{yEvent}")]
         [SwaggerOperation(Summary = "Get all of the round 3 teams.")]
         public async Task<ActionResult<List<IntroDto>>> GetRound3TeamsAsync(string yEvent)
             => Ok(await _manageEventService.GetRound3Teams(yEvent));
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Role.admin)]
         [HttpPost("teamanswer")]
         [SwaggerOperation(Summary = "Saves the team answer with points")]
         public async Task<ActionResult<string>> SetRound3AnswerAsync(List<Round3AnswerDto> submitAnswer)
@@ -54,14 +55,14 @@ namespace GeekOff.Controllers
             return Ok(returnVar);
         }
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Role.admin)]
         [HttpGet("scoreboard/{yEvent}")]
         [SwaggerOperation(Summary = "Returns the scoreboard for round 3")]
         public async Task<ActionResult<Round23Scores>> GetRound23ScoresAsync(string yEvent)
             => Ok(await _scoreService.GetRound23Scores(yEvent, 3, 3));
 
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Role.admin)]
         [HttpGet("updateScoreboard")]
         [SwaggerOperation(Summary = "Sends message to update the scoreboard.")]
         public async Task<ActionResult> UpdateScoreboardAsync()
@@ -71,7 +72,7 @@ namespace GeekOff.Controllers
             return Ok();
         }
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Role.admin)]
         [HttpPut("finalize/{yEvent}")]
         [SwaggerOperation(Summary = "Finalize round 3")]
         public async Task<ActionResult<string>> FinalizeRoundAsync(string yEvent)

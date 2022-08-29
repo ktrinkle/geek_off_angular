@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using GeekOff.Entities;
 using GeekOff.Helpers;
 using GeekOff.Models;
 using GeekOff.Services;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
@@ -36,31 +36,29 @@ namespace GeekOff.Controllers
         public async Task<ActionResult<string>> GetCurrentEventAsync()
             => Ok(await _manageEventService.GetCurrentEventAsync());
 
-        [Authorize(Roles = "admin,player")]
+        [Authorize(Role.admin,Role.player)]
         [HttpGet("currentQuestion/{yEvent}")]
         [SwaggerOperation(Summary = "Get the current question. Called when round1/contestant loads.")]
         public async Task<ActionResult<CurrentQuestionDto>> GetCurrentQuestionAsync(string yEvent)
             => Ok(await _manageEventService.GetCurrentQuestion(yEvent));
 
-        [Authorize]
-        [HttpGet("currentUser")]
-        [SwaggerOperation(Summary = "Get current user and team info from database based on logged in user.")]
-        public async Task<ActionResult<UserInfoDto>> GetUserInfoAsync()
-        {
-            var userId = User.UserId();
-            return userId == null ? null : (ActionResult<UserInfoDto>)await _loginService.LoginAD(userId);
-        }
-
-        [Authorize(Roles = "admin")]
+        [Authorize(Role.admin)]
         [HttpPut("dollarAmount/{yEvent}/{teamNum}")]
         [SwaggerOperation(Summary = "Get current user and team info from database based on logged in user.")]
         public async Task<ActionResult<string>> UpdateFundAmountAsync(string yEvent, int teamNum, decimal? dollarAmount)
             => Ok(await _manageEventService.UpdateFundAmountAsync(yEvent, teamNum, dollarAmount));
 
+        [AllowAnonymous]
         [HttpPut("playerLogin")]
         [SwaggerOperation(Summary = "Login based on QR code.")]
         public async Task<ActionResult<string>> PlayerLoginAsync(string yEvent, Guid teamGuid)
             => Ok(await _loginService.PlayerLoginAsync(yEvent, teamGuid));
+
+        [AllowAnonymous]
+        [HttpPut("adminLogin")]
+        [SwaggerOperation(Summary = "Login based on QR code.")]
+        public async Task<ActionResult<string>> AdminLoginAsync(string username)
+            => Ok(await _loginService.AdminLoginAsync(username));
 
     }
 }

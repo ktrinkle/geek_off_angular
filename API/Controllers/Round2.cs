@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GeekOff.Entities;
 using GeekOff.Models;
 using GeekOff.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -32,25 +33,25 @@ namespace GeekOff.Controllers
             _eventHub = eventHub;
         }
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Role.admin)]
         [HttpGet("allSurvey/{yEvent}")]
         [SwaggerOperation(Summary = "Get all of the survey questions and answers for use of the operators.")]
         public async Task<ActionResult<List<Round2SurveyList>>> GetRound2SurveyMasterAsync(string yEvent)
             => Ok(await _manageEventService.GetRound2SurveyMaster(yEvent));
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Role.admin)]
         [HttpGet("allQuestions/{yEvent}")]
         [SwaggerOperation(Summary = "Get all of the survey questions for use of the host.")]
         public async Task<ActionResult<List<Round2SurveyList>>> GetRound2QuestionListAsync(string yEvent)
             => Ok(await _manageEventService.GetRound2QuestionList(yEvent));
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Role.admin)]
         [HttpGet("bigBoard/{yEvent}/{teamNo}")]
         [SwaggerOperation(Summary = "Returns the big board for round 2")]
         public async Task<ActionResult<Round2BoardDto>> GetRound2DisplayBoardAsync(string yEvent, int teamNo)
             => Ok(await _scoreService.GetRound2DisplayBoard(yEvent, teamNo));
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Role.admin)]
         [HttpPost("teamanswer/text")]
         [SwaggerOperation(Summary = "Saves the team answer with points")]
         public async Task<ActionResult<string>> SetRound2AnswerTextAsync(Round2AnswerDto submitAnswer)
@@ -60,7 +61,7 @@ namespace GeekOff.Controllers
             return Ok(returnVar);
         }
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Role.admin)]
         [HttpPost("teamanswer/survey")]
         [SwaggerOperation(Summary = "Saves the team answer from a direct match to the survey")]
         public async Task<ActionResult<string>> SetRound2AnswerSurveyAsync(Round2AnswerDto submitAnswer)
@@ -70,13 +71,13 @@ namespace GeekOff.Controllers
             return Ok(returnVar);
         }
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Role.admin)]
         [HttpGet("scoreboard/{yEvent}")]
         [SwaggerOperation(Summary = "Returns the scoreboard for round 2")]
         public async Task<ActionResult<Round23Scores>> GetRound23ScoresAsync(string yEvent)
             => Ok(await _scoreService.GetRound23Scores(yEvent, 2, 6));
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Role.admin)]
         [HttpGet("bigboard/reveal/{entryNum}")]
         [SwaggerOperation(Summary = "Send message to reveal big board answer.")]
         public async Task<ActionResult> RevealAnswerAsync(int entryNum)
@@ -85,7 +86,7 @@ namespace GeekOff.Controllers
             return Ok();
         }
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Role.admin)]
         [HttpGet("bigboard/playerone")]
         [SwaggerOperation(Summary = "Send message to reveal all Player 1 answers on the big board.")]
         public async Task<ActionResult> RevealPlayerOneAsync()
@@ -94,7 +95,7 @@ namespace GeekOff.Controllers
             return Ok();
         }
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Role.admin)]
         [HttpGet("bigboard/changeTeam/{teamNum}")]
         [SwaggerOperation(Summary = "Change team for the big board.")]
         public async Task<ActionResult> ChangeDisplayBoardTeamAsync(int teamNum)
@@ -103,7 +104,7 @@ namespace GeekOff.Controllers
             return Ok();
         }
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Role.admin)]
         [HttpGet("updateScoreboard")]
         [SwaggerOperation(Summary = "Sends message to update the scoreboard.")]
         public async Task<ActionResult> UpdateScoreboardAsync()
@@ -113,20 +114,20 @@ namespace GeekOff.Controllers
             return Ok();
         }
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Role.admin)]
         [HttpPut("finalize/{yEvent}")]
         [SwaggerOperation(Summary = "Finalize round 2")]
         public async Task<ActionResult<string>> FinalizeRoundAsync(string yEvent)
             => Ok(await _manageEventService.FinalizeRound(yEvent, 2));
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Role.admin)]
         [HttpGet("firstPlayersAnswers/{yEvent}/{teamNum}")]
         [SwaggerOperation(Summary = "Returns the first Players answers for round 2")]
         public async Task<ActionResult<Round23Scores>> GetFirstPlayersAnswersAsync(string yEvent, int teamNum)
             => Ok(await _scoreService.GetFirstPlayersAnswers(yEvent, teamNum));
 
         // Countdown SignalR.
-        [Authorize(Roles = "admin")]
+        [Authorize(Role.admin)]
         [HttpGet("countdown/start/{seconds}")]
         [SwaggerOperation(Summary = "Start countdown.")]
         public async Task<ActionResult> StartCountdownAsync(int seconds) {
@@ -134,7 +135,7 @@ namespace GeekOff.Controllers
             return Ok();
         }
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Role.admin)]
         [HttpGet("countdown/stop")]
         [SwaggerOperation(Summary = "Stops countdown.")]
         public async Task<ActionResult> StopCountdownAsync() {
@@ -142,7 +143,7 @@ namespace GeekOff.Controllers
             return Ok();
         }
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Role.admin)]
         [HttpGet("countdown/set/{seconds}")]
         [SwaggerOperation(Summary = "Sets the countdown.")]
         public async Task<ActionResult> SetCountdownAsync(int seconds) {
@@ -150,7 +151,7 @@ namespace GeekOff.Controllers
             return Ok();
         }
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Role.admin)]
         [HttpPut("changePage/{page}")]
         [SwaggerOperation(Summary = "Sends message to change the page.")]
         public async Task<ActionResult> ChangeIntroPageAsync(string page)

@@ -1,5 +1,6 @@
 using GeekOff.Config;
 using GeekOff.Data;
+using GeekOff.Extensions;
 using GeekOff.Services;
 using GeekOff.Models;
 using Microsoft.AspNetCore.Authentication.Certificate;
@@ -129,6 +130,8 @@ namespace GeekOff
             app.UseAuthentication();
 
             app.UseAuthorization();
+
+            app.UseMiddleware<JwtMiddleware>();
 
             app.UseEndpoints(endpoints => {
                 endpoints.MapHub<EventHub>("/events");

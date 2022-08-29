@@ -1,3 +1,4 @@
+
 namespace GeekOff.Models
 {
     public class AppSettings

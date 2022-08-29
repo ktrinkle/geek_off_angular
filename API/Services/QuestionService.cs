@@ -84,9 +84,9 @@ namespace GeekOff.Services
             return questionReturn;
         }
 
-        public async Task<Round1QuestionDto> GetRound1QuestionWithAnswer(string yEvent, int QuestionNum)
+        public async Task<Round1QuestionDto> GetRound1QuestionWithAnswer(string yEvent, int questionNum)
         {
-            var question = await _contextGo.QuestionAns.SingleOrDefaultAsync(q => q.QuestionNum == QuestionNum
+            var question = await _contextGo.QuestionAns.SingleOrDefaultAsync(q => q.QuestionNum == questionNum
                                                                             && q.Yevent == yEvent
                                                                             && q.RoundNum == 1);
 
@@ -97,7 +97,7 @@ namespace GeekOff.Services
 
             var questionReturn = new Round1QuestionDto()
             {
-                QuestionNum = QuestionNum,
+                QuestionNum = questionNum,
                 QuestionText = question.TextQuestion,
                 Answers = new List<Round1Answers>(),
                 ExpireTime = DateTime.UtcNow.AddSeconds(60)
