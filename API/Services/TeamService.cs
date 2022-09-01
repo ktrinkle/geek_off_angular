@@ -25,15 +25,24 @@ namespace GeekOff.Services
         public async Task<NewTeamEntry> AddNewEventTeamAsync(string yEvent, string? teamName)
         {
             // check the DB to see highest team number. Note, we don't reuse team numbers.
-            var maxTeamNum = await _contextGo.Teamreference.Where(tr=>tr.Yevent == yEvent).MaxAsync(tr => tr.TeamNum);
+            var teamList = await _contextGo.Teamreference.Where(tr=>tr.Yevent == yEvent).MaxAsync(tr => (int?)tr.TeamNum) ?? 0;
 
-            maxTeamNum += 1;
+            var maxTeamNum = 0;
+            if (teamList == 0)
+            {
+                maxTeamNum = 1;
+            }
+
+            if (teamList > 0)
+            {
+                maxTeamNum = teamList + 1;
+            }
 
             var newTeamDb = new Teamreference() {
                 Yevent = yEvent,
                 TeamNum = maxTeamNum,
                 Teamname = teamName,
-                TeamGuid = new Guid()
+                TeamGuid = Guid.NewGuid()
             };
 
             await _contextGo.AddAsync(newTeamDb);

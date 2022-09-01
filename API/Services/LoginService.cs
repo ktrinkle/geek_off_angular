@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using System.Text;
 using GeekOff.Data;
@@ -19,6 +20,7 @@ namespace GeekOff.Services
         private readonly ContextGo _contextGo;
         private readonly ILogger<LoginService> _logger;
         private readonly AppSettings _appSettings;
+
         public LoginService(ILogger<LoginService> logger, ContextGo context, IOptions<AppSettings> appSettings)
         {
             _logger = logger;
@@ -106,6 +108,7 @@ namespace GeekOff.Services
         {
             var appSecret = Encoding.ASCII.GetBytes(_appSettings.Secret!);
             var appSecurityKey = new SymmetricSecurityKey(appSecret);
+            appSecurityKey.KeyId = _appSettings.JWTKeyId;
 
             var appIssuer = _appSettings.Issuer;
             var appAudience = _appSettings.Audience;

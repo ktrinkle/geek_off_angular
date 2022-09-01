@@ -34,7 +34,7 @@ namespace GeekOff.Extensions
                 context.Items["User"] = userJwtDto.TeamNum;
             }
 
-            if (userJwtDto != null && userJwtDto.TeamNum != 0)
+            if (userJwtDto != null && userJwtDto.UserName != "")
             {
                 // attach user to context on successful jwt validation
                 context.Items["Name"] = userJwtDto.AdminName;
@@ -53,16 +53,16 @@ namespace GeekOff.Extensions
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
 
-            // need a HMAC
-            var hmac = new HMACSHA512(key);
             try
             {
                 tokenHandler.ValidateToken(token, new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(hmac.Key),
+                    IssuerSigningKey = new SymmetricSecurityKey(key) { KeyId = _appSettings.JWTKeyId },
                     ValidateIssuer = false,
-                    ValidateAudience = false,
+                    ValidIssuer = _appSettings.Issuer,
+                    ValidateAudience = true,
+                    ValidAudience = _appSettings.Audience,
                     // set clockskew to zero so tokens expire exactly at token expiration time (instead of 5 minutes later)
                     ClockSkew = TimeSpan.Zero
                 }, out var validatedToken);
