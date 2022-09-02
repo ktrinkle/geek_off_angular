@@ -10,5 +10,6 @@ namespace GeekOff.Models
         public bool SuccessInd { get; set; }
         public int? TeamNum { get; set; }
         public Guid TeamGuid { get; set; }
+        public string TeamName { get; set; }
     }
 }

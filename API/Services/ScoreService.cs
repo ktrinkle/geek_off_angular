@@ -19,12 +19,12 @@ namespace GeekOff.Services
             _contextGo = context;
         }
 
-        public async Task<Round2BoardDto> GetRound2DisplayBoard(string yEvent, int TeamNum)
+        public async Task<Round2BoardDto> GetRound2DisplayBoard(string yEvent, int teamNum)
         {
             // looks up current team from DB for state
             // calculates total and places in DTO
 
-            var currentScore = await _contextGo.Scoring.Where(s => s.RoundNum == 2 && s.TeamNum == TeamNum && s.Yevent == yEvent)
+            var currentScore = await _contextGo.Scoring.Where(s => s.RoundNum == 2 && s.TeamNum == teamNum && s.Yevent == yEvent)
                                 .OrderBy(s => s.QuestionNum).OrderBy(s => s.PlayerNum).ToListAsync();
 
             if (currentScore is null)
@@ -87,7 +87,7 @@ namespace GeekOff.Services
 
             var returnResult = new Round2BoardDto()
             {
-                TeamNum = TeamNum,
+                TeamNum = teamNum,
                 Player1Answers = player1,
                 Player2Answers = player2,
                 FinalScore = totalScore
@@ -135,9 +135,9 @@ namespace GeekOff.Services
 
         }
 
-        public async Task<List<Round23Scores>> GetRound23Scores(string yEvent, int RoundNum, int maxRnk)
+        public async Task<List<Round23Scores>> GetRound23Scores(string yEvent, int roundNum, int maxRnk)
         {
-            if (yEvent == null || RoundNum < 2 || RoundNum > 3)
+            if (yEvent == null || roundNum < 2 || roundNum > 3)
             {
                 return null;
             }
@@ -145,7 +145,7 @@ namespace GeekOff.Services
             var teamList = await (from rr in _contextGo.Roundresult
                                   join t in _contextGo.Teamreference
                                   on new { rr.TeamNum, rr.Yevent } equals new { t.TeamNum, t.Yevent }
-                                  where rr.RoundNum == RoundNum - 1
+                                  where rr.RoundNum == roundNum - 1
                                   && rr.Yevent == yEvent
                                   && rr.Rnk <= maxRnk
 
@@ -158,7 +158,7 @@ namespace GeekOff.Services
 
             // the join was nasty and required a view, so this way avoids that.
 
-            var returnList = await _contextGo.Scoring.Where(s => s.Yevent == yEvent && s.RoundNum == RoundNum)
+            var returnList = await _contextGo.Scoring.Where(s => s.Yevent == yEvent && s.RoundNum == roundNum)
                                                     .GroupBy(s => s.TeamNum)
                                                     .Select(s => new Round23Scores
                                                     {

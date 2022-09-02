@@ -67,9 +67,13 @@ namespace GeekOff.Controllers
         [SwaggerOperation(Summary = "Player submits the answer to the controlling system")]
         public async Task<ActionResult<string>> SubmitRound1AnswerAsync(Round1EnteredAnswers answers)
         {
-            var answerUser = User.UserId();
+            var test = int.TryParse(User.TeamId(), out var answerTeam);
+            if (!test)
+            {
+                answerTeam = 0;
+            }
 
-            var submitAnswer = await _questionService.SubmitRound1Answer(answers.Yevent, answers.QuestionNum, answers.TextAnswer, answerUser);
+            var submitAnswer = await _questionService.SubmitRound1Answer(answers.Yevent, answers.QuestionNum, answers.TextAnswer, answerTeam);
             await _eventHub.Clients.All.SendAsync("round1PlayerAnswer");
             return Ok(submitAnswer ? "Your answer is in. Good luck!" : "We had a problem. Please try again.");
         }

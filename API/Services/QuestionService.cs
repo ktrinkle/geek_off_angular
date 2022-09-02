@@ -240,12 +240,12 @@ namespace GeekOff.Services
             return returnList;
         }
 
-        public async Task<bool> SubmitRound1Answer(string yEvent, int questionId, string answerText, string answerUser)
+        public async Task<bool> SubmitRound1Answer(string yEvent, int questionId, string answerText, int teamNum)
         {
             // test values
             if (questionId is < 1 or > 99)
             {
-                var errorMsg = $"Bad Question - Question {questionId} User ID {answerUser} YEvent {yEvent}";
+                var errorMsg = $"Bad Question - Question {questionId} Team ID {teamNum} YEvent {yEvent}";
                 _logger.LogDebug(errorMsg);
                 _contextGo.LogError.Add(new LogError(){ErrorMessage = errorMsg});
                 await _contextGo.SaveChangesAsync();
@@ -254,35 +254,23 @@ namespace GeekOff.Services
 
             if (answerText is null or "")
             {
-                var errorMsg = $"Null answer - Question {questionId} User ID {answerUser} YEvent {yEvent}";
+                var errorMsg = $"Null answer - Question {questionId} Team ID {teamNum} YEvent {yEvent}";
                 _logger.LogDebug(errorMsg);
                 _contextGo.LogError.Add(new LogError(){ErrorMessage = errorMsg});
                 await _contextGo.SaveChangesAsync();
                 return false;
             }
 
-            if (answerUser is null or "000000")
+            if (teamNum <= 0)
             {
-                var errorMsg = $"Zero user - Question {questionId} User ID {answerUser} YEvent {yEvent}";
+                var errorMsg = $"Zero user - Question {questionId} Team ID {teamNum} YEvent {yEvent}";
                 _logger.LogDebug(errorMsg);
                 _contextGo.LogError.Add(new LogError(){ErrorMessage = errorMsg});
                 await _contextGo.SaveChangesAsync();
                 return false;
             }
 
-            // grab team info for this user. If this fails, we exit early.
-            var playerInfo = await _contextGo.TeamUser.FirstOrDefaultAsync(u => u.Username == answerUser && u.Yevent == yEvent);
-
-            if (playerInfo is null)
-            {
-                var errorMsg = $"No player info - Question {questionId} User ID {answerUser} YEvent {yEvent}";
-                _logger.LogDebug(errorMsg);
-                _contextGo.LogError.Add(new LogError(){ErrorMessage = errorMsg});
-                await _contextGo.SaveChangesAsync();
-                return false;
-            }
-
-            var existAnswer = await _contextGo.UserAnswer.Where(u => u.QuestionNum == questionId && u.TeamNum == playerInfo.TeamNum && u.Yevent == yEvent).ToListAsync();
+            var existAnswer = await _contextGo.UserAnswer.Where(u => u.QuestionNum == questionId && u.TeamNum == teamNum && u.Yevent == yEvent).ToListAsync();
             if (existAnswer is not null)
             {
                 _contextGo.UserAnswer.RemoveRange(existAnswer);
@@ -292,12 +280,12 @@ namespace GeekOff.Services
             var newAnswer = new UserAnswer()
             {
                 Yevent = yEvent,
-                TeamNum = playerInfo.TeamNum,
+                TeamNum = teamNum,
                 QuestionNum = questionId,
                 TextAnswer = answerText,
                 RoundNum = 1,
                 AnswerTime = DateTime.UtcNow,
-                AnswerUser = answerUser
+                AnswerUser = ""
             };
 
             await _contextGo.AddAsync(newAnswer);

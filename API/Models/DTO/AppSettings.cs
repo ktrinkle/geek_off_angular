@@ -8,5 +8,6 @@ namespace GeekOff.Models
         public string Issuer { get; set; }
         public string Audience { get; set; }
         public string JWTKeyId { get; set; }
+        public string GeekOMaticUser { get; set; }
     }
 }

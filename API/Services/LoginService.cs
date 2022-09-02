@@ -78,6 +78,22 @@ namespace GeekOff.Services
             return returnAdmin;
         }
 
+        public async Task<BearerDto> GeekOMaticLoginAsync(string token)
+        {
+            if (await GetGeekOMaticUserAsync(token))
+            {
+                return new BearerDto()
+                {
+                    TeamNum = 0,
+                    UserName = "GeekOMatic",
+                    HumanName = "GeekOMatic",
+                    BearerToken = await GenerateTokenAsync(Guid.NewGuid(), false, 0, "GeekOMatic")
+                };
+            }
+
+            return returnAdmin;
+        }
+
         public async Task<int> GetSessionIdAsync(Guid? teamGuid)
         {
             var teamEntry = await _contextGo.Teamreference.FirstOrDefaultAsync(tr => tr.TeamGuid == teamGuid);
@@ -104,6 +120,22 @@ namespace GeekOff.Services
 
         }
 
+        public async Task<bool?> GetGeekOMaticUserAsync(string token)
+        {
+            var geekOMaticUser = Encoding.UTF8.GetBytes(_appSettings.GeekOMaticUser);
+            using var alg = SHA512.Create();
+
+            var hashValue = alg.ComputeHash(geekOMaticUser).Aggregate("", (current, x) => current + $"{x:x2}");
+
+            if (hashValue != token)
+            {
+                return false;
+            }
+
+            return true;
+
+        }
+
         private async Task<string> GenerateTokenAsync(Guid sessionGuid, bool adminFlag, int teamId, string? adminUsername)
         {
             var appSecret = Encoding.ASCII.GetBytes(_appSettings.Secret!);
@@ -127,10 +159,16 @@ namespace GeekOff.Services
                 claims.AddClaim(new Claim("realname", realname.AdminName));
             }
 
-            if (!adminFlag)
+            if (!adminFlag && adminUsername != "GeekOMatic")
             {
                 claims.AddClaim(new Claim(ClaimTypes.Role, "player"));
                 claims.AddClaim(new Claim("realname", ""));
+            }
+
+            if (adminUsername == "GeekOMatic")
+            {
+                claims.AddClaim(new Claim(ClaimTypes.Role, "geekomatic"));
+                claims.AddClaim(new Claim("geekomatic", "true"));
             }
 
             var tokenHandler = new JwtSecurityTokenHandler();

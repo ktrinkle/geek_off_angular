@@ -5,9 +5,9 @@ namespace GeekOff.Helpers
 {
     public static class ClaimsPrincipalExtension
     {
-        public static string UserId(this ClaimsPrincipal principal)
+        public static string TeamId(this ClaimsPrincipal principal)
         {
-            var claim = principal.Claims.FirstOrDefault(c => c.Type == "preferred_username");
+            var claim = principal.Claims.FirstOrDefault(c => c.Type == "teamnum");
             try
             {
                 return claim.Value;

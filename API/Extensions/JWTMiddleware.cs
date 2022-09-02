@@ -73,6 +73,7 @@ namespace GeekOff.Extensions
                 var username = jwtToken.Claims.First(x => x.Type == "username").Value ?? "";
                 var adminName = jwtToken.Claims.First(x => x.Type == "realname").Value ?? "";
                 var teamNumStr = jwtToken.Claims.First(x => x.Type == "teamnum").Value ?? "0";
+                var geekomatic = jwtToken.Claims.First(x => x.Type == "geekomatic").Value ?? "";
 
                 if (!int.TryParse(teamNumStr, out var teamNum))
                 {
@@ -82,9 +83,9 @@ namespace GeekOff.Extensions
                 // return user id from JWT token if validation successful
                 return new JWTDto() {
                     TeamNum = teamNum,
-                    UserName = username,
+                    UserName = geekomatic == "true" ? "GeekOMatic" : username,
                     SessionGuid = Guid.Parse(teamSessionGuid),
-                    AdminName = adminName
+                    AdminName = geekomatic == "true" ? "GeekOMatic" : adminName
                 };
             }
             catch
