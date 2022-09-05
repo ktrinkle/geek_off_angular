@@ -14,6 +14,6 @@ namespace GeekOff.Services
         Task<BearerDto> GeekOMaticLoginAsync(string token);
         Task<int> GetSessionIdAsync(Guid? teamGuid);
         Task<string?> GetAdminUserAsync(string userName);
-        Task<bool?> GetGeekOMaticUserAsync(string token);
+        Task<bool> GetGeekOMaticUserAsync(string token);
     }
 }

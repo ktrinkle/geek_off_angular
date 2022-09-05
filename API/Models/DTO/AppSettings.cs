@@ -3,6 +3,7 @@ namespace GeekOff.Models
 {
     public class AppSettings
     {
+        public const string App = "AppSettings";
         public string? Secret { get; set; }
         public string? Salt { get; set; }
         public string Issuer { get; set; }

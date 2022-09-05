@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.IdentityModel.Logging;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Cryptography;
@@ -50,49 +51,61 @@ namespace GeekOff.Extensions
                 return null;
             }
 
-            var tokenHandler = new JwtSecurityTokenHandler();
+            IdentityModelEventSource.ShowPII = true;
+
+            var tokenHandler = new JwtSecurityTokenHandler().ReadJwtToken(token);
             var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
 
-            try
+            var jwtToken = tokenHandler;
+            // we have to go through conditional logic here
+            var roleType = jwtToken.Claims.First(x => x.Type == "role").Value;
+
+            var teamSessionGuid = jwtToken.Claims.First(x => x.Type == "sessionid").Value;
+
+            var username = roleType switch
             {
-                tokenHandler.ValidateToken(token, new TokenValidationParameters
-                {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(key) { KeyId = _appSettings.JWTKeyId },
-                    ValidateIssuer = false,
-                    ValidIssuer = _appSettings.Issuer,
-                    ValidateAudience = true,
-                    ValidAudience = _appSettings.Audience,
-                    // set clockskew to zero so tokens expire exactly at token expiration time (instead of 5 minutes later)
-                    ClockSkew = TimeSpan.Zero
-                }, out var validatedToken);
+                "admin" => jwtToken.Claims.First(x => x.Type == "username").Value,
+                "geekomatic" => null,
+                "player" => null,
+                _ => null
+            };
 
-                var jwtToken = (JwtSecurityToken)validatedToken;
-                // we crash here...saying it's unvalidated. Need to confirm this.
-                var teamSessionGuid = jwtToken.Claims.First(x => x.Type == "sessionid").Value ?? "";
-                var username = jwtToken.Claims.First(x => x.Type == "username").Value ?? "";
-                var adminName = jwtToken.Claims.First(x => x.Type == "realname").Value ?? "";
-                var teamNumStr = jwtToken.Claims.First(x => x.Type == "teamnum").Value ?? "0";
-                var geekomatic = jwtToken.Claims.First(x => x.Type == "geekomatic").Value ?? "";
-
-                if (!int.TryParse(teamNumStr, out var teamNum))
-                {
-                    teamNum = 0;
-                }
-
-                // return user id from JWT token if validation successful
-                return new JWTDto() {
-                    TeamNum = teamNum,
-                    UserName = geekomatic == "true" ? "GeekOMatic" : username,
-                    SessionGuid = Guid.Parse(teamSessionGuid),
-                    AdminName = geekomatic == "true" ? "GeekOMatic" : adminName
-                };
-            }
-            catch
+            var adminName = roleType switch
             {
-                // return null if validation fails
-                return null;
+                "admin" => jwtToken.Claims.FirstOrDefault(x => x.Type == "realname").Value,
+                "geekomatic" => null,
+                "player" => null,
+                _ => null
+            };
+
+            var teamNumStr = roleType switch
+            {
+                "admin" => "0",
+                "geekomatic" => "0",
+                "player" => jwtToken.Claims.FirstOrDefault(x => x.Type == "teamnum").Value,
+                _ => "0"
+            };
+
+            var geekomatic = roleType switch
+            {
+                "admin" => false,
+                "geekomatic" => jwtToken.Claims.FirstOrDefault(x => x.Type == "geekomatic").Value == "true" || false,
+                "player" => false,
+                _ => false
+            };
+
+            if (!int.TryParse(teamNumStr, out var teamNum))
+            {
+                teamNum = 0;
             }
+
+            // return user id from JWT token if validation successful
+            return new JWTDto() {
+                TeamNum = teamNum,
+                UserName = geekomatic == true ? "GeekOMatic" : username,
+                SessionGuid = Guid.Parse(teamSessionGuid),
+                AdminName = geekomatic == true ? "GeekOMatic" : adminName
+            };
         }
     }
 }

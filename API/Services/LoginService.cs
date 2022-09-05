@@ -72,7 +72,7 @@ namespace GeekOff.Services
                 TeamNum = 0,
                 UserName = loginInfo.Username,
                 HumanName = loginInfo.AdminName,
-                BearerToken = await GenerateTokenAsync(new Guid(), true, 0, loginInfo.Username)
+                BearerToken = await GenerateTokenAsync(Guid.NewGuid(), true, 0, loginInfo.Username)
             };
 
             return returnAdmin;
@@ -91,7 +91,7 @@ namespace GeekOff.Services
                 };
             }
 
-            return returnAdmin;
+            return null;
         }
 
         public async Task<int> GetSessionIdAsync(Guid? teamGuid)
@@ -120,7 +120,7 @@ namespace GeekOff.Services
 
         }
 
-        public async Task<bool?> GetGeekOMaticUserAsync(string token)
+        public async Task<bool> GetGeekOMaticUserAsync(string token)
         {
             var geekOMaticUser = Encoding.UTF8.GetBytes(_appSettings.GeekOMaticUser);
             using var alg = SHA512.Create();

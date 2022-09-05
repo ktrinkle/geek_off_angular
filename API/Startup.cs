@@ -5,6 +5,7 @@ using GeekOff.Services;
 using GeekOff.Models;
 using Microsoft.AspNetCore.Authentication.Certificate;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -12,6 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Identity.Web;
 using Microsoft.OpenApi.Models;
+using System.Text;
 
 namespace GeekOff
 {
@@ -35,7 +37,23 @@ namespace GeekOff
                 .AddCertificate();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddMicrosoftIdentityWebApi(Configuration);
+                .AddJwtBearer(options =>{
+                    var symmetricKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["AppSettings:Secret"]));
+
+                    options.IncludeErrorDetails = true; // <- great for debugging
+
+                    // Configure the actual Bearer validation
+                    options.TokenValidationParameters = new TokenValidationParameters {
+                        IssuerSigningKey = symmetricKey,
+                        ValidAudience = Configuration["AppSettings:Audience"],
+                        ValidIssuer = Configuration["AppSettings:Issuer"],
+                        RequireSignedTokens = true,
+                        RequireExpirationTime = true, // <- JWTs are required to have "exp" property set
+                        ValidateLifetime = true, // <- the "exp" will be validated
+                        ValidateAudience = true,
+                        ValidateIssuer = true,
+                    };
+                });
 
             services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
 
@@ -44,7 +62,7 @@ namespace GeekOff
             services.AddControllers();
 
             services.AddCors(options => options.AddPolicy(name: _myAllowSpecificOrigins,
-                        builder => builder.WithOrigins("http://localhost:4200")
+                        builder => builder.WithOrigins("http://localhost:4200", "http://localhost:5000")
                                     .AllowCredentials()
                                     .AllowAnyMethod()
                                     .AllowAnyHeader()

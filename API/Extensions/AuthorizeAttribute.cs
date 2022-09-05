@@ -29,6 +29,7 @@ public class AuthorizeAttribute : Attribute, IAuthorizationFilter
 
         var teamNum = context.HttpContext.Items["User"];
         var adminName = context.HttpContext.Items["Name"];
+        // && !_roles.Contains(teamNum.Role)
         if (teamNum == null && adminName == null && !_roles.Any())
         {
             // not logged in
