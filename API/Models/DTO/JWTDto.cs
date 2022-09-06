@@ -11,5 +11,6 @@ namespace GeekOff.Models
         public string? AdminName { get; set; }
         public string? UserName { get; set; }
         public Guid? SessionGuid { get; set; }
+        public string Role { get; set; }
     }
 }

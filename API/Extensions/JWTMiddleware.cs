@@ -4,6 +4,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.IdentityModel.Logging;
 using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Linq;
 using System.Text;
@@ -29,10 +30,12 @@ namespace GeekOff.Extensions
         {
             var token = context.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
             var userJwtDto = await ValidateJwtTokenAsync(token);
-            if (userJwtDto != null && userJwtDto.TeamNum != 0)
+
+            if (userJwtDto != null)
             {
                 // attach user to context on successful jwt validation
                 context.Items["User"] = userJwtDto.TeamNum;
+                context.Items["Role"] = userJwtDto.Role;
             }
 
             if (userJwtDto != null && userJwtDto.UserName != "")
@@ -53,10 +56,23 @@ namespace GeekOff.Extensions
 
             IdentityModelEventSource.ShowPII = true;
 
-            var tokenHandler = new JwtSecurityTokenHandler().ReadJwtToken(token);
-            var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.UTF8.GetBytes(_appSettings.Secret);
 
-            var jwtToken = tokenHandler;
+            tokenHandler.ValidateToken(token, new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(key) { KeyId = _appSettings.JWTKeyId },
+                ValidateIssuer = false,
+                ValidIssuer = _appSettings.Issuer,
+                ValidateAudience = true,
+                ValidAudience = _appSettings.Audience,
+                // set clockskew to zero so tokens expire exactly at token expiration time (instead of 5 minutes later)
+                ClockSkew = TimeSpan.Zero
+            }, out var validatedToken);
+
+            var jwtToken = (JwtSecurityToken)validatedToken;
+
             // we have to go through conditional logic here
             var roleType = jwtToken.Claims.First(x => x.Type == "role").Value;
 
@@ -104,7 +120,8 @@ namespace GeekOff.Extensions
                 TeamNum = teamNum,
                 UserName = geekomatic == true ? "GeekOMatic" : username,
                 SessionGuid = Guid.Parse(teamSessionGuid),
-                AdminName = geekomatic == true ? "GeekOMatic" : adminName
+                AdminName = geekomatic == true ? "GeekOMatic" : adminName,
+                Role = roleType
             };
         }
     }

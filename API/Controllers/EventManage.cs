@@ -8,6 +8,7 @@ using GeekOff.Helpers;
 using GeekOff.Models;
 using GeekOff.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Identity.Web.Resource;

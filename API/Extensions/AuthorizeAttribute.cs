@@ -29,8 +29,9 @@ public class AuthorizeAttribute : Attribute, IAuthorizationFilter
 
         var teamNum = context.HttpContext.Items["User"];
         var adminName = context.HttpContext.Items["Name"];
-        // && !_roles.Contains(teamNum.Role)
-        if (teamNum == null && adminName == null && !_roles.Any())
+        Enum.TryParse<Role>(context.HttpContext.Items["Role"].ToString(), out Role roleName);
+        // Doesn't always work
+        if (teamNum == null && adminName == null && (!_roles.Any() && !_roles.Contains(roleName)))
         {
             // not logged in
             context.Result = new JsonResult(new { message = "Unauthorized" }) { StatusCode = StatusCodes.Status401Unauthorized };

@@ -138,7 +138,7 @@ namespace GeekOff.Services
 
         private async Task<string> GenerateTokenAsync(Guid sessionGuid, bool adminFlag, int teamId, string? adminUsername)
         {
-            var appSecret = Encoding.ASCII.GetBytes(_appSettings.Secret!);
+            var appSecret = Encoding.UTF8.GetBytes(_appSettings.Secret!);
             var appSecurityKey = new SymmetricSecurityKey(appSecret);
             appSecurityKey.KeyId = _appSettings.JWTKeyId;
 
@@ -179,7 +179,7 @@ namespace GeekOff.Services
                 Expires = DateTime.UtcNow.AddHours(4),
                 Issuer = appIssuer,
                 Audience = appAudience,
-                SigningCredentials = new SigningCredentials(appSecurityKey, SecurityAlgorithms.HmacSha512Signature)
+                SigningCredentials = new SigningCredentials(appSecurityKey, SecurityAlgorithms.HmacSha256Signature)
             };
 
             var token = tokenHandler.CreateToken(tokenDescriptor);

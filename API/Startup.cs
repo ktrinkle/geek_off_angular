@@ -36,24 +36,26 @@ namespace GeekOff
                 CertificateAuthenticationDefaults.AuthenticationScheme)
                 .AddCertificate();
 
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options =>{
-                    var symmetricKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["AppSettings:Secret"]));
+            // services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            //     .AddJwtBearer(options =>{
+            //         var symmetricKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["AppSettings:Secret"]));
 
-                    options.IncludeErrorDetails = true; // <- great for debugging
+            //         //new SigningCredentials(appSecurityKey, SecurityAlgorithms.HmacSha512Signature
 
-                    // Configure the actual Bearer validation
-                    options.TokenValidationParameters = new TokenValidationParameters {
-                        IssuerSigningKey = symmetricKey,
-                        ValidAudience = Configuration["AppSettings:Audience"],
-                        ValidIssuer = Configuration["AppSettings:Issuer"],
-                        RequireSignedTokens = true,
-                        RequireExpirationTime = true, // <- JWTs are required to have "exp" property set
-                        ValidateLifetime = true, // <- the "exp" will be validated
-                        ValidateAudience = true,
-                        ValidateIssuer = true,
-                    };
-                });
+            //         options.IncludeErrorDetails = true; // <- great for debugging
+
+            //         // Configure the actual Bearer validation
+            //         options.TokenValidationParameters = new TokenValidationParameters {
+            //             IssuerSigningKey = symmetricKey,
+            //             ValidAudience = Configuration["AppSettings:Audience"],
+            //             ValidIssuer = Configuration["AppSettings:Issuer"],
+            //             RequireSignedTokens = true,
+            //             RequireExpirationTime = true, // <- JWTs are required to have "exp" property set
+            //             ValidateLifetime = true, // <- the "exp" will be validated
+            //             ValidateAudience = true,
+            //             ValidateIssuer = true,
+            //         };
+            //     });
 
             services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
 
@@ -162,6 +164,11 @@ namespace GeekOff
                                             .AllowAnyMethod()
                                             .AllowCredentials()
                                             .AllowAnyHeader());
+
+            app.UseCors(builder => builder.WithOrigins("http://localhost:5000")
+                                .AllowAnyMethod()
+                                .AllowCredentials()
+                                .AllowAnyHeader());
 
             app.UseCors(builder => builder.WithOrigins("https://geekoff.azurewebites.net")
                                 .AllowCredentials()
