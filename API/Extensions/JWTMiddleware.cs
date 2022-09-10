@@ -1,17 +1,4 @@
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.IdentityModel.Logging;
-using System;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Security.Cryptography;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using GeekOff.Entities;
-using GeekOff.Models;
-using GeekOff.Services;
 
 namespace GeekOff.Extensions
 {

@@ -1,20 +1,3 @@
-using GeekOff.Config;
-using GeekOff.Data;
-using GeekOff.Extensions;
-using GeekOff.Services;
-using GeekOff.Models;
-using Microsoft.AspNetCore.Authentication.Certificate;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Identity.Web;
-using Microsoft.OpenApi.Models;
-using System.Text;
-
 namespace GeekOff
 {
     public class Startup
@@ -32,9 +15,9 @@ namespace GeekOff
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddAuthentication(
-                CertificateAuthenticationDefaults.AuthenticationScheme)
-                .AddCertificate();
+            //services.AddAuthentication(
+            //    CertificateAuthenticationDefaults.AuthenticationScheme)
+            //    .AddCertificate();
 
             // services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             //     .AddJwtBearer(options =>{
@@ -117,6 +100,16 @@ namespace GeekOff
             services.AddControllers();
 
             services.AddHttpClient();
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("Player", policy =>
+                    policy.RequireAssertion(context => context.User.IsInRole("player")));
+                options.AddPolicy("Admin", policy =>
+                    policy.RequireAssertion(context => context.User.IsInRole("admin")));
+                options.AddPolicy("GeekOMatic", policy =>
+                    policy.RequireAssertion(context => context.User.IsInRole("geekomatic")));
+            });
 
             // services.AddApplicationInsightsTelemetry();
 

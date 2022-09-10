@@ -1,9 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using GeekOff.Models;
-using GeekOff.Data;
-
 namespace GeekOff.Services
 {
     public interface IManageEventService

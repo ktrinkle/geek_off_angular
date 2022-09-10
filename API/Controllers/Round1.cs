@@ -1,20 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using GeekOff.Entities;
-using GeekOff.Helpers;
-using GeekOff.Models;
-using GeekOff.Services;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
-using Microsoft.Extensions.Logging;
-using Microsoft.Identity.Web.Resource;
-using Swashbuckle.AspNetCore.Annotations;
-
 namespace GeekOff.Controllers
 {
     [ApiController]
@@ -44,7 +27,7 @@ namespace GeekOff.Controllers
         public async Task<ActionResult<List<Round1QuestionDisplay>>> GetRound1QuestionAsync(string yEvent)
             => Ok(await _questionService.GetRound1QuestionAsync(yEvent));
 
-        [Authorize(Role.admin,Role.player)]
+        [Authorize(Role.admin)]
         [HttpGet("getAnswers/{yEvent}/{questionId}")]
         [SwaggerOperation(Summary = "Get a single round 1 question and answer for the contestants.")]
         public async Task<ActionResult<Round1QuestionDto>> GetRound1AnswersAsync(string yEvent, int questionId)
@@ -62,7 +45,8 @@ namespace GeekOff.Controllers
         public async Task<ActionResult<List<Round1QuestionControlDto>>> GetAllRound1QuestionsAsync(string yEvent)
             => Ok(await _questionService.GetAllRound1Questions(yEvent));
 
-        [Authorize(Role.admin,Role.player)]
+        [Authorize(Policy = "RequireAdministratorRole")]
+        //[Authorize(Role.player, Role.admin)]
         [HttpPut("submitAnswer")]
         [SwaggerOperation(Summary = "Player submits the answer to the controlling system")]
         public async Task<ActionResult<string>> SubmitRound1AnswerAsync(Round1EnteredAnswers answers)

@@ -1,18 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Security.Cryptography;
-using System.Threading.Tasks;
-using System.Text;
-using GeekOff.Data;
-using GeekOff.Entities;
-using GeekOff.Models;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-
 namespace GeekOff.Services
 {
     public class LoginService : ILoginService
@@ -139,8 +124,7 @@ namespace GeekOff.Services
         private async Task<string> GenerateTokenAsync(Guid sessionGuid, bool adminFlag, int teamId, string? adminUsername)
         {
             var appSecret = Encoding.UTF8.GetBytes(_appSettings.Secret!);
-            var appSecurityKey = new SymmetricSecurityKey(appSecret);
-            appSecurityKey.KeyId = _appSettings.JWTKeyId;
+            var appSecurityKey = new SymmetricSecurityKey(appSecret) {KeyId = _appSettings.JWTKeyId};
 
             var appIssuer = _appSettings.Issuer;
             var appAudience = _appSettings.Audience;
