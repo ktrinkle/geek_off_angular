@@ -13,7 +13,7 @@ namespace GeekOff.Extensions
         _appSettings = appSettings.Value;
     }
 
-        public async Task Invoke(HttpContext context)
+        public async Task InvokeAsync(HttpContext context)
         {
             var token = context.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
             var userJwtDto = await ValidateJwtTokenAsync(token);

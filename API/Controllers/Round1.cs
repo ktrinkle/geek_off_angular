@@ -1,3 +1,6 @@
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
+
 namespace GeekOff.Controllers
 {
     [ApiController]
@@ -45,8 +48,7 @@ namespace GeekOff.Controllers
         public async Task<ActionResult<List<Round1QuestionControlDto>>> GetAllRound1QuestionsAsync(string yEvent)
             => Ok(await _questionService.GetAllRound1Questions(yEvent));
 
-        [Authorize(Policy = "RequireAdministratorRole")]
-        //[Authorize(Role.player, Role.admin)]
+        [Authorize]
         [HttpPut("submitAnswer")]
         [SwaggerOperation(Summary = "Player submits the answer to the controlling system")]
         public async Task<ActionResult<string>> SubmitRound1AnswerAsync(Round1EnteredAnswers answers)

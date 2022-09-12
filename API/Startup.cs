@@ -1,8 +1,9 @@
+using Microsoft.AspNetCore.Identity;
+
 namespace GeekOff
 {
     public class Startup
     {
-        private readonly string _myAllowSpecificOrigins = "_myAllowSpecificOrigins";
         public Startup(IConfiguration configuration, IWebHostEnvironment environment)
         {
             Configuration = configuration;
@@ -43,15 +44,7 @@ namespace GeekOff
             services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
 
             services.AddAuthorization();
-
             services.AddControllers();
-
-            services.AddCors(options => options.AddPolicy(name: _myAllowSpecificOrigins,
-                        builder => builder.WithOrigins("http://localhost:4200", "http://localhost:5000")
-                                    .AllowCredentials()
-                                    .AllowAnyMethod()
-                                    .AllowAnyHeader()
-                ));
 
             #region swagger
             services.AddSwaggerGen(c => {
@@ -111,7 +104,7 @@ namespace GeekOff
                     policy.RequireAssertion(context => context.User.IsInRole("geekomatic")));
             });
 
-            // services.AddApplicationInsightsTelemetry();
+           // services.AddApplicationInsightsTelemetry();
 
         }
 
@@ -129,7 +122,15 @@ namespace GeekOff
 
                 app.UseDeveloperExceptionPage();
 
-                app.UseCors(_myAllowSpecificOrigins);
+                app.UseCors(builder => builder.WithOrigins("http://localhost:4200")
+                                                .AllowAnyMethod()
+                                                .AllowCredentials()
+                                                .AllowAnyHeader());
+
+                app.UseCors(builder => builder.WithOrigins("http://localhost:5000")
+                                    .AllowAnyMethod()
+                                    .AllowCredentials()
+                                    .AllowAnyHeader());
             }
             else
             {
@@ -140,11 +141,11 @@ namespace GeekOff
 
             app.UseRouting();
 
+            app.UseMiddleware<JwtMiddleware>();
+
             app.UseAuthentication();
 
             app.UseAuthorization();
-
-            app.UseMiddleware<JwtMiddleware>();
 
             app.UseEndpoints(endpoints => {
                 endpoints.MapHub<EventHub>("/events");
@@ -152,16 +153,6 @@ namespace GeekOff
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
             });
-
-            app.UseCors(builder => builder.WithOrigins("http://localhost:4200")
-                                            .AllowAnyMethod()
-                                            .AllowCredentials()
-                                            .AllowAnyHeader());
-
-            app.UseCors(builder => builder.WithOrigins("http://localhost:5000")
-                                .AllowAnyMethod()
-                                .AllowCredentials()
-                                .AllowAnyHeader());
 
             app.UseCors(builder => builder.WithOrigins("https://geekoff.azurewebites.net")
                                 .AllowCredentials()
