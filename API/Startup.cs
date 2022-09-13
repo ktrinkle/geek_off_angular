@@ -41,9 +41,10 @@ namespace GeekOff
             //         };
             //     });
 
+            var config = new AppSettings();
             services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
+            Configuration.GetSection("AppSettings").Bind(config);
 
-            services.AddAuthorization();
             services.AddControllers();
 
             #region swagger
@@ -94,15 +95,26 @@ namespace GeekOff
 
             services.AddHttpClient();
 
-            services.AddAuthorization(options =>
+            services.AddAuthentication( auth=>
             {
-                options.AddPolicy("Player", policy =>
-                    policy.RequireAssertion(context => context.User.IsInRole("player")));
-                options.AddPolicy("Admin", policy =>
-                    policy.RequireAssertion(context => context.User.IsInRole("admin")));
-                options.AddPolicy("GeekOMatic", policy =>
-                    policy.RequireAssertion(context => context.User.IsInRole("geekomatic")));
+                auth.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                auth.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
+            {
+                options.SaveToken = true;
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidIssuer = config.Issuer,
+                    ValidateAudience = true,
+                    ValidAudience = config.Audience,
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config.Secret)) {KeyId = config.JWTKeyId}
+                };
             });
+
+            services.AddAuthentication();
 
            // services.AddApplicationInsightsTelemetry();
 

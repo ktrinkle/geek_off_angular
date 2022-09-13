@@ -20,13 +20,13 @@ namespace GeekOff.Controllers
         public async Task<ActionResult<string>> GetCurrentEventAsync()
             => Ok(await _manageEventService.GetCurrentEventAsync());
 
-        [Authorize(Role.admin,Role.player)]
+        [Authorize(Roles = "admin, player")]
         [HttpGet("currentQuestion/{yEvent}")]
         [SwaggerOperation(Summary = "Get the current question. Called when round1/contestant loads.")]
         public async Task<ActionResult<CurrentQuestionDto>> GetCurrentQuestionAsync(string yEvent)
             => Ok(await _manageEventService.GetCurrentQuestion(yEvent));
 
-        [Authorize(Role.admin)]
+        [Authorize(Roles = "admin")]
         [HttpPut("dollarAmount/{yEvent}/{teamNum}")]
         [SwaggerOperation(Summary = "Get current user and team info from database based on logged in user.")]
         public async Task<ActionResult<string>> UpdateFundAmountAsync(string yEvent, int teamNum, decimal? dollarAmount)

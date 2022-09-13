@@ -33,13 +33,13 @@ namespace GeekOff.Controllers
             _teamService = teamService;
         }
 
-        [Authorize(Role.admin)]
+        [Authorize(Roles = "admin")]
         [HttpGet("eventList")]
         [SwaggerOperation(Summary = "Get a list of all events.")]
         public async Task<ActionResult<List<EventMaster>>> GetEventListAsync()
             => Ok(await _manageEventService.GetAllEventsAsync());
 
-        [Authorize(Role.admin)]
+        [Authorize(Roles = "admin")]
         [HttpPost("addEvent")]
         [SwaggerOperation(Summary = "Add a new event.")]
         public async Task<ActionResult<ApiResponse>> AddEventAsync(EventMaster newEvent)
@@ -49,7 +49,7 @@ namespace GeekOff.Controllers
             return response.SuccessInd ? Ok(response.Response) : BadRequest(response.Response);
         }
 
-        [Authorize(Role.admin)]
+        [Authorize(Roles = "admin")]
         [HttpPut("setEvent/{yEvent}")]
         [SwaggerOperation(Summary = "Set the current event. Requires yEvent to be populated.")]
         public async Task<ActionResult<ApiResponse>> GetCurrentQuestionAsync(string yEvent)
@@ -60,19 +60,19 @@ namespace GeekOff.Controllers
         }
 
 
-        [Authorize(Role.admin)]
+        [Authorize(Roles = "admin")]
         [HttpPut("dollarAmount/{yEvent}/{teamNum}")]
         [SwaggerOperation(Summary = "Get current user and team info from database based on logged in user.")]
         public async Task<ActionResult<string>> UpdateFundAmountAsync(string yEvent, int teamNum, decimal? dollarAmount)
             => Ok(await _manageEventService.UpdateFundAmountAsync(yEvent, teamNum, dollarAmount));
 
-        [Authorize(Role.admin)]
+        [Authorize(Roles = "admin")]
         [HttpPut("cleanEvent/{yEvent}")]
         [SwaggerOperation(Summary = "Clean all results out of system for this event.")]
         public async Task<ActionResult<string>> ResetEventAsync(string yEvent)
             => Ok(await _manageEventService.ResetEvent(yEvent));
 
-        [Authorize(Role.admin)]
+        [Authorize(Roles = "admin")]
         [HttpPut("createTeam/{yEvent}/{teamName}")]
         [SwaggerOperation(Summary = "Create a new team for the event")]
         public async Task<ActionResult<NewTeamEntry>> AddNewEventTeamAsync(string yEvent, string? teamName)

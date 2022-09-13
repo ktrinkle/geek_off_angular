@@ -33,19 +33,19 @@ namespace GeekOff.Controllers
             _eventHub = eventHub;
         }
 
-        [Authorize(Role.admin)]
+        [Authorize(Roles = "admin")]
         [HttpGet("allQuestions/{yEvent}")]
         [SwaggerOperation(Summary = "Get all of the questions and points for use of the operators.")]
         public async Task<ActionResult<List<Round3QuestionDto>>> GetRound3MasterAsync(string yEvent)
             => Ok(await _manageEventService.GetRound3Master(yEvent));
 
-        [Authorize(Role.admin)]
+        [Authorize(Roles = "admin")]
         [HttpGet("allTeams/{yEvent}")]
         [SwaggerOperation(Summary = "Get all of the round 3 teams.")]
         public async Task<ActionResult<List<IntroDto>>> GetRound3TeamsAsync(string yEvent)
             => Ok(await _manageEventService.GetRound3Teams(yEvent));
 
-        [Authorize(Role.admin)]
+        [Authorize(Roles = "admin")]
         [HttpPost("teamanswer")]
         [SwaggerOperation(Summary = "Saves the team answer with points")]
         public async Task<ActionResult<string>> SetRound3AnswerAsync(List<Round3AnswerDto> submitAnswer)
@@ -55,14 +55,14 @@ namespace GeekOff.Controllers
             return Ok(returnVar);
         }
 
-        [Authorize(Role.admin)]
+        [Authorize(Roles = "admin")]
         [HttpGet("scoreboard/{yEvent}")]
         [SwaggerOperation(Summary = "Returns the scoreboard for round 3")]
         public async Task<ActionResult<Round23Scores>> GetRound23ScoresAsync(string yEvent)
             => Ok(await _scoreService.GetRound23Scores(yEvent, 3, 3));
 
 
-        [Authorize(Role.admin)]
+        [Authorize(Roles = "admin")]
         [HttpGet("updateScoreboard")]
         [SwaggerOperation(Summary = "Sends message to update the scoreboard.")]
         public async Task<ActionResult> UpdateScoreboardAsync()
@@ -72,7 +72,7 @@ namespace GeekOff.Controllers
             return Ok();
         }
 
-        [Authorize(Role.admin)]
+        [Authorize(Roles = "admin")]
         [HttpPut("finalize/{yEvent}")]
         [SwaggerOperation(Summary = "Finalize round 3")]
         public async Task<ActionResult<string>> FinalizeRoundAsync(string yEvent)

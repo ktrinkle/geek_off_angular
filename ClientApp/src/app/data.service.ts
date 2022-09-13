@@ -50,12 +50,12 @@ export class DataService {
   }
 
   public getAllRound2SurveyQuestions(yevent: string): Observable<any> {
-    var uri = this.REST_API_SERVER + '/api/round2/allSurvey/' + encodeURIComponent(yevent) + '';
+    var uri = this.REST_API_SERVER + '/api/round2_feud/allSurvey/' + encodeURIComponent(yevent) + '';
     return this.httpClient.get(uri);
   }
 
   public sendRound2AnswerText(submitAnswer: round2SubmitAnswer): Observable<any> {
-    var uri = this.REST_API_SERVER + '/api/round2/teamanswer/text';
+    var uri = this.REST_API_SERVER + '/api/round2_feud/teamanswer/text';
     return this.httpClient.post(uri, submitAnswer, { responseType: 'text' });
   }
 
@@ -75,12 +75,12 @@ export class DataService {
   }
 
   public getRound2Scores(yEvent: string): Observable<any> {
-    var uri = this.REST_API_SERVER + '/api/round2/scoreboard/' + encodeURIComponent(yEvent);
+    var uri = this.REST_API_SERVER + '/api/round2_feud/scoreboard/' + encodeURIComponent(yEvent);
     return this.httpClient.get(uri);
   }
 
   public getRound2DisplayBoard(yEvent: string, teamNumber: number): Observable<any> {
-    var uri = this.REST_API_SERVER + '/api/round2/bigBoard/' + encodeURIComponent(yEvent) + '/' + encodeURIComponent(teamNumber);
+    var uri = this.REST_API_SERVER + '/api/round2_feud/bigBoard/' + encodeURIComponent(yEvent) + '/' + encodeURIComponent(teamNumber);
     return this.httpClient.get(uri);
   }
 
@@ -126,7 +126,7 @@ export class DataService {
   }
 
   public async updateScoreboardRound2(): Promise<void> {
-    var uri = this.REST_API_SERVER + '/api/round2/updateScoreboard';
+    var uri = this.REST_API_SERVER + '/api/round2_feud/updateScoreboard';
     await this.httpClient.get(uri).toPromise();
   }
 
@@ -136,7 +136,7 @@ export class DataService {
   }
 
   public finalizeRound2(yEvent: string): Observable<any> {
-    var uri = this.REST_API_SERVER + '/api/round2/finalize/' + encodeURIComponent(yEvent) + '';
+    var uri = this.REST_API_SERVER + '/api/round2_feud/finalize/' + encodeURIComponent(yEvent) + '';
     return this.httpClient.put(uri, {}, { responseType: 'text' });
   }
 
@@ -168,43 +168,43 @@ export class DataService {
   }
 
   public revealRound2Value(entryNum: number) {
-    var uri = this.REST_API_SERVER + '/api/round2/bigboard/reveal/' + encodeURIComponent(entryNum) + '';
+    var uri = this.REST_API_SERVER + '/api/round2_feud/bigboard/reveal/' + encodeURIComponent(entryNum) + '';
     this.httpClient.get(uri).toPromise();
   }
 
   public getRound2FirstPlayer(yEvent: string, teamNum: number): Observable<any> {
-    var uri = this.REST_API_SERVER + '/api/round2/firstPlayersAnswers/' + encodeURIComponent(yEvent) + '/' + encodeURIComponent(teamNum) + '';
+    var uri = this.REST_API_SERVER + '/api/round2_feud/firstPlayersAnswers/' + encodeURIComponent(yEvent) + '/' + encodeURIComponent(teamNum) + '';
     return this.httpClient.get(uri);
   }
 
   public revealRound2Player1() {
-    var uri = this.REST_API_SERVER + '/api/round2/bigboard/playerone';
+    var uri = this.REST_API_SERVER + '/api/round2_feud/bigboard/playerone';
     this.httpClient.get(uri).toPromise();
   }
 
   public changeRound2Team(teamNum: any) {
     console.log('Dataservice TeamNum:' + teamNum);
-    var uri = this.REST_API_SERVER + '/api/round2/bigboard/changeTeam/' + encodeURIComponent(teamNum) + '';
+    var uri = this.REST_API_SERVER + '/api/round2_feud/bigboard/changeTeam/' + encodeURIComponent(teamNum) + '';
     this.httpClient.get(uri).toPromise();
   }
 
   public startCountdown(seconds: number) {
-    var uri = this.REST_API_SERVER + '/api/round2/countdown/start/' + + encodeURIComponent(seconds);
+    var uri = this.REST_API_SERVER + '/api/round2_feud/countdown/start/' + + encodeURIComponent(seconds);
     this.httpClient.get(uri).toPromise();
   }
 
   public stopCountdown() {
-    var uri = this.REST_API_SERVER + '/api/round2/countdown/stop';
+    var uri = this.REST_API_SERVER + '/api/round2_feud/countdown/stop';
     this.httpClient.get(uri).toPromise();
   }
 
   public setCountdown(seconds: number) {
-    var uri = this.REST_API_SERVER + '/api/round2/countdown/set/' + encodeURIComponent(seconds);
+    var uri = this.REST_API_SERVER + '/api/round2_feud/countdown/set/' + encodeURIComponent(seconds);
     this.httpClient.get(uri).toPromise();
   }
 
   public changeRound2Page(page: string): Promise<any> {
-    var uri = this.REST_API_SERVER + '/api/round2/changePage/' + encodeURIComponent(page) + '';
+    var uri = this.REST_API_SERVER + '/api/round2_feud/changePage/' + encodeURIComponent(page) + '';
     return this.httpClient.put(uri, { responseType: 'json' }).toPromise();
   }
 
