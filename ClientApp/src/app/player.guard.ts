@@ -1,46 +1,27 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate } from '@angular/router';
-import { MsalService } from '@azure/msal-angular';
-import { AccountInfo } from '@azure/msal-common';
+import { CanActivate, Router } from '@angular/router';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
-interface Account extends AccountInfo {
-  idTokenClaims?: {
-    roles?: string[]
-  }
-}
-
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class PlayerGuard implements CanActivate {
 
-  constructor(private authService: MsalService) {}
-
-  canActivate(route: ActivatedRouteSnapshot): boolean {
-    const expectedRole = route.data.expectedRole;
-    let account: Account = this.authService.instance.getAllAccounts()[0];
-
-    if (!account.idTokenClaims?.roles) {
-      window.alert('I\'m sorry. Please log out and log in again.');
-      return false;
-    } else if (!account.idTokenClaims?.roles?.includes(expectedRole)) {
-      window.alert('I\'m sorry. You do not have access to this area. If you are supposed to, please log out and log in again.');
-      return false;
-    }
-
-    return true;
+  constructor(private jwtHelper: JwtHelperService, private router: Router) {
   }
+  canActivate() {
 
-  checkAdmin(expectedRole: string): boolean {
-    let account: Account = this.authService.instance.getAllAccounts()[0];
+    //get the jwt token which are present in the local storage
+    const token = localStorage.getItem("jwt");
 
-    if (!account.idTokenClaims?.roles) {
-      return false;
-    } else if (!account.idTokenClaims?.roles?.includes(expectedRole)) {
-      return false;
+    //Check if the token is expired or not and if token is expired then redirect to login page and return false
+    if (token && !this.jwtHelper.isTokenExpired(token)){
+      // decode token
+      var decodedToken = this.jwtHelper.decodeToken(token);
+      console.log(decodedToken);
+      return true;
     }
 
-    return true;
+    this.router.navigate(["home"]);
+    return false;
   }
 
 }

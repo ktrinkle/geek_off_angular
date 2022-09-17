@@ -4,7 +4,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import * as signalR from '@microsoft/signalr';
 import { environment } from 'src/environments/environment';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormControl, Validators } from '@angular/forms';
 import { DataService } from 'src/app/data.service';
 import { Store } from '@ngrx/store';
 import { selectCurrentEvent, selectRound1Teams } from 'src/app/store';
@@ -34,13 +34,13 @@ export class PregameComponent implements OnInit, OnDestroy {
     { key: 'rule3', value: 'Rules page 3' },
   ];
 
-  pageForm: FormGroup = new FormGroup({
-    pageName: new FormControl('')
+  pageForm: UntypedFormGroup = new UntypedFormGroup({
+    pageName: new UntypedFormControl('')
   });
 
-  fundForm: FormGroup = new FormGroup({
-    teamNumber: new FormControl(''),
-    dollarAmount: new FormControl('', Validators.pattern('[0-9].'))
+  fundForm: UntypedFormGroup = new UntypedFormGroup({
+    teamNumber: new UntypedFormControl(''),
+    dollarAmount: new UntypedFormControl('', Validators.pattern('[0-9].'))
   });
 
   fundFormStatus: string = '';

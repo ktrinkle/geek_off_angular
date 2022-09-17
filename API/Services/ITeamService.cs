@@ -4,5 +4,6 @@ namespace GeekOff.Services
     {
         public Task<NewTeamEntry> AddNewEventTeamAsync(string yEvent, string? teamName);
         public Task<ApiResponse> MoveTeamNumberAsync(string yEvent, int teamNum, int newTeamNum);
+        public Task<List<NewTeamEntry>> GetTeamListAsync(string yEvent);
     }
 }

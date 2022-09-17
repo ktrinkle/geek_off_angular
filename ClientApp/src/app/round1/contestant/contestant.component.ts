@@ -6,7 +6,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import * as signalR from '@microsoft/signalr';
 import { environment } from 'src/environments/environment';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormControl, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { selectCurrentEvent, selectRound1AllQuestionsAndAnswers } from 'src/app/store';
 import { round1AllQuestions } from 'src/app/store/round1/round1.actions';
@@ -41,13 +41,13 @@ export class Round1ContestantComponent implements OnInit {
   };
 
   // define form
-  public answerForm: FormGroup = new FormGroup({
-    questionNum: new FormControl('', [Validators.pattern('[0-9]*')]),
-    textAnswer: new FormControl(''),
-    multipleChoice1: new FormControl(),
-    multipleChoice2: new FormControl(),
-    multipleChoice3: new FormControl(),
-    multipleChoice4: new FormControl()
+  public answerForm: UntypedFormGroup = new UntypedFormGroup({
+    questionNum: new UntypedFormControl('', [Validators.pattern('[0-9]*')]),
+    textAnswer: new UntypedFormControl(''),
+    multipleChoice1: new UntypedFormControl(),
+    multipleChoice2: new UntypedFormControl(),
+    multipleChoice3: new UntypedFormControl(),
+    multipleChoice4: new UntypedFormControl()
   });
 
   destroy$: Subject<boolean> = new Subject<boolean>();

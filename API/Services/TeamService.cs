@@ -111,5 +111,22 @@ namespace GeekOff.Services
             };
         }
 
+        public async Task<List<NewTeamEntry>> GetTeamListAsync(string yEvent)
+        {
+            if (yEvent is null)
+            {
+                return null;
+            }
+
+            var teamList = await _contextGo.Teamreference.Where(tr => tr.Yevent == yEvent).Select(tr => new NewTeamEntry() {
+                TeamNum = tr.TeamNum,
+                TeamGuid = tr.TeamGuid,
+                SuccessInd = true,
+                TeamName = tr.Teamname
+            }).ToListAsync();
+
+            return teamList;
+        }
+
     }
 }

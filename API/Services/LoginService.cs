@@ -37,11 +37,10 @@ namespace GeekOff.Services
             return returnUser;
         }
 
-        // using our home grown AD for login for admins
-        // This way we can avoid passwords and let MS handle that.
-        public async Task<BearerDto> AdminLoginAsync(string userName)
+        // need to add password stuff to this.
+        public async Task<BearerDto> AdminLoginAsync(AdminLogin userLogin)
         {
-            var loginInfo = await _contextGo.AdminUser.FirstOrDefaultAsync(u => u.Username == userName);
+            var loginInfo = await _contextGo.AdminUser.FirstOrDefaultAsync(u => u.Username == userLogin.UserName);
             if (loginInfo is null)
             {
                 return null;

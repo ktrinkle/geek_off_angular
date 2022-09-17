@@ -1,20 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using GeekOff.Entities;
-using GeekOff.Helpers;
-using GeekOff.Models;
-using GeekOff.Services;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using Microsoft.Identity.Web.Resource;
-using Swashbuckle.AspNetCore.Annotations;
-using GeekOff.Data;
-
 namespace GeekOff.Controllers
 {
     [ApiController]
@@ -77,6 +60,18 @@ namespace GeekOff.Controllers
         [SwaggerOperation(Summary = "Create a new team for the event")]
         public async Task<ActionResult<NewTeamEntry>> AddNewEventTeamAsync(string yEvent, string? teamName)
             => Ok(await _teamService.AddNewEventTeamAsync(yEvent, teamName));
+
+        [Authorize(Roles = "admin")]
+        [HttpPut("moveTeam/{yEvent}/{teamName}")]
+        [SwaggerOperation(Summary = "Change a team number in the event")]
+        public async Task<ActionResult<ApiResponse>> MoveTeamNumberAsync(string yEvent, int oldTeamNum, int newTeamNum)
+            => Ok(await _teamService.MoveTeamNumberAsync(yEvent, oldTeamNum, newTeamNum));
+
+        [Authorize(Roles = "admin")]
+        [HttpGet("listTeamAndLink/{yEvent}")]
+        [SwaggerOperation(Summary = "List teams and get links for all teams in an event.")]
+        public async Task<ActionResult<List<NewTeamEntry>>> GetTeamListAsync(string yEvent)
+            => Ok(await _teamService.GetTeamListAsync(yEvent));
 
     }
 }

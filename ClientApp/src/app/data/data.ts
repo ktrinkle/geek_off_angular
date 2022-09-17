@@ -1,3 +1,5 @@
+import { Guid } from "typescript-guid";
+
 export interface round2SurveyQuestions {
   questionNum: number,
   surveyAnswers?: round2Answers[]
@@ -128,4 +130,32 @@ export interface eventMaster {
 export interface apiResponse {
   successInd: boolean,
   response: string
+}
+
+export interface teamEntry {
+  teamNum: number,
+  teamGuid: Guid,
+  successInd: boolean,
+  teamName: string
+}
+
+export interface jwtReturn {
+  teamNum: number,
+  adminName: string,
+  userName: string,
+  sessionGuid: Guid,
+  role: string
+}
+
+export interface adminLogin {
+  userName: string,
+  password: string,
+}
+
+export interface bearerDto {
+  teamNum: number,
+  teamName: string,
+  userName: string,
+  humanName: string,
+  bearerToken: string,
 }

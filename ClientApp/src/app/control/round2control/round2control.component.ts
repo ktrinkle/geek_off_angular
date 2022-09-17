@@ -3,7 +3,7 @@ import { DataService } from '../../data.service';
 import { Store } from '@ngrx/store';
 import { round2AllSurvey } from '../../store/round2/round2.actions';
 import { round2SurveyQuestions, round2SubmitAnswer, round2Answers, round23Scores } from '../../data/data';
-import { FormGroup, FormControl, Validators, FormBuilder, FormArray } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormControl, Validators, UntypedFormBuilder, UntypedFormArray } from '@angular/forms';
 import * as signalR from '@microsoft/signalr';
 import { environment } from 'src/environments/environment';
 import { MatDialog } from '@angular/material/dialog';
@@ -20,10 +20,10 @@ import { selectCurrentEvent } from 'src/app/store';
 export class Round2controlComponent implements OnInit, OnDestroy {
   public yEvent = '';
   public surveyMasterList: round2SurveyQuestions[] = [];
-  public newEventForm: FormGroup = new FormGroup({
-    teamNum: new FormControl('', [Validators.pattern('[0-9]*')]),
-    playerNum: new FormControl('', [Validators.pattern('1|2')]),
-    questions: new FormArray([]),
+  public newEventForm: UntypedFormGroup = new UntypedFormGroup({
+    teamNum: new UntypedFormControl('', [Validators.pattern('[0-9]*')]),
+    playerNum: new UntypedFormControl('', [Validators.pattern('1|2')]),
+    questions: new UntypedFormArray([]),
   });
   public apiResponse: string = '';
   public showBonusQuestion: boolean = false;
@@ -36,8 +36,8 @@ export class Round2controlComponent implements OnInit, OnDestroy {
   destroy$: Subject<boolean> = new Subject<boolean>();
   countdownValue: number = 0;   // Countdown timer duration.
 
-  public pickAnimateForm: FormGroup = new FormGroup({
-    currentDisplayId: new FormControl(this.currentDisplayId)
+  public pickAnimateForm: UntypedFormGroup = new UntypedFormGroup({
+    currentDisplayId: new UntypedFormControl(this.currentDisplayId)
   })
 
   displayList: any[] = [
@@ -72,7 +72,7 @@ export class Round2controlComponent implements OnInit, OnDestroy {
   finalizeState: string = 'Finalize Round';
 
   constructor(private store: Store, private _dataService: DataService,
-    private formBuilder: FormBuilder, public dialog: MatDialog) { }
+    private formBuilder: UntypedFormBuilder, public dialog: MatDialog) { }
 
   ngOnInit(): void {
 
@@ -127,17 +127,17 @@ export class Round2controlComponent implements OnInit, OnDestroy {
       for (let question of this.surveyMasterList) {
         qArray.push(
           this.formBuilder.group({
-            questionNum: new FormControl(question.questionNum),
-            answer: new FormControl(''),
-            score: new FormControl('', [Validators.pattern('[0-9]*')])
+            questionNum: new UntypedFormControl(question.questionNum),
+            answer: new UntypedFormControl(''),
+            score: new UntypedFormControl('', [Validators.pattern('[0-9]*')])
           })
         );
       }
 
       // creates the entire form
-      this.newEventForm = new FormGroup({
-        teamNum: new FormControl('', [Validators.pattern('[0-9]*')]),
-        playerNum: new FormControl('', [Validators.pattern('1|2')]),
+      this.newEventForm = new UntypedFormGroup({
+        teamNum: new UntypedFormControl('', [Validators.pattern('[0-9]*')]),
+        playerNum: new UntypedFormControl('', [Validators.pattern('1|2')]),
         questions: qArray,
       });
 
@@ -189,7 +189,7 @@ export class Round2controlComponent implements OnInit, OnDestroy {
     }
   }
 
-  presetAnswer(answer: any, question: FormGroup) {
+  presetAnswer(answer: any, question: UntypedFormGroup) {
     question.get("answer")?.setValue(answer.answer);
     question.get("score")?.setValue(answer.score);
     question.get("questionNum")?.setValue(answer.questionNum);
@@ -231,7 +231,7 @@ export class Round2controlComponent implements OnInit, OnDestroy {
     this._dataService.revealRound2Value(entryNum);
   }
 
-  showFirstAnswers(form: FormGroup) {
+  showFirstAnswers(form: UntypedFormGroup) {
     if (this.newEventForm.get("playerNum")?.value == "2") {
       this._dataService.getRound2FirstPlayer(this.yEvent, this.newEventForm.get("teamNum")?.value)
         .subscribe((data: round2Answers[]) => this.firstPlayerAnswers = data);

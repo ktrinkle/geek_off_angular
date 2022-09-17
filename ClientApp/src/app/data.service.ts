@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
 import { environment } from './../environments/environment';
-import { round2SurveyList, round2SubmitAnswer, round3AnswerDto, round3QuestionDto, eventMaster, apiResponse } from './data/data';
+import { round2SurveyList, round2SubmitAnswer, round3AnswerDto, round3QuestionDto, eventMaster, apiResponse, adminLogin, bearerDto } from './data/data';
 import { Observable } from 'rxjs';
 import * as internal from 'stream';
 
@@ -14,14 +14,10 @@ export class DataService {
 
   constructor(private httpClient: HttpClient) { }
 
-  public getAzureAuth() {
-    var url = '/.auth/me';
-    return this.httpClient.get(url);
-  }
-
-  public getADProfile(): Observable<any> {
-    var uri = this.REST_API_SERVER + '/api/eventStatus/currentUser';
-    return this.httpClient.get(uri);
+  // login stuff
+  public sendAdminLogin(userLogin: adminLogin): Observable<bearerDto> {
+    var uri = this.REST_API_SERVER + '/api/eventstatus/login/admin';
+    return this.httpClient.post<bearerDto>(uri, userLogin);
   }
 
   public getCurrentEvent(): Observable<any> {

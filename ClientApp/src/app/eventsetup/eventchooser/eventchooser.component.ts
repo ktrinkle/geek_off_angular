@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import * as signalR from '@microsoft/signalr';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormControl, Validators } from '@angular/forms';
 import { DataService } from 'src/app/data.service';
 import { Store } from '@ngrx/store';
 import { selectCurrentEvent, selectAllEvents } from 'src/app/store';
@@ -23,10 +23,10 @@ export class EventchooserComponent implements OnInit, OnDestroy {
   showMessage: boolean = false;
 
 
-  public selectEventForm: FormGroup = new FormGroup({
-    yEvent: new FormControl(),
-    eventName: new FormControl(),
-    selEvent: new FormControl()
+  public selectEventForm: UntypedFormGroup = new UntypedFormGroup({
+    yEvent: new UntypedFormControl(),
+    eventName: new UntypedFormControl(),
+    selEvent: new UntypedFormControl()
   });
 
 

@@ -56,4 +56,4 @@ There are probably better ways to code this, but I'm not a Python programmer by 
 
 ## Copyright
 
-The code is Copyright © 2018-2020 Kevin Trinkle and is made available under the GPL v3 license.
+The code is Copyright © 2018-2022 Kevin Trinkle and is made available under the MIT license.

@@ -1,0 +1,26 @@
+<div>if you are a player, please scan the QR code for your team to start the game!</div>
+<form [formGroup]="loginForm" (ngSubmit)="submitLogin()">
+  <div>
+  <label for="userId">Admin user ID:</label>
+  <input
+    id="userId"
+    name="userId"
+    formControlName="userId"
+    type="text"
+  />
+</div>
+<div>
+  <label for="password">Password:</label>
+  <input
+    id="password"
+    name="password"
+    formControlName="password"
+    type="password"
+  />
+</div>
+<button mat-button mat-accent type="submit" class="contbtnredlabel">
+  Login!
+</button>
+
+  </form>
+

@@ -2,7 +2,7 @@ import { Component, ComponentFactoryResolver, OnDestroy, OnInit, Pipe, PipeTrans
 import { DataService } from '../../data.service';
 import { Store } from '@ngrx/store';
 import { round3AnswerDto, round3QuestionDto, round23Scores, introDto } from '../../data/data';
-import { FormGroup, FormControl, Validators, FormBuilder, FormArray } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormControl, Validators, UntypedFormBuilder, UntypedFormArray } from '@angular/forms';
 import * as signalR from '@microsoft/signalr';
 import { environment } from 'src/environments/environment';
 import { MatDialog } from '@angular/material/dialog';
@@ -29,14 +29,14 @@ export class DisplayTeamInfoPipe implements PipeTransform {
 export class Round3controlComponent implements OnInit, OnDestroy {
   public yEvent = '';
   public round3Questions: round3QuestionDto[] = [];
-  public round3Form: FormGroup = new FormGroup({
-    teams: new FormArray([]),
-    questionNum: new FormControl(''),
+  public round3Form: UntypedFormGroup = new UntypedFormGroup({
+    teams: new UntypedFormArray([]),
+    questionNum: new UntypedFormControl(''),
   });
 
-  public finalJepForm: FormGroup = new FormGroup({
-    teams: new FormArray([]),
-    questionNum: new FormControl('350'),
+  public finalJepForm: UntypedFormGroup = new UntypedFormGroup({
+    teams: new UntypedFormArray([]),
+    questionNum: new UntypedFormControl('350'),
   });
 
   public selectedScore: number = 0;
@@ -55,7 +55,7 @@ export class Round3controlComponent implements OnInit, OnDestroy {
   ]
 
   constructor(private store: Store, private _dataService: DataService,
-    private formBuilder: FormBuilder, public dialog: MatDialog) { }
+    private formBuilder: UntypedFormBuilder, public dialog: MatDialog) { }
 
   ngOnInit(): void {
 
@@ -112,21 +112,21 @@ export class Round3controlComponent implements OnInit, OnDestroy {
       for (let team of this.teamList) {
         tArray.push(
           this.formBuilder.group({
-            teamNum: new FormControl(team.teamNum),
-            score: new FormControl('', [Validators.pattern('[0-9]*')])
+            teamNum: new UntypedFormControl(team.teamNum),
+            score: new UntypedFormControl('', [Validators.pattern('[0-9]*')])
           })
         );
       }
 
       // creates the entire form
-      this.round3Form = new FormGroup({
+      this.round3Form = new UntypedFormGroup({
         teams: tArray,
-        questionNum: new FormControl('', [Validators.pattern('[0-9]*')])
+        questionNum: new UntypedFormControl('', [Validators.pattern('[0-9]*')])
       });
 
-      this.finalJepForm = new FormGroup({
+      this.finalJepForm = new UntypedFormGroup({
         teams: tArray,
-        questionNum: new FormControl('350')
+        questionNum: new UntypedFormControl('350')
       });
     });
   }
@@ -149,8 +149,8 @@ export class Round3controlComponent implements OnInit, OnDestroy {
     });
   }
 
-  resetSelections(form: FormGroup) {
-    const teamFormArray = form.get('teams') as FormArray;
+  resetSelections(form: UntypedFormGroup) {
+    const teamFormArray = form.get('teams') as UntypedFormArray;
     for (const team of teamFormArray.controls) {
       team.get('score')?.reset();
     }
@@ -158,9 +158,9 @@ export class Round3controlComponent implements OnInit, OnDestroy {
   }
 
   // Get user answer and store in DB
-  saveUserAnswer(form: FormGroup) {
+  saveUserAnswer(form: UntypedFormGroup) {
     const submitArray = [];
-    const teamFormArray = form?.get('teams') as FormArray;
+    const teamFormArray = form?.get('teams') as UntypedFormArray;
     for (const team of teamFormArray.controls) {
       const teamScore: round3AnswerDto = {
         yEvent: this.yEvent,

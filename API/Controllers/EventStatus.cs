@@ -35,19 +35,19 @@ namespace GeekOff.Controllers
         [AllowAnonymous]
         [HttpPut("login/player")]
         [SwaggerOperation(Summary = "Login based on QR code.")]
-        public async Task<ActionResult<string>> PlayerLoginAsync(string yEvent, Guid teamGuid)
+        public async Task<ActionResult<BearerDto>> PlayerLoginAsync(string yEvent, Guid teamGuid)
             => Ok(await _loginService.PlayerLoginAsync(yEvent, teamGuid));
 
         [AllowAnonymous]
-        [HttpPut("login/admin")]
+        [HttpPost("login/admin")]
         [SwaggerOperation(Summary = "Login from admin user.")]
-        public async Task<ActionResult<string>> AdminLoginAsync(string username)
-            => Ok(await _loginService.AdminLoginAsync(username));
+        public async Task<ActionResult<BearerDto>> AdminLoginAsync(AdminLogin loginInfo)
+            => Ok(await _loginService.AdminLoginAsync(loginInfo));
 
         [AllowAnonymous]
         [HttpPost("login/geekomatic")]
         [SwaggerOperation(Summary = "Login from GeekOMatic")]
-        public async Task<ActionResult<string>> GeekLoginAsync(string token)
+        public async Task<ActionResult<BearerDto>> GeekLoginAsync(string token)
             => Ok(await _loginService.GeekOMaticLoginAsync(token));
 
     }

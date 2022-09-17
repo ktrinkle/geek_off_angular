@@ -6,7 +6,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import * as signalR from '@microsoft/signalr';
 import { environment } from 'src/environments/environment';
-import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormControl, Validators, UntypedFormBuilder } from '@angular/forms';
 import { selectCurrentEvent } from 'src/app/store';
 import { Store } from '@ngrx/store';
 
@@ -41,11 +41,11 @@ export class Round1ControlComponent implements OnInit, OnDestroy {
 
   currentFilterQuestion: any = {};
 
-  public answerForm: FormGroup = new FormGroup({
-    selectedQuestion: new FormControl(this.currentQuestion)
+  public answerForm: UntypedFormGroup = new UntypedFormGroup({
+    selectedQuestion: new UntypedFormControl(this.currentQuestion)
   });
 
-  constructor(private dataService: DataService, private router: Router, private formBuilder: FormBuilder, private store: Store) {
+  constructor(private dataService: DataService, private router: Router, private formBuilder: UntypedFormBuilder, private store: Store) {
 
     this.store.select(selectCurrentEvent).pipe(takeUntil(this.destroy$)).subscribe(currentEvent => {
       this.yEvent = currentEvent;
@@ -108,12 +108,12 @@ export class Round1ControlComponent implements OnInit, OnDestroy {
       this.teamAnswers = a;
 
       // reset form
-      this.answerForm = new FormGroup({
-        selectedQuestion: new FormControl(this.currentQuestion)
+      this.answerForm = new UntypedFormGroup({
+        selectedQuestion: new UntypedFormControl(this.currentQuestion)
       });
 
       a.forEach((ans: round1EnteredAnswers) => {
-        this.answerForm.setControl(ans.teamNum.toString(), new FormControl(ans.answerStatus));
+        this.answerForm.setControl(ans.teamNum.toString(), new UntypedFormControl(ans.answerStatus));
       });
     });
   }
@@ -139,8 +139,8 @@ export class Round1ControlComponent implements OnInit, OnDestroy {
       this.scoreResponse = '';
 
       // reset answerform
-      this.answerForm = new FormGroup({
-        selectedQuestion: new FormControl(this.currentQuestion)
+      this.answerForm = new UntypedFormGroup({
+        selectedQuestion: new UntypedFormControl(this.currentQuestion)
       });
     }
     console.log(this.yEvent);
