@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UntypedFormGroup, UntypedFormControl, Validators } from '@angular/forms';
 import { DataService } from 'src/app/data.service';
 import { adminLogin } from 'src/app/data/data';
+import { AuthService } from 'src/app/service/auth.service';
 
 @Component({
   selector: 'app-admin-login',
@@ -15,7 +16,7 @@ export class AdminComponent {
     password: new UntypedFormControl()
   });
 
-  constructor(private dataService: DataService) { }
+  constructor(private dataService: DataService, private authService: AuthService) { }
 
   submitLogin(): void {
     if (this.loginForm.value.userId != '' && this.loginForm.value.password != '')
@@ -25,13 +26,7 @@ export class AdminComponent {
         password: this.loginForm.value.password
       }
 
-      this.dataService.sendAdminLogin(loginSubmit).subscribe(al =>
-        {
-          localStorage.setItem("jwt", al.bearerToken);
-          localStorage.setItem("teamNum", "0");
-          localStorage.setItem("realName", "");
-        })
-
+      this.authService.processLoginAdmin(loginSubmit);
     }
   }
 

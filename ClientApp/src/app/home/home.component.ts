@@ -37,7 +37,7 @@ export class HomeComponent implements OnInit {
     const token = localStorage.getItem("jwt");
     if (token && !this.jwtHelper.isTokenExpired(token)) {
       this.userIsLoggedIn = true;
-      this.userIsAdmin = this.playerGuard.checkAdmin("admin");
+      this.userIsAdmin = this.playerGuard.checkRole("admin");
     } else {
       this.userIsLoggedIn = false;
       this.userIsAdmin = false;

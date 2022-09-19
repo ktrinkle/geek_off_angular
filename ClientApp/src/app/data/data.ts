@@ -154,8 +154,18 @@ export interface adminLogin {
 
 export interface bearerDto {
   teamNum: number,
-  teamName: string,
-  userName: string,
+  teamName?: string,
+  userName?: string,
   humanName: string,
   bearerToken: string,
+}
+
+export interface simpleUser {
+  teamNum?: number,
+  teamName?: string
+}
+
+export interface teamLogin {
+  yEvent: string,
+  teamGuid: Guid
 }

@@ -1,16 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using GeekOff.Entities;
-using GeekOff.Models;
-using GeekOff.Services;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
-using Microsoft.Extensions.Logging;
-using Swashbuckle.AspNetCore.Annotations;
-
 namespace GeekOff.Controllers
 {
     [ApiController]

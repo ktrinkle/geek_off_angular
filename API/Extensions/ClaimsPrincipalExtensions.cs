@@ -5,7 +5,7 @@ namespace GeekOff.Helpers
 {
     public static class ClaimsPrincipalExtension
     {
-        public static int TeamId(this ClaimsPrincipal principal)
+        public static string TeamId(this ClaimsPrincipal principal)
         {
             var claim = principal.Claims.FirstOrDefault(c => c.Type == "teamnum");
             try
@@ -14,7 +14,7 @@ namespace GeekOff.Helpers
             }
             catch
             {
-                return 0;
+                return "0";
             }
         }
 

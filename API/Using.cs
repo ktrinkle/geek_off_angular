@@ -1,6 +1,7 @@
 global using GeekOff.Config;
 global using GeekOff.Data;
 global using GeekOff.Extensions;
+global using GeekOff.Helpers;
 global using GeekOff.Services;
 global using GeekOff.Models;
 global using Microsoft.AspNetCore.Authentication.Certificate;
@@ -27,9 +28,5 @@ global using Microsoft.Extensions.Logging;
 global using System.Security.Claims;
 global using System.Security.Cryptography;
 global using System.IdentityModel.Tokens.Jwt;
-global using GeekOff.Entities;
-global using GeekOff.Helpers;
 global using Microsoft.AspNetCore.Mvc;
-global using Microsoft.AspNetCore.Authorization;
 global using Swashbuckle.AspNetCore.Annotations;
-
