@@ -47,7 +47,7 @@ export class Round1ScoreboardComponent implements OnInit, OnDestroy {
     });
 
     connection.on("round2ScoreUpdate", (data: any) => {
-      this.router.navigate(['/round2/scoreboard']);
+      this.router.navigate(['/round2feud/scoreboard']);
     });
 
   }

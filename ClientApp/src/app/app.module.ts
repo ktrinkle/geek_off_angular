@@ -57,6 +57,8 @@ import { EventchooserComponent } from './eventsetup/eventchooser/eventchooser.co
 import { AdminComponent } from './login/admin/admin.component';
 import { PlayerComponent } from './login/player/player.component';
 
+import { QRCodeModule } from 'angularx-qrcode';
+
 
 @NgModule({
   declarations: [
@@ -83,7 +85,7 @@ import { PlayerComponent } from './login/player/player.component';
     TeamlinkComponent,
     EventchooserComponent,
     AdminComponent,
-    PlayerComponent
+    PlayerComponent,
   ],
   imports: [
     BrowserModule,
@@ -109,7 +111,8 @@ import { PlayerComponent } from './login/player/player.component';
     FormsModule,
     MatDialogModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    QRCodeModule,
   ],
   exports: [
     FormsModule

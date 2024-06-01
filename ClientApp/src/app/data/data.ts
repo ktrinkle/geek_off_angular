@@ -169,3 +169,10 @@ export interface teamLogin {
   yEvent: string,
   teamGuid: Guid
 }
+
+export interface newTeamEntry {
+  successInd: boolean,
+  teamNum: number,
+  teamGuid : Guid,
+  teamName : string
+}

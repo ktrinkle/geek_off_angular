@@ -109,7 +109,7 @@ export class Round2displayComponent implements OnInit, OnDestroy {
   }
 
   getDisplayBoard(): void {
-    this.dataService.getRound2DisplayBoard(this.yEvent, this.teamNumber).pipe(takeUntil(this.destroy$)).subscribe(x => {
+    this.dataService.getRound2FeudDisplayBoard(this.yEvent, this.teamNumber).pipe(takeUntil(this.destroy$)).subscribe(x => {
       this.displayRows = [];
       this.teamNumber = x.teamNum;
       this.totalScore = x.finalScore;

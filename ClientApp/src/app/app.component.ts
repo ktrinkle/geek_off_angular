@@ -30,7 +30,7 @@ export class AppComponent implements OnInit, OnDestroy {
   pagesToShowLogin = [
     '/round1/contestant',
     '/control/pregame',
-    '/control/round2',
+    '/control/round2feud',
     '/control/round1',
     '/home',
     '/',

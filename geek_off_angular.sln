@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.002.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "geek_off_angular", "GeekOff.API\geek_off_angular.csproj", "{4379C647-6774-4BB2-9F2D-BA141A3209CE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeekOff.Test", "GeekOff.Test\GeekOff.Test.csproj", "{AA9F7032-605E-4E3F-8F6A-05B6783F3259}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4379C647-6774-4BB2-9F2D-BA141A3209CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4379C647-6774-4BB2-9F2D-BA141A3209CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4379C647-6774-4BB2-9F2D-BA141A3209CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4379C647-6774-4BB2-9F2D-BA141A3209CE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AA9F7032-605E-4E3F-8F6A-05B6783F3259}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA9F7032-605E-4E3F-8F6A-05B6783F3259}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AA9F7032-605E-4E3F-8F6A-05B6783F3259}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AA9F7032-605E-4E3F-8F6A-05B6783F3259}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F15A337C-D916-4D81-831E-8B3FB0630DE4}
+	EndGlobalSection
+EndGlobal

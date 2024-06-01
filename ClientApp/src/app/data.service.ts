@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
 import { environment } from './../environments/environment';
-import { round2SurveyList, round2SubmitAnswer, round3AnswerDto, round3QuestionDto, eventMaster, apiResponse, adminLogin, bearerDto, teamLogin } from './data/data';
+import { newTeamEntry, round2SubmitAnswer, round3AnswerDto, round3QuestionDto, eventMaster, apiResponse, adminLogin, bearerDto, teamLogin } from './data/data';
 import { Observable } from 'rxjs';
-import * as internal from 'stream';
 
 @Injectable({
   providedIn: 'root'
@@ -26,6 +25,27 @@ export class DataService {
     return this.httpClient.put<bearerDto>(uri, {});
   }
 
+  // team link stuff
+
+  public createTeamLink(yevent: string, teamName: string): Observable<newTeamEntry> {
+    var uri = this.REST_API_SERVER + '/api/eventmanage/createTeamm/' + encodeURIComponent(yevent)
+              + '/' + encodeURIComponent(teamName) + '';
+    return this.httpClient.put<newTeamEntry>(uri, {});
+  }
+
+  public moveTeamNumber(yevent: string, oldTeamNum: number, newTeamNum: number): Observable<apiResponse> {
+    var uri = this.REST_API_SERVER + '/api/eventmanage/createTeamm/' + encodeURIComponent(yevent)
+              + '/' + encodeURIComponent(oldTeamNum) + '/' + encodeURIComponent(newTeamNum) + '';
+    return this.httpClient.put<apiResponse>(uri, {});
+  }
+
+  public listTeamAndLink(yevent: string): Observable<newTeamEntry[]> {
+    var uri = this.REST_API_SERVER + '/api/eventmanage/listTeamAndLink/' + encodeURIComponent(yevent)
+              + '';
+    return this.httpClient.put<newTeamEntry[]>(uri, {});
+  }
+
+  // event stuff
   public getCurrentEvent(): Observable<any> {
     var uri = this.REST_API_SERVER + '/api/eventStatus/currentEvent';
     return this.httpClient.get(uri, { responseType: "text" });

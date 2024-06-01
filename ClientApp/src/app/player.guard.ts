@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, Router } from '@angular/router';
+import { CanActivate, Router, ActivatedRoute, ParamMap } from '@angular/router';;
 import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Injectable()
@@ -11,6 +11,7 @@ export class PlayerGuard implements CanActivate {
 
     //get the jwt token which are present in the local storage
     const token = localStorage.getItem("jwt");
+    const expectedRole = 1;
 
     //Check if the token is expired or not and if token is expired then redirect to login page and return false
     if (token && !this.jwtHelper.isTokenExpired(token)){

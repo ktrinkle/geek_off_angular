@@ -108,7 +108,7 @@ export class Round1DisplayQuestionComponent implements OnInit, OnDestroy {
     });
 
     connection.on("round2ChangeTeam", (data: any) => {
-      this.router.navigate(['/round2/display']);
+      this.router.navigate(['/round2feud/display']);
     });
   }
 

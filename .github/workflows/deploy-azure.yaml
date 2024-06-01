@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         
       - name: Use Node.js ${{ env.NODE_VERSION }}
         uses: actions/setup-node@v2
@@ -72,12 +72,12 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Install dependencies
-        working-directory: ./API
+        working-directory: ./GeekOff.API
         run: dotnet restore
 
       - name: Build
         run: |
-          cd API
+          cd GeekOff.API
           dotnet build --configuration Release --no-restore
           dotnet publish -c Release -o ../webapi -r linux-x64 --self-contained true /p:UseAppHost=true
           ls ../webapi

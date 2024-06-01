@@ -8,8 +8,8 @@ namespace GeekOff.Data
     {
         [Key]
         [MaxLength(6)]
-        public string Yevent { get; set; }
-        public string EventName { get; set; }
+        public string Yevent { get; set; } = string.Empty;
+        public string EventName { get; set; } = string.Empty;
         public bool? SelEvent { get; set; }
     }
 }

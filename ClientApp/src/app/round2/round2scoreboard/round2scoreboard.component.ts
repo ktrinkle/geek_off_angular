@@ -63,7 +63,7 @@ export class Round2scoreboardComponent implements OnInit, OnDestroy {
   }
 
   public getScoreboardInfo(yevent: string) {
-    this._dataService.getRound2Scores(yevent).subscribe((data: round23Scores[]) => {
+    this._dataService.getRound2FeudScores(yevent).subscribe((data: round23Scores[]) => {
       this.scores = data.sort((a, b) => a.teamScore ? - (b.teamScore || 0) : 0);
 
       this.scores.forEach((score, index) => {

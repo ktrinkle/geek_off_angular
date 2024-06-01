@@ -282,69 +282,6 @@ namespace GeekOff.Services
             return currentEvent.Yevent ?? null;
         }
 
-        public async Task<List<EventMaster>> GetAllEventsAsync()
-        {
-            var currentEvent = await _contextGo.EventMaster.ToListAsync();
-            return currentEvent;
-        }
-
-        public async Task<ApiResponse> AddEventAsync(EventMaster newEvent)
-        {
-            var eventExist = await _contextGo.EventMaster.AnyAsync(e => e.Yevent == newEvent.Yevent);
-            if (eventExist)
-            {
-                return new ApiResponse()
-                {
-                    SuccessInd = false,
-                    Response = "The created event already exists. Please create a new code."
-                };
-            }
-
-            // deactivate existing event if selected active in passed json
-            if (newEvent.SelEvent ?? false)
-            {
-                var eventUpdate = await _contextGo.EventMaster.SingleOrDefaultAsync(e => e.SelEvent ?? false);
-                eventUpdate.SelEvent = false;
-                _contextGo.EventMaster.Update(eventUpdate);
-                _contextGo.SaveChanges();
-            }
-
-            await _contextGo.EventMaster.AddAsync(newEvent);
-            _contextGo.SaveChanges();
-
-            return new ApiResponse()
-            {
-                SuccessInd = true,
-                Response = "The new event was successfully added to the system."
-            };
-        }
-
-        public async Task<ApiResponse> SetCurrentEventAsync(string yEvent)
-        {
-            var eventExist = await _contextGo.EventMaster.SingleOrDefaultAsync(e => e.Yevent == yEvent);
-            if (eventExist is null)
-            {
-                return new ApiResponse() {
-                    SuccessInd = false,
-                    Response = "The selected event does not exist."
-                };
-            }
-
-            var eventUpdate = await _contextGo.EventMaster.SingleOrDefaultAsync(e => e.SelEvent ?? false);
-            eventUpdate.SelEvent = false;
-            _contextGo.EventMaster.Update(eventUpdate);
-
-            eventExist.SelEvent = true;
-            _contextGo.EventMaster.Update(eventExist);
-
-            _contextGo.SaveChanges();
-
-            return new ApiResponse() {
-                SuccessInd = true,
-                Response = "The selected event was made active."
-            };
-        }
-
         public async Task<CurrentQuestionDto> GetCurrentQuestion(string yEvent)
         {
             var currentQuestion = await _contextGo.CurrentQuestion

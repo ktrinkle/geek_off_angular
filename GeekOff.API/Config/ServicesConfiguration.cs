@@ -1,11 +1,4 @@
-using System;
-using GeekOff.Helpers;
-using GeekOff.Services;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+using System.Reflection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace GeekOff.Config
@@ -20,6 +13,8 @@ namespace GeekOff.Config
             services.TryAddScoped<IScoreService, ScoreService>();
             services.TryAddScoped<IQuestionService, QuestionService>();
             services.TryAddScoped<ITeamService, TeamService>();
+
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
 
            // services.TryAddScoped<IClaimsTransformation, AddRolesClaimsTransformation>();
         }

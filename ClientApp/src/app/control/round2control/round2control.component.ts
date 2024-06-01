@@ -119,7 +119,7 @@ export class Round2controlComponent implements OnInit, OnDestroy {
 
   // Grabs all the questions.
   getSurveyQuestions(yevent: string) {
-    this._dataService.getAllRound2SurveyQuestions(yevent).subscribe((data: round2SurveyQuestions[]) => {
+    this._dataService.getAllRound2FeudSurveyQuestions(yevent).subscribe((data: round2SurveyQuestions[]) => {
       this.surveyMasterList = data;
 
       // creates the formArray of the formGroup of question controls
@@ -170,7 +170,7 @@ export class Round2controlComponent implements OnInit, OnDestroy {
 
     console.log(submitAnswer);
 
-    this._dataService.sendRound2AnswerText(submitAnswer).subscribe((data: string) => {
+    this._dataService.sendRound2FeudAnswerText(submitAnswer).subscribe((data: string) => {
       this.apiResponse = data;
     });
 
@@ -196,12 +196,12 @@ export class Round2controlComponent implements OnInit, OnDestroy {
   }
 
   async updateRemoteScoreboard() {
-    await this._dataService.updateScoreboardRound2();
+    await this._dataService.updateScoreboardRound2Feud();
     this.updateScoreboard();
   }
 
   updateScoreboard() {
-    this._dataService.getRound2Scores(this.yEvent).subscribe({
+    this._dataService.getRound2FeudScores(this.yEvent).subscribe({
       next: (a => {
         this.scoreboard = a;
       }), complete: () => {
@@ -228,12 +228,12 @@ export class Round2controlComponent implements OnInit, OnDestroy {
   showDisplayBoardValue() {
     // this will be values 0-20. 0 = hide all, 10 = show all player 1, 20 = show all
     var entryNum = this.pickAnimateForm.value.currentDisplayId;
-    this._dataService.revealRound2Value(entryNum);
+    this._dataService.revealRound2FeudValue(entryNum);
   }
 
   showFirstAnswers(form: UntypedFormGroup) {
     if (this.newEventForm.get("playerNum")?.value == "2") {
-      this._dataService.getRound2FirstPlayer(this.yEvent, this.newEventForm.get("teamNum")?.value)
+      this._dataService.getRound2FeudFirstPlayer(this.yEvent, this.newEventForm.get("teamNum")?.value)
         .subscribe((data: round2Answers[]) => this.firstPlayerAnswers = data);
       console.log("FPA: " + this.firstPlayerAnswers);
     }
@@ -245,7 +245,7 @@ export class Round2controlComponent implements OnInit, OnDestroy {
 
     if (teamNum != '--')
     {
-      this._dataService.changeRound2Team(teamNum);
+      this._dataService.changeRound2FeudTeam(teamNum);
       this.newEventForm.patchValue({ "playerNum": "1" });
     }
   }
@@ -276,14 +276,14 @@ export class Round2controlComponent implements OnInit, OnDestroy {
   }
 
   changeScreen(name: string) {
-    this._dataService.changeRound2Page(name);
+    this._dataService.changeRound2FeudPage(name);
     if (name == 'prize1') {
       this.consolation.play();
     }
   }
 
   finalizeRound() {
-    this._dataService.finalizeRound2(this.yEvent).subscribe(data => {
+    this._dataService.finalizeRound2Feud(this.yEvent).subscribe(data => {
       this.finalizeState = data;
     });
   }
