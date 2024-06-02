@@ -1,15 +1,11 @@
-using MediatR;
-
 namespace GeekOff.Controllers;
 
 [ApiController]
 [Route("api/eventmanage")]
-public class EventManageController(ILogger<EventManageController> logger, IManageEventService manageEventService,
-        ITeamService teamService, IMediator mediator) : ControllerBase
+public class EventManageController(ILogger<EventManageController> logger,
+        IMediator mediator) : ControllerBase
 {
     private readonly ILogger<EventManageController> _logger = logger;
-    private readonly IManageEventService _manageEventService = manageEventService;
-    private readonly ITeamService _teamService = teamService;
     private readonly IMediator _mediator = mediator;
 
     [Authorize(Roles = "admin")]
@@ -79,7 +75,7 @@ public class EventManageController(ILogger<EventManageController> logger, IManag
     [Authorize(Roles = "admin")]
     [HttpPut("moveTeam/{YEvent}")]
     [SwaggerOperation(Summary = "Change a team number in the event")]
-    public async Task<ActionResult<ApiResponse>> MoveTeamNumberAsync([FromRoute] MoveTeamHandler.Request request) =>
+    public async Task<IActionResult> MoveTeamNumberAsync([FromRoute] MoveTeamHandler.Request request) =>
         await _mediator.Send(request) switch
         {
             { Status: QueryStatus.Success } result => Ok(result.Value),
@@ -91,8 +87,13 @@ public class EventManageController(ILogger<EventManageController> logger, IManag
     [Authorize(Roles = "admin")]
     [HttpGet("listTeamAndLink/{yEvent}")]
     [SwaggerOperation(Summary = "List teams and get links for all teams in an event.")]
-    public async Task<ActionResult<List<NewTeamEntry>>> GetTeamListAsync(string yEvent)
-        => Ok(await _teamService.GetTeamListAsync(yEvent));
+    public async Task<ActionResult<List<NewTeamEntry>>> GetTeamListAsync([FromRoute] TeamListHandler.Request request) =>
+        await _mediator.Send(request) switch
+        {
+            { Status: QueryStatus.Success } result => Ok(result.Value),
+            { Status: QueryStatus.NotFound } result => NotFound(result.Value),
+            _ => throw new InvalidOperationException()
+        };
 
 }
 

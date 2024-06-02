@@ -1,9 +1,3 @@
-//            _contextGo.Update(Teamrefernce);
-            // _contextGo.UpdateRange(TeamUser);
-
-using GeekOff.Models;
-using Microsoft.Extensions.Azure;
-
 namespace GeekOff.Test.EventManageTests;
 
 public class MoveTeamHandlerTest

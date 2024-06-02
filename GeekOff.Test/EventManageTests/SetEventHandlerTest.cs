@@ -1,5 +1,3 @@
-using GeekOff.Models;
-
 namespace GeekOff.Test.EventManageTests;
 
 public class SetEventHandlerTest

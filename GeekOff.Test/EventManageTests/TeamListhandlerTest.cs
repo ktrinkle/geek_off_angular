@@ -1,6 +1,6 @@
 namespace GeekOff.Test.EventManageTests;
 
-public class AddTeamHandlerTest
+public class TeamListHandlerTest
 {
     private readonly ContextGo _contextGo;
     private readonly IServiceCollection _services = new ServiceCollection();
@@ -18,63 +18,70 @@ public class AddTeamHandlerTest
             new()
             {
                 Yevent = "t21",
-                Teamname = "Team 2",
-                TeamNum = 2,
+                Teamname = "Team 3",
+                TeamNum = 3,
                 Dollarraised = 100,
+                TeamGuid = new Guid()                
+            },
+            new()
+            {
+                Yevent = "t21",
+                Teamname = "Team 4",
+                TeamNum = 4,
+                Dollarraised = 101,
                 TeamGuid = new Guid()                
             }
         ];
-    private readonly DbSet<Teamreference> mock = initialTeamData.AsQueryable().BuildMockDbSet();
 
-    public AddTeamHandlerTest()
+    private readonly DbSet<Teamreference> mockTeamReference = initialTeamData.AsQueryable().BuildMockDbSet();
+
+    public TeamListHandlerTest()
     {
         _contextGo = Substitute.For<ContextGo>();
         
         _serviceProvider = _services
-            .AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(AddTeamHandler).Assembly))
+            .AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(TeamListHandler).Assembly))
             .AddLogging().BuildServiceProvider();
 
-        _contextGo.Teamreference.Returns(mock);
-
+        _contextGo.Teamreference.Returns(mockTeamReference);
     }
 
     [Fact]
-    public async Task Handle_AddTeamIncrementNumber()
+    public async Task Handle_TeamListMaster()
     {
         // Arrange
         _ = _serviceProvider.GetRequiredService<IMediator>();
 
-        var handler = new AddTeamHandler.Handler(_contextGo);
-        var request = new AddTeamHandler.Request(){
-            YEvent = "t21",
-            TeamName = "Test 2024"
+        var handler = new TeamListHandler.Handler(_contextGo);
+        var request = new TeamListHandler.Request(){
+            YEvent = "t21"
         };
 
         // Act
         var result = await handler.Handle(request, CancellationToken.None);
 
         // Assert
-        Assert.Equal(3, result.Value!.TeamNum);
+        Assert.NotEmpty(result.Value!);
+        Assert.Equal(result.Value!.Count, initialTeamData.Count);
         Assert.Equal(QueryStatus.Success, result.Status);
     }
 
     [Fact]
-    public async Task Handle_AddTeamNewEvent()
+    public async Task Handle_TeamListNoYEvent()
     {
         // Arrange
         _ = _serviceProvider.GetRequiredService<IMediator>();
 
-        var handler = new AddTeamHandler.Handler(_contextGo);
-        var request = new AddTeamHandler.Request(){
-            YEvent = "t22",
-            TeamName = "Test 2022"
+        var handler = new TeamListHandler.Handler(_contextGo);
+        var request = new TeamListHandler.Request(){
+            YEvent = "o21"
         };
 
         // Act
         var result = await handler.Handle(request, CancellationToken.None);
 
         // Assert
-        Assert.Equal(1, result.Value!.TeamNum);
+        Assert.Empty(result.Value!);
         Assert.Equal(QueryStatus.Success, result.Status);
     }
 }

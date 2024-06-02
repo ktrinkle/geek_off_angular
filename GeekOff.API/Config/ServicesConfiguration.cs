@@ -12,7 +12,6 @@ namespace GeekOff.Config
             services.TryAddScoped<IManageEventService, ManageEventService>();
             services.TryAddScoped<IScoreService, ScoreService>();
             services.TryAddScoped<IQuestionService, QuestionService>();
-            services.TryAddScoped<ITeamService, TeamService>();
 
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
 
