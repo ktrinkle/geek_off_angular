@@ -19,7 +19,7 @@ public class AddEventHandler
             if (eventExist)
             {
                 returnString.Message = "The created event already exists. Please create a new code.";
-                return ApiResponse<StringReturn>.Success(returnString);
+                return ApiResponse<StringReturn>.Conflict(returnString);
             }
 
             // deactivate existing event if selected active in passed json

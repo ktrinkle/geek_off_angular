@@ -9,7 +9,7 @@ namespace GeekOff.Data
     {
         [Key]
         public int Id { get; set; }
-        public string YEvent { get; set; }
+        public string YEvent { get; set; } = string.Empty;
         public int QuestionNum { get; set; }
         public int Status { get; set; }
         public DateTime QuestionTime { get; set; }

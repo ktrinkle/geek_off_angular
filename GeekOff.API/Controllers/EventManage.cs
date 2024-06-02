@@ -44,18 +44,27 @@ public class EventManageController(ILogger<EventManageController> logger, IManag
             _ => throw new InvalidOperationException()
         };
 
-
     [Authorize(Roles = "admin")]
     [HttpPut("dollarAmount/{yEvent}/{teamNum}")]
-    [SwaggerOperation(Summary = "Get current user and team info from database based on logged in user.")]
-    public async Task<ActionResult<string>> UpdateFundAmountAsync(string yEvent, int teamNum, decimal? dollarAmount)
-        => Ok(await _manageEventService.UpdateFundAmountAsync(yEvent, teamNum, dollarAmount));
+    [SwaggerOperation(Summary = "Update current fund amount for team and event.")]
+    public async Task<ActionResult<ApiResponse>> UpdateFundAmtAsync([FromRoute] UpdateFundAmtHandler.Request request) =>
+        await _mediator.Send(request) switch
+        {
+            { Status: QueryStatus.Success } result => Ok(result.Value),
+            { Status: QueryStatus.NotFound } result => NotFound(result.Value),
+            _ => throw new InvalidOperationException()
+        };
 
     [Authorize(Roles = "admin")]
-    [HttpPut("cleanEvent/{yEvent}")]
+    [HttpPut("cleanEvent/{YEvent}")]
     [SwaggerOperation(Summary = "Clean all results out of system for this event.")]
-    public async Task<ActionResult<string>> ResetEventAsync(string yEvent)
-        => Ok(await _manageEventService.ResetEvent(yEvent));
+    public async Task<ActionResult<ApiResponse>> ResetEventAsync([FromRoute] ResetEventHandler.Request request) =>
+        await _mediator.Send(request) switch
+        {
+            { Status: QueryStatus.Success } result => Ok(result.Value),
+            { Status: QueryStatus.NotFound } result => NotFound(result.Value),
+            _ => throw new InvalidOperationException()
+        };
 
     [Authorize(Roles = "admin")]
     [HttpPut("createTeam/{yEvent}/{teamName}")]

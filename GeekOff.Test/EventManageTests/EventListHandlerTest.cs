@@ -1,3 +1,5 @@
+using GeekOff.Models;
+
 namespace GeekOff.Test.EventManageTests;
 
 public class EventListHandlerTest
@@ -49,6 +51,6 @@ public class EventListHandlerTest
         // Assert
         Assert.NotEmpty(result.Value);
         Assert.Equal(result.Value.Count, expectedResult.Count());
-
+        Assert.Equal(QueryStatus.Success, result.Status);
     }
 }

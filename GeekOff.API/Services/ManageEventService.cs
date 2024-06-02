@@ -332,68 +332,6 @@ namespace GeekOff.Services
             };
         }
 
-        public async Task<string> UpdateFundAmountAsync(string yEvent, int teamNum, decimal? dollarAmount)
-        {
-            if (dollarAmount is not null and < 0)
-            {
-                return "You can't have a fundraising amount less than zero.";
-            }
-
-            // validate team number
-            var teamInfo = await _contextGo.Teamreference.FirstOrDefaultAsync(tr => tr.Yevent == yEvent
-                                                                                && tr.TeamNum == teamNum);
-
-            if (teamInfo is null)
-            {
-                return "Invalid team number is entered.";
-            }
-
-            teamInfo.Dollarraised = dollarAmount;
-            _contextGo.Teamreference.Update(teamInfo);
-            await _contextGo.SaveChangesAsync();
-
-            return "The dollar amount is successfully updated.";
-        }
-
-        public async Task<string> ResetEvent(string yEvent)
-        {
-            if (yEvent is null)
-            {
-                return "No event was submitted to clean.";
-            }
-
-            // set up stuff to remove
-            var currentQuestion = new CurrentQuestion()
-            {
-                YEvent = yEvent
-            };
-
-            var roundResult = new Roundresult()
-            {
-                Yevent = yEvent
-            };
-
-            var score = new Scoring()
-            {
-                Yevent = yEvent
-            };
-
-            var userAnswer = new UserAnswer()
-            {
-                Yevent = yEvent
-            };
-
-            _contextGo.CurrentQuestion.Remove(currentQuestion);
-            _contextGo.Roundresult.Remove(roundResult);
-            _contextGo.Scoring.Remove(score);
-            _contextGo.UserAnswer.Remove(userAnswer);
-
-            await _contextGo.SaveChangesAsync();
-
-            return $"Event {yEvent} results were removed from the system.";
-
-        }
-
         public async Task<string> SetRound3Answer(List<Round3AnswerDto> round3Answers)
         {
             if (round3Answers is null)

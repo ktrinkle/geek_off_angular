@@ -26,12 +26,6 @@ namespace GeekOff.Controllers
         public async Task<ActionResult<CurrentQuestionDto>> GetCurrentQuestionAsync(string yEvent)
             => Ok(await _manageEventService.GetCurrentQuestion(yEvent));
 
-        [Authorize(Roles = "admin")]
-        [HttpPut("dollarAmount/{yEvent}/{teamNum}")]
-        [SwaggerOperation(Summary = "Get current user and team info from database based on logged in user.")]
-        public async Task<ActionResult<string>> UpdateFundAmountAsync(string yEvent, int teamNum, decimal? dollarAmount)
-            => Ok(await _manageEventService.UpdateFundAmountAsync(yEvent, teamNum, dollarAmount));
-
         [AllowAnonymous]
         [HttpPut("login/player")]
         [SwaggerOperation(Summary = "Login based on QR code.")]

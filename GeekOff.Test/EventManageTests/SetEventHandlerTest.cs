@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+using GeekOff.Models;
 
 namespace GeekOff.Test.EventManageTests;
 
@@ -53,11 +53,11 @@ public class SetEventHandlerTest
         // Assert
         Assert.NotEmpty(result.Value.Message!);
         Assert.Equal("The selected event was made active.", result.Value.Message!);
-
+        Assert.Equal(QueryStatus.Success, result.Status);
     }
 
     [Fact]
-    public async Task Handle_SetEVentMissingEventId()
+    public async Task Handle_SetEventMissingEventId()
     {
         // Arrange
         _ = _serviceProvider.GetRequiredService<IMediator>();
@@ -73,7 +73,7 @@ public class SetEventHandlerTest
         // Assert
         Assert.NotEmpty(result.Value.Message!);
         Assert.Equal("The selected event does not exist.", result.Value.Message!);
-
+        Assert.Equal(QueryStatus.NotFound, result.Status);
     }
 
 }

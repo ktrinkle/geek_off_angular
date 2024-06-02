@@ -8,7 +8,7 @@ namespace GeekOff.Data
     public partial class Roundresult
     {
         [MaxLength(6)]
-        public string Yevent { get; set; }
+        public string Yevent { get; set; } = string.Empty;
         public int RoundNum { get; set; }
         public int TeamNum { get; set; }
         public decimal? Ptswithbonus { get; set; }

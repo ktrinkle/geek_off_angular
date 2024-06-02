@@ -8,7 +8,7 @@ namespace GeekOff.Data
     public class UserAnswer
     {
         [MaxLength(6)]
-        public string Yevent { get; set; }
+        public string Yevent { get; set; } = string.Empty;
         public int TeamNum { get; set; }
         public int QuestionNum { get; set; }
         public int? RoundNum { get; set; }

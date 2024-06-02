@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+using GeekOff.Models;
 
 namespace GeekOff.Test.EventManageTests;
 
@@ -52,15 +52,13 @@ public class AddEventHandlerTest
             }
         };
 
-        // _contextGo.EventMaster.Returns(mock);
-
         // Act
         var result = await handler.Handle(request, CancellationToken.None);
 
         // Assert
         Assert.NotEmpty(result.Value.Message!);
         Assert.Equal("The new event was successfully added to the system.", result.Value.Message!);
-
+        Assert.Equal(QueryStatus.Success, result.Status);
     }
 
     [Fact]
@@ -87,7 +85,7 @@ public class AddEventHandlerTest
         // Assert
         Assert.NotEmpty(result.Value.Message!);
         Assert.Equal("The created event already exists. Please create a new code.", result.Value.Message!);
-
+        Assert.Equal(QueryStatus.Conflict, result.Status);
     }
 
 }

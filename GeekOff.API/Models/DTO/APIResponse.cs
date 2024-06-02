@@ -39,6 +39,6 @@ public class ApiResponse<T>: IResult<T, QueryStatus>
     public static ApiResponse<T> NoContent()
         => new(default, QueryStatus.NoContent);
 
-    public static ApiResponse<T> BadRequest()
-        => new(default, QueryStatus.BadRequest);
+    public static ApiResponse<T> BadRequest(T? val = default)
+        => new(val, QueryStatus.BadRequest);
 }
