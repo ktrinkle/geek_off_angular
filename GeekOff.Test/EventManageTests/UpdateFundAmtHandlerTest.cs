@@ -33,7 +33,7 @@ public class UpdateFundAmtHandlerTest
         _contextGo = Substitute.For<ContextGo>();
         
         _serviceProvider = _services
-            .AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(AddEventHandler).Assembly))
+            .AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(UpdateFundAmtHandler).Assembly))
             .AddLogging().BuildServiceProvider();
 
         _contextGo.Teamreference.Returns(mock);

@@ -29,7 +29,7 @@ public class SetEventHandlerTest
         _contextGo = Substitute.For<ContextGo>();
         
         _serviceProvider = _services
-            .AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(AddEventHandler).Assembly))
+            .AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(SetEventHandler).Assembly))
             .AddLogging().BuildServiceProvider();
 
         _contextGo.EventMaster.Returns(mock);
