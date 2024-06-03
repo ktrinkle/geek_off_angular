@@ -1,8 +1,3 @@
-// public async Task<ActionResult<ApiResponse>> MoveTeamNumberAsync(string yEvent, int oldTeamNum, int newTeamNum)
-//        => Ok(await _teamService.MoveTeamNumberAsync(yEvent, oldTeamNum, newTeamNum));
-
-using MediatR.Pipeline;
-
 namespace GeekOff.Handlers;
 
 public class MoveTeamHandler
@@ -23,7 +18,7 @@ public class MoveTeamHandler
             var returnString = new StringReturn();
             var existTeam = await _contextGo.Teamreference
                 .FirstOrDefaultAsync(tr => tr.TeamNum == request.OldTeamNum
-                    && tr.Yevent == request.YEvent);
+                    && tr.Yevent == request.YEvent, cancellationToken: token);
 
             if (existTeam is null)
             {

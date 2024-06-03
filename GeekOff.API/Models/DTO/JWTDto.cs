@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-
 namespace GeekOff.Models
 {
     public class JWTDto
@@ -11,6 +6,6 @@ namespace GeekOff.Models
         public string? AdminName { get; set; }
         public string? UserName { get; set; }
         public Guid? SessionGuid { get; set; }
-        public string Role { get; set; }
+        public string Role { get; set; } = string.Empty;
     }
 }

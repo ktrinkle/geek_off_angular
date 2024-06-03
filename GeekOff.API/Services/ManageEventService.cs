@@ -276,32 +276,6 @@ namespace GeekOff.Services
 
         #endregion
 
-        public async Task<string> GetCurrentEventAsync()
-        {
-            var currentEvent = await _contextGo.EventMaster.SingleOrDefaultAsync(e => e.SelEvent == true);
-            return currentEvent.Yevent ?? null;
-        }
-
-        public async Task<CurrentQuestionDto> GetCurrentQuestion(string yEvent)
-        {
-            var currentQuestion = await _contextGo.CurrentQuestion
-                                        .Where(q => q.YEvent == yEvent)
-                                        .OrderByDescending(q => q.QuestionTime)
-                                        .Select(q => new CurrentQuestionDto()
-                                        {
-                                            QuestionNum = q.QuestionNum,
-                                            Status = q.Status
-                                        }).FirstOrDefaultAsync();
-
-            return currentQuestion is null
-                ? new CurrentQuestionDto()
-                {
-                    QuestionNum = 0,
-                    Status = 0
-                }
-                : currentQuestion;
-        }
-
         public async Task<CurrentQuestionDto> SetCurrentQuestionStatus(string yEvent, int questionId, int status)
         {
             if (questionId < 1)
