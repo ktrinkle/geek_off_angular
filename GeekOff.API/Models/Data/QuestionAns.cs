@@ -7,7 +7,7 @@ namespace GeekOff.Data
     public partial class QuestionAns
     {
         [MaxLength(6)]
-        public string Yevent { get; set; }
+        public string Yevent { get; set; } = string.Empty;
         public int QuestionNum { get; set; }
         public int RoundNum { get; set; }
         public string? TextQuestion { get; set; }

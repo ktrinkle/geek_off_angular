@@ -10,7 +10,7 @@ namespace GeekOff.Data
         [Key]
         public long Id { get; set; }
         [MaxLength(6)]
-        public string Yevent { get; set; }
+        public string Yevent { get; set; } = string.Empty;
         public int TeamNum { get; set; }
         public string? BadgeId { get; set; }
         public string? Username { get; set; }

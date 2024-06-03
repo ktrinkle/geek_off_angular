@@ -8,8 +8,8 @@ namespace GeekOff.Models
     public class Round2BoardDto
     {
         public int TeamNum { get; set; }
-        public List<Round2Answers> Player1Answers { get; set; }
-        public List<Round2Answers> Player2Answers { get; set; }
+        public List<Round2Answers> Player1Answers { get; set; } = [];
+        public List<Round2Answers> Player2Answers { get; set; } = [];
         public int FinalScore { get; set; }
     }
 

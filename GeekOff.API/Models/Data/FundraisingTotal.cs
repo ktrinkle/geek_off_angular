@@ -9,7 +9,7 @@ namespace GeekOff.Data
     {
         [Key]
         [MaxLength(6)]
-        public string Yevent { get; set; }
+        public string Yevent { get; set; } = string.Empty;
         public decimal? Totaldollar { get; set; }
     }
 }
