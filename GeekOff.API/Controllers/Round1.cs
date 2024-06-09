@@ -6,23 +6,14 @@ namespace GeekOff.Controllers
     [ApiController]
     [Authorize]
     [Route("api/round1")]
-    public class Round1Controller : ControllerBase
+    public class Round1Controller(ILogger<Round1Controller> logger, IScoreService scoreService, IManageEventService manageEventService,
+                            IHubContext<EventHub> eventHub, IQuestionService questionService) : ControllerBase
     {
-        private readonly ILogger<Round1Controller> _logger;
-        private readonly IScoreService _scoreService;
-        private readonly IManageEventService _manageEventService;
-        private readonly IHubContext<EventHub> _eventHub;
-        private readonly IQuestionService _questionService;
-
-        public Round1Controller(ILogger<Round1Controller> logger, IScoreService scoreService, IManageEventService manageEventService,
-                                IHubContext<EventHub> eventHub, IQuestionService questionService)
-        {
-            _logger = logger;
-            _scoreService = scoreService;
-            _manageEventService = manageEventService;
-            _eventHub = eventHub;
-            _questionService = questionService;
-        }
+        private readonly ILogger<Round1Controller> _logger = logger;
+        private readonly IScoreService _scoreService = scoreService;
+        private readonly IManageEventService _manageEventService = manageEventService;
+        private readonly IHubContext<EventHub> _eventHub = eventHub;
+        private readonly IQuestionService _questionService = questionService;
 
         [Authorize(Roles = "admin")]
         [HttpGet("bigDisplay/{yEvent}")]
@@ -59,7 +50,7 @@ namespace GeekOff.Controllers
                 answerTeam = 0;
             }
 
-            var submitAnswer = await _questionService.SubmitRound1Answer(answers.Yevent, answers.QuestionNum, answers.TextAnswer, answerTeam);
+            var submitAnswer = await _questionService.SubmitRound1Answer(answers.Yevent, answers.QuestionNum, answers.TextAnswer!, answerTeam);
             await _eventHub.Clients.All.SendAsync("round1PlayerAnswer");
             return Ok(submitAnswer ? "Your answer is in. Good luck!" : "We had a problem. Please try again.");
         }

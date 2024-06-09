@@ -24,8 +24,8 @@ namespace GeekOff.Services
                                                     .Select(s => new Round2Answers()
                                                     {
                                                         QuestionNum = s.QuestionNum,
-                                                        Answer = s.QuestionAnswer,
-                                                        Score = (int)s.Ptsposs
+                                                        Answer = s.QuestionAnswer!,
+                                                        Score = (int)s.Ptsposs!
                                                     }).ToList();
             }
 

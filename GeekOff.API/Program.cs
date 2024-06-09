@@ -63,7 +63,7 @@ builder.Services.AddAuthentication(auth =>
         RequireSignedTokens = true,
         RequireExpirationTime = true, // <- JWTs are required to have "exp" property set
         ValidateLifetime = true,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["AppSettings:Secret"])) {KeyId = builder.Configuration["AppSettings:JWTKeyId"]}
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["AppSettings:Secret"]!)) {KeyId = builder.Configuration["AppSettings:JWTKeyId"]}
     };
 });
 
@@ -77,6 +77,8 @@ if (builder.Environment.IsDevelopment())
 {
     builder.Services.AddSwaggerGen(c => {
         c.EnableAnnotations();
+        c.CustomSchemaIds(s => s.FullName!.Replace("+", "."));
+
         c.SwaggerDoc("v1", new OpenApiInfo { Title = "Geek Off API", Version = "v2" });
 
         c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
@@ -168,6 +170,8 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapHub<EventHub>("/events");
+
+app.MapHealthChecks("/status");
 
 app.MapControllerRoute(
     name: "default",

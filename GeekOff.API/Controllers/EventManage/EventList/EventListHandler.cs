@@ -1,3 +1,5 @@
+using System.Runtime.CompilerServices;
+
 namespace GeekOff.Handlers;
 
 public class EventListHandler

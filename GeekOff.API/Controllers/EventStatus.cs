@@ -4,12 +4,9 @@ namespace GeekOff.Controllers
 {
     [ApiController]
     [Route("api/eventstatus")]
-    public class EventStatusController(ILogger<EventStatusController> logger, ILoginService loginService,
-        IManageEventService manageEventService, IMediator mediator) : ControllerBase
+    public class EventStatusController(ILogger<EventStatusController> logger, IMediator mediator) : ControllerBase
     {
         private readonly ILogger<EventStatusController> _logger = logger;
-        private readonly IManageEventService _manageEventService = manageEventService;
-        private readonly ILoginService _loginService = loginService;
         private readonly IMediator _mediator = mediator;
 
         [Authorize]
@@ -34,24 +31,26 @@ namespace GeekOff.Controllers
             };
 
         [AllowAnonymous]
-        [HttpPut("login/player")]
+        [HttpPost("login/player")]
         [SwaggerOperation(Summary = "Login based on QR code.")]
-        public async Task<ActionResult<BearerDto>> PlayerLoginAsync([FromRoute] PlayerLoginHandler.Request request) =>
+        public async Task<ActionResult<BearerDto>> PlayerLoginAsync(PlayerLoginHandler.Request request) =>
             await _mediator.Send(request) switch
             {
                 { Status: QueryStatus.Success } result => Ok(result.Value),
-                { Status: QueryStatus.NoContent } result => NoContent(),
+                { Status: QueryStatus.NotFound } => NotFound(),
+                { Status: QueryStatus.NoContent } => NoContent(),
                 _ => throw new InvalidOperationException()
             };
 
         [AllowAnonymous]
         [HttpPost("login/admin")]
         [SwaggerOperation(Summary = "Login from admin user.")]
-        public async Task<ActionResult<BearerDto>> AdminLoginAsync([FromRoute] AdminLoginHandler.Request request) =>
+        public async Task<ActionResult<BearerDto>> AdminLoginAsync(AdminLoginHandler.Request request) =>
             await _mediator.Send(request) switch
             {
                 { Status: QueryStatus.Success } result => Ok(result.Value),
-                { Status: QueryStatus.NoContent } result => NoContent(),
+                { Status: QueryStatus.NotFound } => NotFound(),
+                { Status: QueryStatus.NoContent } => NoContent(),
                 _ => throw new InvalidOperationException()
             };
 
@@ -62,7 +61,8 @@ namespace GeekOff.Controllers
             await _mediator.Send(request) switch
             {
                 { Status: QueryStatus.Success } result => Ok(result.Value),
-                { Status: QueryStatus.NoContent } result => NoContent(),
+                { Status: QueryStatus.NotFound } => NotFound(),
+                { Status: QueryStatus.NoContent } => NoContent(),
                 _ => throw new InvalidOperationException()
             };
 

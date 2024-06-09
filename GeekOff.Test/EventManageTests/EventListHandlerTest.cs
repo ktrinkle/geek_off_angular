@@ -47,8 +47,8 @@ public class EventListHandlerTest
         var result = await handler.Handle(request, CancellationToken.None);
 
         // Assert
-        Assert.NotEmpty(result.Value);
-        Assert.Equal(result.Value.Count, expectedResult.Count());
+        Assert.NotEmpty(result.Value!);
+        Assert.Equal(result.Value!.Count, expectedResult.Count());
         Assert.Equal(QueryStatus.Success, result.Status);
     }
 }
