@@ -13,7 +13,7 @@ public class TeamListHandlerTest
                 Teamname = "Team 1",
                 TeamNum = 1,
                 Dollarraised = null,
-                TeamGuid = new Guid()
+                TeamGuid = Guid.NewGuid()
             },
             new()
             {
@@ -21,7 +21,7 @@ public class TeamListHandlerTest
                 Teamname = "Team 3",
                 TeamNum = 3,
                 Dollarraised = 100,
-                TeamGuid = new Guid()                
+                TeamGuid = Guid.NewGuid()                
             },
             new()
             {
@@ -29,7 +29,7 @@ public class TeamListHandlerTest
                 Teamname = "Team 4",
                 TeamNum = 4,
                 Dollarraised = 101,
-                TeamGuid = new Guid()                
+                TeamGuid = Guid.NewGuid()                
             }
         ];
 

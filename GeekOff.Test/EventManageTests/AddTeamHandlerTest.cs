@@ -13,7 +13,7 @@ public class AddTeamHandlerTest
                 Teamname = "Team 1",
                 TeamNum = 1,
                 Dollarraised = null,
-                TeamGuid = new Guid()
+                TeamGuid = Guid.NewGuid()
             },
             new()
             {
@@ -21,7 +21,7 @@ public class AddTeamHandlerTest
                 Teamname = "Team 2",
                 TeamNum = 2,
                 Dollarraised = 100,
-                TeamGuid = new Guid()                
+                TeamGuid = Guid.NewGuid()              
             }
         ];
     private readonly DbSet<Teamreference> mock = initialTeamData.AsQueryable().BuildMockDbSet();

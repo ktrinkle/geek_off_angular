@@ -13,7 +13,7 @@ public class MoveTeamHandlerTest
                 Teamname = "Team 1",
                 TeamNum = 1,
                 Dollarraised = null,
-                TeamGuid = new Guid()
+                TeamGuid = Guid.NewGuid()
             },
             new()
             {
@@ -21,7 +21,7 @@ public class MoveTeamHandlerTest
                 Teamname = "Team 3",
                 TeamNum = 3,
                 Dollarraised = 100,
-                TeamGuid = new Guid()                
+                TeamGuid = Guid.NewGuid()                
             },
             new()
             {
@@ -29,7 +29,7 @@ public class MoveTeamHandlerTest
                 Teamname = "Team 4",
                 TeamNum = 4,
                 Dollarraised = 101,
-                TeamGuid = new Guid()                
+                TeamGuid = Guid.NewGuid()                
             }
         ];
     private static readonly List<TeamUser> initialTeamUser = 
@@ -45,7 +45,7 @@ public class MoveTeamHandlerTest
             WorkgroupName = "ACS",
             PlayerNum = 1,
             LoginTime = DateTime.Now,
-            SessionId = new Guid()
+            SessionId = Guid.NewGuid()
         },
         new()
         {
@@ -58,7 +58,7 @@ public class MoveTeamHandlerTest
             WorkgroupName = "Corporate",
             PlayerNum = 1,
             LoginTime = DateTime.Now,
-            SessionId = new Guid()
+            SessionId = Guid.NewGuid()
         },
         new()
         {
@@ -71,7 +71,7 @@ public class MoveTeamHandlerTest
             WorkgroupName = "Pilot",
             PlayerNum = 1,
             LoginTime = DateTime.Now,
-            SessionId = new Guid()
+            SessionId = Guid.NewGuid()
         }
     ];
     private static readonly List<Roundresult> initialRoundresult =

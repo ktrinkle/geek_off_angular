@@ -29,7 +29,7 @@ public class PlayerLoginHandlerTest
                 Teamname = "Team 1",
                 TeamNum = 1,
                 Dollarraised = null,
-                TeamGuid = new Guid()
+                TeamGuid = Guid.NewGuid()
             }
         ];
     private readonly DbSet<Teamreference> mockTeamReference = initialTeamData.AsQueryable().BuildMockDbSet();
@@ -84,7 +84,7 @@ public class PlayerLoginHandlerTest
         var request = new PlayerLoginHandler.Request()
         {
             YEvent = "t21",
-            TeamGuid = new Guid()
+            TeamGuid = Guid.NewGuid()
         };
 
         // Act
