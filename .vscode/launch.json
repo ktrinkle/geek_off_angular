@@ -10,7 +10,7 @@
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/GeekOff.API/bin/Debug/net8.0/geek_off_angular.dll",
+            "program": "${workspaceFolder}/GeekOff.API/bin/Debug/net8.0/GeekOff.dll",
             "args": [],
             "cwd": "${workspaceFolder}",
             "stopAtEntry": false,

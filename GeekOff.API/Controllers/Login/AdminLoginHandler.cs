@@ -22,7 +22,7 @@ public class AdminLoginHandler
                 return ApiResponse<BearerDto>.NotFound();
             }
 
-            // insert password handling here - services?
+            // insert password handling here
 
             loginInfo.LoginTime = DateTime.UtcNow;
             _contextGo.AdminUser.Update(loginInfo);
@@ -32,8 +32,8 @@ public class AdminLoginHandler
             {
                 TeamNum = 0,
                 AdminFlag = true,
-                AdminUsername = loginInfo.AdminName,
-                SessionGuid = new Guid()
+                AdminUsername = loginInfo.Username,
+                SessionGuid = Guid.NewGuid()
             };
 
             // we don't care about the team now

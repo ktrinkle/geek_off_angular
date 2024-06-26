@@ -24,7 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../GeekOff.API/geek_off_angular.csproj" />
+    <ProjectReference Include="../GeekOff.API/GeekOff.csproj" />
   </ItemGroup>
 
 </Project>

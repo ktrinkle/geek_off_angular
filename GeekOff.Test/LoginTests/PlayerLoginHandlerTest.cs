@@ -2,7 +2,7 @@ using GeekOff.Services;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace GeekOff.Test.EventStatusTests;
+namespace GeekOff.Test.LoginTests;
 
 public class PlayerLoginHandlerTest
 {
