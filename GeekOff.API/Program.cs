@@ -1,4 +1,3 @@
-using Serilog;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -121,8 +120,6 @@ app.UseCors(builder => builder
      .AllowCredentials()
      .WithMethods("GET", "PUT", "POST", "DELETE", "OPTIONS")
      .SetPreflightMaxAge(TimeSpan.FromSeconds(3600)));
-
-app.MapHealthChecks("/healthz");
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
