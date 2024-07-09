@@ -10,62 +10,6 @@ namespace GeekOff.Services
             _contextGo = context;
         }
 
-        public async Task<Round1QuestionDto> GetRound1QuestionWithAnswer(string yEvent, int questionNum)
-        {
-            var question = await _contextGo.QuestionAns.SingleOrDefaultAsync(q => q.QuestionNum == questionNum
-                                                                            && q.Yevent == yEvent
-                                                                            && q.RoundNum == 1);
-
-            if (question is null)
-            {
-                return null;
-            }
-
-            var questionReturn = new Round1QuestionDto()
-            {
-                QuestionNum = questionNum,
-                QuestionText = question.TextQuestion,
-                Answers = new List<Round1Answers>(),
-                ExpireTime = DateTime.UtcNow.AddSeconds(60)
-            };
-
-            if (question.MultipleChoice == true)
-            {
-                questionReturn.Answers.Add(new Round1Answers()
-                {
-                    AnswerId = 1,
-                    Answer = question.TextAnswer,
-                });
-
-                questionReturn.Answers.Add(new Round1Answers()
-                {
-                    AnswerId = 2,
-                    Answer = question.TextAnswer2,
-                });
-
-                questionReturn.Answers.Add(new Round1Answers()
-                {
-                    AnswerId = 3,
-                    Answer = question.TextAnswer3,
-                });
-
-                questionReturn.Answers.Add(new Round1Answers()
-                {
-                    AnswerId = 4,
-                    Answer = question.TextAnswer4,
-                });
-
-                questionReturn.AnswerType = question.MatchQuestion == true ? QuestionAnswerType.Match : QuestionAnswerType.MultipleChoice;
-            }
-
-            if (question.MultipleChoice == false)
-            {
-                questionReturn.AnswerType = QuestionAnswerType.FreeText;
-            }
-
-            return questionReturn;
-        }
-
         public async Task<List<Round1QuestionDto>> GetRound1QuestionListWithAnswers(string yEvent)
         {
             var questionList = await _contextGo.QuestionAns.Where(q => q.Yevent == yEvent

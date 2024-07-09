@@ -1,3 +1,5 @@
+using System.Reflection.Metadata.Ecma335;
+
 namespace GeekOff.Controllers;
 
 [ApiController]
@@ -15,8 +17,8 @@ public class Round1Controller(ILogger<Round1Controller> logger, IScoreService sc
 
     [Authorize(Roles = "admin")]
     [HttpGet("bigDisplay/{YEvent}")]
-    [SwaggerOperation(Summary = "Get a single round 1 question for the big display with media.")]
-    public async Task<ActionResult<List<Round1QuestionDisplay>>> GetRound1QuestionAsync([FromRoute] RoundOneQuestionHandler.Request request)
+    [SwaggerOperation(Summary = "Get list of the round 1 questions for the big display with media.")]
+    public async Task<ActionResult<List<Round1QuestionDisplay>>> GetRound1QuestionsAsync([FromRoute] RoundOneQuestionHandler.Request request)
         => await _mediator.Send(request) switch
         {
             { Status: QueryStatus.Success } result => Ok(result.Value),
@@ -25,10 +27,15 @@ public class Round1Controller(ILogger<Round1Controller> logger, IScoreService sc
         };
 
     [Authorize(Roles = "admin")]
-    [HttpGet("getAnswers/{yEvent}/{questionId}")]
-    [SwaggerOperation(Summary = "Get a single round 1 question and answer for the contestants.")]
-    public async Task<ActionResult<Round1QuestionDto>> GetRound1AnswersAsync(string yEvent, int questionId)
-        => Ok(await _questionService.GetRound1QuestionWithAnswer(yEvent, questionId));
+    [HttpGet("getAnswers/{YEvent}/{QuestionId}")]
+    [SwaggerOperation(Summary = "Get a single round 1 question and answer for the host.")]
+    public async Task<ActionResult<Round1QuestionDto>> GetRound1AnswersAsync([FromRoute] RoundOneSingleQAndAHandler.Request request)
+        => await _mediator.Send(request) switch
+        {
+            { Status: QueryStatus.Success } result => Ok(result.Value),
+            { Status: QueryStatus.NotFound } result => NotFound(result.Value),
+            _ => throw new InvalidOperationException()
+        };
 
     [Authorize(Roles = "player")]
     [HttpGet("getAnswerList/{yEvent}")]
@@ -111,12 +118,68 @@ public class Round1Controller(ILogger<Round1Controller> logger, IScoreService sc
     public async Task<ActionResult> ScoreAnswerManualAsync(string yEvent, int questionId, int teamNum)
         => Ok(await _scoreService.ScoreAnswerManual(yEvent, questionId, teamNum));
 
+        [Authorize(Roles = "admin")]
+    [HttpPut("updateStatus/{yEvent}/{questionId}/{status}")]
+    [SwaggerOperation(Summary = "Updates status of question and sends message to display. Changes the state for the contestant and big screen.")]
+    public async Task<ActionResult<CurrentQuestionDto>> ChangeQuestionAsync(string yEvent, int questionId, int status)
+    {
+        var returnDto = await _manageEventService.SetCurrentQuestionStatus(yEvent, questionId, status);
+
+        var payload = new CurrentQuestionDto()
+        {
+            QuestionNum = questionId,
+            Status = status
+        };
+        await _eventHub.Clients.All.SendAsync("round1UpdateContestant", payload);
+        return Ok(returnDto);
+    }
+
+    [Authorize(Roles = "admin")]
+    [HttpGet("scoreboard/{yEvent}")]
+    [SwaggerOperation(Summary = "Gets the round 1 scoreboard")]
+    public async Task<ActionResult<List<Round1Scores>>> GetScoreboardAsync(string yEvent)
+        => Ok(await _scoreService.GetRound1Scores(yEvent));
+
+
+    [Authorize(Roles = "admin")]
+    [HttpGet("teamList/{YEvent}")]
+    [SwaggerOperation(Summary = "Gets a list of all team members for the intro screen.")]
+    public async Task<ActionResult<List<IntroDto>>> GetTeamListAsync([FromRoute] TeamListWithPlayersHandler.Request request) =>
+        await _mediator.Send(request) switch
+        {
+            { Status: QueryStatus.Success } result => Ok(result.Value),
+            { Status: QueryStatus.NotFound } result => NotFound(result.Value),
+            _ => throw new InvalidOperationException()
+        };
+
+    [Authorize(Roles = "admin")]
+    [HttpPut("finalize/{yEvent}")]
+    [SwaggerOperation(Summary = "Finalize round 1")]
+    public async Task<ActionResult<string>> FinalizeRoundAsync(string yEvent)
+    {
+        FinalizeRoundHandler.Request request = new ()
+        {
+            YEvent = yEvent,
+            RoundNum = 1
+        };
+
+        return await _mediator.Send(request) switch
+        {
+            { Status: QueryStatus.Success } result => Ok(result.Value.Message),
+            { Status: QueryStatus.NotFound } result => NotFound(result.Value.Message),
+            { Status: QueryStatus.BadRequest } result => BadRequest(result.Value.Message),
+            _ => throw new InvalidOperationException()
+        };
+    }
+
+
+    #region SignalRcalls
+
     [Authorize(Roles = "admin")]
     [HttpPut("updateScoreboard")]
     [SwaggerOperation(Summary = "Sends message to update the scoreboard.")]
     public async Task<ActionResult> UpdateScoreboardAsync()
     {
-        // add in controller here
         await _eventHub.Clients.All.SendAsync("round1ScoreUpdate");
         return Ok();
     }
@@ -126,7 +189,6 @@ public class Round1Controller(ILogger<Round1Controller> logger, IScoreService sc
     [SwaggerOperation(Summary = "Sends message to change the intro page.")]
     public async Task<ActionResult> ChangeIntroPageAsync(string introPage)
     {
-        // add in controller here
         await _eventHub.Clients.All.SendAsync("round1intro", introPage);
         return Ok();
     }
@@ -154,7 +216,6 @@ public class Round1Controller(ILogger<Round1Controller> logger, IScoreService sc
     [SwaggerOperation(Summary = "Sends message to animate intro screen text.")]
     public async Task<ActionResult> ChangeIntroSeatBeltAsync()
     {
-        // add in controller here
         await _eventHub.Clients.All.SendAsync("introSeatbelt");
         return Ok();
     }
@@ -164,44 +225,9 @@ public class Round1Controller(ILogger<Round1Controller> logger, IScoreService sc
     [SwaggerOperation(Summary = "Sends message to show any media on the round 1 big board.")]
     public async Task<ActionResult> ShowMediaAsync(int questionId)
     {
-        // add in controller here
         await _eventHub.Clients.All.SendAsync("round1ShowMedia", questionId);
         return Ok();
     }
 
-    [Authorize(Roles = "admin")]
-    [HttpPut("updateStatus/{yEvent}/{questionId}/{status}")]
-    [SwaggerOperation(Summary = "Updates status of question and sends message to display. Changes the state for the contestant and big screen.")]
-    public async Task<ActionResult<CurrentQuestionDto>> ChangeQuestionAsync(string yEvent, int questionId, int status)
-    {
-        var returnDto = await _manageEventService.SetCurrentQuestionStatus(yEvent, questionId, status);
-
-        var payload = new CurrentQuestionDto()
-        {
-            QuestionNum = questionId,
-            Status = status
-        };
-        await _eventHub.Clients.All.SendAsync("round1UpdateContestant", payload);
-        return Ok(returnDto);
-    }
-
-    [Authorize(Roles = "admin")]
-    [HttpGet("scoreboard/{yEvent}")]
-    [SwaggerOperation(Summary = "Gets the round 1 scoreboard")]
-    public async Task<ActionResult<List<Round1Scores>>> GetScoreboardAsync(string yEvent)
-        => Ok(await _scoreService.GetRound1Scores(yEvent));
-
-
-    [Authorize(Roles = "admin")]
-    [HttpGet("teamList/{yEvent}")]
-    [SwaggerOperation(Summary = "Gets a list of all team members.")]
-    public async Task<ActionResult<List<IntroDto>>> GetTeamListAsync(string yEvent) =>
-        // HttpContext.VerifyUserHasAnyAcceptedScope(scopeRequiredByApi);
-        await _manageEventService.GetTeamList(yEvent);
-
-    [Authorize(Roles = "admin")]
-    [HttpPut("finalize/{yEvent}")]
-    [SwaggerOperation(Summary = "Finalize round 1")]
-    public async Task<ActionResult<string>> FinalizeRoundAsync(string yEvent)
-        => Ok(await _manageEventService.FinalizeRound(yEvent, 1));
+    #endregion
 }

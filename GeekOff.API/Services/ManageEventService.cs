@@ -241,39 +241,6 @@ namespace GeekOff.Services
             return returnDto;
         }
 
-        // @TODO: fix this.
-        public async Task<List<IntroDto>> GetTeamList(string yEvent)
-        {
-            var rawList = await _contextGo.TeamUser.Where(tu => tu.Yevent == yEvent && tu.TeamNum > 0)
-                                                    .OrderBy(tu => tu.TeamNum)
-                                                    .ThenBy(tu => tu.PlayerNum)
-                                                    .ToListAsync();
-
-            var teamList = await _contextGo.Teamreference.Where(tr => tr.Yevent == yEvent).ToListAsync();
-
-            var rawListPlayer1 = rawList.Where(r => r.PlayerNum == 1).ToList();
-            var rawListPlayer2 = rawList.Where(r => r.PlayerNum == 2).ToList();
-
-            var returnDto = (from r1 in rawListPlayer1
-                             join r2 in rawListPlayer2
-                             on r1.TeamNum equals r2.TeamNum into r2j
-                             from r2o in r2j.DefaultIfEmpty()
-                             join tl in teamList
-                             on r1.TeamNum equals tl.TeamNum
-                             select new IntroDto()
-                             {
-                                 TeamNum = r1.TeamNum,
-                                 TeamName = tl.Teamname,
-                                 Member1 = r1.PlayerName,
-                                 Member2 = r2o is null ? "" : r2o.PlayerName,
-                                 Workgroup1 = r1.WorkgroupName,
-                                 Workgroup2 = r2o is null ? "" : r2o.WorkgroupName
-                             }).ToList();
-
-            return returnDto;
-
-        }
-
         #endregion
 
         public async Task<CurrentQuestionDto> SetCurrentQuestionStatus(string yEvent, int questionId, int status)
