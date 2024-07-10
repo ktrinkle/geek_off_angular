@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-
 namespace GeekOff.Models
 {
     public class Round1EnteredAnswers
@@ -10,7 +5,7 @@ namespace GeekOff.Models
         public string Yevent { get; set; } = string.Empty;
         public int TeamNum { get; set; }
         public int QuestionNum { get; set; }
-        public string? TextAnswer { get; set; }
+        public string TextAnswer { get; set; } = string.Empty;
         public bool? AnswerStatus { get; set; }
     }
 }

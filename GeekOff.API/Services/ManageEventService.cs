@@ -208,41 +208,6 @@ namespace GeekOff.Services
 
         }
 
-        #region Round1
-
-        public async Task<List<Round1EnteredAnswers>> ShowRound1TeamEnteredAnswers(string yEvent, int questionId)
-        {
-            var returnDto = new List<Round1EnteredAnswers>();
-
-            var submittedAnswer = await _contextGo.UserAnswer
-                                    .Where(u => u.RoundNum == 1 && u.QuestionNum == questionId && u.Yevent == yEvent)
-                                    .ToListAsync();
-
-            var scoredAnswer = await _contextGo.Scoring.Where(s => s.RoundNum == 1 && s.Yevent == yEvent && s.QuestionNum == questionId)
-                                .ToListAsync();
-
-            if (submittedAnswer is null)
-            {
-                return null;
-            }
-
-            foreach (var answer in submittedAnswer)
-            {
-                var displayAnswer = new Round1EnteredAnswers()
-                {
-                    TeamNum = answer.TeamNum,
-                    QuestionNum = questionId,
-                    TextAnswer = answer.TextAnswer,
-                    AnswerStatus = scoredAnswer.Any(s => s.TeamNum == answer.TeamNum)
-                };
-                returnDto.Add(displayAnswer);
-            }
-
-            return returnDto;
-        }
-
-        #endregion
-
         public async Task<CurrentQuestionDto> SetCurrentQuestionStatus(string yEvent, int questionId, int status)
         {
             if (questionId < 1)
