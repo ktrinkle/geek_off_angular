@@ -13,7 +13,7 @@ public class TeamListHandler
 
         public async Task<ApiResponse<List<NewTeamEntry>>> Handle(Request request, CancellationToken token)
         {
-            if (request.YEvent is null)
+            if (string.IsNullOrEmpty(request.YEvent))
             {
                 return ApiResponse<List<NewTeamEntry>>.NotFound();
             }

@@ -13,7 +13,7 @@ public class TeamListWithPlayersHandler
 
         public async Task<ApiResponse<List<IntroDto>>> Handle(Request request, CancellationToken token)
         {
-            if (request.YEvent is null)
+            if (string.IsNullOrEmpty(request.YEvent))
             {
                 return ApiResponse<List<IntroDto>>.NotFound();
             }

@@ -99,20 +99,32 @@ public class Round1Controller(ILogger<Round1Controller> logger, IScoreService sc
         };
 
     [Authorize(Roles = "admin")]
-    [HttpPut("scoreAnswer/{Event}/{questionId}")]
+    [HttpPut("scoreAnswer/{Event}/{QuestionId}")]
     [SwaggerOperation(Summary = "Scores the answer automatically")]
-    public async Task<ActionResult<string>> ScoreAnswerAutomaticAsync(string yEvent, int questionId)
+    public async Task<ActionResult<string>> ScoreAnswerAutomaticAsync([FromRoute] ScoreRoundOneAnswerAutomaticHandler.Request request)
     {
-        var returnString = await _scoreService.ScoreAnswerAutomatic(yEvent, questionId);
+        var returnObject = await _mediator.Send(request);
         await _eventHub.Clients.All.SendAsync("round1ScoreUpdate");
-        return Ok(returnString);
+
+        return returnObject switch
+        {
+            { Status: QueryStatus.Success } result => Ok(returnObject.Value.Message),
+            { Status: QueryStatus.NotFound } result => Ok(returnObject.Value.Message),
+            _ => throw new InvalidOperationException()
+        };
     }
 
     [Authorize(Roles = "admin")]
-    [HttpPut("scoreManualAnswer/{yEvent}/{questionId}/{teamNum}")]
+    [HttpPut("scoreManualAnswer/{YEvent}/{QuestionId}/{TeamNum}")]
     [SwaggerOperation(Summary = "Scores the answer manually based on team")]
-    public async Task<ActionResult> ScoreAnswerManualAsync(string yEvent, int questionId, int teamNum)
-        => Ok(await _scoreService.ScoreAnswerManual(yEvent, questionId, teamNum));
+    public async Task<ActionResult> ScoreAnswerManualAsync([FromRoute] ScoreRoundOneAnswerManualHandler.Request request)
+        => await _mediator.Send(request) switch
+        {
+            { Status: QueryStatus.Success } result => Ok(result.Value),
+            { Status: QueryStatus.NotFound } result => NotFound(result.Value),
+            { Status: QueryStatus.BadRequest } result => BadRequest(result.Value),
+            _ => throw new InvalidOperationException()
+        };
 
     [Authorize(Roles = "admin")]
     [HttpPut("updateStatus/{yEvent}/{questionId}/{status}")]

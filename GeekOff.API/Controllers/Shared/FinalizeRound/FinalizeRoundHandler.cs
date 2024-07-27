@@ -17,7 +17,7 @@ public class FinalizeRoundHandler
             var returnString = new StringReturn();
 
             // this condition should not be possible with MediaTr.
-            if (request.YEvent is null)
+            if (string.IsNullOrEmpty(request.YEvent))
             {
                 returnString.Message = "No event was specified.";
                 return ApiResponse<StringReturn>.BadRequest(returnString);
