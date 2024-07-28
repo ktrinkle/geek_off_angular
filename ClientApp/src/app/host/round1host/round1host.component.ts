@@ -79,8 +79,8 @@ export class Round1hostComponent implements OnInit, OnDestroy {
     });
   }
 
-  loadQuestion(questionId: number): void {
-    this.dataService.getRound1QuestionAnswer(this.yEvent, questionId).subscribe(q => {
+  loadQuestion(questionNum: number): void {
+    this.dataService.getRound1QuestionAnswer(this.yEvent, questionNum).subscribe(q => {
       this.currentQuestionDto = q;
     });
   };

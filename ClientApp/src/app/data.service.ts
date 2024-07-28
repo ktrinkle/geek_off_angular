@@ -91,8 +91,8 @@ export class DataService {
     return this.httpClient.get(uri);
   }
 
-  public getRound1QuestionAnswer(yEvent: string, questionId: number): Observable<any> {
-    var uri = this.REST_API_SERVER + '/api/round1/getAnswers/' + encodeURIComponent(yEvent) + '/' + encodeURIComponent(questionId) + '';
+  public getRound1QuestionAnswer(yEvent: string, questionNum: number): Observable<any> {
+    var uri = this.REST_API_SERVER + '/api/round1/getAnswers/' + encodeURIComponent(yEvent) + '/' + encodeURIComponent(QuestionNum) + '';
     return this.httpClient.get(uri);
   }
 
@@ -116,8 +116,8 @@ export class DataService {
     return this.httpClient.get(uri);
   }
 
-  public getAllEnteredAnswers(yEvent: string, questionId: number): Observable<any> {
-    var uri = this.REST_API_SERVER + '/api/round1/showTeamAnswer/' + encodeURIComponent(yEvent) + '/' + encodeURIComponent(questionId) + '';
+  public getAllEnteredAnswers(yEvent: string, questionNum: number): Observable<any> {
+    var uri = this.REST_API_SERVER + '/api/round1/showTeamAnswer/' + encodeURIComponent(yEvent) + '/' + encodeURIComponent(questionNum) + '';
     return this.httpClient.get(uri);
   }
 
@@ -162,14 +162,14 @@ export class DataService {
     return this.httpClient.put(uri, {}, { responseType: 'text' });
   }
 
-  public round1AutoScore(yEvent: string, questionId: number): Observable<any> {
-    var uri = this.REST_API_SERVER + '/api/round1/scoreAnswer/' + encodeURIComponent(yEvent) + '/' + encodeURIComponent(questionId) + '';
+  public round1AutoScore(yEvent: string, questionNum: number): Observable<any> {
+    var uri = this.REST_API_SERVER + '/api/round1/scoreAnswer/' + encodeURIComponent(yEvent) + '/' + encodeURIComponent(questionNum) + '';
     console.log(uri);
     return this.httpClient.put(uri, {}, { responseType: 'text' });
   }
 
-  public round1ManualScore(yEvent: string, questionId: number, teamNum: number): Promise<any> {
-    var uri = this.REST_API_SERVER + '/api/round1/scoreManualAnswer/' + encodeURIComponent(yEvent) + '/' + encodeURIComponent(questionId) + '/' + encodeURIComponent(teamNum) + '';
+  public round1ManualScore(yEvent: string, questionNum: number, teamNum: number): Promise<any> {
+    var uri = this.REST_API_SERVER + '/api/round1/scoreManualAnswer/' + encodeURIComponent(yEvent) + '/' + encodeURIComponent(questionNum) + '/' + encodeURIComponent(teamNum) + '';
     return this.httpClient.put(uri, {}, { responseType: 'text' }).toPromise();
   }
 

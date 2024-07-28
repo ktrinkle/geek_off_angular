@@ -28,7 +28,7 @@ export interface round1Scores {
 }
 
 export interface round1ScoreDetail {
-  questionId: number,
+  questionNum: number,
   questionScore?: number
 }
 

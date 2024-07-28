@@ -58,7 +58,7 @@ export class Round1ScoreboardComponent implements OnInit, OnDestroy {
         let questionNumbers: any[] = [];
         if (s.length > 0) {
           for (const team of s) {
-            const tempNumbers = [...new Set(team.q.map((q: any) => q.questionId))];
+            const tempNumbers = [...new Set(team.q.map((q: any) => q.questionNum))];
             questionNumbers = [...new Set([...questionNumbers, ...tempNumbers])]
           }
         }
@@ -86,7 +86,7 @@ export class Round1ScoreboardComponent implements OnInit, OnDestroy {
           let temp = [team.teamNum, team.teamName];
           if (questionNumbers) {
             for (const number of questionNumbers) {
-              const question = team.q.filter((a: any) => a.questionId === number);
+              const question = team.q.filter((a: any) => a.questionNum === number);
               if (question.length > 0) {
                 temp.push(question[0].questionScore);
               } else {

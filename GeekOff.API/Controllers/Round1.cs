@@ -20,7 +20,7 @@ public class Round1Controller(IHubContext<EventHub> eventHub, IMediator mediator
         };
 
     [Authorize(Roles = "admin")]
-    [HttpGet("getAnswers/{YEvent}/{QuestionId}")]
+    [HttpGet("getAnswers/{YEvent}/{QuestionNum}")]
     [SwaggerOperation(Summary = "Get a single round 1 question and answer for the host.")]
     public async Task<ActionResult<Round1QuestionDto>> GetRound1AnswersAsync([FromRoute] RoundOneSingleQAndAHandler.Request request)
         => await _mediator.Send(request) switch
@@ -239,11 +239,11 @@ public class Round1Controller(IHubContext<EventHub> eventHub, IMediator mediator
     }
 
     [Authorize(Roles = "admin")]
-    [HttpPut("moveQuestion/{questionId}")]
+    [HttpPut("moveQuestion/{questionNum}")]
     [SwaggerOperation(Summary = "Sends message to update the question display. This message gets sent to change slides, so to speak. It won't show the answers.")]
-    public async Task<ActionResult> ChangeQuestionAsync(int questionId)
+    public async Task<ActionResult> ChangeQuestionAsync(int questionNum)
     {
-        await _eventHub.Clients.All.SendAsync("round1question", questionId);
+        await _eventHub.Clients.All.SendAsync("round1question", questionNum);
         return Ok();
     }
 
@@ -266,11 +266,11 @@ public class Round1Controller(IHubContext<EventHub> eventHub, IMediator mediator
     }
 
     [Authorize(Roles = "admin")]
-    [HttpPut("showMedia/{questionId}")]
+    [HttpPut("showMedia/{questionNum}")]
     [SwaggerOperation(Summary = "Sends message to show any media on the round 1 big board.")]
-    public async Task<ActionResult> ShowMediaAsync(int questionId)
+    public async Task<ActionResult> ShowMediaAsync(int questionNum)
     {
-        await _eventHub.Clients.All.SendAsync("round1ShowMedia", questionId);
+        await _eventHub.Clients.All.SendAsync("round1ShowMedia", questionNum);
         return Ok();
     }
 

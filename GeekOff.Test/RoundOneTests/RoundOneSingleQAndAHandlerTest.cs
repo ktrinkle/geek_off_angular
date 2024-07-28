@@ -64,7 +64,7 @@ public class RoundOneSingleQAndAHandlerTest
         var handler = new RoundOneSingleQAndAHandler.Handler(_contextGo);
         var request = new RoundOneSingleQAndAHandler.Request(){
             YEvent = "t24",
-            QuestionId = 1
+            QuestionNum = 1
         };
 
         // Act
@@ -86,7 +86,7 @@ public class RoundOneSingleQAndAHandlerTest
         var handler = new RoundOneSingleQAndAHandler.Handler(_contextGo);
         var request = new RoundOneSingleQAndAHandler.Request(){
             YEvent = "t24",
-            QuestionId = 2
+            QuestionNum = 2
         };
 
         // Act
@@ -107,7 +107,7 @@ public class RoundOneSingleQAndAHandlerTest
         var handler = new RoundOneSingleQAndAHandler.Handler(_contextGo);
         var request = new RoundOneSingleQAndAHandler.Request(){
             YEvent = "t24",
-            QuestionId = 3
+            QuestionNum = 3
         };
 
         // Act
@@ -129,7 +129,7 @@ public class RoundOneSingleQAndAHandlerTest
         var handler = new RoundOneSingleQAndAHandler.Handler(_contextGo);
         var request = new RoundOneSingleQAndAHandler.Request(){
             YEvent = "t21",
-            QuestionId = 3
+            QuestionNum = 3
         };
 
         // Act
@@ -148,7 +148,7 @@ public class RoundOneSingleQAndAHandlerTest
         var handler = new RoundOneSingleQAndAHandler.Handler(_contextGo);
         var request = new RoundOneSingleQAndAHandler.Request(){
             YEvent = "t24",
-            QuestionId = 4
+            QuestionNum = 4
         };
 
         // Act

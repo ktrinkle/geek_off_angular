@@ -101,7 +101,7 @@ public class ScoreRoundOneAnswerManualHandlerTest
         var handler = new ScoreRoundOneAnswerManualHandler.Handler(_contextGo);
         var request = new ScoreRoundOneAnswerManualHandler.Request(){
             YEvent = "t24",
-            QuestionId = 1,
+            QuestionNum = 1,
             TeamNum = 1
         };
 
@@ -122,7 +122,7 @@ public class ScoreRoundOneAnswerManualHandlerTest
         var handler = new ScoreRoundOneAnswerManualHandler.Handler(_contextGo);
         var request = new ScoreRoundOneAnswerManualHandler.Request(){
             YEvent = "t24",
-            QuestionId = 1,
+            QuestionNum = 1,
             TeamNum = 2
         };
 
@@ -143,7 +143,7 @@ public class ScoreRoundOneAnswerManualHandlerTest
         var handler = new ScoreRoundOneAnswerManualHandler.Handler(_contextGo);
         var request = new ScoreRoundOneAnswerManualHandler.Request(){
             YEvent = String.Empty,
-            QuestionId = 1,
+            QuestionNum = 1,
             TeamNum = 1
         };
 
@@ -164,7 +164,7 @@ public class ScoreRoundOneAnswerManualHandlerTest
         var handler = new ScoreRoundOneAnswerManualHandler.Handler(_contextGo);
         var request = new ScoreRoundOneAnswerManualHandler.Request(){
             YEvent = "t24",
-            QuestionId = -1,
+            QuestionNum = -1,
             TeamNum = 1
         };
 
@@ -185,7 +185,7 @@ public class ScoreRoundOneAnswerManualHandlerTest
         var handler = new ScoreRoundOneAnswerManualHandler.Handler(_contextGo);
         var request = new ScoreRoundOneAnswerManualHandler.Request(){
             YEvent = "t24",
-            QuestionId = 1,
+            QuestionNum = 1,
             TeamNum = 0
         };
 
@@ -206,7 +206,7 @@ public class ScoreRoundOneAnswerManualHandlerTest
         var handler = new ScoreRoundOneAnswerManualHandler.Handler(_contextGo);
         var request = new ScoreRoundOneAnswerManualHandler.Request(){
             YEvent = "t24",
-            QuestionId = 4,
+            QuestionNum = 4,
             TeamNum = 1
         };
 

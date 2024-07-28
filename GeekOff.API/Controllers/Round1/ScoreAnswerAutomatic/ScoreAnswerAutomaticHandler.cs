@@ -5,7 +5,7 @@ public class ScoreRoundOneAnswerAutomaticHandler
     public class Request : IRequest<ApiResponse<StringReturn>>
     {
         public string YEvent { get; set; } = string.Empty;
-        public int QuestionId { get; set; }
+        public int QuestionNum { get; set; }
     }
 
     public class Handler(ContextGo contextGo) : IRequestHandler<Request, ApiResponse<StringReturn>>
@@ -22,20 +22,20 @@ public class ScoreRoundOneAnswerAutomaticHandler
                 return ApiResponse<StringReturn>.NotFound(returnString);
             }
 
-            if (request.QuestionId is < 1 or > 99)
+            if (request.QuestionNum is < 1 or > 99)
             {
                 returnString.Message = "Invalid question.";
                 return ApiResponse<StringReturn>.NotFound(returnString);
             }
 
             var submittedAnswers = await _contextGo.UserAnswer
-                                    .Where(u => u.QuestionNum == request.QuestionId && u.Yevent == request.YEvent)
+                                    .Where(u => u.QuestionNum == request.QuestionNum && u.Yevent == request.YEvent)
                                     .AsNoTracking().ToListAsync(cancellationToken: token);
             var questionInfo = await _contextGo.QuestionAns.AsNoTracking()
-                                    .FirstOrDefaultAsync(u => u.QuestionNum == request.QuestionId
+                                    .FirstOrDefaultAsync(u => u.QuestionNum == request.QuestionNum
                                         && u.Yevent == request.YEvent, cancellationToken: token);
             var pointRef = await _contextGo.Scoreposs.AsNoTracking()
-                                    .FirstOrDefaultAsync(p => p.QuestionNum == request.QuestionId, cancellationToken: token);
+                                    .FirstOrDefaultAsync(p => p.QuestionNum == request.QuestionNum, cancellationToken: token);
 
             if (questionInfo is null)
             {
@@ -52,7 +52,7 @@ public class ScoreRoundOneAnswerAutomaticHandler
             // remove existing answers for the auto-score process
             var answersToRemove = await _contextGo.Scoring.Where(s => s.Yevent == request.YEvent
                                         && s.RoundNum == 1 && submittedTeams.Contains(s.TeamNum)
-                                        && s.QuestionNum == request.QuestionId).ToListAsync(cancellationToken: token);
+                                        && s.QuestionNum == request.QuestionNum).ToListAsync(cancellationToken: token);
 
             if (answersToRemove is not null)
             {

@@ -5,7 +5,7 @@ public class ScoreRoundOneAnswerManualHandler
     public record Request : IRequest<ApiResponse<StringReturn>>
     {
         public required string YEvent { get; init; } = string.Empty;
-        public required int QuestionId { get; init; }
+        public required int QuestionNum { get; init; }
         public required int TeamNum { get; init; }
     }
 
@@ -23,7 +23,7 @@ public class ScoreRoundOneAnswerManualHandler
                 return ApiResponse<StringReturn>.NotFound(returnString);
             }
 
-            if (request.QuestionId is < 1 or > 99)
+            if (request.QuestionNum is < 1 or > 99)
             {
                 returnString.Message = "Invalid question.";
                 return ApiResponse<StringReturn>.NotFound(returnString);
@@ -40,7 +40,7 @@ public class ScoreRoundOneAnswerManualHandler
 
             var scoring = await _contextGo.Scoring.Where(s => s.Yevent == request.YEvent
                                     && s.TeamNum == request.TeamNum
-                                    && s.QuestionNum == request.QuestionId).ToListAsync(cancellationToken: token);
+                                    && s.QuestionNum == request.QuestionNum).ToListAsync(cancellationToken: token);
 
             if (scoring.Count > 0)
             {
@@ -56,11 +56,11 @@ public class ScoreRoundOneAnswerManualHandler
             {
                 var teamAnswer = await _contextGo.UserAnswer.FirstOrDefaultAsync(
                                     u => u.Yevent == request.YEvent &&
-                                    u.QuestionNum == request.QuestionId &&
+                                    u.QuestionNum == request.QuestionNum &&
                                     u.TeamNum == request.TeamNum, token);
 
                 var pointRef = await _contextGo.Scoreposs.AsNoTracking().FirstOrDefaultAsync(
-                                    p => p.QuestionNum == request.QuestionId, token);
+                                    p => p.QuestionNum == request.QuestionNum, token);
 
                 var ptsPoss = pointRef is not null ? pointRef.Ptsposs : 0;
 
@@ -72,7 +72,7 @@ public class ScoreRoundOneAnswerManualHandler
                         Yevent = request.YEvent,
                         TeamNum = request.TeamNum,
                         RoundNum = 1,
-                        QuestionNum = request.QuestionId,
+                        QuestionNum = request.QuestionNum,
                         TeamAnswer = teamAnswer.TextAnswer,
                         PointAmt = ptsPoss,
                         Updatetime = teamAnswer.AnswerTime

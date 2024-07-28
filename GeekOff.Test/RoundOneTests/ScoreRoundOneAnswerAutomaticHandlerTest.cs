@@ -104,7 +104,7 @@ public class ScoreRoundOneAnswerAutomaticHandlerTest
         var handler = new ScoreRoundOneAnswerAutomaticHandler.Handler(_contextGo);
         var request = new ScoreRoundOneAnswerAutomaticHandler.Request(){
             YEvent = "t24",
-            QuestionId = 1
+            QuestionNum = 1
         };
 
         // Act
@@ -124,7 +124,7 @@ public class ScoreRoundOneAnswerAutomaticHandlerTest
         var handler = new ScoreRoundOneAnswerAutomaticHandler.Handler(_contextGo);
         var request = new ScoreRoundOneAnswerAutomaticHandler.Request(){
             YEvent = String.Empty,
-            QuestionId = 1
+            QuestionNum = 1
         };
 
         // Act
@@ -144,7 +144,7 @@ public class ScoreRoundOneAnswerAutomaticHandlerTest
         var handler = new ScoreRoundOneAnswerAutomaticHandler.Handler(_contextGo);
         var request = new ScoreRoundOneAnswerAutomaticHandler.Request(){
             YEvent = "t24",
-            QuestionId = -1
+            QuestionNum = -1
         };
 
         // Act
@@ -164,7 +164,7 @@ public class ScoreRoundOneAnswerAutomaticHandlerTest
         var handler = new ScoreRoundOneAnswerAutomaticHandler.Handler(_contextGo);
         var request = new ScoreRoundOneAnswerAutomaticHandler.Request(){
             YEvent = "t24",
-            QuestionId = 2
+            QuestionNum = 2
         };
 
         // Act

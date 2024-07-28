@@ -5,7 +5,7 @@ public class RoundOneSingleQAndAHandler
     public class Request : IRequest<ApiResponse<Round1QuestionDto>>
     {
         public string YEvent { get; set; } = string.Empty;
-        public int QuestionId { get; set; }
+        public int QuestionNum { get; set; }
     }
 
     public class Handler(ContextGo contextGo) : IRequestHandler<Request, ApiResponse<Round1QuestionDto>>
@@ -15,7 +15,7 @@ public class RoundOneSingleQAndAHandler
         public async Task<ApiResponse<Round1QuestionDto>> Handle(Request request, CancellationToken token)
         {
             var question = await _contextGo.QuestionAns.SingleOrDefaultAsync(q => q.Yevent == request.YEvent
-                                && q.RoundNum == 1 && q.QuestionNum == request.QuestionId, cancellationToken: token);
+                                && q.RoundNum == 1 && q.QuestionNum == request.QuestionNum, cancellationToken: token);
 
             if (question is null)
             {
