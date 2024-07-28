@@ -3,12 +3,8 @@ namespace GeekOff.Controllers;
 [ApiController]
 [Authorize]
 [Route("api/round1")]
-public class Round1Controller(ILogger<Round1Controller> logger, IScoreService scoreService, IManageEventService manageEventService,
-                        IHubContext<EventHub> eventHub, IMediator mediator) : ControllerBase
+public class Round1Controller(IHubContext<EventHub> eventHub, IMediator mediator) : ControllerBase
 {
-    private readonly ILogger<Round1Controller> _logger = logger;
-    private readonly IScoreService _scoreService = scoreService;
-    private readonly IManageEventService _manageEventService = manageEventService;
     private readonly IHubContext<EventHub> _eventHub = eventHub;
     private readonly IMediator _mediator = mediator;
 
@@ -99,7 +95,7 @@ public class Round1Controller(ILogger<Round1Controller> logger, IScoreService sc
         };
 
     [Authorize(Roles = "admin")]
-    [HttpPut("scoreAnswer/{Event}/{QuestionId}")]
+    [HttpPut("scoreAnswer/{YEvent}/{QuestionNum}")]
     [SwaggerOperation(Summary = "Scores the answer automatically")]
     public async Task<ActionResult<string>> ScoreAnswerAutomaticAsync([FromRoute] ScoreRoundOneAnswerAutomaticHandler.Request request)
     {
@@ -115,7 +111,7 @@ public class Round1Controller(ILogger<Round1Controller> logger, IScoreService sc
     }
 
     [Authorize(Roles = "admin")]
-    [HttpPut("scoreManualAnswer/{YEvent}/{QuestionId}/{TeamNum}")]
+    [HttpPut("scoreManualAnswer/{YEvent}/{QuestionNum}/{TeamNum}")]
     [SwaggerOperation(Summary = "Scores the answer manually based on team")]
     public async Task<ActionResult> ScoreAnswerManualAsync([FromRoute] ScoreRoundOneAnswerManualHandler.Request request)
         => await _mediator.Send(request) switch
@@ -127,27 +123,42 @@ public class Round1Controller(ILogger<Round1Controller> logger, IScoreService sc
         };
 
     [Authorize(Roles = "admin")]
-    [HttpPut("updateStatus/{yEvent}/{questionId}/{status}")]
+    [HttpPut("updateStatus/{yEvent}/{questionNum}/{status}")]
     [SwaggerOperation(Summary = "Updates status of question and sends message to display. Changes the state for the contestant and big screen.")]
-    public async Task<ActionResult<CurrentQuestionDto>> ChangeQuestionAsync(string yEvent, int questionId, int status)
+    public async Task<ActionResult<CurrentQuestionDto>> ChangeQuestionAsync(string yEvent, int questionNum, int status)
     {
-        var returnDto = await _manageEventService.SetCurrentQuestionStatus(yEvent, questionId, status);
-
-        var payload = new CurrentQuestionDto()
+        SetCurrentQuestionHandler.Request request = new ()
         {
-            QuestionNum = questionId,
-            Status = status
+            YEvent = yEvent,
+            QuestionNum = questionNum,
+            Status = status,
+            RoundNum = 1
         };
-        await _eventHub.Clients.All.SendAsync("round1UpdateContestant", payload);
-        return Ok(returnDto);
+
+        var returnDto = await _mediator.Send(request);
+
+        switch (returnDto.Status)
+        {
+            case QueryStatus.Success:
+                await _eventHub.Clients.All.SendAsync("round1UpdateContestant", returnDto.Value);
+                return Ok(returnDto.Value);
+            case QueryStatus.NotFound:
+                return NotFound(new CurrentQuestionDto());
+            default:
+                return BadRequest(new CurrentQuestionDto());
+        }
     }
 
     [Authorize(Roles = "admin")]
-    [HttpGet("scoreboard/{yEvent}")]
+    [HttpGet("scoreboard/{YEvent}")]
     [SwaggerOperation(Summary = "Gets the round 1 scoreboard")]
-    public async Task<ActionResult<List<Round1Scores>>> GetScoreboardAsync(string yEvent)
-        => Ok(await _scoreService.GetRound1Scores(yEvent));
-
+    public async Task<ActionResult<List<Round1Scores>>> GetScoreboardAsync([FromRoute] RoundOneScoresHandler.Request request) =>
+        await _mediator.Send(request) switch
+        {
+            { Status: QueryStatus.Success } result => Ok(result.Value),
+            { Status: QueryStatus.NotFound } result => NotFound(result.Value),
+            _ => throw new InvalidOperationException()
+        };
 
     [Authorize(Roles = "admin")]
     [HttpGet("teamList/{YEvent}")]
@@ -183,7 +194,7 @@ public class Round1Controller(ILogger<Round1Controller> logger, IScoreService sc
     #region SignalRcalls
 
     [Authorize(Roles = "admin")]
-    [HttpGet("updateAnswerState/{questionNum}/{status}")]
+    [HttpGet("updateAnswerState")]
     [SwaggerOperation(Summary = "Show answer choices to contestants and on big board.")]
     public async Task<ActionResult> ShowAnswersToEventAsync()
     {

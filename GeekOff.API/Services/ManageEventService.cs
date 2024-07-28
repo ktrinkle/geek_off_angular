@@ -208,36 +208,6 @@ namespace GeekOff.Services
 
         }
 
-        public async Task<CurrentQuestionDto> SetCurrentQuestionStatus(string yEvent, int questionId, int status)
-        {
-            if (questionId < 1)
-            {
-                return null;
-            }
-
-            if (status is < 0 or > 3)
-            {
-                return null;
-            }
-
-            var newQuestionStatus = new CurrentQuestion()
-            {
-                YEvent = yEvent,
-                QuestionNum = questionId,
-                Status = status,
-                QuestionTime = DateTime.UtcNow
-            };
-
-            _contextGo.CurrentQuestion.Add(newQuestionStatus);
-            await _contextGo.SaveChangesAsync();
-
-            return new CurrentQuestionDto()
-            {
-                QuestionNum = questionId,
-                Status = status
-            };
-        }
-
         public async Task<string> SetRound3Answer(List<Round3AnswerDto> round3Answers)
         {
             if (round3Answers is null)

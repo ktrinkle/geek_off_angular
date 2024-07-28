@@ -87,45 +87,6 @@ namespace GeekOff.Services
             return returnResult;
         }
 
-        public async Task<List<Round1Scores>> GetRound1Scores(string yEvent)
-        {
-            if (yEvent == null)
-            {
-                return null;
-            }
-
-            // question and team needs
-            var teamList = await _contextGo.Teamreference.Where(tr => tr.Yevent == yEvent)
-                                .Select(tr => new Round1Scores()
-                                {
-                                    TeamName = tr.Teamname.ToUpper(),
-                                    TeamNum = tr.TeamNum,
-                                    Bonus = tr.Dollarraised >= 200 ? 10 : tr.Dollarraised > 100 ? (int)(tr.Dollarraised - 100) / 10 : 0,
-                                    Q = (from q in _contextGo.QuestionAns
-                                         join s in _contextGo.Scoring
-                                         on new { q.RoundNum, q.QuestionNum, q.Yevent, tr.TeamNum }
-                                         equals new { s.RoundNum, s.QuestionNum, s.Yevent, s.TeamNum } into sq
-                                         from sqi in sq.DefaultIfEmpty()
-                                         where q.RoundNum == 1 && q.Yevent == tr.Yevent
-                                         select new Round1ScoreDetail()
-                                         {
-                                             QuestionId = q.QuestionNum,
-                                             QuestionScore = sqi.PointAmt
-                                         }).ToList()
-                                }).ToListAsync();
-
-            // now we need to calc the TeamScore. Rnk is not used here.
-            // team substring not liked in EF query. Forgot to add the bonus, whoops
-
-            foreach (var team in teamList)
-            {
-                team.TeamScore = team.Q.Sum(s => s.QuestionScore) + team.Bonus;
-            }
-
-            return teamList;
-
-        }
-
         public async Task<List<Round23Scores>> GetRound23Scores(string yEvent, int roundNum, int maxRnk)
         {
             if (yEvent == null || roundNum < 2 || roundNum > 3)
