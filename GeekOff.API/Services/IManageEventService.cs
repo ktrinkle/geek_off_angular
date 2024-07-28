@@ -2,7 +2,6 @@ namespace GeekOff.Services
 {
     public interface IManageEventService
     {
-        Task<List<Round2SurveyList>> GetRound2SurveyMaster(string yEvent);
         Task<List<Round2SurveyList>> GetRound2QuestionList(string yEvent);
         Task<string> SetRound2AnswerText(Round2AnswerDto submitAnswer);
         Task<string> SetRound2AnswerSurvey(Round2AnswerDto submitAnswer);

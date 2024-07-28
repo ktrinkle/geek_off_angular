@@ -1,36 +1,9 @@
 namespace GeekOff.Services
 {
-    public class ManageEventService : IManageEventService
+    public class ManageEventService(ILogger<ManageEventService> logger, ContextGo context) : IManageEventService
     {
-        private readonly ContextGo _contextGo;
-        private readonly ILogger<ManageEventService> _logger;
-        public ManageEventService(ILogger<ManageEventService> logger, ContextGo context)
-        {
-            _logger = logger;
-            _contextGo = context;
-        }
-
-        public async Task<List<Round2SurveyList>> GetRound2SurveyMaster(string yEvent)
-        {
-            var surveyAnswer = await _contextGo.Scoreposs.Where(q => q.Yevent == yEvent && q.RoundNum == 2)
-                                        .ToListAsync();
-
-            // get the question text
-            var surveyReturn = await GetRound2QuestionList(yEvent);
-
-            foreach (var survey in surveyReturn)
-            {
-                survey.SurveyAnswers = surveyAnswer.FindAll(s => s.QuestionNum == survey.QuestionNum)
-                                                    .Select(s => new Round2Answers()
-                                                    {
-                                                        QuestionNum = s.QuestionNum,
-                                                        Answer = s.QuestionAnswer!,
-                                                        Score = (int)s.Ptsposs!
-                                                    }).ToList();
-            }
-
-            return surveyReturn;
-        }
+        private readonly ContextGo _contextGo = context;
+        private readonly ILogger<ManageEventService> _logger = logger;
 
         public async Task<List<Round2SurveyList>> GetRound2QuestionList(string yEvent)
         {
