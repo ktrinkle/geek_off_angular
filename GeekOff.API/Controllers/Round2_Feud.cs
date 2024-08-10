@@ -2,12 +2,11 @@ namespace GeekOff.Controllers;
 
 [ApiController]
 [Route("api/round2_feud")]
-public class Round2FeudController(ILogger<Round2FeudController> logger, IScoreService scoreService,
+public class Round2FeudController(ILogger<Round2FeudController> logger,
                         IHubContext<EventHub> eventHub, IMediator mediator) : ControllerBase
 {
 
     private readonly ILogger<Round2FeudController> _logger = logger;
-    private readonly IScoreService _scoreService = scoreService;
     private readonly IHubContext<EventHub> _eventHub = eventHub;
     private readonly IMediator _mediator = mediator;
 
@@ -103,11 +102,16 @@ public class Round2FeudController(ILogger<Round2FeudController> logger, IScoreSe
     }
 
     [Authorize(Roles = "admin")]
-    [HttpGet("firstPlayersAnswers/{yEvent}/{teamNum}")]
+    [HttpGet("firstPlayersAnswers/{YEvent}/{TeamNum}")]
     [SwaggerOperation(Summary = "Returns the first Players answers for round 2")]
-    public async Task<ActionResult<Round23Scores>> GetFirstPlayersAnswersAsync(string yEvent, int teamNum)
-        => Ok(await _scoreService.GetFirstPlayersAnswers(yEvent, teamNum));
-
+    public async Task<ActionResult<Round23Scores>> GetFirstPlayersAnswersAsync([FromRoute] RoundTwoFirstPlayerHandler.Request request)
+        => await _mediator.Send(request) switch
+        {
+            { Status: QueryStatus.Success } result => Ok(result.Value),
+            { Status: QueryStatus.NotFound } result => NotFound(),
+            { Status: QueryStatus.BadRequest } result => BadRequest(),
+            _ => throw new InvalidOperationException()
+        };
 
     [Authorize(Roles = "admin")]
     [HttpPut("finalize/{yEvent}")]

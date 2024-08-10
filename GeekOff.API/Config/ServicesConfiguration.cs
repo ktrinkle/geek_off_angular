@@ -10,7 +10,6 @@ public static class ServicesConfiguration
         // Services
         services.TryAddScoped<ILoginService, LoginService>();
         services.TryAddScoped<IManageEventService, ManageEventService>();
-        services.TryAddScoped<IScoreService, ScoreService>();
 
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
 
