@@ -1,69 +1,86 @@
-namespace GeekOff.Controllers
+namespace GeekOff.Controllers;
+
+[ApiController]
+[Route("api/round3")]
+public class Round3Controller(ILogger<Round3Controller> logger, IManageEventService manageEventService,
+                        IHubContext<EventHub> eventHub, IMediator mediator) : ControllerBase
 {
-    [ApiController]
-    // [Authorize]
-    [Route("api/round3")]
-    public class Round3Controller : ControllerBase
+
+    private readonly ILogger<Round3Controller> _logger = logger;
+    private readonly IManageEventService _manageEventService = manageEventService;
+    private readonly IHubContext<EventHub> _eventHub = eventHub;
+    private readonly IMediator _mediator = mediator;
+
+    [Authorize(Roles = "admin")]
+    [HttpGet("allQuestions/{yEvent}")]
+    [SwaggerOperation(Summary = "Get all of the questions and points for use of the operators.")]
+    public async Task<ActionResult<List<Round3QuestionDto>>> GetRound3MasterAsync(string yEvent)
+        => Ok(await _manageEventService.GetRound3Master(yEvent));
+
+    [Authorize(Roles = "admin")]
+    [HttpGet("allTeams/{yEvent}")]
+    [SwaggerOperation(Summary = "Get all of the round 3 teams.")]
+    public async Task<ActionResult<List<IntroDto>>> GetRound3TeamsAsync(string yEvent)
+        => Ok(await _manageEventService.GetRound3Teams(yEvent));
+
+    [Authorize(Roles = "admin")]
+    [HttpPost("teamanswer")]
+    [SwaggerOperation(Summary = "Saves the team answer with points")]
+    public async Task<ActionResult<string>> SetRound3AnswerAsync(List<Round3AnswerDto> submitAnswer)
     {
+        var returnVar = await _manageEventService.SetRound3Answer(submitAnswer);
+        await _eventHub.Clients.All.SendAsync("round3ScoreUpdate");
+        return Ok(returnVar);
+    }
 
-        private readonly ILogger<Round3Controller> _logger;
-        private readonly IScoreService _scoreService;
-        private readonly IManageEventService _manageEventService;
-        private readonly IHubContext<EventHub> _eventHub;
-
-        public Round3Controller(ILogger<Round3Controller> logger, IScoreService scoreService, IManageEventService manageEventService,
-                                IHubContext<EventHub> eventHub)
+    [Authorize(Roles = "admin")]
+    [HttpGet("scoreboard/{yEvent}")]
+    [SwaggerOperation(Summary = "Returns the scoreboard for round 3")]
+    public async Task<ActionResult<Round23Scores>> GetRound23ScoresAsync(string yEvent)
+    {
+        GetScoresHandler.Request request = new ()
         {
-            _logger = logger;
-            _scoreService = scoreService;
-            _manageEventService = manageEventService;
-            _eventHub = eventHub;
-        }
+            YEvent = yEvent,
+            RoundNum = 2,
+            MaxRnk = 6
+        };
 
-        [Authorize(Roles = "admin")]
-        [HttpGet("allQuestions/{yEvent}")]
-        [SwaggerOperation(Summary = "Get all of the questions and points for use of the operators.")]
-        public async Task<ActionResult<List<Round3QuestionDto>>> GetRound3MasterAsync(string yEvent)
-            => Ok(await _manageEventService.GetRound3Master(yEvent));
-
-        [Authorize(Roles = "admin")]
-        [HttpGet("allTeams/{yEvent}")]
-        [SwaggerOperation(Summary = "Get all of the round 3 teams.")]
-        public async Task<ActionResult<List<IntroDto>>> GetRound3TeamsAsync(string yEvent)
-            => Ok(await _manageEventService.GetRound3Teams(yEvent));
-
-        [Authorize(Roles = "admin")]
-        [HttpPost("teamanswer")]
-        [SwaggerOperation(Summary = "Saves the team answer with points")]
-        public async Task<ActionResult<string>> SetRound3AnswerAsync(List<Round3AnswerDto> submitAnswer)
+        return await _mediator.Send(request) switch
         {
-            var returnVar = await _manageEventService.SetRound3Answer(submitAnswer);
-            await _eventHub.Clients.All.SendAsync("round3ScoreUpdate");
-            return Ok(returnVar);
-        }
-
-        [Authorize(Roles = "admin")]
-        [HttpGet("scoreboard/{yEvent}")]
-        [SwaggerOperation(Summary = "Returns the scoreboard for round 3")]
-        public async Task<ActionResult<Round23Scores>> GetRound23ScoresAsync(string yEvent)
-            => Ok(await _scoreService.GetRound23Scores(yEvent, 3, 3));
+            { Status: QueryStatus.Success } result => Ok(result.Value),
+            { Status: QueryStatus.BadRequest } result => BadRequest(),
+            _ => throw new InvalidOperationException()
+        };
+    }
 
 
-        [Authorize(Roles = "admin")]
-        [HttpGet("updateScoreboard")]
-        [SwaggerOperation(Summary = "Sends message to update the scoreboard.")]
-        public async Task<ActionResult> UpdateScoreboardAsync()
+    [Authorize(Roles = "admin")]
+    [HttpGet("updateScoreboard")]
+    [SwaggerOperation(Summary = "Sends message to update the scoreboard.")]
+    public async Task<ActionResult> UpdateScoreboardAsync()
+    {
+        // add in controller here
+        await _eventHub.Clients.All.SendAsync("round3ScoreUpdate");
+        return Ok();
+    }
+
+    [Authorize(Roles = "admin")]
+    [HttpPut("finalize/{yEvent}")]
+    [SwaggerOperation(Summary = "Finalize round 3")]
+    public async Task<ActionResult<string>> FinalizeRoundAsync(string yEvent)
+    {
+        FinalizeRoundHandler.Request request = new ()
         {
-            // add in controller here
-            await _eventHub.Clients.All.SendAsync("round3ScoreUpdate");
-            return Ok();
-        }
+            YEvent = yEvent,
+            RoundNum = 3
+        };
 
-        [Authorize(Roles = "admin")]
-        [HttpPut("finalize/{yEvent}")]
-        [SwaggerOperation(Summary = "Finalize round 3")]
-        public async Task<ActionResult<string>> FinalizeRoundAsync(string yEvent)
-            => Ok(await _manageEventService.FinalizeRound(yEvent, 3));
-
+        return await _mediator.Send(request) switch
+        {
+            { Status: QueryStatus.Success } result => Ok(result.Value.Message),
+            { Status: QueryStatus.NotFound } result => NotFound(result.Value.Message),
+            { Status: QueryStatus.BadRequest } result => BadRequest(result.Value.Message),
+            _ => throw new InvalidOperationException()
+        };
     }
 }

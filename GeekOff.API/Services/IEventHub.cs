@@ -1,8 +1,7 @@
-namespace GeekOff.Services
+namespace GeekOff.Services;
+
+public interface IEventHub
 {
-    public interface IEventHub
-    {
-        Task BroadcastMessage();
-        Task SendMessageAsync(string message);
-    }
+    Task BroadcastMessage();
+    Task SendMessageAsync(string message);
 }

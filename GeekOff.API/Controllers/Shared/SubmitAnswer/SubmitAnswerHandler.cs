@@ -2,13 +2,13 @@ namespace GeekOff.Handlers;
 
 public class SubmitAnswerHandler
 {
-    public class Request : IRequest<ApiResponse<StringReturn>>
+    public record Request : IRequest<ApiResponse<StringReturn>>
     {
-        public string YEvent { get; set; } = string.Empty;
-        public int RoundNum { get; set; }
-        public string TextAnswer { get; set; } = string.Empty;
-        public int QuestionNum { get; set;}
-        public int TeamNum { get; set; }
+        public required string YEvent { get; init; } = string.Empty;
+        public required int RoundNum { get; init; }
+        public required string TextAnswer { get; init; } = string.Empty;
+        public required int QuestionNum { get; init; }
+        public required int TeamNum { get; init; }
     }
 
     public class Handler(ContextGo contextGo, ILogger<SubmitAnswerHandler> logger) : IRequestHandler<Request, ApiResponse<StringReturn>>

@@ -2,13 +2,12 @@ namespace GeekOff.Controllers;
 
 [ApiController]
 [Route("api/round2_feud")]
-public class Round2FeudController(ILogger<Round2FeudController> logger, IScoreService scoreService, IManageEventService manageEventService,
+public class Round2FeudController(ILogger<Round2FeudController> logger, IScoreService scoreService,
                         IHubContext<EventHub> eventHub, IMediator mediator) : ControllerBase
 {
 
     private readonly ILogger<Round2FeudController> _logger = logger;
     private readonly IScoreService _scoreService = scoreService;
-    private readonly IManageEventService _manageEventService = manageEventService;
     private readonly IHubContext<EventHub> _eventHub = eventHub;
     private readonly IMediator _mediator = mediator;
 
@@ -24,42 +23,113 @@ public class Round2FeudController(ILogger<Round2FeudController> logger, IScoreSe
         };
 
     [Authorize(Roles = "admin")]
-    [HttpGet("allQuestions/{yEvent}")]
+    [HttpGet("allQuestions/{YEvent}")]
     [SwaggerOperation(Summary = "Get all of the survey questions for use of the host.")]
-    public async Task<ActionResult<List<Round2SurveyList>>> GetRound2QuestionListAsync(string yEvent)
-        => Ok(await _manageEventService.GetRound2QuestionList(yEvent));
+    public async Task<ActionResult<List<Round2SurveyList>>> GetRound2QuestionListAsync([FromRoute] RoundTwoSurveyQuestionHandler.Request request)
+        => await _mediator.Send(request) switch
+        {
+            { Status: QueryStatus.Success } result => Ok(result.Value),
+            { Status: QueryStatus.NotFound } result => NotFound(result.Value),
+            _ => throw new InvalidOperationException()
+        };
 
     [Authorize(Roles = "admin")]
-    [HttpGet("bigBoard/{yEvent}/{teamNo}")]
+    [HttpGet("bigBoard/{YEvent}/{TeamNum}")]
     [SwaggerOperation(Summary = "Returns the big board for round 2")]
-    public async Task<ActionResult<Round2BoardDto>> GetRound2DisplayBoardAsync(string yEvent, int teamNo)
-        => Ok(await _scoreService.GetRound2DisplayBoard(yEvent, teamNo));
+    public async Task<ActionResult<Round2BoardDto>> GetRound2DisplayBoardAsync([FromRoute] RoundTwoDisplayBoardHandler.Request request)
+        => await _mediator.Send(request) switch
+        {
+            { Status: QueryStatus.Success } result => Ok(result.Value),
+            { Status: QueryStatus.NotFound } result => NotFound(result.Value),
+            _ => throw new InvalidOperationException()
+        };
 
     [Authorize(Roles = "admin")]
     [HttpPost("teamanswer/text")]
     [SwaggerOperation(Summary = "Saves the team answer with points")]
-    public async Task<ActionResult<string>> SetRound2AnswerTextAsync(Round2AnswerDto submitAnswer)
+    public async Task<ActionResult<string>> SetRound2AnswerTextAsync([FromForm] RoundTwoAnswerTextHandler.Request request)
     {
-        var returnVar = await _manageEventService.SetRound2AnswerText(submitAnswer);
-        await _eventHub.Clients.All.SendAsync("round2Answer");
-        return Ok(returnVar);
+        var returnStatus = await _mediator.Send(request);
+
+        switch (returnStatus.Status)
+        {
+            case QueryStatus.Success:
+                await _eventHub.Clients.All.SendAsync("round2Answer");
+                return Ok(returnStatus.Value);
+            case QueryStatus.NotFound:
+                return NotFound(returnStatus.Value);
+            default:
+                return BadRequest(returnStatus.Value);
+        }
     }
 
     [Authorize(Roles = "admin")]
     [HttpPost("teamanswer/survey")]
     [SwaggerOperation(Summary = "Saves the team answer from a direct match to the survey")]
-    public async Task<ActionResult<string>> SetRound2AnswerSurveyAsync(Round2AnswerDto submitAnswer)
+    public async Task<ActionResult<string>> SetRound2AnswerSurveyAsync([FromForm] RoundTwoAnswerSurveyHandler.Request request)
     {
-        var returnVar = await _manageEventService.SetRound2AnswerSurvey(submitAnswer);
-        await _eventHub.Clients.All.SendAsync("round2Answer");
-        return Ok(returnVar);
+        var returnStatus = await _mediator.Send(request);
+
+        switch (returnStatus.Status)
+        {
+            case QueryStatus.Success:
+                await _eventHub.Clients.All.SendAsync("round2Answer");
+                return Ok(returnStatus.Value);
+            case QueryStatus.NotFound:
+                return NotFound(returnStatus.Value);
+            default:
+                return BadRequest(returnStatus.Value);
+        }
     }
 
     [Authorize(Roles = "admin")]
     [HttpGet("scoreboard/{yEvent}")]
     [SwaggerOperation(Summary = "Returns the scoreboard for round 2")]
     public async Task<ActionResult<Round23Scores>> GetRound23ScoresAsync(string yEvent)
-        => Ok(await _scoreService.GetRound23Scores(yEvent, 2, 6));
+    {
+        GetScoresHandler.Request request = new ()
+        {
+            YEvent = yEvent,
+            RoundNum = 2,
+            MaxRnk = 6
+        };
+
+        return await _mediator.Send(request) switch
+        {
+            { Status: QueryStatus.Success } result => Ok(result.Value),
+            { Status: QueryStatus.BadRequest } result => BadRequest(),
+            _ => throw new InvalidOperationException()
+        };
+    }
+
+    [Authorize(Roles = "admin")]
+    [HttpGet("firstPlayersAnswers/{yEvent}/{teamNum}")]
+    [SwaggerOperation(Summary = "Returns the first Players answers for round 2")]
+    public async Task<ActionResult<Round23Scores>> GetFirstPlayersAnswersAsync(string yEvent, int teamNum)
+        => Ok(await _scoreService.GetFirstPlayersAnswers(yEvent, teamNum));
+
+
+    [Authorize(Roles = "admin")]
+    [HttpPut("finalize/{yEvent}")]
+    [SwaggerOperation(Summary = "Finalize round 2")]
+    public async Task<ActionResult<string>> FinalizeRoundAsync(string yEvent)
+    {
+        FinalizeRoundHandler.Request request = new ()
+        {
+            YEvent = yEvent,
+            RoundNum = 2
+        };
+
+        return await _mediator.Send(request) switch
+        {
+            { Status: QueryStatus.Success } result => Ok(result.Value.Message),
+            { Status: QueryStatus.NotFound } result => NotFound(result.Value.Message),
+            { Status: QueryStatus.BadRequest } result => BadRequest(result.Value.Message),
+            _ => throw new InvalidOperationException()
+        };
+    }
+
+    #region SignalR
 
     [Authorize(Roles = "admin")]
     [HttpGet("bigboard/reveal/{entryNum}")]
@@ -98,18 +168,6 @@ public class Round2FeudController(ILogger<Round2FeudController> logger, IScoreSe
         return Ok();
     }
 
-    [Authorize(Roles = "admin")]
-    [HttpPut("finalize/{yEvent}")]
-    [SwaggerOperation(Summary = "Finalize round 2")]
-    public async Task<ActionResult<string>> FinalizeRoundAsync(string yEvent)
-        => Ok(await _manageEventService.FinalizeRound(yEvent, 2));
-
-    [Authorize(Roles = "admin")]
-    [HttpGet("firstPlayersAnswers/{yEvent}/{teamNum}")]
-    [SwaggerOperation(Summary = "Returns the first Players answers for round 2")]
-    public async Task<ActionResult<Round23Scores>> GetFirstPlayersAnswersAsync(string yEvent, int teamNum)
-        => Ok(await _scoreService.GetFirstPlayersAnswers(yEvent, teamNum));
-
     // Countdown SignalR.
     [Authorize(Roles = "admin")]
     [HttpGet("countdown/start/{seconds}")]
@@ -145,4 +203,5 @@ public class Round2FeudController(ILogger<Round2FeudController> logger, IScoreSe
         return Ok();
     }
 
+    #endregion
 }
