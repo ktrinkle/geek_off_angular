@@ -4,8 +4,8 @@ Replacement for round 1 & 2 of the Geek Off at my employer. A work in progress.
 
 # Requirements
 
-* .NET 6.x SDK
-* NPM/Node 16+
+* .NET 8.x SDK
+* NPM/Node 20+
 * Azure account to support Azure AD - if installing from the repo without using any established infrastructure, you will need to set up the application in Azure AD. Refer to Microsoft documentation to establish the tenant and client ID required below.
 
 # Initial setup
@@ -65,15 +65,13 @@ SignalR communication uses the endpoint `/events`.
 
 # Authentication
 
-Current: Logins are handled via the standard Microsoft Authentication Library (MSAL). Logins are restricted to the Geekoff active directory - contact Kevin Trinkle to obtain a login.
-
-Future: There are two paths to be followed:
+There are two paths to be followed:
 1. Contestant login will be handled via QR code. 
 1. Admin login will be handled via home grown code, or possibly MSAL...? Need to ponder this.
 
 # Automated tests
 
-Automated testing is not enforced or required.
+Unit tests are required on .NET code. Angular code testing is pending implementation.
 
 # Work to be completed
 
@@ -84,7 +82,6 @@ Automated testing is not enforced or required.
 * Autoplay intro video if it's even possible
 * Edit teams and participants
 * Round 1 - manual answers if needed
-* Round 2 and 3 team load from roundresult - limit to 6/3 teams
 * Round 2 - improve UI and reduce confusion on second player. Don't allow loading for first player after complete
 * Round 3 - move slides into system
 * Round 3 - Geekomatic refactor and control questions from here, SignalR factor to Python
