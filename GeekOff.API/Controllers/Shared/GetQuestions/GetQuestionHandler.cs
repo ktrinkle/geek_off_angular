@@ -1,31 +1,37 @@
 namespace GeekOff.Handlers;
 
-public class RoundOneQuestionHandler
+public class GetQuestionHandler
 {
-    public class Request : IRequest<ApiResponse<List<Round1QuestionDisplay>>>
+    public class Request : IRequest<ApiResponse<List<Round13QuestionDisplay>>>
     {
         public string YEvent { get; set; } = string.Empty;
+        public int RoundNum { get; set;}
     }
 
-    public class Handler(ContextGo contextGo) : IRequestHandler<Request, ApiResponse<List<Round1QuestionDisplay>>>
+    public class Handler(ContextGo contextGo) : IRequestHandler<Request, ApiResponse<List<Round13QuestionDisplay>>>
     {
         private readonly ContextGo _contextGo = contextGo;
 
-        public async Task<ApiResponse<List<Round1QuestionDisplay>>> Handle(Request request, CancellationToken token)
+        public async Task<ApiResponse<List<Round13QuestionDisplay>>> Handle(Request request, CancellationToken token)
         {
+            if (string.IsNullOrEmpty(request.YEvent) || request.RoundNum < 1 || request.RoundNum > 3 )
+            {
+                return ApiResponse<List<Round13QuestionDisplay>>.BadRequest();
+            }
+
             var questionList = await _contextGo.QuestionAns.Where(q => q.Yevent == request.YEvent
-                                && q.RoundNum == 1).ToListAsync(cancellationToken: token);
+                                && q.RoundNum == request.RoundNum).ToListAsync(cancellationToken: token);
 
             if (questionList.Count == 0)
             {
-                return ApiResponse<List<Round1QuestionDisplay>>.NotFound();
+                return ApiResponse<List<Round13QuestionDisplay>>.NotFound();
             }
 
-            var questionReturn = new List<Round1QuestionDisplay>();
+            var questionReturn = new List<Round13QuestionDisplay>();
 
             foreach (var question in questionList)
             {
-                var qDisplay = new Round1QuestionDisplay()
+                var qDisplay = new Round13QuestionDisplay()
                 {
                     QuestionNum = question.QuestionNum,
                     QuestionText = question.TextQuestion!,
@@ -64,16 +70,21 @@ public class RoundOneQuestionHandler
                     qDisplay.AnswerType = question.MatchQuestion == true ? QuestionAnswerType.Match : QuestionAnswerType.MultipleChoice;
                 }
 
-                if (question.MultipleChoice is false)
+                if (question.MultipleChoice is false && request.RoundNum == 1)
                 {
                     qDisplay.AnswerType = QuestionAnswerType.FreeText;
+                }
+
+                if (request.RoundNum == 3)
+                {
+                    qDisplay.AnswerType = QuestionAnswerType.Jeopardy;
                 }
 
                 questionReturn.Add(qDisplay);
 
             }
 
-            return ApiResponse<List<Round1QuestionDisplay>>.Success(questionReturn);
+            return ApiResponse<List<Round13QuestionDisplay>>.Success(questionReturn);
         }
     }
 }

@@ -9,15 +9,24 @@ public class Round1Controller(IHubContext<EventHub> eventHub, IMediator mediator
     private readonly IMediator _mediator = mediator;
 
     [Authorize(Roles = "admin")]
-    [HttpGet("bigDisplay/{YEvent}")]
+    [HttpGet("bigDisplay/{yEvent}")]
     [SwaggerOperation(Summary = "Get list of the round 1 questions for the big display with media.")]
-    public async Task<ActionResult<List<Round1QuestionDisplay>>> GetRound1QuestionsAsync([FromRoute] RoundOneQuestionHandler.Request request)
-        => await _mediator.Send(request) switch
+    public async Task<ActionResult<List<Round13QuestionDisplay>>> GetRound1QuestionsAsync(string yEvent)
+    {
+        GetQuestionHandler.Request request = new ()
+        {
+            YEvent = yEvent,
+            RoundNum = 1
+        };
+
+        return await _mediator.Send(request) switch
         {
             { Status: QueryStatus.Success } result => Ok(result.Value),
-            { Status: QueryStatus.NotFound } result => NotFound(result.Value),
+            { Status: QueryStatus.NotFound } => NotFound(),
+            { Status: QueryStatus.BadRequest } => BadRequest(),
             _ => throw new InvalidOperationException()
         };
+    }
 
     [Authorize(Roles = "admin")]
     [HttpGet("getAnswers/{YEvent}/{QuestionNum}")]
