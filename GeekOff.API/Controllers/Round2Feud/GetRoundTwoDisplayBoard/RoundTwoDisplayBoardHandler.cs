@@ -72,7 +72,7 @@ public class RoundTwoDisplayBoardHandler
                 {
                     QuestionNum = playerScore.QuestionNum,
                     Answer = (playerScore.TeamAnswer ?? string.Empty).ToUpper(),
-                    Score = (int)playerScore.PointAmt
+                    Score = (int)playerScore.PointAmt!
                 };
                 totalScore += result.Score;
                 player2.Add(result);
