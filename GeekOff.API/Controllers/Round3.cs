@@ -2,11 +2,10 @@ namespace GeekOff.Controllers;
 
 [ApiController]
 [Route("api/round3")]
-public class Round3Controller(ILogger<Round3Controller> logger, IManageEventService manageEventService,
+public class Round3Controller(ILogger<Round3Controller> logger,
                         IHubContext<EventHub> eventHub, IMediator mediator) : ControllerBase
 {
     private readonly ILogger<Round3Controller> _logger = logger;
-    private readonly IManageEventService _manageEventService = manageEventService;
     private readonly IHubContext<EventHub> _eventHub = eventHub;
     private readonly IMediator _mediator = mediator;
 
@@ -57,11 +56,17 @@ public class Round3Controller(ILogger<Round3Controller> logger, IManageEventServ
     [Authorize(Roles = "admin")]
     [HttpPost("teamanswer")]
     [SwaggerOperation(Summary = "Saves the team answer with points")]
-    public async Task<ActionResult<string>> SetRound3AnswerAsync(List<Round3AnswerDto> submitAnswer)
+    public async Task<ActionResult<string>> SetRound3AnswerAsync([FromForm] RoundThreeTeamAnswerHandler.Request request)
     {
-        var returnVar = await _manageEventService.SetRound3Answer(submitAnswer);
         await _eventHub.Clients.All.SendAsync("round3ScoreUpdate");
-        return Ok(returnVar);
+
+        return await _mediator.Send(request) switch
+        {
+            { Status: QueryStatus.Success } result => Ok(result.Value.Message),
+            { Status: QueryStatus.NotFound } => NotFound(),
+            { Status: QueryStatus.BadRequest } result => BadRequest(result.Value.Message),
+            _ => throw new InvalidOperationException()
+        };
     }
 
     [Authorize(Roles = "admin")]

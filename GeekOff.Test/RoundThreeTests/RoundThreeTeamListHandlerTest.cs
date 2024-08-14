@@ -165,7 +165,7 @@ public class RoundThreeTeamListHandlerTest
         _contextGo = Substitute.For<ContextGo>();
         
         _serviceProvider = _services
-            .AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(GetScoresHandler).Assembly))
+            .AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(RoundThreeTeamListHandler).Assembly))
             .AddLogging().BuildServiceProvider();
 
         _contextGo.Roundresult.Returns(mockRoundResult);
