@@ -92,7 +92,7 @@ export class DataService {
   }
 
   public getRound1QuestionAnswer(yEvent: string, questionNum: number): Observable<any> {
-    var uri = this.REST_API_SERVER + '/api/round1/getAnswers/' + encodeURIComponent(yEvent) + '/' + encodeURIComponent(QuestionNum) + '';
+    var uri = this.REST_API_SERVER + '/api/round1/getAnswers/' + encodeURIComponent(yEvent) + '/' + encodeURIComponent(questionNum) + '';
     return this.httpClient.get(uri);
   }
 

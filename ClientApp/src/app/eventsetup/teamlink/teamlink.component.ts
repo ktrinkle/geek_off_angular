@@ -22,7 +22,7 @@ export class TeamlinkComponent implements OnInit {
       let guidString = params.get('teamGuid');
       this.teamGuid = Guid.parse(guidString ?? "");
 
-      this.yEvent = params.get('yEvent');
+      this.yEvent = params.get('yEvent') ?? "";
     });
 
   }
