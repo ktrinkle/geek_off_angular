@@ -12,11 +12,16 @@ export class EventManageEffects {
 
   getCurrentEvent$ = createEffect(() => this.actions$.pipe(
     ofType(currentEvent),
-    exhaustMap(() =>
-      this.dataService.getCurrentEvent().pipe(map(currentEvent => ({
-          type: '[EventManage] LoadCurrentEvent', payload: currentEvent })),
-          catchError(() => EMPTY)  // todo: add catchError
-      ))));
+    switchMap(() =>
+      this.dataService.getCurrentEvent().pipe(map(currentEvent =>
+        currentEventSuccess({ currentEvent: currentEvent }) // todo: add catchError
+      )))));
+
+    // exhaustMap(() =>
+    //   this.dataService.getCurrentEvent().pipe(map(currentEvent => ({
+    //       type: '[EventManage] LoadCurrentEvent', payload: currentEvent })),
+    //       catchError(() => EMPTY)  // todo: add catchError
+    //   ))));
 
   getAllEvents$ = createEffect(() => this.actions$.pipe(
     ofType(allEvent),

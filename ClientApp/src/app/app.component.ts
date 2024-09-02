@@ -3,6 +3,7 @@ import { Router, NavigationEnd } from '@angular/router';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { Location } from '@angular/common';
 import { Store } from '@ngrx/store';
+// import { currentEvent } from './store/round1/round1.actions';
 import { currentEvent } from './store/eventManage/eventManage.actions';
 import { AuthService } from './service/auth.service';
 import { PlayerGuard } from './player.guard';
@@ -46,12 +47,11 @@ export class AppComponent implements OnInit, OnDestroy {
     private store: Store) {
     router.events.forEach((event) => {
       if (event instanceof NavigationEnd) {
-        console.log(event.url);
-        console.log(this.pagesToShowLogin.indexOf(event.url));
         this.showLoginBar = this.pagesToShowLogin.indexOf(event.url) > -1;
       }
     });
     this.store.dispatch(currentEvent());
+    console.log('currentevent finished');
   }
 
   ngOnInit(): void {

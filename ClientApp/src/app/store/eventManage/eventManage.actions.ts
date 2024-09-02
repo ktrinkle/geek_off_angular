@@ -3,7 +3,7 @@ import { eventMaster } from '../../data/data';
 
 
 export const currentEvent = createAction(
-  '[EventManage] GetCurrentEvent');
+  '[EventManage] getCurrentEvent');
 
 export const currentEventSuccess = createAction(
   '[EventManage] LoadCurrentEvent',

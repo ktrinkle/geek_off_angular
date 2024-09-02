@@ -16,7 +16,6 @@ export class PlayerGuard implements CanActivate {
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     // get the jwt token which are present in the local storage
 
-    debugger;
     const token = localStorage.getItem("jwt");
     const expectedRole = 1;
 

@@ -7,12 +7,7 @@
   <p><a routerLink="/round1/contestant">Start playing the game!</a></p>
 </div>
 
-<div>
-  {{userIsAdmin}}
-  Yevent: *{{yEvent}}*
-</div>
-
-<div *ngIf="userIsAdmin && userIsLoggedIn && yEvent != ''">
+<div *ngIf="userIsAdmin && userIsLoggedIn && yEvent.length > 0">
   <p>Event: {{yEvent}} - Admin functions:</p>
   <mat-grid-list cols='12' rowHeight='90px'>
     <mat-grid-tile colspan='6' rowspan='2'>
@@ -28,7 +23,7 @@
         <h4>Round 2 - Fast Points</h4>
         <p><a routerLink="/round2feud/display">Round 2 big display board</a></p>
         <p><a routerLink="/round2feud/countdown">Round 2 countdown</a></p>
-        <p><a routerLink="/round2/scoreboard">Round 2 scoreboard</a></p>
+        <p><a routerLink="/round2feud/scoreboard">Round 2 scoreboard</a></p>
       </div>
     </mat-grid-tile>
     <mat-grid-tile colspan='6' rowspan='2'>
