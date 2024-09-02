@@ -14,6 +14,10 @@ export class AuthService {
   private currentToken: Observable<string>;
 
   private loggedIn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public loggedIn$: Observable<boolean>;
+
+  private isAdmin: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public isAdmin$: Observable<boolean>;
 
   constructor(private dataService:DataService)
   {
@@ -23,14 +27,18 @@ export class AuthService {
     });
 
     this.currentUser = this.currentUserSubject.asObservable();
+    this.loggedIn$ = this.loggedIn.asObservable();
+    this.isAdmin$ = this.isAdmin.asObservable();
 
     this.currentTokenSubject = new BehaviorSubject<any>(sessionStorage.getItem('jwt'));
     this.currentToken = this.currentTokenSubject.asObservable();
 
-
-    if(localStorage.getItem('teamNum') != null)
-    {
+    if(localStorage.getItem('teamNum') != null) {
       this.loggedIn.next(true);
+    }
+
+    if(localStorage.getItem('teamNum') === "0") {
+      this.isAdmin.next(true);
     }
   }
 
@@ -42,18 +50,25 @@ export class AuthService {
     return this.currentToken;
   }
 
-  public processLoginAdmin(loginDto: adminLogin): void
+  public processLoginAdmin(loginDto: adminLogin): boolean
   {
-    if (loginDto.userName != '' && loginDto.password != '')
+    var rtn: boolean = false;
+    if (loginDto.userLogin.userName != '' && loginDto.userLogin.password != '')
     {
       this.dataService.sendAdminLogin(loginDto).subscribe(al =>
         {
           localStorage.setItem('jwt', al.bearerToken);
           localStorage.setItem('teamNum', '0');
           localStorage.setItem('teamName', al.humanName);
-        })
 
+          if (al.bearerToken != null) {
+            rtn = true;
+            this.loggedIn.next(true);
+            this.isAdmin.next(true);
+          }
+        })
     }
+    return rtn;
   }
 
   public processLoginTeam(loginDto: teamLogin): boolean
@@ -69,6 +84,8 @@ export class AuthService {
             localStorage.setItem('teamNum', al.teamNum.toString());
             localStorage.setItem('teamName', al.humanName);
             rtn = true;
+            this.loggedIn.next(true);
+            this.isAdmin.next(false);
           }
         })
     }
@@ -76,8 +93,12 @@ export class AuthService {
     return rtn;
   }
 
-  public get isUserLoggedIn(){
-    return this.loggedIn.asObservable();
+  public logout() {
+    localStorage.removeItem('jwt');
+    localStorage.removeItem('teamNum');
+    localStorage.removeItem('teamName');
+    this.loggedIn.next(false);
+    this.isAdmin.next(false);
   }
 
 }

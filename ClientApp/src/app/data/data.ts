@@ -148,8 +148,10 @@ export interface jwtReturn {
 }
 
 export interface adminLogin {
-  userName: string,
-  password: string,
+  userLogin: {
+    userName: string,
+    password: string,
+  }
 }
 
 export interface bearerDto {

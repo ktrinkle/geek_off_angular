@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
+import { JwtModule } from "@auth0/angular-jwt";
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -58,6 +59,9 @@ import { PlayerComponent } from './login/player/player.component';
 
 import { QRCodeModule } from 'angularx-qrcode';
 
+export function tokenGetter() {
+  return localStorage.getItem("jwt");
+}
 
 @NgModule({
   declarations: [
@@ -89,6 +93,12 @@ import { QRCodeModule } from 'angularx-qrcode';
   imports: [
     BrowserModule,
     AppRoutingModule,
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: tokenGetter,
+        allowedDomains: ["localhost", "geekoff.azurewebsites.net"]
+      },
+    }),
     HttpClientModule,
     StoreModule.forRoot(reducers, { metaReducers }),
     !environment.production ? StoreDevtoolsModule.instrument() : [],

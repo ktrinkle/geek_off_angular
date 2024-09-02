@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { filter, takeUntil } from 'rxjs/operators';
-import { PlayerGuard } from '../player.guard';
 import { Store } from '@ngrx/store';
 import { selectCurrentEvent } from '../store';
 import { Subject } from 'rxjs';
-import { JwtHelperService } from '@auth0/angular-jwt';
+import { AuthService } from '../service/auth.service';
 
 
 @Component({
@@ -18,31 +17,23 @@ export class HomeComponent implements OnInit {
   public yEvent: string = '';
   destroy$: Subject<boolean> = new Subject<boolean>();
 
-
   constructor(
-    private playerGuard: PlayerGuard,
-    private jwtHelper : JwtHelperService,
+    private authService: AuthService,
     private store: Store) { }
 
   ngOnInit(): void {
-    // authentication handling
-
     this.store.select(selectCurrentEvent).pipe(takeUntil(this.destroy$)).subscribe(currentEvent => {
+      console.log('currentEvent', currentEvent);
       this.yEvent = currentEvent;
     });
 
-  }
+    this.authService.loggedIn$.pipe(takeUntil(this.destroy$)).subscribe(l => {
+      this.userIsLoggedIn = l;
+    });
 
-  setHeaderDisplay() {
-    const token = localStorage.getItem("jwt");
-    if (token && !this.jwtHelper.isTokenExpired(token)) {
-      this.userIsLoggedIn = true;
-      this.userIsAdmin = this.playerGuard.checkRole("admin");
-    } else {
-      this.userIsLoggedIn = false;
-      this.userIsAdmin = false;
-    }
-    console.log(this.userIsLoggedIn);
+    this.authService.isAdmin$.pipe(takeUntil(this.destroy$)).subscribe(a => {
+      this.userIsAdmin = a;
+    });
   }
 
 

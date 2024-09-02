@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UntypedFormGroup, UntypedFormControl, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { DataService } from 'src/app/data.service';
 import { adminLogin } from 'src/app/data/data';
 import { AuthService } from 'src/app/service/auth.service';
@@ -16,17 +17,20 @@ export class AdminComponent {
     password: new UntypedFormControl()
   });
 
-  constructor(private dataService: DataService, private authService: AuthService) { }
+  constructor(private router: Router, private authService: AuthService) { }
 
   submitLogin(): void {
     if (this.loginForm.value.userId != '' && this.loginForm.value.password != '')
     {
       var loginSubmit: adminLogin = {
-        userName: this.loginForm.value.userId,
-        password: this.loginForm.value.password
+        userLogin: {
+          userName: this.loginForm.value.userId,
+          password: this.loginForm.value.password
+        }
       }
 
       this.authService.processLoginAdmin(loginSubmit);
+      this.router.navigate(["/home"]);
     }
   }
 

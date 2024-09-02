@@ -14,13 +14,14 @@ export class DataService {
   constructor(private httpClient: HttpClient) { }
 
   // login stuff
+  // need to embed in AdminLogin:{ userLogin fields }
   public sendAdminLogin(userLogin: adminLogin): Observable<bearerDto> {
-    var uri = this.REST_API_SERVER + '/api/eventstatus/login/admin';
+    var uri = this.REST_API_SERVER + '/api/login/admin';
     return this.httpClient.post<bearerDto>(uri, userLogin);
   }
 
   public sendTeamLogin(userLogin: teamLogin): Observable<bearerDto> {
-    var uri = this.REST_API_SERVER + '/api/eventstatus/login/team/' + encodeURIComponent(userLogin.yEvent)
+    var uri = this.REST_API_SERVER + '/api/login/team/' + encodeURIComponent(userLogin.yEvent)
               + '/' + encodeURIComponent(userLogin.teamGuid.toString()) + '';
     return this.httpClient.put<bearerDto>(uri, {});
   }
@@ -28,13 +29,13 @@ export class DataService {
   // team link stuff
 
   public createTeamLink(yevent: string, teamName: string): Observable<newTeamEntry> {
-    var uri = this.REST_API_SERVER + '/api/eventmanage/createTeamm/' + encodeURIComponent(yevent)
+    var uri = this.REST_API_SERVER + '/api/eventmanage/createTeam/' + encodeURIComponent(yevent)
               + '/' + encodeURIComponent(teamName) + '';
     return this.httpClient.put<newTeamEntry>(uri, {});
   }
 
   public moveTeamNumber(yevent: string, oldTeamNum: number, newTeamNum: number): Observable<apiResponse> {
-    var uri = this.REST_API_SERVER + '/api/eventmanage/createTeamm/' + encodeURIComponent(yevent)
+    var uri = this.REST_API_SERVER + '/api/eventmanage/createTeam/' + encodeURIComponent(yevent)
               + '/' + encodeURIComponent(oldTeamNum) + '/' + encodeURIComponent(newTeamNum) + '';
     return this.httpClient.put<apiResponse>(uri, {});
   }

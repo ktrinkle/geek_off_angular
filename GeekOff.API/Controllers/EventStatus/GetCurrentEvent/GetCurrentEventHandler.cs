@@ -1,30 +1,32 @@
+using Microsoft.AspNetCore.Http.HttpResults;
+
 namespace GeekOff.Handlers;
 
 public class GetCurrentEventHandler
 {
-    public class Request : IRequest<ApiResponse<StringReturn>>
+    public class Request : IRequest<string>
     {
 
     }
 
-    public class Handler(ContextGo contextGo) : IRequestHandler<Request, ApiResponse<StringReturn>>
+    public class Handler(ContextGo contextGo) : IRequestHandler<Request, string>
     {
         private readonly ContextGo _contextGo = contextGo;
 
-        public async Task<ApiResponse<StringReturn>> Handle(Request request, CancellationToken token)
+        public async Task<string> Handle(Request request, CancellationToken token)
         {
             var currentEvent = await _contextGo.EventMaster
                 .AsNoTracking()
                 .SingleOrDefaultAsync(e => e.SelEvent == true, cancellationToken: token);
 
-            var returnString = new StringReturn();
+            var returnString = string.Empty;
 
             if (currentEvent is not null)
             {
-                returnString.Message = currentEvent.Yevent;
+                returnString = currentEvent.Yevent;
             }
 
-            return ApiResponse<StringReturn>.Success(returnString);
+            return returnString;
         }
     }
 }

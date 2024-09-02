@@ -7,7 +7,12 @@
   <p><a routerLink="/round1/contestant">Start playing the game!</a></p>
 </div>
 
-<div *ngIf="userIsAdmin && userIsLoggedIn && yEvent.length > 0">
+<div>
+  {{userIsAdmin}}
+  Yevent: *{{yEvent}}*
+</div>
+
+<div *ngIf="userIsAdmin && userIsLoggedIn && yEvent != ''">
   <p>Event: {{yEvent}} - Admin functions:</p>
   <mat-grid-list cols='12' rowHeight='90px'>
     <mat-grid-tile colspan='6' rowspan='2'>

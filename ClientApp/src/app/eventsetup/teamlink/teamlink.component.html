@@ -1,2 +1,2 @@
 <qrcode (qrCodeURL)="onChangeURL($event)" [qrdata]="qrUrl.toString()" [width]="256" [errorCorrectionLevel]="'M'" [ariaLabel]="" [title]=""></qrcode>
-<a [href]="qrCodeDownloadLink" download="qrcode">Download</a>
+<a [href]="qrUrl" download="qrcode">Download</a>

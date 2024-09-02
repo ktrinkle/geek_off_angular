@@ -1,5 +1,5 @@
 import { Action, createReducer, on } from '@ngrx/store';
-import { eventMaster, introDto, round1QADto, round1QDisplay } from 'src/app/data/data';
+import { eventMaster } from 'src/app/data/data';
 import { allEventSuccess, currentEventSuccess } from './eventManage.actions';
 
 export const eventManageFeatureKey = 'eventManage';

@@ -7,15 +7,10 @@ public class EventStatusController(ILogger<EventStatusController> logger, IMedia
     private readonly ILogger<EventStatusController> _logger = logger;
     private readonly IMediator _mediator = mediator;
 
-    [Authorize]
     [HttpGet("currentEvent")]
     [SwaggerOperation(Summary = "Get the current event. Called as part of app.component.ts.")]
-    public async Task<ActionResult<string>> GetCurrentEventAsync([FromRoute] GetCurrentEventHandler.Request request) =>
-        await _mediator.Send(request) switch
-        {
-            { Status: QueryStatus.Success } result => Ok(result.Value),
-            _ => throw new InvalidOperationException()
-        };
+    public async Task<string> GetCurrentEventAsync([FromRoute] GetCurrentEventHandler.Request request) =>
+        await _mediator.Send(request);
 
     [Authorize(Roles = "admin, player")]
     [HttpGet("currentQuestion/{YEvent}")]

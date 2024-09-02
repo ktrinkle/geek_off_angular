@@ -1,12 +1,11 @@
 import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
-import { Subject } from 'rxjs';
-import { filter, takeUntil } from 'rxjs/operators';
-import { DataService } from './data.service';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { Location } from '@angular/common';
 import { Store } from '@ngrx/store';
-import { currentEvent } from './store/round1/round1.actions';
-import { selectCurrentEvent } from './store';
+import { currentEvent } from './store/eventManage/eventManage.actions';
+import { AuthService } from './service/auth.service';
+import { PlayerGuard } from './player.guard';
 
 
 type ProfileType = {
@@ -40,7 +39,8 @@ export class AppComponent implements OnInit, OnDestroy {
   destroy$: Subject<boolean> = new Subject<boolean>();
 
   constructor(
-    private dataService: DataService,
+    private authService: AuthService,
+    private playerGuard: PlayerGuard,
     private router: Router,
     private location: Location,
     private store: Store) {
@@ -56,19 +56,17 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     const currentPath = this.location.path();
-    this.setLoginDisplay();
+    this.authService.loggedIn$?.subscribe(l => {
+      this.loginDisplay = l;
+    });
   }
 
   async login() {
 
   }
 
-  logout() { // Add log out function here
-  }
-
-  setLoginDisplay() {
-    console.log('setLoginDisplay');
-      this.loginDisplay = false;
+  logout() {
+    this.authService.logout();
   }
 
   ngOnDestroy(): void {

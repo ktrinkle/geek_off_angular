@@ -39,7 +39,21 @@ builder.Services.AddSignalR();
 
 builder.Services.AddHttpClient();
 
-builder.Services.AddCors();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("LocalDev",
+        builder => builder.WithOrigins("http://localhost:4200", "http://localhost:5000")
+                   .AllowAnyHeader()
+                   .AllowAnyMethod());
+
+    options.AddPolicy("Hosted",
+        builder => builder.WithOrigins("https://geekoff.azurewebsites.net")
+                    .SetIsOriginAllowedToAllowWildcardSubdomains()
+                    .AllowAnyHeader()
+                    .AllowCredentials()
+                    .WithMethods("GET", "PUT", "POST", "DELETE", "OPTIONS")
+                    .SetPreflightMaxAge(TimeSpan.FromSeconds(3600)));
+});
 
 builder.Services.AddHealthChecks();
 
@@ -113,14 +127,6 @@ if (builder.Environment.IsDevelopment())
 
 var app = builder.Build();
 
-app.UseCors(builder => builder
-     .WithOrigins("http://localhost:44443", "https://localhost:44443")
-     .SetIsOriginAllowedToAllowWildcardSubdomains()
-     .AllowAnyHeader()
-     .AllowCredentials()
-     .WithMethods("GET", "PUT", "POST", "DELETE", "OPTIONS")
-     .SetPreflightMaxAge(TimeSpan.FromSeconds(3600)));
-
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
@@ -142,20 +148,15 @@ if (app.Environment.IsDevelopment())
 
     app.UseDeveloperExceptionPage();
 
-    app.UseCors(builder => builder.WithOrigins("http://localhost:4200")
-                                    .AllowAnyMethod()
-                                    .AllowCredentials()
-                                    .AllowAnyHeader());
+    app.UseCors("LocalDev");
 
-    app.UseCors(builder => builder.WithOrigins("http://localhost:5000")
-                        .AllowAnyMethod()
-                        .AllowCredentials()
-                        .AllowAnyHeader());
 }
 else
 {
     app.UseHsts();
     app.UseHttpsRedirection();
+
+    app.UseCors("Hosted");
 }
 
 app.UseRouting();
@@ -173,11 +174,6 @@ app.MapHealthChecks("/status");
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller}/{action=Index}/{id?}");
-
-app.UseCors(builder => builder.WithOrigins("https://geekoff.azurewebites.net")
-                    .AllowCredentials()
-                    .AllowAnyMethod()
-                    .AllowAnyHeader());
 
 app.MapFallbackToFile("index.html");
 

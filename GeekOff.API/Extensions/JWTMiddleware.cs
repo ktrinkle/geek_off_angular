@@ -34,9 +34,9 @@ public JwtMiddleware(RequestDelegate next, IOptions<AppSettings> appSettings)
         await _next(context);
     }
 
-    public async Task<JWTDto?> ValidateJwtTokenAsync(string token)
+    public async Task<JWTDto?> ValidateJwtTokenAsync(string? token)
     {
-        if (token == null)
+        if (string.IsNullOrEmpty(token))
         {
             return null;
         }
