@@ -46,7 +46,7 @@ public class Round2FeudController(ILogger<Round2FeudController> logger,
     [Authorize(Roles = "admin")]
     [HttpPost("teamanswer/text")]
     [SwaggerOperation(Summary = "Saves the team answer with points")]
-    public async Task<ActionResult<string>> SetRound2AnswerTextAsync([FromForm] RoundTwoAnswerTextHandler.Request request)
+    public async Task<ActionResult<string>> SetRound2AnswerTextAsync([FromBody] RoundTwoAnswerTextHandler.Request request)
     {
         var returnStatus = await _mediator.Send(request);
 

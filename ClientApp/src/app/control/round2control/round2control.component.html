@@ -104,8 +104,8 @@
             </mat-grid-tile>
         </mat-grid-list>
 
-        <div class="container" formArrayName="questions">
-            <div *ngFor="let question of getQuestions(newEventForm); let i = index" [formGroupName]="i">
+        <div class="container flexWrap" formArrayName="questions">
+            <div class="detailItem" *ngFor="let question of getQuestions(newEventForm); let i = index" [formGroupName]="i">
                     <mat-grid-list cols="12" rowHeight="30px" class="boxed question">
                         <div *ngIf="question.value.questionNum < 206 || showBonusQuestion">
                             <mat-grid-tile colspan="12"></mat-grid-tile>

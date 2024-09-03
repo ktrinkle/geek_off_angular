@@ -206,7 +206,7 @@ export class Round1ControlComponent implements OnInit, OnDestroy {
 
   goToRound2() {
     this.consolation.pause();
-    this.router.navigate(['/control/round2']);
+    this.router.navigate(['/control/round2feud']);
   }
 
   playThink(cue: number) {
