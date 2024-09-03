@@ -42,8 +42,9 @@ builder.Services.AddHttpClient();
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("LocalDev",
-        builder => builder.WithOrigins("http://localhost:4200", "http://localhost:5000")
+        builder => builder.WithOrigins("http://localhost:4200", "http://localhost:5000", "https://localhost:5001")
                    .AllowAnyHeader()
+                   .AllowCredentials()
                    .AllowAnyMethod());
 
     options.AddPolicy("Hosted",
@@ -134,7 +135,6 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 

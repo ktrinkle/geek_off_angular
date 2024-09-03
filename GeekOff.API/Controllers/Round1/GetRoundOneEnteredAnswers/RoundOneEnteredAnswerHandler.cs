@@ -23,10 +23,7 @@ public class RoundOneEnteredAnswersHandler
             var scoredAnswer = await _contextGo.Scoring.Where(s => s.RoundNum == 1 && s.Yevent == request.YEvent && s.QuestionNum == request.QuestionNum)
                                 .ToListAsync(cancellationToken: token);
 
-            if (submittedAnswer.Count == 0)
-            {
-                return ApiResponse<List<Round1EnteredAnswers>>.NotFound(returnDto);;
-            }
+            // early exit removed, we always want a success from this API.
 
             foreach (var answer in submittedAnswer)
             {

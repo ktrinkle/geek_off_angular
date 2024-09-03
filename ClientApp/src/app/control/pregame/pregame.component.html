@@ -1,6 +1,6 @@
 <h2>Geek Off Pregame Control</h2>
-<div class="content container">
-  <div id="buttonScreen" class="col-4 col-xs-12 col-s-12" fxFlex="30%" fxFlex.xs="100%" fxFlex.sm="100%" style="padding: 10px;">
+<div class="content container flexWrap">
+  <div id="buttonScreen" class="detailItem30">
     <h3>Control screens</h3>
     <form [formGroup]="pageForm">
         <label for="pageName">Select a screen:</label>
@@ -22,7 +22,7 @@
       <button id="moveToRound1" class="bigbtnredlabel" (click)="moveToRound1()">Move to Round 1</button>
     </div>
     </div>
-    <div id="infoScreen" class="col-8 col-xs-12 col-s-12" fxFlex="70%" fxFlex.xs="100%" fxFlex.sm="100%" style="padding: 10px;">
+    <div id="infoScreen" class="detailItem70">
       <h3>Update team information</h3>
       <form [formGroup]="fundForm">
         <label for="teamNumber">Team number:</label>

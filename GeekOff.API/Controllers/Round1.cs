@@ -99,7 +99,6 @@ public class Round1Controller(IHubContext<EventHub> eventHub, IMediator mediator
         => await _mediator.Send(request) switch
         {
             { Status: QueryStatus.Success } result => Ok(result.Value),
-            { Status: QueryStatus.NotFound } result => NotFound(result.Value),
             _ => throw new InvalidOperationException()
         };
 

@@ -1,8 +1,9 @@
 <div id="r1header">
     <p>Question {{currentQuestion}}: {{currentFilterQuestion.questionText}}</p>
 </div>
-<div class="content container" fxLayout="row wrap" fxLayoutGap="16px grid">
-    <div id="currentAnswer" class="col-6 col-s-12 col-xs-12" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%" style="padding: 10px;" [formGroup]="answerForm">
+<div class="content container">
+  <div class="flexWrap">
+    <div id="currentAnswer" class="detailItem" [formGroup]="answerForm">
         <h3>Round 1 - Current team answers</h3>
         <mat-table class="round1ControlScoreboard" [dataSource]="teamAnswers">
             <ng-container matColumnDef="teamButton">
@@ -34,7 +35,7 @@
         <button id="autoScore" (click)="autoScore()">Auto-Score</button> {{scoreResponse}}
         <div clear="both"></div>
     </div>
-    <div id="currentScoreboard" class="col-6 col-s-12 col-xs-12" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%" style="padding: 10px;">
+    <div id="currentScoreboard" class="detailItem">
         <h3>Round 1 Scoreboard</h3>
         <mat-table class="round1ControlScoreboard" [dataSource]="scoreboard">
             <ng-container matColumnDef="teamNum">
@@ -57,7 +58,7 @@
         </mat-table>
 
     </div>
-    <div id="controlCorner" class="col-12" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%" style="padding: 10px;">
+    <div id="controlCorner" class="detailItem100">
         <h3>Controls</h3>
         Current question status: {{selectedQuestion}} - {{statusText}}
         <div clear="all"></div>
@@ -93,4 +94,5 @@
         <button id="round2" class="buttondarkblue" (click)="goToRound2()">Go to round 2 control</button>
 
     </div>
+  </div>
 </div>

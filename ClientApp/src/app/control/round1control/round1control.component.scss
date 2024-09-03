@@ -87,3 +87,43 @@ button:hover.buttondarkblue {
   transition: all 0.4s ease 0s;
   cursor: pointer;
 }
+
+.flexWrap {
+  gap: 16px;
+  display: flex;
+  flex-flow: row wrap;
+  align-items: flex-start;
+  align-content: flex-start;
+}
+
+// desktop
+@media only screen and (min-width: 960px) {
+  .detailItem {
+    width: 48%;
+    margin: auto;
+    text-align: left;
+    vertical-align: top;
+    padding: 5px;
+  }
+
+  .detailItem100 {
+    width: 100%;
+    margin: auto;
+    text-align: left;
+    padding: 10px;
+  }
+}
+
+// small and xsmall
+@media only screen and (max-width: 959px) {
+  .flexWrap {
+    flex-direction: column;
+  }
+
+  .detailItem .detailItem100 {
+    width: 100%;
+    margin: auto;
+    text-align: left;
+    padding: 10px;
+  }
+}

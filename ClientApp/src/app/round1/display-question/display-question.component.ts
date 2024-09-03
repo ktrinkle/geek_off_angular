@@ -48,13 +48,13 @@ export class Round1DisplayQuestionComponent implements OnInit, OnDestroy {
     questionText: '',
     answers: [],
     correctAnswer: '',
-    answerType: -1,
+    answerType: '',
     mediaFile: '',
     mediaType: ''
   };
-  questionMatch: number = 1;
-  questionMulti: number = 0;
-  questionText: number = 2;
+  questionMatch: string = "Match";
+  questionMulti: string = "MultipleChoice";
+  questionText: string = "FreeText";
   destroy$: Subject<boolean> = new Subject<boolean>();
 
   // hack to force the text size smaller if the question is >110 chars
@@ -77,7 +77,7 @@ export class Round1DisplayQuestionComponent implements OnInit, OnDestroy {
 
     const connection = new signalR.HubConnectionBuilder()
       .configureLogging(signalR.LogLevel.Information)
-      .withUrl(environment.api_url + '/events')
+      .withUrl(environment.api_url + '/events', { withCredentials: false })
       .withAutomaticReconnect()
       .build();
 
@@ -128,7 +128,7 @@ export class Round1DisplayQuestionComponent implements OnInit, OnDestroy {
       if (currentQuestion[0].questionText.length > 100) {
         this.longText = 'longQuestion';
       }
-      if (this.currentQuestionDto.answerType == 1) {
+      if (this.currentQuestionDto.answerType === this.questionMatch) {
         this.matchString = 'x' + this.convertStringToAnswer(this.currentQuestionDto.correctAnswer);
       }
     }

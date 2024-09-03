@@ -83,7 +83,7 @@ export interface round1QDisplay {
   questionText: string,
   answers: round1AnswerDto[],
   correctAnswer: string,
-  answerType: number,
+  answerType: string,
   mediaFile: string,
   mediaType: string
 }

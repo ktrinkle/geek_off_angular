@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { JwtModule } from "@auth0/angular-jwt";
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -42,8 +42,8 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatButtonModule } from '@angular/material/button';
 import { PregameComponent } from './control/pregame/pregame.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { MatButtonToggle, MatButtonToggleModule } from '@angular/material/button-toggle';
-import { MatDialog, MatDialogContent, MatDialogModule } from '@angular/material/dialog';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 
@@ -97,7 +97,7 @@ export function tokenGetter() {
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,
-        allowedDomains: ["localhost", "geekoff.azurewebsites.net"]
+        allowedDomains: ["localhost:5000", "localhost:4200", "geekoff.azurewebsites.net"]
       },
     }),
     HttpClientModule,

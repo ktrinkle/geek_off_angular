@@ -43,7 +43,7 @@ export class Round2scoreboardComponent implements OnInit, OnDestroy {
 
     const connection = new signalR.HubConnectionBuilder()
       .configureLogging(signalR.LogLevel.Information)
-      .withUrl(`${environment.api_url}/events`)
+      .withUrl(`${environment.api_url}/events`, { withCredentials: false })
       .withAutomaticReconnect()
       .build();
 

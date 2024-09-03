@@ -6,8 +6,8 @@
     </div>
     <div class="mediaBox" *ngIf="showMedia"></div>
     <div class="answerBox" *ngIf="answerVisible && (currentQuestionDto.answerType == questionMulti)" [@fadeIn]>
-        <div class="content" fxLayout="row wrap" fxLayoutGap="16px grid">
-            <div *ngFor="let question of currentQuestionDto.answers" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%" style="padding: 10px;">
+        <div class="content flexWrap"> <!--fxLayout="row wrap" fxLayoutGap="16px grid"-->
+            <div *ngFor="let question of currentQuestionDto.answers" class="detailItem"><!-- fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%"-->
                 <span *ngIf="!answerShown" class="answer">{{question.answer}}</span>
                 <span *ngIf="answerShown && question.answer != currentQuestionDto.correctAnswer" class="wrongAnswer" [@fadeIn]>{{question.answer}}</span>
                 <span class="correctAnswer" *ngIf="answerShown && question.answer == currentQuestionDto.correctAnswer" [@fadeIn] class="answer">
@@ -20,8 +20,8 @@
 
 
     <div class="answerBox" *ngIf="answerVisible && (currentQuestionDto.answerType == questionMatch)" [@fadeIn]>
-        <div class="content" fxLayout="row wrap" fxLayoutGap="16px grid">
-            <div *ngFor="let question of currentQuestionDto.answers" class="answer" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%" style="padding: 10px;">
+        <div class="content flexWrap"> <!--fxLayout="row wrap" fxLayoutGap="16px grid"-->
+            <div *ngFor="let question of currentQuestionDto.answers" class="detailItem answer"> <!--fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%" style="padding: 10px;"-->
                 <span class="correctAnswer" *ngIf="answerShown" [@fadeIn]>{{matchString.charAt(question.answerId)}}: </span> {{question.answerId}}. {{question.answer}}
             </div>
         </div>
