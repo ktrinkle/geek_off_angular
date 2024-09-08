@@ -21,7 +21,7 @@ public class EventManageController(ILogger<EventManageController> logger,
     [Authorize(Roles = "admin")]
     [HttpPost("addEvent")]
     [SwaggerOperation(Summary = "Add a new event.")]
-    public async Task<IActionResult> AddEventAsync([FromForm] AddEventHandler.Request request) =>
+    public async Task<IActionResult> AddEventAsync([FromBody] AddEventHandler.Request request) =>
         await _mediator.Send(request) switch
         {
             { Status: QueryStatus.Success } result => Ok(result.Value),

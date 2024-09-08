@@ -6,7 +6,7 @@ import { UntypedFormGroup, UntypedFormControl, Validators, UntypedFormBuilder, U
 import * as signalR from '@microsoft/signalr';
 import { environment } from 'src/environments/environment';
 import { MatDialog } from '@angular/material/dialog';
-import { Subject } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { selectCurrentEvent } from 'src/app/store';
 
@@ -44,6 +44,10 @@ export class Round3controlComponent implements OnInit, OnDestroy {
   public scoreboard: round23Scores[] = [];
   public teamList: introDto[] = [];
   public currentDisplayId: number = 0;
+
+  private scoreboardSubject: BehaviorSubject<round23Scores[]> = new BehaviorSubject<round23Scores[]>([]);
+  private scoreboard$: Observable<round23Scores[]>;
+
   destroy$: Subject<boolean> = new Subject<boolean>();
 
   finalizeState: string = 'Finalize Round';
@@ -55,7 +59,9 @@ export class Round3controlComponent implements OnInit, OnDestroy {
   ]
 
   constructor(private store: Store, private _dataService: DataService,
-    private formBuilder: UntypedFormBuilder, public dialog: MatDialog) { }
+    private formBuilder: UntypedFormBuilder, public dialog: MatDialog) {
+      this.scoreboard$ = this.scoreboardSubject.asObservable();
+    }
 
   ngOnInit(): void {
 
@@ -84,6 +90,7 @@ export class Round3controlComponent implements OnInit, OnDestroy {
     });
 
     connection.on("round3ScoreUpdate", (data: any) => {
+      console.log('scoreUpdate');
       this.updateScoreboard();
     })
 
@@ -144,6 +151,7 @@ export class Round3controlComponent implements OnInit, OnDestroy {
   }
 
   updateScoreboard() {
+    // not in the store, this needs to be fixed.
     this._dataService.getRound3Scores(this.yEvent).subscribe(a => {
       this.scoreboard = a;
     });

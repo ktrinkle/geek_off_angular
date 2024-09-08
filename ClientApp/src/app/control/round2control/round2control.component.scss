@@ -28,8 +28,9 @@ mat-grid-list.top-row {
 }
 
 mat-grid-list.question {
-    width: 50vw;
-    height: 100vw;
+    // width: 50vw;
+    height: fit-content;
+    overflow: visible;
 }
 
 div.scoreboard {
@@ -80,7 +81,7 @@ button:hover {
 }
 
 div.container {
-    vertical-align: middle;
+    vertical-align: top;
     min-height: 75px;
     padding: 10px;
     mat-row,
@@ -125,8 +126,15 @@ div.container {
     color: white !important;
 }
 
+.formControlDiv {
+  vertical-align: top;
+  min-height: 75px;
+  max-height: fit-content;
+  padding: 10px;
+}
+
 .flexWrap {
-  gap: 16px;
+  gap: 0px;
   display: flex;
   flex-flow: row wrap;
   align-items: flex-start;
@@ -136,11 +144,10 @@ div.container {
 // desktop
 @media only screen and (min-width: 960px) {
   .detailItem {
-    width: 20% !important;
-    margin: auto;
+    width: 19% !important;
     text-align: left;
     vertical-align: top;
-    padding: 5px;
+    padding: 1px;
   }
 }
 
@@ -152,8 +159,8 @@ div.container {
 
   .detailItem .detailItem100 {
     width: 100%;
-    margin: auto;
+    vertical-align: top;
     text-align: left;
-    padding: 10px;
+    padding: 1px;
   }
 }

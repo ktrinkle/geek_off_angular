@@ -56,7 +56,7 @@ public class Round3Controller(ILogger<Round3Controller> logger,
     [Authorize(Roles = "admin")]
     [HttpPost("teamanswer")]
     [SwaggerOperation(Summary = "Saves the team answer with points")]
-    public async Task<ActionResult<string>> SetRound3AnswerAsync([FromForm] RoundThreeTeamAnswerHandler.Request request)
+    public async Task<ActionResult<string>> SetRound3AnswerAsync([FromBody] RoundThreeTeamAnswerHandler.Request request)
     {
         await _eventHub.Clients.All.SendAsync("round3ScoreUpdate");
 

@@ -1,8 +1,8 @@
 <div id="jeopardy">
     <div id="dynscore">
         <div style="height: 45vh"></div>
-        <div style="height: 50vh" class="container" fxLayout="row wrap" fxLayoutGap="16px grid">
-            <div class="col-4" *ngFor="let score of scores">
+        <div style="height: 50vh" class="container flexWrap"> <!--fxLayout="row wrap" fxLayoutGap="16px grid"-->
+            <div class="detailItem33" *ngFor="let score of scores">
                 <div class="score_j score_{{ score.color }}">
                     {{ score.teamScore }}
                 </div>

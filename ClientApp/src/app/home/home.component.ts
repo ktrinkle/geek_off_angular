@@ -4,6 +4,7 @@ import { Store } from '@ngrx/store';
 import { selectCurrentEvent } from '../store';
 import { Subject } from 'rxjs';
 import { AuthService } from '../service/auth.service';
+import { currentEvent } from '../store/eventManage/eventManage.actions';
 
 
 @Component({

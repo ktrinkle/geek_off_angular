@@ -3,7 +3,6 @@ import { Router, NavigationEnd } from '@angular/router';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { Location } from '@angular/common';
 import { Store } from '@ngrx/store';
-// import { currentEvent } from './store/round1/round1.actions';
 import { currentEvent } from './store/eventManage/eventManage.actions';
 import { AuthService } from './service/auth.service';
 import { PlayerGuard } from './player.guard';
@@ -32,6 +31,7 @@ export class AppComponent implements OnInit, OnDestroy {
     '/control/pregame',
     '/control/round2feud',
     '/control/round1',
+    '/control/round3',
     '/home',
     '/',
   ]
@@ -59,10 +59,6 @@ export class AppComponent implements OnInit, OnDestroy {
     this.authService.loggedIn$?.subscribe(l => {
       this.loginDisplay = l;
     });
-  }
-
-  async login() {
-
   }
 
   logout() {

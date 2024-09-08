@@ -2,17 +2,17 @@
 <div id="round3Control" class="container flexWrap">
   <div class="detailItem60">
     <form [formGroup]="round3Form" (ngSubmit)="saveUserAnswer(round3Form)">
-      <div class="flexWrap">
-        <div class="detail20" *ngFor="let question of round3Questions">
+      <div class="container flexWrap">
+        <div class="detailItem15" *ngFor="let question of round3Questions">
           <input type="radio" name="questionNum" id="{{ question.questionNum }}" value="{{ question.questionNum }}"
             formControlName="questionNum" class="bigbtnblue" (click)="getScore(question.questionNum)" />
-          <label for="{{ question.questionNum }}" class="bigbtnblue bigbtnbluelabel">{{ question.score }}</label>
+          <label for="{{ question.questionNum }}" class="bigbtnbluelabel">{{ question.score }}</label>
         </div>
         <div class="clear: all;">
         </div>
         <hr width="90%">
-        <div formArrayName="teams">
-          <div class="teamBox detail25" *ngFor="let team of getTeamsFromForm(round3Form); let i = index">
+        <div formArrayName="teams" class="flexWrap container">
+          <div class="teamBox detailItem25" *ngFor="let team of getTeamsFromForm(round3Form); let i = index">
             <div [formGroupName]="i">
               <input type="hidden" id="teamNum" name="teamNum" formControlName="teamNum" value="{{team.value.teamNum}}">
               <p>{{ teamList | displayTeamInfo: team.value.teamNum }}</p>

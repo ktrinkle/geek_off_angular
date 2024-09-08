@@ -71,6 +71,8 @@ export class Round2controlComponent implements OnInit, OnDestroy {
 
   finalizeState: string = 'Finalize Round';
 
+  public formQuestionValues: any;
+
   constructor(private store: Store, private _dataService: DataService,
     private formBuilder: UntypedFormBuilder, public dialog: MatDialog) { }
 
@@ -141,7 +143,7 @@ export class Round2controlComponent implements OnInit, OnDestroy {
         questions: qArray,
       });
 
-      console.log(this.newEventForm);
+      this.formQuestionValues = this.getQuestions(this.newEventForm);
     });
   }
 
@@ -167,8 +169,6 @@ export class Round2controlComponent implements OnInit, OnDestroy {
       answer: questionGroup.get('answer').value,
       score: questionGroup.get('score').value
     };
-
-    console.log(submitAnswer);
 
     this._dataService.sendRound2FeudAnswerText(submitAnswer).subscribe((data: string) => {
       this.apiResponse = data;
