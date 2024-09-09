@@ -6,9 +6,10 @@ import { UntypedFormGroup, UntypedFormControl, Validators, UntypedFormBuilder, U
 import * as signalR from '@microsoft/signalr';
 import { environment } from 'src/environments/environment';
 import { MatDialog } from '@angular/material/dialog';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { selectCurrentEvent } from 'src/app/store';
+import { selectCurrentEvent, selectRound3Scores } from 'src/app/store';
+import { round3Score } from 'src/app/store/round3/round3.actions';
 
 @Pipe({ name: 'displayTeamInfo' })
 export class DisplayTeamInfoPipe implements PipeTransform {
@@ -45,9 +46,6 @@ export class Round3controlComponent implements OnInit, OnDestroy {
   public teamList: introDto[] = [];
   public currentDisplayId: number = 0;
 
-  private scoreboardSubject: BehaviorSubject<round23Scores[]> = new BehaviorSubject<round23Scores[]>([]);
-  private scoreboard$: Observable<round23Scores[]>;
-
   destroy$: Subject<boolean> = new Subject<boolean>();
 
   finalizeState: string = 'Finalize Round';
@@ -59,9 +57,7 @@ export class Round3controlComponent implements OnInit, OnDestroy {
   ]
 
   constructor(private store: Store, private _dataService: DataService,
-    private formBuilder: UntypedFormBuilder, public dialog: MatDialog) {
-      this.scoreboard$ = this.scoreboardSubject.asObservable();
-    }
+    private formBuilder: UntypedFormBuilder, public dialog: MatDialog) { }
 
   ngOnInit(): void {
 
@@ -70,6 +66,11 @@ export class Round3controlComponent implements OnInit, OnDestroy {
       if (this.yEvent && this.yEvent.length > 0) {
         this._dataService.getAllRound3Teams(this.yEvent).subscribe(t => {
           this.teamList = t;
+
+          console.log('calling store dispatch', this.yEvent);
+          this.store.dispatch(round3Score({ yEvent: this.yEvent }));
+
+          console.log('calling getround3questions');
           this.getRound3Questions(this.yEvent);
         })
         this.updateScoreboard();
@@ -90,7 +91,6 @@ export class Round3controlComponent implements OnInit, OnDestroy {
     });
 
     connection.on("round3ScoreUpdate", (data: any) => {
-      console.log('scoreUpdate');
       this.updateScoreboard();
     })
 
@@ -151,9 +151,8 @@ export class Round3controlComponent implements OnInit, OnDestroy {
   }
 
   updateScoreboard() {
-    // not in the store, this needs to be fixed.
-    this._dataService.getRound3Scores(this.yEvent).subscribe(a => {
-      this.scoreboard = a;
+    this.store.select(selectRound3Scores).pipe(takeUntil(this.destroy$)).subscribe((data: round23Scores[]) => {
+      this.scoreboard = data;
     });
   }
 
@@ -178,16 +177,24 @@ export class Round3controlComponent implements OnInit, OnDestroy {
       };
       submitArray.push(teamScore);
     }
+    const questionNum = form.get('questionNum')?.value as number;
 
     console.log(submitArray);
 
     this._dataService.updateRound3Scores(submitArray).subscribe((data: string) => {
       this.apiResponse = data;
+      this.store.dispatch(round3Score({ yEvent: this.yEvent}));
+      this.updateRemoteScoreboard();
     });
 
     this.resetSelections(form);
     form.get('questionNum')?.reset();
 
+    const idx = this.round3Questions.findIndex(q => questionNum == q.questionNum);
+    console.log('question search', idx);
+    if (idx >= -1) {
+      this.round3Questions[idx].disabled = true;
+    }
   }
 
   finalizeRound() {

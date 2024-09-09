@@ -29,6 +29,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
 import { EffectsModule } from '@ngrx/effects';
 import { EventManageEffects } from './store/eventManage/eventManage.effects';
+import { Round3Effects } from './store/round3/round3.effects';
 import { Round2Effects } from './store/round2/round2.effects';
 import { Round1Effects } from './store/round1/round1.effects';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -103,7 +104,7 @@ export function tokenGetter() {
     HttpClientModule,
     StoreModule.forRoot(reducers, { metaReducers }),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
-    EffectsModule.forRoot([EventManageEffects, Round2Effects, Round1Effects]),
+    EffectsModule.forRoot([EventManageEffects, Round3Effects, Round2Effects, Round1Effects]),
     ReactiveFormsModule,
     MatToolbarModule,
     MatTableModule,

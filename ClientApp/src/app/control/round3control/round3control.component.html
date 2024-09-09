@@ -5,7 +5,8 @@
       <div class="container flexWrap">
         <div class="detailItem15" *ngFor="let question of round3Questions">
           <input type="radio" name="questionNum" id="{{ question.questionNum }}" value="{{ question.questionNum }}"
-            formControlName="questionNum" class="bigbtnblue" (click)="getScore(question.questionNum)" />
+            formControlName="questionNum" class="bigbtnblue"
+            (click)="getScore(question.questionNum)" />
           <label for="{{ question.questionNum }}" class="bigbtnbluelabel">{{ question.score }}</label>
         </div>
         <div class="clear: all;">

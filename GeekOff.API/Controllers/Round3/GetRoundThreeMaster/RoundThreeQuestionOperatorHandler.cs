@@ -24,7 +24,8 @@ public class RoundThreeQuestionOperatorHandler
                                         {
                                             QuestionNum = s.QuestionNum,
                                             SortOrder = (decimal)s.QuestionNum % 10,
-                                            Score = s.Ptsposs
+                                            Score = s.Ptsposs,
+                                            Disabled = false,
                                         }).ToListAsync(token);
 
             if (round3Questions.Count == 0)

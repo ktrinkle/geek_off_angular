@@ -34,7 +34,6 @@
     "isomorphic-fetch": "^3.0.0",
     "ngx-countdown": "^16.0.0",
     "node-fetch": "^3.2.10",
-    "oidc-client": "^1.11.5",
     "rxjs": "^6.5.3",
     "tslib": "^2.0.0",
     "typescript-guid": "^1.0.3",

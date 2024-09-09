@@ -50,7 +50,8 @@ export class Round1DisplayQuestionComponent implements OnInit, OnDestroy {
     correctAnswer: '',
     answerType: '',
     mediaFile: '',
-    mediaType: ''
+    mediaType: '',
+    enabled: true
   };
   questionMatch: string = "Match";
   questionMulti: string = "MultipleChoice";

@@ -3,7 +3,6 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, exhaustMap, map, switchMap } from 'rxjs/operators';
 import { currentEvent, currentEventSuccess, allEvent, allEventSuccess } from './eventManage.actions';
 import { DataService } from 'src/app/data.service';
-import { EMPTY } from 'rxjs';
 
 @Injectable()
 export class EventManageEffects {

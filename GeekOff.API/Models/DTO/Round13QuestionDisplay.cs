@@ -9,5 +9,6 @@ public class Round13QuestionDisplay
     public QuestionAnswerType AnswerType { get; set; }
     public string? MediaFile  { get; set; }
     public string? MediaType { get; set; }
+    public bool Enabled { get; set; } = true;
 }
 

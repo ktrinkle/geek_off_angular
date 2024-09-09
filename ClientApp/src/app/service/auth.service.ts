@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { adminLogin, simpleUser, teamLogin } from '../data/data';
 import { DataService } from '../data.service';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +20,9 @@ export class AuthService {
   private isAdmin: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public isAdmin$: Observable<boolean>;
 
-  constructor(private dataService:DataService)
+  private expirationTimer: any;
+
+  constructor(private dataService:DataService, private jwtHelper: JwtHelperService)
   {
     this.currentUserSubject = new BehaviorSubject<simpleUser>({
       teamNum: localStorage.getItem('teamNum') === '0' ? undefined : Number(localStorage.getItem("teamNum")),
@@ -65,6 +68,7 @@ export class AuthService {
             rtn = true;
             this.loggedIn.next(true);
             this.isAdmin.next(true);
+            this.setExpirationTimer();
           }
         })
     }
@@ -86,6 +90,7 @@ export class AuthService {
             rtn = true;
             this.loggedIn.next(true);
             this.isAdmin.next(false);
+            this.setExpirationTimer();
           }
         })
     }
@@ -99,6 +104,18 @@ export class AuthService {
     localStorage.removeItem('teamName');
     this.loggedIn.next(false);
     this.isAdmin.next(false);
+  }
+
+  private setExpirationTimer() {
+    this.expirationTimer = setInterval(() => { this.checkExpiration(); }, 14400000);
+
+  }
+
+  private checkExpiration(): void {
+    const token = localStorage.getItem('jwt');
+    if (this.jwtHelper.isTokenExpired(token)) {
+      this.logout();
+    }
   }
 
 }

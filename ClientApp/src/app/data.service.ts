@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
 import { environment } from './../environments/environment';
-import { newTeamEntry, round2SubmitAnswer, round3AnswerDto, round3QuestionDto, eventMaster, apiResponse, adminLogin, bearerDto, teamLogin } from './data/data';
+import { newTeamEntry, round2SubmitAnswer, round3AnswerDto, round3QuestionDto, eventMaster, apiResponse, adminLogin, bearerDto, teamLogin, round1QDisplay } from './data/data';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -255,12 +255,18 @@ export class DataService {
     return this.httpClient.get(uri);
   }
 
-  public getAllRound3Teams(yevent: string): Observable<any> {
-    var uri = this.REST_API_SERVER + '/api/round3/allTeams/' + encodeURIComponent(yevent) + '';
+  public getRound3BigDisplay(yEvent: string): Observable<round1QDisplay> {
+    var uri = this.REST_API_SERVER + '/api/round3/bigDisplay/' + encodeURIComponent(yEvent) + '';
+    return this.httpClient.get<round1QDisplay>(uri);
+  }
+
+  public getAllRound3Teams(yEvent: string): Observable<any> {
+    var uri = this.REST_API_SERVER + '/api/round3/allTeams/' + encodeURIComponent(yEvent) + '';
     return this.httpClient.get(uri);
   }
 
   public getRound3Scores(yEvent: string): Observable<any> {
+    console.log('getround3scores called');
     var uri = this.REST_API_SERVER + '/api/round3/scoreboard/' + encodeURIComponent(yEvent);
     return this.httpClient.get(uri);
   }

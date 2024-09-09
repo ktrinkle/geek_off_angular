@@ -10,6 +10,7 @@ namespace GeekOff.Models
         public int QuestionNum { get; set; }
         public decimal SortOrder { get; set; }
         public int? Score { get; set; }
+        public bool Disabled { get; set; } = false;
     }
 
 }

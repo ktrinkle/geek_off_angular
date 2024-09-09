@@ -85,7 +85,8 @@ export interface round1QDisplay {
   correctAnswer: string,
   answerType: string,
   mediaFile: string,
-  mediaType: string
+  mediaType: string,
+  enabled: boolean
 }
 
 export interface currentQuestionDto {
@@ -111,7 +112,8 @@ export interface round1EnteredAnswers {
 export interface round3QuestionDto {
   questionNum: number,
   sortOrder: number,
-  score: number
+  score: number,
+  disabled: boolean
 }
 
 export interface round3AnswerDto {
