@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Injectable } from '@angular/core';
 import { adminLogin, simpleUser, teamLogin } from '../data/data';
 import { DataService } from '../data.service';
@@ -11,7 +12,7 @@ export class AuthService {
 
   private currentUserSubject : BehaviorSubject<simpleUser>;
   private currentUser : Observable<simpleUser>;
-  private currentTokenSubject: BehaviorSubject<string>;
+  private currentTokenSubject: BehaviorSubject<any>;
   private currentToken: Observable<string>;
 
   private loggedIn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
@@ -33,7 +34,7 @@ export class AuthService {
     this.loggedIn$ = this.loggedIn.asObservable();
     this.isAdmin$ = this.isAdmin.asObservable();
 
-    this.currentTokenSubject = new BehaviorSubject<any>(sessionStorage.getItem('jwt'));
+    this.currentTokenSubject = new BehaviorSubject(sessionStorage.getItem('jwt'));
     this.currentToken = this.currentTokenSubject.asObservable();
 
     if(localStorage.getItem('teamNum') != null) {
@@ -55,7 +56,7 @@ export class AuthService {
 
   public processLoginAdmin(loginDto: adminLogin): boolean
   {
-    var rtn: boolean = false;
+    let rtn = false;
     if (loginDto.userLogin.userName != '' && loginDto.userLogin.password != '')
     {
       this.dataService.sendAdminLogin(loginDto).subscribe(al =>
@@ -77,7 +78,7 @@ export class AuthService {
 
   public processLoginTeam(loginDto: teamLogin): boolean
   {
-    var rtn: boolean = false;
+    let rtn = false;
     if (loginDto.yEvent != '' && loginDto.teamGuid !== null)
     {
       this.dataService.sendTeamLogin(loginDto).subscribe(al =>

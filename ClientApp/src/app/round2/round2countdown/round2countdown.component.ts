@@ -10,10 +10,8 @@ import { environment } from 'src/environments/environment';
 })
 export class Round2countdownComponent implements OnInit {
 
-  timeData: number = 0;
+  timeData = 0;
   config: CountdownConfig = {};
-
-  constructor() { }
 
   ngOnInit(): void {
     this.config = {
@@ -39,7 +37,7 @@ export class Round2countdownComponent implements OnInit {
       this.startCountdown(seconds);
     });
 
-    connection.on("stopCountdown", (data: any) => {
+    connection.on("stopCountdown", () => {
       this.stopCountdown();
     });
 
@@ -72,7 +70,7 @@ export class Round2countdownComponent implements OnInit {
     };
   }
 
-  handleEvent(event: any){
+  handleEvent(event: unknown){
     console.log(event);
   }
 

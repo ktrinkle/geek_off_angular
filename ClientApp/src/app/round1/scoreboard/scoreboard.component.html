@@ -5,18 +5,18 @@
 
     <table>
         <tr>
-            <th *ngFor="let header of headers;let h=index" [ngClass]="{'teamname': h == 1,
-            'bonus': h == (headers.length - 2),
+            <th *ngFor="let header of headers;let h=index" [ngClass]="{'teamname': h === 1,
+            'bonus': h === (headers.length - 2),
             'score': h > 1 && h < (headers.length-2),
-            'teamnumber': h == 0,
-            'ttl': h == headers.length-1}">{{header}}</th>
+            'teamnumber': h === 0,
+            'ttl': h === headers.length-1}">{{header}}</th>
         </tr>
         <tr *ngFor="let team of teamData;">
-            <td *ngFor="let data of team;let i = index" [ngClass]="{'teamname': i == 1,
-              'bonus': i == (team.length - 2),
+            <td *ngFor="let data of team;let i = index" [ngClass]="{'teamname': i === 1,
+              'bonus': i === (team.length - 2),
               'score': i > 1 && i < (team.length-2),
-              'teamnumber': i == 0,
-              'ttl': i == team.length-1}">{{data}}</td>
+              'teamnumber': i === 0,
+              'ttl': i === team.length-1}">{{data}}</td>
         </tr>
     </table>
 

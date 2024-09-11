@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, exhaustMap, map, switchMap } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 import { currentEvent, currentEventSuccess, allEvent, allEventSuccess } from './eventManage.actions';
 import { DataService } from 'src/app/data.service';
 
@@ -24,7 +24,7 @@ export class EventManageEffects {
 
   getAllEvents$ = createEffect(() => this.actions$.pipe(
     ofType(allEvent),
-    switchMap(payload =>
+    switchMap(() =>
       this.dataService.getAllEvents().pipe(map(eventList =>
         allEventSuccess({ eventList: eventList }) // todo: add catchError
       )))));

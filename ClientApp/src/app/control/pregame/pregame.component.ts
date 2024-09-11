@@ -16,10 +16,10 @@ import { selectCurrentEvent, selectRound1Teams } from 'src/app/store';
 })
 export class PregameComponent implements OnInit, OnDestroy {
 
-  currentPage: string = '1';
-  currentPageName: string = 'Intro page 1';
-  teamList: any = [];
-  seatBelt: boolean = false;
+  currentPage = '1';
+  currentPageName = 'Intro page 1';
+  teamList: any[] = [];
+  seatBelt = false;
   yEvent = '';
   audio = new Audio();
   seatBeltSound = new Audio();
@@ -43,7 +43,7 @@ export class PregameComponent implements OnInit, OnDestroy {
     dollarAmount: new UntypedFormControl('', Validators.pattern('[0-9].'))
   });
 
-  fundFormStatus: string = '';
+  fundFormStatus = '';
 
   destroy$: Subject<boolean> = new Subject<boolean>();
 
@@ -78,7 +78,9 @@ export class PregameComponent implements OnInit, OnDestroy {
     });
 
     // we only want to flip automatically if we have to
-    connection.on("round1ShowAnswerChoices", (data: any) => { });
+    connection.on("round1ShowAnswerChoices", () => {
+      console.log('showanswer');
+    });
 
   }
 
@@ -102,13 +104,13 @@ export class PregameComponent implements OnInit, OnDestroy {
   }
 
   moveToRound1() {
-    this.dataService.changeRound1QuestionStatus(this.yEvent, 1, 0).subscribe(_ => {});
+    this.dataService.changeRound1QuestionStatus(this.yEvent, 1, 0).subscribe();
     this.router.navigate(['/control/round1']);
   }
 
   updateDollarRaised() {
-    var teamNum = this.fundForm.value.teamNumber;
-    var dollarAmount = this.fundForm.value.dollarAmount;
+    const teamNum = this.fundForm.value.teamNumber;
+    const dollarAmount = this.fundForm.value.dollarAmount;
     this.dataService.updateDollarAmount(this.yEvent, teamNum, dollarAmount).subscribe(data => {
       this.fundFormStatus = data;
     });

@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, ElementRef, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { trigger, state, style, animate, transition } from '@angular/animations';
-import { introDto, currentQuestionDto } from '../../data/data';
+import { introDto } from '../../data/data';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { MatIconRegistry } from '@angular/material/icon';
@@ -30,10 +30,10 @@ export class Round1IntroComponent implements OnInit, OnDestroy {
 
   @ViewChild('introVideo', { static: true }) introVideo: ElementRef | undefined;
 
-  currentScreen: string = "";
-  currentItem: number = 0;
-  seatBelt: boolean = false;
-  public yEvent: string = '';
+  currentScreen = "";
+  currentItem = 0;
+  seatBelt = false;
+  public yEvent = '';
   public teamMasterList: introDto[] = [];
   destroy$: Subject<boolean> = new Subject<boolean>();
 
@@ -85,28 +85,29 @@ export class Round1IntroComponent implements OnInit, OnDestroy {
       return console.error(err.toString());
     });
 
-    connection.on("round1intro", (data: any) => {
+    connection.on("round1intro", (data) => {
       this.changePage(data);
     });
 
-    connection.on("introSeatbelt", (data: any) => {
+    connection.on("introSeatbelt", () => {
       this.changeSeatbelt;
     })
 
-    connection.on("round1question", (data: any) => {
-      this.goToQuestions(data);
+    connection.on("round1question", () => {
+      this.goToQuestions();
     });
 
-    connection.on("round1Animate", (data: any) => {
+    connection.on("round1Animate", () => {
       this.changeText();
     });
 
-    connection.on("round1UpdateContestant", (data: currentQuestionDto) => {
-      this.goToQuestions(data.questionNum);
+    connection.on("round1UpdateContestant", () => {
+      this.goToQuestions();
     });
 
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   changePage(page: any): void {
     this.currentItem = 0;
     this.currentScreen = page;
@@ -117,7 +118,7 @@ export class Round1IntroComponent implements OnInit, OnDestroy {
     this.introVideo?.nativeElement.play();
   }
 
-  goToQuestions(question: number): void {
+  goToQuestions(): void {
     console.log('Going to round 1 questions');
     this.router.navigate(['/round1/question/1']);
   }

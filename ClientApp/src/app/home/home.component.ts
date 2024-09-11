@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { filter, takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import { selectCurrentEvent } from '../store';
 import { Subject } from 'rxjs';
 import { AuthService } from '../service/auth.service';
-import { currentEvent } from '../store/eventManage/eventManage.actions';
 
 
 @Component({
@@ -13,9 +12,9 @@ import { currentEvent } from '../store/eventManage/eventManage.actions';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-  userIsLoggedIn: boolean = false;
-  userIsAdmin: boolean = false;
-  public yEvent: string = '';
+  userIsLoggedIn = false;
+  userIsAdmin = false;
+  public yEvent = '';
   destroy$: Subject<boolean> = new Subject<boolean>();
 
   constructor(

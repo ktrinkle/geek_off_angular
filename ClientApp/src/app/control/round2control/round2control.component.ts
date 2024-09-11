@@ -25,22 +25,22 @@ export class Round2controlComponent implements OnInit, OnDestroy {
     playerNum: new UntypedFormControl('', [Validators.pattern('1|2')]),
     questions: new UntypedFormArray([]),
   });
-  public apiResponse: string = '';
-  public showBonusQuestion: boolean = false;
+  public apiResponse = '';
+  public showBonusQuestion = false;
   public scoreboard: round23Scores[] = [];
-  public currentDisplayId: number = 0;
+  public currentDisplayId = 0;
   public firstPlayerAnswers: round2Answers[] = [];
   buzzer = new Audio();
   dings = new Audio();
   consolation = new Audio('https://geekoff2021static.blob.core.windows.net/snd/r2_consolation.m4a');
   destroy$: Subject<boolean> = new Subject<boolean>();
-  countdownValue: number = 0;   // Countdown timer duration.
+  countdownValue = 0;   // Countdown timer duration.
 
   public pickAnimateForm: UntypedFormGroup = new UntypedFormGroup({
     currentDisplayId: new UntypedFormControl(this.currentDisplayId)
   })
 
-  displayList: any[] = [
+  displayList: { key: number, value: string }[] = [
     { key: 0, value: 'Hide all' },
     { key: 1, value: 'Player 1 Answer 1' },
     { key: 2, value: 'Player 1 Score 1' },
@@ -69,7 +69,7 @@ export class Round2controlComponent implements OnInit, OnDestroy {
     2
   ];
 
-  finalizeState: string = 'Finalize Round';
+  finalizeState = 'Finalize Round';
 
   public formQuestionValues: any;
 
@@ -105,17 +105,21 @@ export class Round2controlComponent implements OnInit, OnDestroy {
       return console.error(err.toString());
     });
 
-    connection.on("round2ScoreUpdate", (data: any) => {
+    connection.on("round2ScoreUpdate", () => {
       this.updateScoreboard();
     })
 
-    connection.on("round2ChangeTeam", (data: any) => {
+    connection.on("round2ChangeTeam", (data) => {
       console.log(data);
     })
 
-    connection.on("round2Answer", (data: any) => { })
+    connection.on("round2Answer", () => {
+      console.log('callback');
+    })
 
-    connection.on("round2AnswerShow", (data: any) => { })
+    connection.on("round2AnswerShow", () => {
+      console.log('callback');
+    })
 
   }
 
@@ -126,7 +130,7 @@ export class Round2controlComponent implements OnInit, OnDestroy {
 
       // creates the formArray of the formGroup of question controls
       const qArray = this.formBuilder.array([]);
-      for (let question of this.surveyMasterList) {
+      for (const question of this.surveyMasterList) {
         qArray.push(
           this.formBuilder.group({
             questionNum: new UntypedFormControl(question.questionNum),
@@ -161,7 +165,7 @@ export class Round2controlComponent implements OnInit, OnDestroy {
 
   // Get user answer and store in DB (see)
   saveUserAnswer(questionGroup: any) {
-    var submitAnswer: round2SubmitAnswer = {
+    const submitAnswer: round2SubmitAnswer = {
       yEvent: this.yEvent,
       questionNum: questionGroup.get('questionNum').value,
       playerNum: this.newEventForm.get('playerNum')?.value,
@@ -227,7 +231,7 @@ export class Round2controlComponent implements OnInit, OnDestroy {
 
   showDisplayBoardValue() {
     // this will be values 0-20. 0 = hide all, 10 = show all player 1, 20 = show all
-    var entryNum = this.pickAnimateForm.value.currentDisplayId;
+    const entryNum = this.pickAnimateForm.value.currentDisplayId;
     this._dataService.revealRound2FeudValue(entryNum);
   }
 
@@ -240,7 +244,7 @@ export class Round2controlComponent implements OnInit, OnDestroy {
   }
 
   changeTeamPlayer() {
-    var teamNum = this.newEventForm.get("teamNum")?.value;
+    const teamNum = this.newEventForm.get("teamNum")?.value;
     console.log('Got team number ' + teamNum);
 
     if (teamNum != '--')

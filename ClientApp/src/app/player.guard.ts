@@ -17,7 +17,7 @@ export class PlayerGuard  {
     // get the jwt token which are present in the local storage
 
     const token = localStorage.getItem("jwt");
-    const expectedRole = 1;
+    // const expectedRole = 1;
 
     // Check if the token is expired or not and if token is expired then redirect to login page and return false
     if (token && !this.jwtHelper.isTokenExpired(token)){
@@ -33,7 +33,7 @@ export class PlayerGuard  {
       return false;
     }
 
-    var decodedToken = this.jwtHelper.decodeToken(token);
+    const decodedToken = this.jwtHelper.decodeToken(token);
     console.log(decodedToken);
 
     if (!decodedToken)

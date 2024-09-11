@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/service/auth.service';
 import { Router, ActivatedRoute} from '@angular/router';
 import { Guid } from 'typescript-guid';
-import { DataService } from 'src/app/data.service';
 import { teamLogin } from 'src/app/data/data';
 
 @Component({
@@ -33,7 +32,7 @@ export class PlayerComponent implements OnInit {
       }
 
       // start the signin process
-      var success = this.authService.processLoginTeam(teamLogin);
+      const success = this.authService.processLoginTeam(teamLogin);
       if (success)
       {
         this.router.navigate(['/round1/contestant']);

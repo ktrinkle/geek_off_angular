@@ -30,6 +30,6 @@ export const eventManageReducer = createReducer(
 
 );
 
-export function reducer(state: State | undefined, action: Action): any {
+export function reducer(state: State | undefined, action: Action) {
   return eventManageReducer(state, action);
 }

@@ -1,4 +1,4 @@
-import { Component, ComponentFactoryResolver, OnDestroy, OnInit, Pipe, PipeTransform } from '@angular/core';
+import { Component, OnDestroy, OnInit, Pipe, PipeTransform } from '@angular/core';
 import { DataService } from '../../data.service';
 import { Store } from '@ngrx/store';
 import { round3AnswerDto, round3QuestionDto, round23Scores, introDto } from '../../data/data';
@@ -40,15 +40,15 @@ export class Round3controlComponent implements OnInit, OnDestroy {
     questionNum: new UntypedFormControl('350'),
   });
 
-  public selectedScore: number = 0;
-  public apiResponse: string = '';
+  public selectedScore = 0;
+  public apiResponse = '';
   public scoreboard: round23Scores[] = [];
   public teamList: introDto[] = [];
-  public currentDisplayId: number = 0;
+  public currentDisplayId = 0;
 
   destroy$: Subject<boolean> = new Subject<boolean>();
 
-  finalizeState: string = 'Finalize Round';
+  finalizeState = 'Finalize Round';
 
   public colors: string[] = [
     'red',
@@ -90,12 +90,13 @@ export class Round3controlComponent implements OnInit, OnDestroy {
       return console.error(err.toString());
     });
 
-    connection.on("round3ScoreUpdate", (data: any) => {
+    connection.on("round3ScoreUpdate", () => {
       this.updateScoreboard();
     })
 
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   getTeamsFromForm(form: any) {
     return form?.get('teams')?.controls;
   }
@@ -116,7 +117,7 @@ export class Round3controlComponent implements OnInit, OnDestroy {
 
       // creates the formArray of the formGroup of question controls
       const tArray = this.formBuilder.array([]);
-      for (let team of this.teamList) {
+      for (const team of this.teamList) {
         tArray.push(
           this.formBuilder.group({
             teamNum: new UntypedFormControl(team.teamNum),
@@ -138,7 +139,7 @@ export class Round3controlComponent implements OnInit, OnDestroy {
     });
   }
 
-  getScore(questionNumber: any) {
+  getScore(questionNumber: number) {
     this.resetSelections(this.round3Form);
     const question = this.round3Questions.find(x => x.questionNum == questionNumber);
     this.selectedScore = question?.score ?? 0;

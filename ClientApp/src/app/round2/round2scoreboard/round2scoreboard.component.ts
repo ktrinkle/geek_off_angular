@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Store } from '@ngrx/store';
 import * as signalR from '@microsoft/signalr';
@@ -16,7 +16,7 @@ import { Router } from '@angular/router';
 })
 export class Round2scoreboardComponent implements OnInit, OnDestroy {
   yEvent = '';
-  public roundNum: number = 2;
+  public roundNum = 2;
   public scores: round23Scores[] = [];
   public colors: string[] = [
     'coral',
@@ -53,11 +53,11 @@ export class Round2scoreboardComponent implements OnInit, OnDestroy {
       return console.error(err.toString());
     });
 
-    connection.on("round2ScoreUpdate", (_: any) => {
+    connection.on("round2ScoreUpdate", () => {
       this.getScoreboardInfo(this.yEvent);
     })
 
-    connection.on("round3ScoreUpdate", (_: any) => {
+    connection.on("round3ScoreUpdate", () => {
       this._router.navigate(['/round3/scoreboard']);
     })
   }

@@ -1,11 +1,11 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import * as signalR from '@microsoft/signalr';
 import { environment } from 'src/environments/environment';
 import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { DataService } from 'src/app/data.service';
-import { round2Answers, round2Display, round2SurveyList } from 'src/app/data/data';
+import { round2Answers, round2Display } from 'src/app/data/data';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 import { selectCurrentEvent } from 'src/app/store';
 
@@ -78,25 +78,25 @@ export class Round2displayComponent implements OnInit, OnDestroy {
       return console.error(err.toString());
     });
 
-    connection.on("round2ChangeTeam", (data: any) => {
+    connection.on("round2ChangeTeam", (data) => {
       console.log('round2ChangeTeam');
       console.log(data);
       this.changeTeam(data);
     });
 
-    connection.on("round2Answer", (data: any) => {
+    connection.on("round2Answer", () => {
       this.getDisplayBoard();
     });
 
-    connection.on("round2AnswerShow", (data: any) => {
+    connection.on("round2AnswerShow", (data) => {
       this.changeDisplayState(data);
     });
 
-    connection.on("round2ShowPlayer1", (data: any) => {
+    connection.on("round2ShowPlayer1", () => {
       this.revealPlayerOne();
     });
 
-    connection.on("round2ChangePage", (data: any) => {
+    connection.on("round2ChangePage", (data) => {
       this.changePage(data);
     });
 
@@ -115,7 +115,7 @@ export class Round2displayComponent implements OnInit, OnDestroy {
       this.totalScore = x.finalScore;
       let questionNumbers = [...new Set([...x.player1Answers.map((q: round2Answers) => q.questionNum), ...x.player2Answers.map((q: round2Answers) => q.questionNum)])];
       questionNumbers = questionNumbers.sort((a, b) => (a > b) ? 1 : -1);
-      for (let questionNumber of questionNumbers) {
+      for (const questionNumber of questionNumbers) {
         const player1Answer = x.player1Answers.filter((x: { questionNum: string; }) => x.questionNum === questionNumber);
         const player2Answer = x.player2Answers.filter((x: { questionNum: string; }) => x.questionNum === questionNumber);
         this.displayRows.push(
@@ -123,7 +123,7 @@ export class Round2displayComponent implements OnInit, OnDestroy {
             player1: player1Answer.length > 0 ? player1Answer[0] : { questionNum: questionNumber, answer: '', score: null },
             player2: player2Answer.length > 0 ? player2Answer[0] : { questionNum: questionNumber, answer: '', score: null }
           });
-      };
+      }
       console.log(this.displayRows);
     });
   }
@@ -145,6 +145,7 @@ export class Round2displayComponent implements OnInit, OnDestroy {
     this.getDisplayBoard();
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   changePage(page: any): void {
     this.currentScreen = page;
   }

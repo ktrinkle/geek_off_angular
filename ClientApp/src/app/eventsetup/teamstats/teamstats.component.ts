@@ -7,9 +7,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TeamstatsComponent implements OnInit {
 
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   constructor() { }
 
   ngOnInit(): void {
+    // do something in the future
+    console.log('Teamstats');
   }
 
 }

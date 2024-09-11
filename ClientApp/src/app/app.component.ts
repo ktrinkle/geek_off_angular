@@ -1,6 +1,6 @@
-import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { Location } from '@angular/common';
 import { Store } from '@ngrx/store';
 import { currentEvent } from './store/eventManage/eventManage.actions';
@@ -55,7 +55,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    const currentPath = this.location.path();
+    // const currentPath = this.location.path();
     this.authService.loggedIn$?.subscribe(l => {
       this.loginDisplay = l;
     });

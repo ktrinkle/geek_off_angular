@@ -1,9 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import * as signalR from '@microsoft/signalr';
-import { UntypedFormGroup, UntypedFormControl, Validators } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormControl } from '@angular/forms';
 import { DataService } from 'src/app/data.service';
 import { Store } from '@ngrx/store';
 import { selectCurrentEvent, selectAllEvents } from 'src/app/store';
@@ -20,7 +18,7 @@ export class EventchooserComponent implements OnInit, OnDestroy {
 
   yEvent = '';
   allEvents: eventMaster[] = [];
-  showMessage: boolean = false;
+  showMessage = false;
 
 
   public selectEventForm: UntypedFormGroup = new UntypedFormGroup({
@@ -53,10 +51,10 @@ export class EventchooserComponent implements OnInit, OnDestroy {
 
   setActiveEvent() {
     // uses selectEventForm
-    let selYEvent = this.selectEventForm.value.yEvent;
+    const selYEvent = this.selectEventForm.value.yEvent;
     if (selYEvent)
     {
-      var rtnMessage = this.dataService.setCurrentEvent(selYEvent);
+      const rtnMessage = this.dataService.setCurrentEvent(selYEvent);
     }
   }
 

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { DataService } from 'src/app/data.service';
 import { Subject } from 'rxjs';
@@ -16,7 +17,7 @@ import { selectCurrentEvent } from 'src/app/store';
 })
 export class Round1ScoreboardComponent implements OnInit, OnDestroy {
 
-  yEvent: string = '';
+  yEvent = '';
   headers: string[] = [];
   teamData: any[] = [];
   destroy$: Subject<boolean> = new Subject<boolean>();
@@ -41,12 +42,12 @@ export class Round1ScoreboardComponent implements OnInit, OnDestroy {
       return console.error(err.toString());
     });
 
-    connection.on("round1ScoreUpdate", (data: any) => {
+    connection.on("round1ScoreUpdate", () => {
       console.log('Updating scoreboard');
       this.getScoreboard();
     });
 
-    connection.on("round2ScoreUpdate", (data: any) => {
+    connection.on("round2ScoreUpdate", () => {
       this.router.navigate(['/round2feud/scoreboard']);
     });
 
@@ -82,8 +83,8 @@ export class Round1ScoreboardComponent implements OnInit, OnDestroy {
         // reset teamData
         this.teamData = [];
 
-        for (let team of s) {
-          let temp = [team.teamNum, team.teamName];
+        for (const team of s) {
+          const temp = [team.teamNum, team.teamName];
           if (questionNumbers) {
             for (const number of questionNumbers) {
               const question = team.q.filter((a: any) => a.questionNum === number);
@@ -101,7 +102,7 @@ export class Round1ScoreboardComponent implements OnInit, OnDestroy {
         }
       });
     }
-  };
+  }
 
   ngOnDestroy() {
     this.destroy$.next(true);

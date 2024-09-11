@@ -12,14 +12,14 @@ import { SafeUrl } from '@angular/platform-browser';
 })
 export class TeamlinkComponent implements OnInit {
 
-  public yEvent: string = "";
+  public yEvent = "";
   public teamGuid: Guid | undefined;
   public qrUrl: SafeUrl = "";
   constructor(private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
-      let guidString = params.get('teamGuid');
+      const guidString = params.get('teamGuid');
       this.teamGuid = Guid.parse(guidString ?? "");
 
       this.yEvent = params.get('yEvent') ?? "";

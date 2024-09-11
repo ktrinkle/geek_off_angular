@@ -5,7 +5,6 @@
 * in app.module.ts file.
 */
 
-import { LogLevel, Configuration, BrowserCacheLocation } from '@azure/msal-browser';
 import { environment } from 'src/environments/environment';
 
 const REST_API_SERVER = environment.api_url;

@@ -28,6 +28,6 @@ export const round3Reducer = createReducer(
 );
 
 
-export function reducer(state: State | undefined, action: Action): any {
+export function reducer(state: State | undefined, action: Action) {
   return round3Reducer(state, action);
 }

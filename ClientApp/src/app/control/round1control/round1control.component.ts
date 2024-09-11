@@ -1,12 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { DataService } from 'src/app/data.service';
 import { round1QuestionControlDto, round1Scores, round1EnteredAnswers } from 'src/app/data/data';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import * as signalR from '@microsoft/signalr';
 import { environment } from 'src/environments/environment';
-import { UntypedFormGroup, UntypedFormControl, Validators, UntypedFormBuilder } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormControl, UntypedFormBuilder } from '@angular/forms';
 import { selectCurrentEvent } from 'src/app/store';
 import { Store } from '@ngrx/store';
 
@@ -17,16 +17,16 @@ import { Store } from '@ngrx/store';
 })
 export class Round1ControlComponent implements OnInit, OnDestroy {
 
-  currentQuestion: number = 0;
-  selectedQuestion: number = 0;
+  currentQuestion = 0;
+  selectedQuestion = 0;
   possibleAnswers: round1QuestionControlDto[] = [];
   teamAnswers: round1EnteredAnswers[] = [];
   scoreboard: round1Scores[] = [];
-  yEvent: string = '';
+  yEvent = '';
   statusEnum: string[] = [''];
-  status: number = 0;
-  scoreResponse: string = '';
-  finalizeState: string = 'Finalize round';
+  status = 0;
+  scoreResponse = '';
+  finalizeState = 'Finalize round';
   statusText = '';
   destroy$: Subject<boolean> = new Subject<boolean>();
 
@@ -39,7 +39,7 @@ export class Round1ControlComponent implements OnInit, OnDestroy {
   think6 = new Audio('https://geekoff2021static.blob.core.windows.net/snd/think6.mp3');
   consolation = new Audio('https://geekoff2021static.blob.core.windows.net/snd/r1_consolation.m4a');
 
-  currentFilterQuestion: any = {};
+  currentFilterQuestion: any;
 
   public answerForm: UntypedFormGroup = new UntypedFormGroup({
     selectedQuestion: new UntypedFormControl(this.currentQuestion)
@@ -61,7 +61,7 @@ export class Round1ControlComponent implements OnInit, OnDestroy {
               this.currentQuestion = c.questionNum;
               this.selectedQuestion = c.questionNum;
               this.answerForm.patchValue({ selectedQuestion: this.selectedQuestion });
-              this.currentFilterQuestion = this.possibleAnswers.find(p => p.questionNum == c.questionNum);
+              this.currentFilterQuestion = this.possibleAnswers.find(p => p.questionNum == c.questionNum) ?? {};
             });
             this.updateScoreboard();
             this.loadTeamAnswers();
@@ -92,11 +92,11 @@ export class Round1ControlComponent implements OnInit, OnDestroy {
       return console.error(err.toString());
     });
 
-    connection.on("round1PlayerAnswer", (data: any) => {
+    connection.on("round1PlayerAnswer", () => {
       this.loadTeamAnswers();
     });
 
-    connection.on("round1ScoreUpdate", (data: any) => {
+    connection.on("round1ScoreUpdate", () => {
       this.updateScoreboard();
     })
 
@@ -135,7 +135,7 @@ export class Round1ControlComponent implements OnInit, OnDestroy {
   sendClientMessage(status: number) {
     if (status == 0) {
       this.selectedQuestion = this.answerForm.value.selectedQuestion;
-      this.currentFilterQuestion = this.possibleAnswers.find(p => p.questionNum == this.answerForm.value.selectedQuestion);
+      this.currentFilterQuestion = this.possibleAnswers.find(p => p.questionNum == this.answerForm.value.selectedQuestion) ?? {};
       this.scoreResponse = '';
 
       // reset answerform
@@ -219,7 +219,7 @@ export class Round1ControlComponent implements OnInit, OnDestroy {
         else {
           this.think1.currentTime = 0;
           this.think1.play();
-        };
+        }
         break;
       case 2:
         if (!this.think2.paused && this.think2.currentTime > 0) {
@@ -229,7 +229,7 @@ export class Round1ControlComponent implements OnInit, OnDestroy {
         else {
           this.think2.currentTime = 0;
           this.think2.play();
-        };
+        }
         break;
       case 3:
         if (!this.think3.paused && this.think3.currentTime > 0) {
@@ -239,7 +239,7 @@ export class Round1ControlComponent implements OnInit, OnDestroy {
         else {
           this.think3.currentTime = 0;
           this.think3.play();
-        };
+        }
         break;
       case 4:
         if (!this.think4.paused && this.think4.currentTime > 0) {
@@ -249,7 +249,7 @@ export class Round1ControlComponent implements OnInit, OnDestroy {
         else {
           this.think4.currentTime = 0;
           this.think4.play();
-        };
+        }
         break;
       case 5:
         if (!this.think5.paused && this.think5.currentTime > 0) {
@@ -259,7 +259,7 @@ export class Round1ControlComponent implements OnInit, OnDestroy {
         else {
           this.think5.currentTime = 0;
           this.think5.play();
-        };
+        }
         break;
       case 6:
         if (!this.think6.paused && this.think6.currentTime > 0) {
@@ -269,7 +269,7 @@ export class Round1ControlComponent implements OnInit, OnDestroy {
         else {
           this.think6.currentTime = 0;
           this.think6.play();
-        };
+        }
         break;
     }
   }

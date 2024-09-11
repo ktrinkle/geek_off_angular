@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Store } from '@ngrx/store';
 import * as signalR from '@microsoft/signalr';
@@ -16,8 +16,8 @@ import { round3Score } from 'src/app/store/round3/round3.actions';
 })
 export class Round3scoreboardComponent implements OnInit, OnDestroy {
   yEvent = '';
-  public RoundNum: number = 2;
-  public scores: any[] = [];
+  public RoundNum = 2;
+  public scores: {teamName: string, teamNum: number, teamScore?: number, color: string}[] = [];
   public colors: string[] = [
     'red',
     'green',
@@ -49,7 +49,7 @@ export class Round3scoreboardComponent implements OnInit, OnDestroy {
       return console.error(err.toString());
     });
 
-    connection.on("round3ScoreUpdate", (_: any) => {
+    connection.on("round3ScoreUpdate", () => {
       this.getUpdatedScores();
       this.getScoreboardInfo();
     })

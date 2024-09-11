@@ -1,5 +1,5 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { round1QADto, currentQuestionDto } from 'src/app/data/data';
 import { DataService } from 'src/app/data.service';
 import { Subject } from 'rxjs';
@@ -18,13 +18,13 @@ import { round1AllQuestions } from 'src/app/store/round1/round1.actions';
 })
 export class Round1ContestantComponent implements OnInit {
   // internal management since users won't leave this page
-  hangTight: boolean = true;
-  questionVisible: boolean = false;
-  answerVisible: boolean = false;
-  formVisible: boolean = false;
-  answerSubmitted: boolean = false;
-  answerReturn: string = '';
-  multichoiceButton: any;
+  hangTight = true;
+  questionVisible = false;
+  answerVisible = false;
+  formVisible = false;
+  answerSubmitted = false;
+  answerReturn = '';
+  multichoiceButton: unknown;
   currentQuestion: currentQuestionDto = {
     questionNum: 0,
     status: 0
@@ -97,7 +97,7 @@ export class Round1ContestantComponent implements OnInit {
         if (data.status == 1) {
           this.showChoices();
         }
-      };
+      }
 
       if (data.questionNum == 0) {
         this.hangTight = true;
@@ -144,8 +144,8 @@ export class Round1ContestantComponent implements OnInit {
   }
 
   submitAnswer() {
-    var answerText;
-    var questionNum = this.currentQuestionDto?.questionNum ?? 0;
+    let answerText;
+    const questionNum = this.currentQuestionDto?.questionNum ?? 0;
 
     if (this.currentQuestionDto?.answerType == 2) {
       // fill in process
@@ -186,7 +186,7 @@ export class Round1ContestantComponent implements OnInit {
 
   parseDtoToForm() {
     // convert DTO records to form. Rather brute force.
-    var answerDto = this.currentQuestionDto?.answers;
+    const answerDto = this.currentQuestionDto?.answers;
     if (answerDto) {
       this.answerForm.patchValue({
         multipleChoice1: answerDto.find(a => { a.answerId == 1 })?.answer,

@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { UntypedFormGroup, UntypedFormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { DataService } from 'src/app/data.service';
 import { adminLogin } from 'src/app/data/data';
 import { AuthService } from 'src/app/service/auth.service';
 
@@ -22,7 +21,7 @@ export class AdminComponent {
   submitLogin(): void {
     if (this.loginForm.value.userId != '' && this.loginForm.value.password != '')
     {
-      var loginSubmit: adminLogin = {
+      const loginSubmit: adminLogin = {
         userLogin: {
           userName: this.loginForm.value.userId,
           password: this.loginForm.value.password

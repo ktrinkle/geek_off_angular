@@ -1,16 +1,16 @@
 <div class="geekofflogo">
-  <div *ngIf="currentScreen == 'question'">
+  <div *ngIf="currentScreen === 'question'">
     <div class="questionBox {{longText}}" *ngIf="questionVisible" [@fadeIn]>
         <div class="topright">{{currentQuestion.questionNum}}</div>
         {{currentQuestionDto.questionText}}
     </div>
     <div class="mediaBox" *ngIf="showMedia"></div>
-    <div class="answerBox" *ngIf="answerVisible && (currentQuestionDto.answerType == questionMulti)" [@fadeIn]>
-        <div class="content flexWrap"> <!--fxLayout="row wrap" fxLayoutGap="16px grid"-->
-            <div *ngFor="let question of currentQuestionDto.answers" class="detailItem"><!-- fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%"-->
+    <div class="answerBox" *ngIf="answerVisible && (currentQuestionDto.answerType === questionMulti)" [@fadeIn]>
+        <div class="content flexWrap">
+            <div *ngFor="let question of currentQuestionDto.answers" class="detailItem">
                 <span *ngIf="!answerShown" class="answer">{{question.answer}}</span>
-                <span *ngIf="answerShown && question.answer != currentQuestionDto.correctAnswer" class="wrongAnswer" [@fadeIn]>{{question.answer}}</span>
-                <span class="correctAnswer" *ngIf="answerShown && question.answer == currentQuestionDto.correctAnswer" [@fadeIn] class="answer">
+                <span *ngIf="answerShown && question.answer !== currentQuestionDto.correctAnswer" class="wrongAnswer" [@fadeIn]>{{question.answer}}</span>
+                <span class="correctAnswer" *ngIf="answerShown && question.answer === currentQuestionDto.correctAnswer" [@fadeIn] class="answer">
           {{currentQuestionDto.correctAnswer}}
         </span>
             </div>
@@ -19,25 +19,25 @@
 
 
 
-    <div class="answerBox" *ngIf="answerVisible && (currentQuestionDto.answerType == questionMatch)" [@fadeIn]>
-        <div class="content flexWrap"> <!--fxLayout="row wrap" fxLayoutGap="16px grid"-->
-            <div *ngFor="let question of currentQuestionDto.answers" class="detailItem answer"> <!--fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%" style="padding: 10px;"-->
+    <div class="answerBox" *ngIf="answerVisible && (currentQuestionDto.answerType === questionMatch)" [@fadeIn]>
+        <div class="content flexWrap">
+            <div *ngFor="let question of currentQuestionDto.answers" class="detailItem answer">
                 <span class="correctAnswer" *ngIf="answerShown" [@fadeIn]>{{matchString.charAt(question.answerId)}}: </span> {{question.answerId}}. {{question.answer}}
             </div>
         </div>
     </div>
     <!--correct answer for written text only-->
-    <div class="answerBox" *ngIf="answerShown && (currentQuestionDto.answerType == questionText)" [@fadeIn]>
+    <div class="answerBox" *ngIf="answerShown && (currentQuestionDto.answerType === questionText)" [@fadeIn]>
         {{currentQuestionDto.correctAnswer}}
     </div>
   </div>
 
-  <div class="prize" *ngIf="currentScreen == 'prize1'" [@slideLeft]>
-    <img src="https://geekoff2021static.blob.core.windows.net/images/R1_Olive.jpg" class="fullscreen" />
+  <div class="prize" *ngIf="currentScreen === 'prize1'" [@slideLeft]>
+    <img src="https://geekoff2021static.blob.core.windows.net/images/R1_Olive.jpg" class="fullscreen" alt="Olives"/>
   </div>
 
-  <div class="prize" *ngIf="currentScreen == 'prize2'" [@slideLeft]>
-    <img src="https://geekoff2021static.blob.core.windows.net/images/r1_prize2.jpg" class="fullscreen" />
+  <div class="prize" *ngIf="currentScreen === 'prize2'" [@slideLeft]>
+    <img src="https://geekoff2021static.blob.core.windows.net/images/r1_prize2.jpg" class="fullscreen" alt="Magazines" />
   </div>
 </div>
 

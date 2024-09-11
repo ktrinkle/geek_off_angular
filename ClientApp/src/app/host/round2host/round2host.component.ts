@@ -15,7 +15,7 @@ import { takeUntil } from 'rxjs/operators';
 
 export class Round2hostComponent implements OnInit, OnDestroy {
 
-  public yEvent: string = '';
+  public yEvent = '';
   public surveyMasterList: round2SurveyList[] = [];
   destroy$: Subject<boolean> = new Subject<boolean>();
 
