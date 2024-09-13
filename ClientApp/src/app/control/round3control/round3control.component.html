@@ -7,7 +7,9 @@
           <input type="radio" name="questionNum" id="{{ question.questionNum }}" value="{{ question.questionNum }}"
             formControlName="questionNum" class="bigbtnblue"
             (click)="getScore(question.questionNum)" />
-          <label for="{{ question.questionNum }}" class="bigbtnbluelabel">{{ question.score }}</label>
+          <label for="{{ question.questionNum }}" [ngClass]="selectedQuestion === question.questionNum ? 'bigbtnbluepicked' : 'bigbtnbluelabel'">
+            {{ question.score }}
+          </label>
         </div>
         <div class="clear: all;">
         </div>

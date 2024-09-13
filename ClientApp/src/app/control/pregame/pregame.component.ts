@@ -7,7 +7,7 @@ import { environment } from 'src/environments/environment';
 import { UntypedFormGroup, UntypedFormControl, Validators } from '@angular/forms';
 import { DataService } from 'src/app/data.service';
 import { Store } from '@ngrx/store';
-import { selectCurrentEvent, selectRound1Teams } from 'src/app/store';
+import { selectCurrentEvent } from 'src/app/store';
 
 @Component({
   selector: 'app-pregame',

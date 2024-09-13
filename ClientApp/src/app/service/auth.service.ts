@@ -4,6 +4,7 @@ import { adminLogin, simpleUser, teamLogin } from '../data/data';
 import { DataService } from '../data.service';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +24,7 @@ export class AuthService {
 
   private expirationTimer: any;
 
-  constructor(private dataService:DataService, private jwtHelper: JwtHelperService)
+  constructor(private dataService:DataService, private jwtHelper: JwtHelperService, private router: Router)
   {
     this.currentUserSubject = new BehaviorSubject<simpleUser>({
       teamNum: localStorage.getItem('teamNum') === '0' ? undefined : Number(localStorage.getItem("teamNum")),
@@ -116,6 +117,7 @@ export class AuthService {
     const token = localStorage.getItem('jwt');
     if (this.jwtHelper.isTokenExpired(token)) {
       this.logout();
+      this.router.navigate(['/home']);
     }
   }
 

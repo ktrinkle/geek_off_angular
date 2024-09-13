@@ -30,7 +30,7 @@ public class GetScoresHandler
                                   orderby rr.Rnk
                                   select new Round23Scores()
                                   {
-                                      TeamName = t.Teamname,
+                                      TeamName = t.Teamname ?? string.Empty,
                                       TeamNum = t.TeamNum
                                   }).AsNoTracking().ToListAsync(token);
 

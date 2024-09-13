@@ -68,6 +68,7 @@ export class Round2scoreboardComponent implements OnInit, OnDestroy {
 
       this.scores.forEach((score, index) => {
         score.color = this.colors[index];
+        score.teamName = score.teamName ?? '';
       });
 
       console.log(this.scores);

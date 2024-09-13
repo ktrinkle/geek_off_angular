@@ -1,26 +1,29 @@
 <div>if you are a player, please scan the QR code for your team to start the game!</div>
-<form [formGroup]="loginForm" (ngSubmit)="submitLogin()">
+<mat-grid-list cols="8">
+  <mat-grid-tile colspan="2"></mat-grid-tile>
+  <mat-grid-tile colspan="4">
+    <mat-grid-tile-header colspan="4">
+      <h3>Admin user login</h3>
+    </mat-grid-tile-header>
+    <form [formGroup]="loginForm" (ngSubmit)="submitLogin()">
+      <p>&nbsp;</p>
   <div>
-  <label for="userId">Admin user ID:</label>
-  <input
-    id="userId"
-    name="userId"
-    formControlName="userId"
-    type="text"
-  />
+    <mat-form-field>
+      <mat-label>Enter Admin User Id:</mat-label>
+      <input matInput type="text" id="userId" name="userId" formControlName="userId" required />
+    </mat-form-field>
+    &nbsp;
+<!-- </div>
+<div> -->
+  <mat-form-field>
+    <mat-label>Enter Admin password:</mat-label>
+    <input matInput type="password" id="password" name="password" formControlName="password" required />
+  </mat-form-field>
 </div>
-<div>
-  <label for="password">Password:</label>
-  <input
-    id="password"
-    name="password"
-    formControlName="password"
-    type="password"
-  />
-</div>
-<button mat-button mat-accent type="submit" class="contbtnredlabel">
+<button mat-raised-button mat-accent type="submit" class="contbtnredlabel">
   Login!
 </button>
-
   </form>
-
+</mat-grid-tile>
+<mat-grid-tile colspan="2"></mat-grid-tile>
+</mat-grid-list>

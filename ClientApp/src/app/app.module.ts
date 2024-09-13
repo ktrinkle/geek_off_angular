@@ -103,7 +103,7 @@ export function tokenGetter() {
     }),
     HttpClientModule,
     StoreModule.forRoot(reducers, { metaReducers }),
-    !environment.production ? StoreDevtoolsModule.instrument() : [],
+    !environment.production ? StoreDevtoolsModule.instrument({connectInZone: true}) : [],
     EffectsModule.forRoot([EventManageEffects, Round3Effects, Round2Effects, Round1Effects]),
     ReactiveFormsModule,
     MatToolbarModule,

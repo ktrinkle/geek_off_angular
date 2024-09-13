@@ -44,7 +44,7 @@ export class Round3controlComponent implements OnInit, OnDestroy {
   public apiResponse = '';
   public scoreboard: round23Scores[] = [];
   public teamList: introDto[] = [];
-  public currentDisplayId = 0;
+  public selectedQuestion = 0;
 
   destroy$: Subject<boolean> = new Subject<boolean>();
 
@@ -139,11 +139,11 @@ export class Round3controlComponent implements OnInit, OnDestroy {
     });
   }
 
-  getScore(questionNumber: number) {
+  getScore(questionNumber: number): void {
     this.resetSelections(this.round3Form);
     const question = this.round3Questions.find(x => x.questionNum == questionNumber);
     this.selectedScore = question?.score ?? 0;
-    return question?.score;
+    this.selectedQuestion = questionNumber;
   }
 
   async updateRemoteScoreboard() {
@@ -190,6 +190,7 @@ export class Round3controlComponent implements OnInit, OnDestroy {
 
     this.resetSelections(form);
     form.get('questionNum')?.reset();
+    this.selectedQuestion = 0;
 
     const idx = this.round3Questions.findIndex(q => questionNum == q.questionNum);
     console.log('question search', idx);
