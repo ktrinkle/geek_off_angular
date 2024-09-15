@@ -46,8 +46,7 @@ public class GetCurrentEventHandlerTest
         var result = await handler.Handle(request, CancellationToken.None);
 
         // Assert
-        Assert.NotEmpty(result.Value.Message!);
-        Assert.Equal("t21", result.Value.Message!);
-        Assert.Equal(QueryStatus.Success, result.Status);
+        Assert.NotEmpty(result);
+        Assert.Equal("t21", result);
     }
 }
