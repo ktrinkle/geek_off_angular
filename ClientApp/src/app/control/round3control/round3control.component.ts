@@ -45,6 +45,7 @@ export class Round3controlComponent implements OnInit, OnDestroy {
   public scoreboard: round23Scores[] = [];
   public teamList: introDto[] = [];
   public selectedQuestion = 0;
+  private answeredQuestion: string[] = [];
 
   destroy$: Subject<boolean> = new Subject<boolean>();
 
@@ -197,6 +198,7 @@ export class Round3controlComponent implements OnInit, OnDestroy {
     if (idx >= -1) {
       this.round3Questions[idx].disabled = true;
     }
+    console.log('updated question array', this.round3Questions);
   }
 
   finalizeRound() {

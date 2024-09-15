@@ -5,7 +5,7 @@
 namespace geek_off_angular.Migrations
 {
     /// <inheritdoc />
-    public partial class eventcontrl : Migration
+    public partial class EventContrl : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

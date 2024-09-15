@@ -19,7 +19,18 @@ public class EventStatusController(ILogger<EventStatusController> logger, IMedia
         await _mediator.Send(request) switch
         {
             { Status: QueryStatus.Success } result => Ok(result.Value),
-            { Status: QueryStatus.NoContent } result => NoContent(),
+            { Status: QueryStatus.NoContent } => NoContent(),
+            _ => throw new InvalidOperationException()
+        };
+
+    [Authorize(Roles = "admin")]
+    [HttpGet("teamStats/{YEvent}")]
+    [SwaggerOperation(Summary = "Get the statistics for the event")]
+    public async Task<ActionResult<List<Round23Scores>>> GetTeamStatsAsync([FromRoute] TeamStatsHandler.Request request) =>
+        await _mediator.Send(request) switch
+        {
+            { Status: QueryStatus.Success } result => Ok(result.Value),
+            { Status: QueryStatus.NoContent } => NoContent(),
             _ => throw new InvalidOperationException()
         };
 }

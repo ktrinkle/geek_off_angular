@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace geek_off_angular.Migrations
 {
     [DbContext(typeof(ContextGo))]
-    [Migration("20240828034018_eventcontrl")]
-    partial class eventcontrl
+    [Migration("20240828034018_EventContrl")]
+    partial class EventContrl
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
