@@ -16,6 +16,7 @@ public partial class ContextGo : DbContext
     public virtual DbSet<FundraisingTotal> FundraisingTotal { get; set; }
     public virtual DbSet<LogError> LogError { get; set; }
     public virtual DbSet<QuestionAns> QuestionAns { get; set; }
+    public virtual DbSet<RoundCategory> RoundCategories{ get; set; }
     public virtual DbSet<Roundresult> Roundresult { get; set; }
     public virtual DbSet<Scoreposs> Scoreposs { get; set; }
     public virtual DbSet<Scoring> Scoring { get; set; }
@@ -37,10 +38,12 @@ public partial class ContextGo : DbContext
             }
         }
 
-        // handle composite PK
+        // handle composite PKs
         modelBuilder.Entity<QuestionAns>(entity => entity.HasKey(k => new { k.Yevent, k.RoundNum, k.QuestionNum }));
 
         modelBuilder.Entity<Scoreposs>(entity => entity.HasKey(k => new { k.Yevent, k.RoundNum, k.QuestionNum, k.SurveyOrder }));
+
+        modelBuilder.Entity<RoundCategory>(entity => entity.HasKey(k => new { k.Yevent, k.RoundNum, k.SubCategoryNum }));
 
         modelBuilder.Entity<Roundresult>(entity => entity.HasKey(k => new { k.Yevent, k.RoundNum, k.TeamNum }));
 
@@ -54,6 +57,7 @@ public partial class ContextGo : DbContext
         modelBuilder.CreateTeamReferenceData();
         modelBuilder.CreateTeamUserData();
         modelBuilder.CreateAdminUserData();
+        modelBuilder.CreateRoundCategoryData();
     }
 
     [GeneratedRegex("(?<!^)([A-Z][a-z]|(?<=[a-z])[A-Z])")]

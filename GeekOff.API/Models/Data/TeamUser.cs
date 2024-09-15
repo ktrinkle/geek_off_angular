@@ -12,8 +12,6 @@ namespace GeekOff.Data
         [MaxLength(6)]
         public string Yevent { get; set; } = string.Empty;
         public int TeamNum { get; set; }
-        public string? BadgeId { get; set; }
-        public string? Username { get; set; }
         public string? PlayerName { get; set; }
         public string? WorkgroupName { get; set; }
         public int? PlayerNum { get; set; }
