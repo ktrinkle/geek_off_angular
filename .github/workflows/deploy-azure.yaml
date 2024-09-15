@@ -8,22 +8,22 @@ env:
   AZURE_WEBAPP_PACKAGE_PATH_UI: './ClientApp/dist/ClientApp'
   AZURE_WEBAPP_API_NAME_API: geekoff-2021api
   AZURE_WEBAPP_PACKAGE_PATH_API: './webapi'
-  NODE_VERSION: '14.x'
+  NODE_VERSION: '18.x'
 
 jobs:
   build_and_test_node:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         
       - name: Use Node.js ${{ env.NODE_VERSION }}
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
   
       - name: Replace tokens
-        uses: cschleiden/replace-tokens@v1.1
+        uses: cschleiden/replace-tokens@v1.3
         with:
           tokenPrefix: '#{'
           tokenSuffix: '}#'
@@ -45,7 +45,7 @@ jobs:
           npm run build --if-present
           
       - name: Zip Release
-        uses: TheDoctor0/zip-release@0.6.0
+        uses: TheDoctor0/zip-release@0.7.6
         with:
           filename: ui.zip
           path: .
@@ -60,7 +60,7 @@ jobs:
             ui.zip
             
       - name: 'Deploy to Azure WebApp'
-        uses: azure/webapps-deploy@v2
+        uses: azure/webapps-deploy@v3
         with:
           app-name: ${{ env.AZURE_WEBAPP_NAME_UI }}
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE_UI }}
@@ -69,21 +69,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Install dependencies
-        working-directory: ./API
+        working-directory: ./GeekOff.API
         run: dotnet restore
 
       - name: Build
         run: |
-          cd API
+          cd GeekOff.API
           dotnet build --configuration Release --no-restore
           dotnet publish -c Release -o ../webapi -r linux-x64 --self-contained true /p:UseAppHost=true
           ls ../webapi
           
       - name: Zip Release
-        uses: TheDoctor0/zip-release@0.6.0
+        uses: TheDoctor0/zip-release@0.7.6
         with:
           filename: webapi.zip
           path: .
@@ -98,7 +98,7 @@ jobs:
             ./webapi.zip
 
       - name: 'Deploy to Azure WebApp'
-        uses: azure/webapps-deploy@v2
+        uses: azure/webapps-deploy@v3
         with:
           app-name: ${{ env.AZURE_WEBAPP_NAME_API }}
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE_API }}

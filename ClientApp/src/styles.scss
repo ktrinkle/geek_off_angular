@@ -1,4 +1,4 @@
-@use '~@angular/material' as mat;
+@use '@angular/material' as mat;
 @include mat.core();
 
 /* ======== Angular material custom themes ======== */
@@ -36,6 +36,16 @@ $go-theme: mat.define-light-theme($go-primary, $go-accent, $go-warn);
 @font-face {
     font-family: priceIsRight;
     src: url('https://geekoff2021static.blob.core.windows.net/fonts/pricedown_bl.otf');
+}
+
+@font-face {
+    font-family: kabel;
+    src: url('https://geekoff2021static.blob.core.windows.net/fonts/kabel.otf');
+}
+
+@font-face {
+    font-family: kabel;
+    src: url('https://geekoff2021static.blob.core.windows.net/fonts/kabel.otf');
 }
 
 .container-app {
@@ -210,3 +220,31 @@ $go-theme: mat.define-light-theme($go-primary, $go-accent, $go-warn);
     -moz-box-shadow: 0px 1px 3px #666666;
     box-shadow: 0px 1px 3px #666666;
 }
+
+/* ============== Flex Layout replacement CSS ============== */
+// Gap.
+.gap-4 { gap: 4px; }
+.gap-8 { gap: 8px; }
+.gap-10 { gap: 10px; }
+.gap-12 { gap: 12px; }
+.gap-16 { gap: 16px; }
+
+// Flex row/col + grid.
+.flex-row { display: flex; flex-direction: row; }
+.flex-col { display: flex; flex-direction: column; }
+.grid { display: grid; }
+
+// Flex-wrap utils.
+.flex-wrap { flex-wrap: wrap; }  // Mostly used with flex-row, when wrapping is desired.
+.flex-col-xs { @media screen and (max-width: 599px) { flex-direction: column; } }  // Switch from flex-row to flex-col on mobile.
+
+// Justify content.
+.space-between { justify-content: space-between; }  // Used very often with flex-row.
+.justify-center { justify-content: center; }  // Used to center something via flexbox.
+
+// Align items. (Naming inspiration: https://tailwindcss.com/docs/align-items.)
+.items-center { align-items: center; }  // Used very often with flex-row.
+
+// Flex/grow/shrink properties https://developer.mozilla.org/en-US/docs/Web/CSS/flex.
+.flex-1 { flex: 1 }  // Same as flex: 1 1 0 (grow, shrink, basis 0). Has similar effect to width: 100%;
+.flex-grow { flex-grow: 1; }  // Same as flex: 1 1 auto (grow, shrink, basis auto). For spacer, etc.

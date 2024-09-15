@@ -12,7 +12,7 @@ export class Round2Effects {
   getRound2SurveyQuestions$ = createEffect(() => this.actions$.pipe(
     ofType(round2AllSurvey),
     switchMap(payload =>
-      this.dataService.getAllRound2SurveyQuestions(payload.yEvent).pipe(map(surveyQuestions =>
+      this.dataService.getAllRound2FeudSurveyQuestions(payload.yEvent).pipe(map(surveyQuestions =>
         round2AllSurveySuccess({ allSurvey: surveyQuestions }) // todo: add catchError
       )))));
 }

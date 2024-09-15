@@ -32,33 +32,34 @@ import { round1BigDisplay } from 'src/app/store/round1/round1.actions';
 export class Round1DisplayQuestionComponent implements OnInit, OnDestroy {
   // internal management since users won't leave this page
   bigDisplay: round1QDisplay[] = [];
-  questionVisible: boolean = false;
-  mediaVisible: boolean = false;
-  answerVisible: boolean = false;
-  answerShown: boolean = false;
-  currentScreen: string = "question";
+  questionVisible = false;
+  mediaVisible = false;
+  answerVisible = false;
+  answerShown = false;
+  currentScreen = "question";
   matchString = 'xABCD'; // 1 based to make life easier ahead
   currentQuestion: currentQuestionDto = {
     questionNum: 0,
     status: 0
   };
-  yEvent: string = '';
+  yEvent = '';
   public currentQuestionDto: round1QDisplay = {
     questionNum: 0,
     questionText: '',
     answers: [],
     correctAnswer: '',
-    answerType: -1,
+    answerType: '',
     mediaFile: '',
-    mediaType: ''
+    mediaType: '',
+    enabled: true
   };
-  questionMatch: number = 1;
-  questionMulti: number = 0;
-  questionText: number = 2;
+  questionMatch = "Match";
+  questionMulti = "MultipleChoice";
+  questionText = "FreeText";
   destroy$: Subject<boolean> = new Subject<boolean>();
 
   // hack to force the text size smaller if the question is >110 chars
-  longText: string = '';
+  longText = '';
 
   constructor(private route: ActivatedRoute, private router: Router, private dataService: DataService, private store: Store) { }
 
@@ -77,7 +78,7 @@ export class Round1DisplayQuestionComponent implements OnInit, OnDestroy {
 
     const connection = new signalR.HubConnectionBuilder()
       .configureLogging(signalR.LogLevel.Information)
-      .withUrl(environment.api_url + '/events')
+      .withUrl(environment.api_url + '/events', { withCredentials: false })
       .withAutomaticReconnect()
       .build();
 
@@ -100,15 +101,15 @@ export class Round1DisplayQuestionComponent implements OnInit, OnDestroy {
         if (data.status == 1 || data.status == 2) {
           this.showChoices();
         }
-      };
+      }
     });
 
-    connection.on("round1intro", (data: any) => {
+    connection.on("round1intro", (data) => {
       this.changePage(data);
     });
 
-    connection.on("round2ChangeTeam", (data: any) => {
-      this.router.navigate(['/round2/display']);
+    connection.on("round2ChangeTeam", () => {
+      this.router.navigate(['/round2feud/display']);
     });
   }
 
@@ -128,7 +129,7 @@ export class Round1DisplayQuestionComponent implements OnInit, OnDestroy {
       if (currentQuestion[0].questionText.length > 100) {
         this.longText = 'longQuestion';
       }
-      if (this.currentQuestionDto.answerType == 1) {
+      if (this.currentQuestionDto.answerType === this.questionMatch) {
         this.matchString = 'x' + this.convertStringToAnswer(this.currentQuestionDto.correctAnswer);
       }
     }
@@ -155,6 +156,7 @@ export class Round1DisplayQuestionComponent implements OnInit, OnDestroy {
     this.mediaVisible = true;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   changePage(page: any): void {
     console.log('ChangePage: ' + page);
     this.currentScreen = page;
@@ -173,7 +175,7 @@ export class Round1DisplayQuestionComponent implements OnInit, OnDestroy {
     let newS = '';
     for (let i = 0; i < input.length; ++i) {
       // ASCII value
-      let val = input[i].charCodeAt(0);
+      const val = input[i].charCodeAt(0);
       newS += String.fromCharCode(val + 16);
     }
     return newS;

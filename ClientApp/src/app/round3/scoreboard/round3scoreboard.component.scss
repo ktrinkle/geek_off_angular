@@ -62,3 +62,35 @@
 .name_j_blue {
     font-family: popsies;
 }
+
+.flexWrap {
+  gap: 16px;
+  display: flex;
+  flex-flow: row wrap;
+  align-items: flex-start;
+  align-content: flex-start;
+}
+
+// desktop
+@media only screen and (min-width: 960px) {
+  .detailItem33 {
+    width: 31% !important;
+    margin: auto;
+    vertical-align: top;
+    padding: 8px;
+  }
+}
+
+// small and xsmall
+@media only screen and (max-width: 959px) {
+  .flexWrap {
+    flex-direction: column;
+  }
+
+  .detailItem133 {
+    width: 100%;
+    margin: auto;
+    text-align: left;
+    padding: 10px;
+  }
+}

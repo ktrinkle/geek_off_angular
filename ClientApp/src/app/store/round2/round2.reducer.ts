@@ -1,6 +1,6 @@
 import { Action, createReducer, on } from '@ngrx/store';
 import { round2SurveyList } from 'src/app/data/data';
-import { round2AllSurvey, round2AllSurveySuccess } from './round2.actions';
+import { round2AllSurveySuccess } from './round2.actions';
 
 export const round2FeatureKey = 'round2';
 
@@ -24,6 +24,6 @@ export const round2Reducer = createReducer(
 );
 
 
-export function reducer(state: State | undefined, action: Action): any {
+export function reducer(state: State | undefined, action: Action) {
   return round2Reducer(state, action);
 }

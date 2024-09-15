@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { MsalBroadcastService, MsalService } from '@azure/msal-angular';
-import { AuthenticationResult, EventMessage, EventType, InteractionStatus } from '@azure/msal-browser';
-import { filter, takeUntil } from 'rxjs/operators';
-import { PlayerGuard } from '../player.guard';
+import { takeUntil } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import { selectCurrentEvent } from '../store';
 import { Subject } from 'rxjs';
+import { AuthService } from '../service/auth.service';
+
 
 @Component({
   selector: 'app-home',
@@ -13,51 +12,29 @@ import { Subject } from 'rxjs';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-  userIsLoggedIn: boolean = false;
-  userIsAdmin: boolean = false;
-  isIframe = false;
-  public yEvent: string = '';
+  userIsLoggedIn = false;
+  userIsAdmin = false;
+  public yEvent = '';
   destroy$: Subject<boolean> = new Subject<boolean>();
 
   constructor(
-    private authService: MsalService,
-    private msalBroadcastService: MsalBroadcastService,
-    private playerGuard: PlayerGuard,
+    private authService: AuthService,
     private store: Store) { }
 
   ngOnInit(): void {
-    // authentication handling
-
     this.store.select(selectCurrentEvent).pipe(takeUntil(this.destroy$)).subscribe(currentEvent => {
+      console.log('currentEvent', currentEvent);
       this.yEvent = currentEvent;
     });
 
-    this.isIframe = window !== window.parent && !window.opener;
-    this.msalBroadcastService.msalSubject$
-      .pipe(
-        filter((msg: EventMessage) => msg.eventType === EventType.LOGIN_SUCCESS),
-      )
-      .subscribe((result: EventMessage) => {
-        console.log(result);
-        const payload = result.payload as AuthenticationResult;
-        this.authService.instance.setActiveAccount(payload.account);
-      });
+    this.authService.loggedIn$.pipe(takeUntil(this.destroy$)).subscribe(l => {
+      this.userIsLoggedIn = l;
+    });
 
-    this.msalBroadcastService.inProgress$
-      .pipe(
-        filter((status: InteractionStatus) => status === InteractionStatus.None)
-      )
-      .subscribe(() => {
-        this.setHeaderDisplay();
-      })
+    this.authService.isAdmin$.pipe(takeUntil(this.destroy$)).subscribe(a => {
+      this.userIsAdmin = a;
+    });
   }
 
-  setHeaderDisplay() {
-    this.userIsLoggedIn = this.authService.instance.getAllAccounts().length > 0;
-    if (this.userIsLoggedIn) {
-      this.userIsAdmin = this.playerGuard.checkAdmin("admin");
-    }
-    console.log(this.userIsLoggedIn);
-  }
 
 }

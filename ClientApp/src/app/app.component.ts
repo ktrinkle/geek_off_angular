@@ -1,14 +1,11 @@
-import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
-import { MsalService, MsalBroadcastService, MSAL_GUARD_CONFIG, MsalGuardConfiguration } from '@azure/msal-angular';
-import { BrowserUtils, InteractionStatus, RedirectRequest } from '@azure/msal-browser';
 import { Subject } from 'rxjs';
-import { filter, takeUntil } from 'rxjs/operators';
-import { DataService } from './data.service';
 import { Location } from '@angular/common';
 import { Store } from '@ngrx/store';
-import { currentEvent } from './store/round1/round1.actions';
-import { selectCurrentEvent } from './store';
+import { currentEvent } from './store/eventManage/eventManage.actions';
+import { AuthService } from './service/auth.service';
+import { PlayerGuard } from './player.guard';
 
 
 type ProfileType = {
@@ -32,8 +29,9 @@ export class AppComponent implements OnInit, OnDestroy {
   pagesToShowLogin = [
     '/round1/contestant',
     '/control/pregame',
-    '/control/round2',
+    '/control/round2feud',
     '/control/round1',
+    '/control/round3',
     '/home',
     '/',
   ]
@@ -42,87 +40,30 @@ export class AppComponent implements OnInit, OnDestroy {
   destroy$: Subject<boolean> = new Subject<boolean>();
 
   constructor(
-    @Inject(MSAL_GUARD_CONFIG) private msalGuardConfig: MsalGuardConfiguration,
-    private authService: MsalService,
-    private msalBroadcastService: MsalBroadcastService,
-    private dataService: DataService,
+    private authService: AuthService,
+    private playerGuard: PlayerGuard,
     private router: Router,
     private location: Location,
     private store: Store) {
     router.events.forEach((event) => {
       if (event instanceof NavigationEnd) {
-        console.log(event.url);
-        console.log(this.pagesToShowLogin.indexOf(event.url));
         this.showLoginBar = this.pagesToShowLogin.indexOf(event.url) > -1;
       }
     });
     this.store.dispatch(currentEvent());
+    console.log('currentevent finished');
   }
 
   ngOnInit(): void {
-    const currentPath = this.location.path();
-    this.isIframe = BrowserUtils.isInIframe() && !window.opener && currentPath.indexOf("logout") < 0;
-    this.setLoginDisplay();
-
-    this.msalBroadcastService.inProgress$
-      .pipe(
-        filter((status: InteractionStatus) => status === InteractionStatus.None),
-        takeUntil(this._destroying$)
-      )
-      .subscribe(() => {
-        console.log('Broadcast service in progress');
-        this.setLoginDisplay();
-        this.checkAndSetActiveAccount();
-      });
-  }
-
-  async login() {
-    await this.authService.instance.handleRedirectPromise();
-
-    if (this.msalGuardConfig.authRequest) {
-      console.log('loginRedirect with wait');
-      this.authService.loginRedirect({ ...this.msalGuardConfig.authRequest } as RedirectRequest);
-    } else {
-      console.log('loginRedirect null');
-      this.authService.loginRedirect();
-    }
-  }
-
-  logout() { // Add log out function here
-    this.authService.logout();
-  }
-
-  setLoginDisplay() {
-    console.log('setLoginDisplay');
-
-    if (this.authService.instance.getAllAccounts().length > 0) {
-      this.getAdInfo();
-      this.loginDisplay = true;
-    }
-    else {
-      this.loginDisplay = false;
-    }
-  }
-
-  checkAndSetActiveAccount() {
-    /**
-     * If no active account set but there are accounts signed in, sets first account to active account
-     * To use active account set here, subscribe to inProgress$ first in your component
-     * Note: Basic usage demonstrated. Your app may require more complicated account selection logic
-     */
-    let activeAccount = this.authService.instance.getActiveAccount();
-
-    if (!activeAccount && this.authService.instance.getAllAccounts().length > 0) {
-      let accounts = this.authService.instance.getAllAccounts();
-      this.authService.instance.setActiveAccount(accounts[0]);
-    }
-  }
-
-  getAdInfo() {
-    this.dataService.getADProfile().subscribe(ad => {
-      this.profile = ad;
-      console.log(this.profile);
+    // const currentPath = this.location.path();
+    this.authService.loggedIn$?.subscribe(l => {
+      this.loginDisplay = l;
     });
+  }
+
+  logout() {
+    this.authService.logout();
+    this.router.navigate(['/home']);
   }
 
   ngOnDestroy(): void {

@@ -4,17 +4,17 @@
 
         <span class="spacer"></span>
         <div class="username" *ngIf="profile && loginDisplay">{{profile.playerName}}
-          <span *ngIf="profile.teamNum != 0">, Team #{{profile.teamNum}}</span>
-        <span *ngIf="profile.teamNum == 0">- Admin</span></div>
+          <span *ngIf="profile.teamNum !== 0">, Team #{{profile.teamNum}}</span>
+        <span *ngIf="profile.teamNum === 0">- Admin</span></div>
         <span class="spacer"></span>
 
         <div>
-            <button class="btn-login" mat-raised-button *ngIf="!loginDisplay" (click)="login()">Login</button>
             <button class="btn-login" mat-raised-button *ngIf="loginDisplay" (click)="logout()">Logout</button>
         </div>
 
     </mat-toolbar>
     <div class="container">
+        <app-admin-login *ngIf="!loginDisplay"></app-admin-login>
         <!--This is to avoid reload during acquireTokenSilent() because of hidden iframe -->
         <router-outlet *ngIf="!isIframe"></router-outlet>
     </div>

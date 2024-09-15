@@ -1,12 +1,13 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Store } from '@ngrx/store';
 import * as signalR from '@microsoft/signalr';
 import { round23Scores } from 'src/app/data/data';
 import { environment } from 'src/environments/environment';
 import { DataService } from '../../data.service';
-import { selectCurrentEvent } from 'src/app/store';
+import { selectCurrentEvent, selectRound3Scores } from 'src/app/store';
 import { takeUntil } from 'rxjs/operators';
+import { round3Score } from 'src/app/store/round3/round3.actions';
 
 @Component({
   selector: 'app-round3-scoreboard',
@@ -15,8 +16,8 @@ import { takeUntil } from 'rxjs/operators';
 })
 export class Round3scoreboardComponent implements OnInit, OnDestroy {
   yEvent = '';
-  public roundNo: number = 2;
-  public scores: round23Scores[] = [];
+  public RoundNum = 2;
+  public scores: {teamName: string, teamNum: number, teamScore?: number, color: string}[] = [];
   public colors: string[] = [
     'red',
     'green',
@@ -31,15 +32,14 @@ export class Round3scoreboardComponent implements OnInit, OnDestroy {
     this.store.select(selectCurrentEvent).pipe(takeUntil(this.destroy$)).subscribe(currentEvent => {
       this.yEvent = currentEvent;
       if (this.yEvent && this.yEvent.length > 0) {
-        this.getScoreboardInfo(this.yEvent);
+        this.getUpdatedScores();
+        this.getScoreboardInfo();
       }
     });
 
-    console.log("End of Init");
-
     const connection = new signalR.HubConnectionBuilder()
       .configureLogging(signalR.LogLevel.Information)
-      .withUrl(`${environment.api_url}/events`)
+      .withUrl(`${environment.api_url}/events`, { withCredentials: false })
       .withAutomaticReconnect()
       .build();
 
@@ -49,20 +49,28 @@ export class Round3scoreboardComponent implements OnInit, OnDestroy {
       return console.error(err.toString());
     });
 
-    connection.on("round3ScoreUpdate", (_: any) => {
-      this.getScoreboardInfo(this.yEvent);
+    connection.on("round3ScoreUpdate", () => {
+      this.getUpdatedScores();
+      this.getScoreboardInfo();
     })
   }
 
-  public getScoreboardInfo(yevent: string) {
-    this._dataService.getRound3Scores(yevent).subscribe((data: round23Scores[]) => {
+  public getUpdatedScores() {
+    this.store.dispatch(round3Score({ yEvent: this.yEvent }));
+  }
 
-      this.scores = data;
-      this.scores.forEach((score, index) => {
-        score.color = this.colors[index];
+  public getScoreboardInfo() {
+    this.store.select(selectRound3Scores).pipe(takeUntil(this.destroy$)).subscribe((data: round23Scores[]) => {
+      console.log('scoreboard update', data);
+      this.scores = [];
+      data.forEach((score, index) => {
+        this.scores.push({
+          teamName: score.teamName,
+          teamNum: score.teamNum,
+          teamScore: score.teamScore,
+          color: this.colors[index]
+        });
       });
-
-      console.log(this.scores);
     });
   }
 

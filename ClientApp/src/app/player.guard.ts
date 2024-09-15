@@ -1,46 +1,51 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate } from '@angular/router';
-import { MsalService } from '@azure/msal-angular';
-import { AccountInfo } from '@azure/msal-common';
+import { ActivatedRouteSnapshot, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
+import { JwtHelperService } from '@auth0/angular-jwt';
+import { Observable } from 'rxjs';
 
-interface Account extends AccountInfo {
-  idTokenClaims?: {
-    roles?: string[]
-  }
-}
 
 @Injectable({
   providedIn: 'root'
 })
-export class PlayerGuard implements CanActivate {
+export class PlayerGuard  {
 
-  constructor(private authService: MsalService) {}
+  constructor(private jwtHelper: JwtHelperService) {}
 
-  canActivate(route: ActivatedRouteSnapshot): boolean {
-    const expectedRole = route.data.expectedRole;
-    let account: Account = this.authService.instance.getAllAccounts()[0];
+  canActivate(
+    route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+    // get the jwt token which are present in the local storage
 
-    if (!account.idTokenClaims?.roles) {
-      window.alert('I\'m sorry. Please log out and log in again.');
-      return false;
-    } else if (!account.idTokenClaims?.roles?.includes(expectedRole)) {
-      window.alert('I\'m sorry. You do not have access to this area. If you are supposed to, please log out and log in again.');
-      return false;
+    const token = localStorage.getItem("jwt");
+    // const expectedRole = 1;
+
+    // Check if the token is expired or not and if token is expired then redirect to login page and return false
+    if (token && !this.jwtHelper.isTokenExpired(token)){
+      return true;
     }
-
-    return true;
+    return false;
   }
 
-  checkAdmin(expectedRole: string): boolean {
-    let account: Account = this.authService.instance.getAllAccounts()[0];
-
-    if (!account.idTokenClaims?.roles) {
-      return false;
-    } else if (!account.idTokenClaims?.roles?.includes(expectedRole)) {
+  checkRole(expectedRole: string): boolean {
+    const token = localStorage.getItem("jwt");
+    if (!token)
+    {
       return false;
     }
 
-    return true;
+    const decodedToken = this.jwtHelper.decodeToken(token);
+    console.log(decodedToken);
+
+    if (!decodedToken)
+    {
+      return false;
+    }
+
+    if (decodedToken["role"] && decodedToken["role"]?.includes(expectedRole)) {
+      return true;
+    }
+
+    return false;
   }
 
 }

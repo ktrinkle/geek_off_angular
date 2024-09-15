@@ -1,23 +1,24 @@
-import { Component, ComponentFactoryResolver, OnDestroy, OnInit, Pipe, PipeTransform } from '@angular/core';
+import { Component, OnDestroy, OnInit, Pipe, PipeTransform } from '@angular/core';
 import { DataService } from '../../data.service';
 import { Store } from '@ngrx/store';
 import { round3AnswerDto, round3QuestionDto, round23Scores, introDto } from '../../data/data';
-import { FormGroup, FormControl, Validators, FormBuilder, FormArray } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormControl, Validators, UntypedFormBuilder, UntypedFormArray } from '@angular/forms';
 import * as signalR from '@microsoft/signalr';
 import { environment } from 'src/environments/environment';
 import { MatDialog } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { selectCurrentEvent } from 'src/app/store';
+import { selectCurrentEvent, selectRound3Scores } from 'src/app/store';
+import { round3Score } from 'src/app/store/round3/round3.actions';
 
 @Pipe({ name: 'displayTeamInfo' })
 export class DisplayTeamInfoPipe implements PipeTransform {
   transform(teamList: introDto[], teamNumber: number): string {
-    const team = teamList.filter(x => x.teamNo === teamNumber);
+    const team = teamList.filter(x => x.teamNum === teamNumber);
     if (team.length === 0) {
       return '';
     }
-    return `${team[0].teamNo} - ${team[0].teamName}`;
+    return `${team[0].teamNum} - ${team[0].teamName}`;
   }
 }
 
@@ -29,24 +30,26 @@ export class DisplayTeamInfoPipe implements PipeTransform {
 export class Round3controlComponent implements OnInit, OnDestroy {
   public yEvent = '';
   public round3Questions: round3QuestionDto[] = [];
-  public round3Form: FormGroup = new FormGroup({
-    teams: new FormArray([]),
-    questionNum: new FormControl(''),
+  public round3Form: UntypedFormGroup = new UntypedFormGroup({
+    teams: new UntypedFormArray([]),
+    questionNum: new UntypedFormControl(''),
   });
 
-  public finalJepForm: FormGroup = new FormGroup({
-    teams: new FormArray([]),
-    questionNum: new FormControl('350'),
+  public finalJepForm: UntypedFormGroup = new UntypedFormGroup({
+    teams: new UntypedFormArray([]),
+    questionNum: new UntypedFormControl('350'),
   });
 
-  public selectedScore: number = 0;
-  public apiResponse: string = '';
+  public selectedScore = 0;
+  public apiResponse = '';
   public scoreboard: round23Scores[] = [];
   public teamList: introDto[] = [];
-  public currentDisplayId: number = 0;
+  public selectedQuestion = 0;
+  private answeredQuestion: string[] = [];
+
   destroy$: Subject<boolean> = new Subject<boolean>();
 
-  finalizeState: string = 'Finalize Round';
+  finalizeState = 'Finalize Round';
 
   public colors: string[] = [
     'red',
@@ -55,7 +58,7 @@ export class Round3controlComponent implements OnInit, OnDestroy {
   ]
 
   constructor(private store: Store, private _dataService: DataService,
-    private formBuilder: FormBuilder, public dialog: MatDialog) { }
+    private formBuilder: UntypedFormBuilder, public dialog: MatDialog) { }
 
   ngOnInit(): void {
 
@@ -64,6 +67,11 @@ export class Round3controlComponent implements OnInit, OnDestroy {
       if (this.yEvent && this.yEvent.length > 0) {
         this._dataService.getAllRound3Teams(this.yEvent).subscribe(t => {
           this.teamList = t;
+
+          console.log('calling store dispatch', this.yEvent);
+          this.store.dispatch(round3Score({ yEvent: this.yEvent }));
+
+          console.log('calling getround3questions');
           this.getRound3Questions(this.yEvent);
         })
         this.updateScoreboard();
@@ -73,7 +81,7 @@ export class Round3controlComponent implements OnInit, OnDestroy {
 
     const connection = new signalR.HubConnectionBuilder()
       .configureLogging(signalR.LogLevel.Debug)
-      .withUrl(environment.api_url + '/events')
+      .withUrl(environment.api_url + '/events', { withCredentials: false })
       .withAutomaticReconnect()
       .build();
 
@@ -83,12 +91,13 @@ export class Round3controlComponent implements OnInit, OnDestroy {
       return console.error(err.toString());
     });
 
-    connection.on("round3ScoreUpdate", (data: any) => {
+    connection.on("round3ScoreUpdate", () => {
       this.updateScoreboard();
     })
 
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   getTeamsFromForm(form: any) {
     return form?.get('teams')?.controls;
   }
@@ -109,33 +118,33 @@ export class Round3controlComponent implements OnInit, OnDestroy {
 
       // creates the formArray of the formGroup of question controls
       const tArray = this.formBuilder.array([]);
-      for (let team of this.teamList) {
+      for (const team of this.teamList) {
         tArray.push(
           this.formBuilder.group({
-            teamNum: new FormControl(team.teamNo),
-            score: new FormControl('', [Validators.pattern('[0-9]*')])
+            teamNum: new UntypedFormControl(team.teamNum),
+            score: new UntypedFormControl('', [Validators.pattern('[0-9]*')])
           })
         );
       }
 
       // creates the entire form
-      this.round3Form = new FormGroup({
+      this.round3Form = new UntypedFormGroup({
         teams: tArray,
-        questionNum: new FormControl('', [Validators.pattern('[0-9]*')])
+        questionNum: new UntypedFormControl('', [Validators.pattern('[0-9]*')])
       });
 
-      this.finalJepForm = new FormGroup({
+      this.finalJepForm = new UntypedFormGroup({
         teams: tArray,
-        questionNum: new FormControl('350')
+        questionNum: new UntypedFormControl('350')
       });
     });
   }
 
-  getScore(questionNumber: any) {
+  getScore(questionNumber: number): void {
     this.resetSelections(this.round3Form);
     const question = this.round3Questions.find(x => x.questionNum == questionNumber);
     this.selectedScore = question?.score ?? 0;
-    return question?.score;
+    this.selectedQuestion = questionNumber;
   }
 
   async updateRemoteScoreboard() {
@@ -144,13 +153,13 @@ export class Round3controlComponent implements OnInit, OnDestroy {
   }
 
   updateScoreboard() {
-    this._dataService.getRound3Scores(this.yEvent).subscribe(a => {
-      this.scoreboard = a;
+    this.store.select(selectRound3Scores).pipe(takeUntil(this.destroy$)).subscribe((data: round23Scores[]) => {
+      this.scoreboard = data;
     });
   }
 
-  resetSelections(form: FormGroup) {
-    const teamFormArray = form.get('teams') as FormArray;
+  resetSelections(form: UntypedFormGroup) {
+    const teamFormArray = form.get('teams') as UntypedFormArray;
     for (const team of teamFormArray.controls) {
       team.get('score')?.reset();
     }
@@ -158,9 +167,9 @@ export class Round3controlComponent implements OnInit, OnDestroy {
   }
 
   // Get user answer and store in DB
-  saveUserAnswer(form: FormGroup) {
+  saveUserAnswer(form: UntypedFormGroup) {
     const submitArray = [];
-    const teamFormArray = form?.get('teams') as FormArray;
+    const teamFormArray = form?.get('teams') as UntypedFormArray;
     for (const team of teamFormArray.controls) {
       const teamScore: round3AnswerDto = {
         yEvent: this.yEvent,
@@ -170,16 +179,26 @@ export class Round3controlComponent implements OnInit, OnDestroy {
       };
       submitArray.push(teamScore);
     }
+    const questionNum = form.get('questionNum')?.value as number;
 
     console.log(submitArray);
 
     this._dataService.updateRound3Scores(submitArray).subscribe((data: string) => {
       this.apiResponse = data;
+      this.store.dispatch(round3Score({ yEvent: this.yEvent}));
+      this.updateRemoteScoreboard();
     });
 
     this.resetSelections(form);
     form.get('questionNum')?.reset();
+    this.selectedQuestion = 0;
 
+    const idx = this.round3Questions.findIndex(q => questionNum == q.questionNum);
+    console.log('question search', idx);
+    if (idx >= -1) {
+      this.round3Questions[idx].disabled = true;
+    }
+    console.log('updated question array', this.round3Questions);
   }
 
   finalizeRound() {

@@ -18,10 +18,8 @@ import { Round1hostComponent } from './host/round1host/round1host.component';
 import { Round3scoreboardComponent } from './round3/scoreboard/round3scoreboard.component';
 import { Round3controlComponent } from './control/round3control/round3control.component';
 
-import { MsalGuard, MsalRedirectComponent } from '@azure/msal-angular';
-import { BrowserUtils } from '@azure/msal-browser';
-
 import { PlayerGuard } from './player.guard';
+import { PlayerComponent } from './login/player/player.component';
 
 const roles = {
   "Player": "player",
@@ -30,17 +28,12 @@ const roles = {
 }
 
 const routes: Routes = [
-  {
-    // Dedicated route for redirects
-    path: 'code',
-    component: MsalRedirectComponent
-  },
   // guards for what we see below need to be added
   {
     path: 'round1/contestant',
     component: Round1ContestantComponent,
     pathMatch: 'full',
-    canActivate: [MsalGuard, PlayerGuard],
+    canActivate: [PlayerGuard],
     data: {
       expectedRole: roles.Player
     }
@@ -49,7 +42,7 @@ const routes: Routes = [
     path: 'round1/intro/:page',
     component: Round1IntroComponent,
     pathMatch: 'full',
-    canActivate: [MsalGuard, PlayerGuard],
+    canActivate: [PlayerGuard],
     data: {
       expectedRole: roles.Admin
     }
@@ -58,7 +51,7 @@ const routes: Routes = [
     path: 'round1/question/:question',
     component: Round1DisplayQuestionComponent,
     pathMatch: 'full',
-    canActivate: [MsalGuard, PlayerGuard],
+    canActivate: [PlayerGuard],
     data: {
       expectedRole: roles.Admin
     }
@@ -67,25 +60,25 @@ const routes: Routes = [
     path: 'round1/scoreboard',
     component: Round1ScoreboardComponent,
     pathMatch: 'full',
-    canActivate: [MsalGuard, PlayerGuard],
+    canActivate: [PlayerGuard],
     data: {
       expectedRole: roles.Admin
     }
   },
   {
-    path: 'round2/countdown',
+    path: 'round2feud/countdown',
     component: Round2countdownComponent,
     pathMatch: 'full',
-    canActivate: [MsalGuard, PlayerGuard],
+    canActivate: [PlayerGuard],
     data: {
       expectedRole: roles.Admin
     }
   },
   {
-    path: 'round2/display',
+    path: 'round2feud/display',
     component: Round2displayComponent,
     pathMatch: 'full',
-    canActivate: [MsalGuard, PlayerGuard],
+    canActivate: [PlayerGuard],
     data: {
       expectedRole: roles.Admin
     }
@@ -94,7 +87,7 @@ const routes: Routes = [
     path: 'control/pregame',
     component: PregameComponent,
     pathMatch: 'full',
-    canActivate: [MsalGuard, PlayerGuard],
+    canActivate: [PlayerGuard],
     data: {
       expectedRole: roles.Admin
     }
@@ -103,46 +96,46 @@ const routes: Routes = [
     path: 'round3/scoreboard',
     component: Round3scoreboardComponent,
     pathMatch: 'full',
-    canActivate: [MsalGuard, PlayerGuard],
+    canActivate: [PlayerGuard],
     data: {
       expectedRole: roles.Admin
     }
   },
   {
-    path: 'round2/scoreboard',
+    path: 'round2feud/scoreboard',
     component: Round2scoreboardComponent,
     pathMatch: 'full',
-    canActivate: [MsalGuard, PlayerGuard],
+    canActivate: [PlayerGuard],
     data: {
       expectedRole: roles.Admin
     }
   },
   {
-    path: 'round2/scoreboard',
+    path: 'round2feud/scoreboard',
     component: Round2scoreboardComponent,
     pathMatch: 'full',
-    canActivate: [MsalGuard]
+    canActivate: [PlayerGuard]
   },
   {
-    path: 'round2/scoreboard',
+    path: 'round2feud/scoreboard',
     component: Round2scoreboardComponent,
     pathMatch: 'full',
-    canActivate: [MsalGuard]
+    canActivate: [PlayerGuard]
   },
   {
     path: 'control/round1',
     component: Round1ControlComponent,
     pathMatch: 'full',
-    canActivate: [MsalGuard, PlayerGuard],
+    canActivate: [PlayerGuard],
     data: {
       expectedRole: roles.Admin
     }
   },
   {
-    path: 'control/round2',
+    path: 'control/round2feud',
     component: Round2controlComponent,
     pathMatch: 'full',
-    canActivate: [MsalGuard, PlayerGuard],
+    canActivate: [PlayerGuard],
     data: {
       expectedRole: roles.Admin
     }
@@ -151,16 +144,16 @@ const routes: Routes = [
     path: 'control/round3',
     component: Round3controlComponent,
     pathMatch: 'full',
-    canActivate: [MsalGuard, PlayerGuard],
+    canActivate: [PlayerGuard],
     data: {
       expectedRole: roles.Admin
     }
   },
   {
-    path: 'host/round2',
+    path: 'host/round2feud',
     component: Round2hostComponent,
     pathMatch: 'full',
-    canActivate: [MsalGuard, PlayerGuard],
+    canActivate: [PlayerGuard],
     data: {
       expectedRole: roles.Admin
     }
@@ -169,15 +162,20 @@ const routes: Routes = [
     path: 'host/round1',
     component: Round1hostComponent,
     pathMatch: 'full',
-    canActivate: [MsalGuard, PlayerGuard],
+    canActivate: [PlayerGuard],
     data: {
       expectedRole: roles.Admin
     }
   },
-  // these do not need MSAL guards and should be open to all
+  // these do not need guards and should be open to all
   {
     path: '',
     component: HomeComponent,
+    pathMatch: 'full'
+  },
+  {
+    path: 'player/:yevent/:teamGuid',
+    component: PlayerComponent,
     pathMatch: 'full'
   },
   {
@@ -189,9 +187,8 @@ const routes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forRoot(routes, {
-    useHash: true,
+    useHash: false,
     // Don't perform initial navigation in iframes or popups
-    initialNavigation: !BrowserUtils.isInIframe() && !BrowserUtils.isInPopup() ? 'enabled' : 'disabled'
   })],
   exports: [RouterModule],
 

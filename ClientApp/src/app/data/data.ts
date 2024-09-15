@@ -1,3 +1,5 @@
+import { Guid } from "typescript-guid";
+
 export interface round2SurveyQuestions {
   questionNum: number,
   surveyAnswers?: round2Answers[]
@@ -10,7 +12,7 @@ export interface round2Answers {
 }
 
 export interface round2Display {
-  teamNo: number,
+  teamNum: number,
   player1Answers: round2Answers[],
   player2Answers?: round2Answers[],
   finalScore: number
@@ -26,12 +28,12 @@ export interface round1Scores {
 }
 
 export interface round1ScoreDetail {
-  questionId: number,
+  questionNum: number,
   questionScore?: number
 }
 
 export interface round23Scores {
-  teamNo: number,
+  teamNum: number,
   teamName: string,
   teamScore?: number,
   rnk?: number,
@@ -55,7 +57,7 @@ export interface round2SubmitAnswer {
 }
 
 export interface introDto {
-  teamNo: number,
+  teamNum: number,
   teamName: string,
   member1: string,
   member2?: string,
@@ -81,9 +83,10 @@ export interface round1QDisplay {
   questionText: string,
   answers: round1AnswerDto[],
   correctAnswer: string,
-  answerType: number,
+  answerType: string,
   mediaFile: string,
-  mediaType: string
+  mediaType: string,
+  enabled: boolean
 }
 
 export interface currentQuestionDto {
@@ -109,7 +112,8 @@ export interface round1EnteredAnswers {
 export interface round3QuestionDto {
   questionNum: number,
   sortOrder: number,
-  score: number
+  score: number,
+  disabled: boolean
 }
 
 export interface round3AnswerDto {
@@ -117,4 +121,62 @@ export interface round3AnswerDto {
   questionNum: number,
   teamNum: number,
   score: number
+}
+
+export interface eventMaster {
+  yEvent: string,
+  eventName: string,
+  selEvent: boolean
+}
+
+export interface apiResponse {
+  successInd: boolean,
+  response: string
+}
+
+export interface teamEntry {
+  teamNum: number,
+  teamGuid: Guid,
+  successInd: boolean,
+  teamName: string
+}
+
+export interface jwtReturn {
+  teamNum: number,
+  adminName: string,
+  userName: string,
+  sessionGuid: Guid,
+  role: string
+}
+
+export interface adminLogin {
+  userLogin: {
+    userName: string,
+    password: string,
+  }
+}
+
+export interface bearerDto {
+  teamNum: number,
+  teamName?: string,
+  userName?: string,
+  humanName: string,
+  bearerToken: string,
+}
+
+export interface simpleUser {
+  teamNum?: number,
+  teamName?: string
+}
+
+export interface teamLogin {
+  yEvent: string,
+  teamGuid: Guid
+}
+
+export interface newTeamEntry {
+  successInd: boolean,
+  teamNum: number,
+  teamGuid : Guid,
+  teamName : string
 }

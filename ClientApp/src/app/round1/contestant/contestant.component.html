@@ -4,7 +4,7 @@
     <p>Hang tight! Your question is coming!</p>
   </div>
   <div id="showQuestion" *ngIf="questionVisible">
-    <p>{{ currentQuestionDto?.questionText }}</p>
+    <p>{{ currentQuestionDto.questionText }}</p>
   </div>
   <div
     id="hideQuestion"
@@ -26,7 +26,7 @@
       <div
         id="formMc"
         class="contbtngrn"
-        *ngIf="currentQuestionDto.answerType == 0"
+        *ngIf="currentQuestionDto.answerType === 0"
       >
         <div *ngFor="let answer of currentQuestionDto.answers">
           <input
@@ -49,7 +49,7 @@
                     </div>
                 </mat-button-toggle-group-->
       </div>
-      <div id="formMatch" *ngIf="currentQuestionDto?.answerType == 1">
+      <div id="formMatch" *ngIf="currentQuestionDto?.answerType === 1">
         <div class="dropdown">
           <label for="matchanswer1">A.</label>
           <select
@@ -115,7 +115,7 @@
           </select>
         </div>
       </div>
-      <div id="formFillIn" *ngIf="currentQuestionDto?.answerType == 2">
+      <div id="formFillIn" *ngIf="currentQuestionDto?.answerType === 2">
         <label for="textAnswer">Your answer:</label>
         <input
           id="textAnswer"

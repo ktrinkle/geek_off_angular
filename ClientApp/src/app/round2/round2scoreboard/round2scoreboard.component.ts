@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Store } from '@ngrx/store';
 import * as signalR from '@microsoft/signalr';
@@ -16,7 +16,7 @@ import { Router } from '@angular/router';
 })
 export class Round2scoreboardComponent implements OnInit, OnDestroy {
   yEvent = '';
-  public roundNo: number = 2;
+  public roundNum = 2;
   public scores: round23Scores[] = [];
   public colors: string[] = [
     'coral',
@@ -43,7 +43,7 @@ export class Round2scoreboardComponent implements OnInit, OnDestroy {
 
     const connection = new signalR.HubConnectionBuilder()
       .configureLogging(signalR.LogLevel.Information)
-      .withUrl(`${environment.api_url}/events`)
+      .withUrl(`${environment.api_url}/events`, { withCredentials: false })
       .withAutomaticReconnect()
       .build();
 
@@ -53,21 +53,22 @@ export class Round2scoreboardComponent implements OnInit, OnDestroy {
       return console.error(err.toString());
     });
 
-    connection.on("round2ScoreUpdate", (_: any) => {
+    connection.on("round2ScoreUpdate", () => {
       this.getScoreboardInfo(this.yEvent);
     })
 
-    connection.on("round3ScoreUpdate", (_: any) => {
+    connection.on("round3ScoreUpdate", () => {
       this._router.navigate(['/round3/scoreboard']);
     })
   }
 
   public getScoreboardInfo(yevent: string) {
-    this._dataService.getRound2Scores(yevent).subscribe((data: round23Scores[]) => {
+    this._dataService.getRound2FeudScores(yevent).subscribe((data: round23Scores[]) => {
       this.scores = data.sort((a, b) => a.teamScore ? - (b.teamScore || 0) : 0);
 
       this.scores.forEach((score, index) => {
         score.color = this.colors[index];
+        score.teamName = score.teamName ?? '';
       });
 
       console.log(this.scores);

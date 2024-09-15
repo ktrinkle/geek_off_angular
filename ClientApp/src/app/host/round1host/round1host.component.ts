@@ -16,7 +16,7 @@ import { takeUntil } from 'rxjs/operators';
 export class Round1hostComponent implements OnInit, OnDestroy {
 
   teamAnswers: round1EnteredAnswers[] = [];
-  yEvent: string = '';
+  yEvent = '';
   public currentQuestion: currentQuestionDto = {
     questionNum: 0,
     status: 0
@@ -35,7 +35,7 @@ export class Round1hostComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     const connection = new signalR.HubConnectionBuilder()
       .configureLogging(signalR.LogLevel.Information)
-      .withUrl(environment.api_url + '/events')
+      .withUrl(environment.api_url + '/events', { withCredentials: false })
       .withAutomaticReconnect()
       .build();
 
@@ -45,11 +45,11 @@ export class Round1hostComponent implements OnInit, OnDestroy {
       return console.error(err.toString());
     });
 
-    connection.on("round1question", (data: any) => {
+    connection.on("round1question", (data) => {
       this.loadQuestion(data);
     });
 
-    connection.on("round1PlayerAnswer", (data: any) => {
+    connection.on("round1PlayerAnswer", () => {
       this.loadTeamAnswers();
     });
 
@@ -64,7 +64,7 @@ export class Round1hostComponent implements OnInit, OnDestroy {
             if (this.currentQuestion.questionNum > 0) {
               this.loadQuestion(this.currentQuestion.questionNum);
               this.loadTeamAnswers();
-            };
+            }
           }
         });
       }
@@ -79,11 +79,11 @@ export class Round1hostComponent implements OnInit, OnDestroy {
     });
   }
 
-  loadQuestion(questionId: number): void {
-    this.dataService.getRound1QuestionAnswer(this.yEvent, questionId).subscribe(q => {
+  loadQuestion(questionNum: number): void {
+    this.dataService.getRound1QuestionAnswer(this.yEvent, questionNum).subscribe(q => {
       this.currentQuestionDto = q;
     });
-  };
+  }
 
   ngOnDestroy() {
     this.destroy$.next(true);

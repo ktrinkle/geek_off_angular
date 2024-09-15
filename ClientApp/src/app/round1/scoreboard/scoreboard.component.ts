@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { DataService } from 'src/app/data.service';
 import { Subject } from 'rxjs';
@@ -16,7 +17,7 @@ import { selectCurrentEvent } from 'src/app/store';
 })
 export class Round1ScoreboardComponent implements OnInit, OnDestroy {
 
-  yEvent: string = '';
+  yEvent = '';
   headers: string[] = [];
   teamData: any[] = [];
   destroy$: Subject<boolean> = new Subject<boolean>();
@@ -31,7 +32,7 @@ export class Round1ScoreboardComponent implements OnInit, OnDestroy {
 
     const connection = new signalR.HubConnectionBuilder()
       .configureLogging(signalR.LogLevel.Information)
-      .withUrl(environment.api_url + '/events')
+      .withUrl(environment.api_url + '/events', { withCredentials: false })
       .withAutomaticReconnect()
       .build();
 
@@ -41,13 +42,13 @@ export class Round1ScoreboardComponent implements OnInit, OnDestroy {
       return console.error(err.toString());
     });
 
-    connection.on("round1ScoreUpdate", (data: any) => {
+    connection.on("round1ScoreUpdate", () => {
       console.log('Updating scoreboard');
       this.getScoreboard();
     });
 
-    connection.on("round2ScoreUpdate", (data: any) => {
-      this.router.navigate(['/round2/scoreboard']);
+    connection.on("round2ScoreUpdate", () => {
+      this.router.navigate(['/round2feud/scoreboard']);
     });
 
   }
@@ -58,7 +59,7 @@ export class Round1ScoreboardComponent implements OnInit, OnDestroy {
         let questionNumbers: any[] = [];
         if (s.length > 0) {
           for (const team of s) {
-            const tempNumbers = [...new Set(team.q.map((q: any) => q.questionId))];
+            const tempNumbers = [...new Set(team.q.map((q: any) => q.questionNum))];
             questionNumbers = [...new Set([...questionNumbers, ...tempNumbers])]
           }
         }
@@ -82,11 +83,11 @@ export class Round1ScoreboardComponent implements OnInit, OnDestroy {
         // reset teamData
         this.teamData = [];
 
-        for (let team of s) {
-          let temp = [team.teamNum, team.teamName];
+        for (const team of s) {
+          const temp = [team.teamNum, team.teamName];
           if (questionNumbers) {
             for (const number of questionNumbers) {
-              const question = team.q.filter((a: any) => a.questionId === number);
+              const question = team.q.filter((a: any) => a.questionNum === number);
               if (question.length > 0) {
                 temp.push(question[0].questionScore);
               } else {
@@ -101,7 +102,7 @@ export class Round1ScoreboardComponent implements OnInit, OnDestroy {
         }
       });
     }
-  };
+  }
 
   ngOnDestroy() {
     this.destroy$.next(true);

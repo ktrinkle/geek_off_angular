@@ -1,20 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { map, switchMap } from 'rxjs/operators';
-import { currentEvent, currentEventSuccess, round1AllQuestions, round1AllQuestionsSuccess, round1AllTeams, round1AllTeamsSuccess, round1BigDisplay, round1BigDisplaySuccess } from './round1.actions';
+import { round1AllQuestions, round1AllQuestionsSuccess, round1AllTeams, round1AllTeamsSuccess, round1BigDisplay, round1BigDisplaySuccess } from './round1.actions';
 import { DataService } from 'src/app/data.service';
 
 @Injectable()
 export class Round1Effects {
 
   constructor(private actions$: Actions, private dataService: DataService) { }
-
-  getCurrentEvent$ = createEffect(() => this.actions$.pipe(
-    ofType(currentEvent),
-    switchMap(() =>
-      this.dataService.getCurrentEvent().pipe(map(currentEvent =>
-        currentEventSuccess({ currentEvent: currentEvent }) // todo: add catchError
-      )))));
 
   getAllTeams$ = createEffect(() => this.actions$.pipe(
     ofType(round1AllTeams),

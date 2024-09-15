@@ -1,5 +1,5 @@
 <div id="bb">
-  <div *ngIf="currentScreen == 'question'">
+  <div *ngIf="currentScreen === 'question'">
     <table>
         <tr>
             <th colspan="6">TEAM NUMBER: {{ teamNumber }}</th>
@@ -47,7 +47,7 @@
 
             <td class="bigscore">
                 <span *ngIf="displayStatus < showTotalPlayer1 || (displayStatus > showTotalPlayer1 && displayStatus < showTotalPlayer2)" class="hidescore3" [@fadeInOut]> ©©©</span>
-                <span *ngIf="displayStatus == showTotalPlayer1 || displayStatus == showTotalPlayer2" class="score3">{{totalScore}}</span>
+                <span *ngIf="displayStatus === showTotalPlayer1 || displayStatus === showTotalPlayer2" class="score3">{{totalScore}}</span>
             </td>
             <td class="spacer">
             </td>
@@ -58,7 +58,7 @@
     </table>
     </div>
 
-  <div class="prize" *ngIf="currentScreen == 'prize1'" [@slideLeft]>
-    <img src="https://geekoff2021static.blob.core.windows.net/images/r2_consolation.jpg" class="fullscreen" />
+  <div class="prize" *ngIf="currentScreen === 'prize1'" [@slideLeft]>
+    <img src="https://geekoff2021static.blob.core.windows.net/images/r2_consolation.jpg" class="fullscreen" alt="Round 2 consolation prize"/>
   </div>
 </div>

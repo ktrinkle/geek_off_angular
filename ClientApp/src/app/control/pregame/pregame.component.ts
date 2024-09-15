@@ -4,10 +4,10 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import * as signalR from '@microsoft/signalr';
 import { environment } from 'src/environments/environment';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormControl, Validators } from '@angular/forms';
 import { DataService } from 'src/app/data.service';
 import { Store } from '@ngrx/store';
-import { selectCurrentEvent, selectRound1Teams } from 'src/app/store';
+import { selectCurrentEvent } from 'src/app/store';
 
 @Component({
   selector: 'app-pregame',
@@ -16,10 +16,10 @@ import { selectCurrentEvent, selectRound1Teams } from 'src/app/store';
 })
 export class PregameComponent implements OnInit, OnDestroy {
 
-  currentPage: string = '1';
-  currentPageName: string = 'Intro page 1';
-  teamList: any = [];
-  seatBelt: boolean = false;
+  currentPage = '1';
+  currentPageName = 'Intro page 1';
+  teamList: any[] = [];
+  seatBelt = false;
   yEvent = '';
   audio = new Audio();
   seatBeltSound = new Audio();
@@ -34,16 +34,16 @@ export class PregameComponent implements OnInit, OnDestroy {
     { key: 'rule3', value: 'Rules page 3' },
   ];
 
-  pageForm: FormGroup = new FormGroup({
-    pageName: new FormControl('')
+  pageForm: UntypedFormGroup = new UntypedFormGroup({
+    pageName: new UntypedFormControl('')
   });
 
-  fundForm: FormGroup = new FormGroup({
-    teamNumber: new FormControl(''),
-    dollarAmount: new FormControl('', Validators.pattern('[0-9].'))
+  fundForm: UntypedFormGroup = new UntypedFormGroup({
+    teamNumber: new UntypedFormControl(''),
+    dollarAmount: new UntypedFormControl('', Validators.pattern('[0-9].'))
   });
 
-  fundFormStatus: string = '';
+  fundFormStatus = '';
 
   destroy$: Subject<boolean> = new Subject<boolean>();
 
@@ -67,7 +67,7 @@ export class PregameComponent implements OnInit, OnDestroy {
 
     const connection = new signalR.HubConnectionBuilder()
       .configureLogging(signalR.LogLevel.Information)
-      .withUrl(environment.api_url + '/events')
+      .withUrl(environment.api_url + '/events', { withCredentials: false })
       .withAutomaticReconnect()
       .build();
 
@@ -78,7 +78,9 @@ export class PregameComponent implements OnInit, OnDestroy {
     });
 
     // we only want to flip automatically if we have to
-    connection.on("round1ShowAnswerChoices", (data: any) => { });
+    connection.on("round1ShowAnswerChoices", () => {
+      console.log('showanswer');
+    });
 
   }
 
@@ -102,13 +104,13 @@ export class PregameComponent implements OnInit, OnDestroy {
   }
 
   moveToRound1() {
-    this.dataService.changeRound1QuestionStatus(this.yEvent, 1, 0).subscribe(_ => {});
+    this.dataService.changeRound1QuestionStatus(this.yEvent, 1, 0).subscribe();
     this.router.navigate(['/control/round1']);
   }
 
   updateDollarRaised() {
-    var teamNum = this.fundForm.value.teamNumber;
-    var dollarAmount = this.fundForm.value.dollarAmount;
+    const teamNum = this.fundForm.value.teamNumber;
+    const dollarAmount = this.fundForm.value.dollarAmount;
     this.dataService.updateDollarAmount(this.yEvent, teamNum, dollarAmount).subscribe(data => {
       this.fundFormStatus = data;
     });

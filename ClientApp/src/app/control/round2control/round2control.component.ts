@@ -3,7 +3,7 @@ import { DataService } from '../../data.service';
 import { Store } from '@ngrx/store';
 import { round2AllSurvey } from '../../store/round2/round2.actions';
 import { round2SurveyQuestions, round2SubmitAnswer, round2Answers, round23Scores } from '../../data/data';
-import { FormGroup, FormControl, Validators, FormBuilder, FormArray } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormControl, Validators, UntypedFormBuilder, UntypedFormArray } from '@angular/forms';
 import * as signalR from '@microsoft/signalr';
 import { environment } from 'src/environments/environment';
 import { MatDialog } from '@angular/material/dialog';
@@ -20,27 +20,27 @@ import { selectCurrentEvent } from 'src/app/store';
 export class Round2controlComponent implements OnInit, OnDestroy {
   public yEvent = '';
   public surveyMasterList: round2SurveyQuestions[] = [];
-  public newEventForm: FormGroup = new FormGroup({
-    teamNum: new FormControl('', [Validators.pattern('[0-9]*')]),
-    playerNum: new FormControl('', [Validators.pattern('1|2')]),
-    questions: new FormArray([]),
+  public newEventForm: UntypedFormGroup = new UntypedFormGroup({
+    teamNum: new UntypedFormControl('', [Validators.pattern('[0-9]*')]),
+    playerNum: new UntypedFormControl('', [Validators.pattern('1|2')]),
+    questions: new UntypedFormArray([]),
   });
-  public apiResponse: string = '';
-  public showBonusQuestion: boolean = false;
+  public apiResponse = '';
+  public showBonusQuestion = false;
   public scoreboard: round23Scores[] = [];
-  public currentDisplayId: number = 0;
+  public currentDisplayId = 0;
   public firstPlayerAnswers: round2Answers[] = [];
   buzzer = new Audio();
   dings = new Audio();
   consolation = new Audio('https://geekoff2021static.blob.core.windows.net/snd/r2_consolation.m4a');
   destroy$: Subject<boolean> = new Subject<boolean>();
-  countdownValue: number = 0;   // Countdown timer duration.
+  countdownValue = 0;   // Countdown timer duration.
 
-  public pickAnimateForm: FormGroup = new FormGroup({
-    currentDisplayId: new FormControl(this.currentDisplayId)
+  public pickAnimateForm: UntypedFormGroup = new UntypedFormGroup({
+    currentDisplayId: new UntypedFormControl(this.currentDisplayId)
   })
 
-  displayList: any[] = [
+  displayList: { key: number, value: string }[] = [
     { key: 0, value: 'Hide all' },
     { key: 1, value: 'Player 1 Answer 1' },
     { key: 2, value: 'Player 1 Score 1' },
@@ -69,10 +69,12 @@ export class Round2controlComponent implements OnInit, OnDestroy {
     2
   ];
 
-  finalizeState: string = 'Finalize Round';
+  finalizeState = 'Finalize Round';
+
+  public formQuestionValues: any;
 
   constructor(private store: Store, private _dataService: DataService,
-    private formBuilder: FormBuilder, public dialog: MatDialog) { }
+    private formBuilder: UntypedFormBuilder, public dialog: MatDialog) { }
 
   ngOnInit(): void {
 
@@ -93,7 +95,7 @@ export class Round2controlComponent implements OnInit, OnDestroy {
 
     const connection = new signalR.HubConnectionBuilder()
       .configureLogging(signalR.LogLevel.Debug)
-      .withUrl(environment.api_url + '/events')
+      .withUrl(environment.api_url + '/events', { withCredentials: false })
       .withAutomaticReconnect()
       .build();
 
@@ -103,45 +105,49 @@ export class Round2controlComponent implements OnInit, OnDestroy {
       return console.error(err.toString());
     });
 
-    connection.on("round2ScoreUpdate", (data: any) => {
+    connection.on("round2ScoreUpdate", () => {
       this.updateScoreboard();
     })
 
-    connection.on("round2ChangeTeam", (data: any) => {
+    connection.on("round2ChangeTeam", (data) => {
       console.log(data);
     })
 
-    connection.on("round2Answer", (data: any) => { })
+    connection.on("round2Answer", () => {
+      console.log('callback');
+    })
 
-    connection.on("round2AnswerShow", (data: any) => { })
+    connection.on("round2AnswerShow", () => {
+      console.log('callback');
+    })
 
   }
 
   // Grabs all the questions.
   getSurveyQuestions(yevent: string) {
-    this._dataService.getAllRound2SurveyQuestions(yevent).subscribe((data: round2SurveyQuestions[]) => {
+    this._dataService.getAllRound2FeudSurveyQuestions(yevent).subscribe((data: round2SurveyQuestions[]) => {
       this.surveyMasterList = data;
 
       // creates the formArray of the formGroup of question controls
       const qArray = this.formBuilder.array([]);
-      for (let question of this.surveyMasterList) {
+      for (const question of this.surveyMasterList) {
         qArray.push(
           this.formBuilder.group({
-            questionNum: new FormControl(question.questionNum),
-            answer: new FormControl(''),
-            score: new FormControl('', [Validators.pattern('[0-9]*')])
+            questionNum: new UntypedFormControl(question.questionNum),
+            answer: new UntypedFormControl(''),
+            score: new UntypedFormControl('', [Validators.pattern('[0-9]*')])
           })
         );
       }
 
       // creates the entire form
-      this.newEventForm = new FormGroup({
-        teamNum: new FormControl('', [Validators.pattern('[0-9]*')]),
-        playerNum: new FormControl('', [Validators.pattern('1|2')]),
+      this.newEventForm = new UntypedFormGroup({
+        teamNum: new UntypedFormControl('', [Validators.pattern('[0-9]*')]),
+        playerNum: new UntypedFormControl('', [Validators.pattern('1|2')]),
         questions: qArray,
       });
 
-      console.log(this.newEventForm);
+      this.formQuestionValues = this.getQuestions(this.newEventForm);
     });
   }
 
@@ -159,7 +165,7 @@ export class Round2controlComponent implements OnInit, OnDestroy {
 
   // Get user answer and store in DB (see)
   saveUserAnswer(questionGroup: any) {
-    var submitAnswer: round2SubmitAnswer = {
+    const submitAnswer: round2SubmitAnswer = {
       yEvent: this.yEvent,
       questionNum: questionGroup.get('questionNum').value,
       playerNum: this.newEventForm.get('playerNum')?.value,
@@ -168,9 +174,7 @@ export class Round2controlComponent implements OnInit, OnDestroy {
       score: questionGroup.get('score').value
     };
 
-    console.log(submitAnswer);
-
-    this._dataService.sendRound2AnswerText(submitAnswer).subscribe((data: string) => {
+    this._dataService.sendRound2FeudAnswerText(submitAnswer).subscribe((data: string) => {
       this.apiResponse = data;
     });
 
@@ -189,19 +193,19 @@ export class Round2controlComponent implements OnInit, OnDestroy {
     }
   }
 
-  presetAnswer(answer: any, question: FormGroup) {
+  presetAnswer(answer: any, question: UntypedFormGroup) {
     question.get("answer")?.setValue(answer.answer);
     question.get("score")?.setValue(answer.score);
     question.get("questionNum")?.setValue(answer.questionNum);
   }
 
   async updateRemoteScoreboard() {
-    await this._dataService.updateScoreboardRound2();
+    await this._dataService.updateScoreboardRound2Feud();
     this.updateScoreboard();
   }
 
   updateScoreboard() {
-    this._dataService.getRound2Scores(this.yEvent).subscribe({
+    this._dataService.getRound2FeudScores(this.yEvent).subscribe({
       next: (a => {
         this.scoreboard = a;
       }), complete: () => {
@@ -227,25 +231,25 @@ export class Round2controlComponent implements OnInit, OnDestroy {
 
   showDisplayBoardValue() {
     // this will be values 0-20. 0 = hide all, 10 = show all player 1, 20 = show all
-    var entryNum = this.pickAnimateForm.value.currentDisplayId;
-    this._dataService.revealRound2Value(entryNum);
+    const entryNum = this.pickAnimateForm.value.currentDisplayId;
+    this._dataService.revealRound2FeudValue(entryNum);
   }
 
-  showFirstAnswers(form: FormGroup) {
+  showFirstAnswers(form: UntypedFormGroup) {
     if (this.newEventForm.get("playerNum")?.value == "2") {
-      this._dataService.getRound2FirstPlayer(this.yEvent, this.newEventForm.get("teamNum")?.value)
+      this._dataService.getRound2FeudFirstPlayer(this.yEvent, this.newEventForm.get("teamNum")?.value)
         .subscribe((data: round2Answers[]) => this.firstPlayerAnswers = data);
       console.log("FPA: " + this.firstPlayerAnswers);
     }
   }
 
   changeTeamPlayer() {
-    var teamNum = this.newEventForm.get("teamNum")?.value;
+    const teamNum = this.newEventForm.get("teamNum")?.value;
     console.log('Got team number ' + teamNum);
 
     if (teamNum != '--')
     {
-      this._dataService.changeRound2Team(teamNum);
+      this._dataService.changeRound2FeudTeam(teamNum);
       this.newEventForm.patchValue({ "playerNum": "1" });
     }
   }
@@ -276,14 +280,14 @@ export class Round2controlComponent implements OnInit, OnDestroy {
   }
 
   changeScreen(name: string) {
-    this._dataService.changeRound2Page(name);
+    this._dataService.changeRound2FeudPage(name);
     if (name == 'prize1') {
       this.consolation.play();
     }
   }
 
   finalizeRound() {
-    this._dataService.finalizeRound2(this.yEvent).subscribe(data => {
+    this._dataService.finalizeRound2Feud(this.yEvent).subscribe(data => {
       this.finalizeState = data;
     });
   }

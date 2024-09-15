@@ -15,7 +15,7 @@ import { takeUntil } from 'rxjs/operators';
 
 export class Round2hostComponent implements OnInit, OnDestroy {
 
-  public yEvent: string = '';
+  public yEvent = '';
   public surveyMasterList: round2SurveyList[] = [];
   destroy$: Subject<boolean> = new Subject<boolean>();
 
@@ -27,7 +27,7 @@ export class Round2hostComponent implements OnInit, OnDestroy {
     this.store.select(selectCurrentEvent).pipe(takeUntil(this.destroy$)).subscribe(currentEvent => {
       this.yEvent = currentEvent;
       if (this.yEvent && this.yEvent.length > 0) {
-        this._dataService.getAllRound2SurveyQuestions(this.yEvent).subscribe((data: round2SurveyList[]) => {
+        this._dataService.getAllRound2FeudSurveyQuestions(this.yEvent).subscribe((data: round2SurveyList[]) => {
           this.surveyMasterList = data;
         });
       }
