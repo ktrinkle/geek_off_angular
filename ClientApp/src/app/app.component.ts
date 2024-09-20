@@ -1,11 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { Subject } from 'rxjs';
-import { Location } from '@angular/common';
 import { Store } from '@ngrx/store';
 import { currentEvent } from './store/eventManage/eventManage.actions';
 import { AuthService } from './service/auth.service';
-import { PlayerGuard } from './player.guard';
 
 
 type ProfileType = {
@@ -33,6 +31,8 @@ export class AppComponent implements OnInit, OnDestroy {
     '/control/round1',
     '/control/round3',
     '/home',
+    '/manageevent/stats',
+    '/manageevent/setevent',
     '/',
   ]
   private readonly _destroying$ = new Subject<void>();
@@ -41,9 +41,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   constructor(
     private authService: AuthService,
-    private playerGuard: PlayerGuard,
     private router: Router,
-    private location: Location,
     private store: Store) {
     router.events.forEach((event) => {
       if (event instanceof NavigationEnd) {

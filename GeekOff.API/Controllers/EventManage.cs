@@ -24,8 +24,8 @@ public class EventManageController(ILogger<EventManageController> logger,
     public async Task<IActionResult> AddEventAsync([FromBody] AddEventHandler.Request request) =>
         await _mediator.Send(request) switch
         {
-            { Status: QueryStatus.Success } result => Ok(result.Value),
-            { Status: QueryStatus.Conflict } result => Conflict(result.Value),
+            { Status: QueryStatus.Success } result => Ok(result.Value.Message),
+            { Status: QueryStatus.Conflict } result => Conflict(result.Value.Message),
             _ => throw new InvalidOperationException()
         };
 
@@ -35,8 +35,8 @@ public class EventManageController(ILogger<EventManageController> logger,
     public async Task<IActionResult> SetCurrentEventAsync([FromRoute] SetEventHandler.Request request) =>
         await _mediator.Send(request) switch
         {
-            { Status: QueryStatus.Success } result => Ok(result.Value),
-            { Status: QueryStatus.NotFound } result => NotFound(result.Value),
+            { Status: QueryStatus.Success } result => Ok(result.Value.Message),
+            { Status: QueryStatus.NotFound } result => NotFound(result.Value.Message),
             _ => throw new InvalidOperationException()
         };
 

@@ -2,7 +2,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from './../environments/environment';
-import { newTeamEntry, round2SubmitAnswer, round3AnswerDto, eventMaster, apiResponse, adminLogin, bearerDto, teamLogin, round1QDisplay } from './data/data';
+import { newTeamEntry, round2SubmitAnswer, round3AnswerDto, eventMaster, apiResponse, adminLogin, bearerDto, teamLogin, round1QDisplay, round23Scores } from './data/data';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -47,6 +47,12 @@ export class DataService {
     return this.httpClient.put<newTeamEntry[]>(uri, {});
   }
 
+  // event manage
+  public getTeamStats(yevent: string): Observable<round23Scores[]> {
+    const uri = this.REST_API_SERVER + '/api/eventStatus/teamStats/' + encodeURIComponent(yevent);
+    return this.httpClient.get<round23Scores[]>(uri);
+  }
+
   // event stuff
   public getCurrentEvent(): Observable<string> {
     const uri = this.REST_API_SERVER + '/api/eventStatus/currentEvent';
@@ -60,12 +66,12 @@ export class DataService {
 
   public setCurrentEvent(yevent: string): Observable<any> {
     const uri = this.REST_API_SERVER + '/api/eventmanage/setEvent/' + encodeURIComponent(yevent) + '';
-    return this.httpClient.put(uri, {});
+    return this.httpClient.put(uri, {}, { responseType: 'text'});
   }
 
   public addNewEvent(newEvent: eventMaster): Observable<any> {
     const uri = this.REST_API_SERVER + '/api/eventmanage/addEvent';
-    return this.httpClient.post(uri, newEvent);
+    return this.httpClient.post(uri, newEvent, { responseType: 'text'});
   }
 
   public getCurrentQuestion(yevent: string): Observable<any> {

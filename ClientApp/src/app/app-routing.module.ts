@@ -17,6 +17,8 @@ import { Round1ControlComponent } from './control/round1control/round1control.co
 import { Round1hostComponent } from './host/round1host/round1host.component';
 import { Round3scoreboardComponent } from './round3/scoreboard/round3scoreboard.component';
 import { Round3controlComponent } from './control/round3control/round3control.component';
+import { TeamstatsComponent } from './eventsetup/teamstats/teamstats.component';
+import { EventchooserComponent } from './eventsetup/eventchooser/eventchooser.component';
 
 import { PlayerGuard } from './player.guard';
 import { PlayerComponent } from './login/player/player.component';
@@ -161,6 +163,24 @@ const routes: Routes = [
   {
     path: 'host/round1',
     component: Round1hostComponent,
+    pathMatch: 'full',
+    canActivate: [PlayerGuard],
+    data: {
+      expectedRole: roles.Admin
+    }
+  },
+  {
+    path: 'manageevent/stats',
+    component: TeamstatsComponent,
+    pathMatch: 'full',
+    canActivate: [PlayerGuard],
+    data: {
+      expectedRole: roles.Admin
+    }
+  },
+  {
+    path: 'manageevent/setevent',
+    component: EventchooserComponent,
     pathMatch: 'full',
     canActivate: [PlayerGuard],
     data: {

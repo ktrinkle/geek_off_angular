@@ -47,6 +47,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatCardModule } from '@angular/material/card';
 
 import { CountdownModule } from 'ngx-countdown';
 import { Round2countdowndialogComponent } from './round2/round2countdowndialog/round2countdowndialog.component';
@@ -60,6 +61,7 @@ import { AdminComponent } from './login/admin/admin.component';
 import { PlayerComponent } from './login/player/player.component';
 
 import { QRCodeModule } from 'angularx-qrcode';
+import { MatSelectModule } from '@angular/material/select';
 
 export function tokenGetter() {
   return localStorage.getItem("jwt");
@@ -122,6 +124,8 @@ export function tokenGetter() {
     MatDialogModule,
     MatFormFieldModule,
     MatInputModule,
+    MatCardModule,
+    MatSelectModule,
     QRCodeModule,
   ],
   exports: [

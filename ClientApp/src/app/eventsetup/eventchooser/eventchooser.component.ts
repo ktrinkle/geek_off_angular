@@ -1,11 +1,14 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { UntypedFormGroup, UntypedFormControl } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DataService } from 'src/app/data.service';
 import { Store } from '@ngrx/store';
-import { selectCurrentEvent, selectAllEvents } from 'src/app/store';
+import { selectCurrentEvent } from 'src/app/store';
 import { eventMaster } from 'src/app/data/data';
+import { allEvent, currentEvent } from 'src/app/store/eventManage/eventManage.actions';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
 
 @Component({
   selector: 'app-eventchooser',
@@ -14,48 +17,80 @@ import { eventMaster } from 'src/app/data/data';
 })
 export class EventchooserComponent implements OnInit, OnDestroy {
 
-  constructor(private dataService: DataService, private store: Store) {}
+  constructor(private dataService: DataService, private store: Store, private snackbar: MatSnackBar) {}
 
   yEvent = '';
   allEvents: eventMaster[] = [];
-  showMessage = false;
 
-
-  public selectEventForm: UntypedFormGroup = new UntypedFormGroup({
-    yEvent: new UntypedFormControl(),
-    eventName: new UntypedFormControl(),
-    selEvent: new UntypedFormControl()
+  public selectEventForm: FormGroup = new FormGroup({
+    yEvent: new FormControl<string>('')
   });
 
+  public newEventForm: FormGroup = new FormGroup({
+    yEvent: new FormControl<string>('', Validators.required),
+    eventName: new FormControl<string>('', Validators.required)
+  });
 
   destroy$: Subject<boolean> = new Subject<boolean>();
 
   ngOnInit(): void {
-    this.store.select(selectCurrentEvent).pipe(takeUntil(this.destroy$)).subscribe(currentEvent => {
-      this.yEvent = currentEvent;
-    });
-
     this.reloadEvents();
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.destroy$.next(true);
     this.destroy$.unsubscribe();
   }
 
-  reloadEvents() {
-    this.store.select(selectAllEvents).pipe(takeUntil(this.destroy$)).subscribe(allEvents =>
-      this.allEvents = allEvents as eventMaster[]
-    );
+  reloadEvents(): void {
+    this.dataService.getAllEvents().subscribe(data => {
+      this.allEvents = data;
+      this.getCurrentEvent();
+      this.selectEventForm.patchValue({yEvent: this.yEvent});
+    });
   }
 
-  setActiveEvent() {
-    // uses selectEventForm
+  createNewEvent(): void {
+    if (this.newEventForm.valid)
+    {
+      const newEvent: eventMaster = {
+        yevent: this.newEventForm.value.yEvent,
+        eventName: this.newEventForm.value.eventName,
+        selEvent: false
+      };
+
+      this.dataService.addNewEvent(newEvent).subscribe({
+        next: (data) => {
+          this.snackbar.open(data, '', {
+            duration: 5000
+          });
+        },
+        complete: () => {
+          this.reloadEvents();
+        }
+      });
+    }
+  }
+
+  setActiveEvent(): void {
+    console.log(this.selectEventForm);
     const selYEvent = this.selectEventForm.value.yEvent;
     if (selYEvent)
     {
-      const rtnMessage = this.dataService.setCurrentEvent(selYEvent);
+      this.dataService.setCurrentEvent(selYEvent).subscribe(data => {
+        this.snackbar.open(data, '', {
+          duration: 5000
+        });
+        this.yEvent = selYEvent;
+        this.store.dispatch(currentEvent());
+      });
     }
+  }
+
+  getCurrentEvent(): void {
+    this.store.select(selectCurrentEvent).pipe(takeUntil(this.destroy$)).subscribe(currentEvent => {
+      this.yEvent = currentEvent;
+    });
   }
 
 }
