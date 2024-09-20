@@ -42,12 +42,9 @@ public class AddEventHandlerTest
 
         var handler = new AddEventHandler.Handler(_contextGo);
         var request = new AddEventHandler.Request(){
-            NewEvent = new EventMaster()
-            {
-                Yevent = "t24",
-                EventName = "Test 2024",
-                SelEvent = false
-            }
+            Yevent = "t24",
+            EventName = "Test 2024",
+            SelEvent = false
         };
 
         // Act
@@ -67,15 +64,10 @@ public class AddEventHandlerTest
 
         var handler = new AddEventHandler.Handler(_contextGo);
         var request = new AddEventHandler.Request(){
-            NewEvent = new EventMaster()
-            {
-                Yevent = "t21",
-                EventName = "Test 2021",
-                SelEvent = false
-            }
+            Yevent = "t21",
+            EventName = "Test 2021",
+            SelEvent = false
         };
-
-        // _contextGo.EventMaster.Returns(mock);
 
         // Act
         var result = await handler.Handle(request, CancellationToken.None);

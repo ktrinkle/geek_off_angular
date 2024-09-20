@@ -1,1 +1,29 @@
-<p>teamstats works!</p>
+<div class="content container">
+  <h3>Team statistics (finalized rounds only)</h3>
+  <mat-table class="round1ControlScoreboard" [dataSource]="stats">
+    <ng-container matColumnDef="sbteamNum">
+        <mat-header-cell *matHeaderCellDef> Team # </mat-header-cell>
+        <mat-cell *matCellDef="let row">
+            {{row.teamNum}}
+        </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="sbTeamName">
+        <mat-header-cell *matHeaderCellDef> Team Name </mat-header-cell>
+        <mat-cell *matCellDef="let row">
+            {{row.teamName}}
+        </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="sbTeamRnk">
+      <mat-header-cell *matHeaderCellDef> Team Rank </mat-header-cell>
+      <mat-cell *matCellDef="let row">
+          {{row.Rank}}
+      </mat-cell>
+    </ng-container>
+
+    <!-- Header and Row Declarations -->
+    <mat-header-row *matHeaderRowDef="['sbteamNum', 'sbTeamName', 'sbTeamRnk']"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: ['sbteamNum', 'sbTeamName', 'sbTeamRnk']"></mat-row>
+  </mat-table>
+</div>

@@ -1,1 +1,41 @@
-<p>eventchooser works!</p>
+<mat-card appearance="outlined">
+  <form [formGroup]="newEventForm">
+    <mat-card-header>
+      <mat-card-title>Add a new event</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-form-field>
+        <mat-label for="eventName">Event Name</mat-label>
+        <input matInput id="eventName" mat-input formControlName="eventName" name="eventName" type="text">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label for="yEvent">Event code:</mat-label>
+        <input matInput id="yEvent" formControlName="yEvent" name="yEvent" type="text">
+      </mat-form-field>
+    </mat-card-content>
+    <mat-card-actions>
+      <button matButton type="submit" class="bigbtngrnlabel" (click)="createNewEvent()">Save new event</button>
+    </mat-card-actions>
+  </form>
+</mat-card>
+<mat-card appearance="outlined">
+  <form [formGroup]="selectEventForm">
+    <mat-card-header>
+      <mat-card-title>Select the current event:</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-form-field>
+      <mat-label for="yEvent">Event code:</mat-label>
+      <mat-select id="yEvent" formControlName="yEvent">
+        <mat-option>--</mat-option>
+        <mat-option *ngFor="let event of allEvents" value="{{event.yevent}}">
+          {{event.eventName}} ({{event.yevent}})
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    </mat-card-content>
+    <mat-card-actions>
+      <button matButton type="submit" class="bigbtngrnlabel" (click)="setActiveEvent()">Set active event</button>
+    </mat-card-actions>
+  </form>
+</mat-card>

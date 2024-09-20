@@ -124,7 +124,7 @@ export interface round3AnswerDto {
 }
 
 export interface eventMaster {
-  yEvent: string,
+  yevent: string,
   eventName: string,
   selEvent: boolean
 }
