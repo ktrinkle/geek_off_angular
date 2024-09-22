@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Identity;
+
 namespace GeekOff.Services;
 
 public class LoginService(ILogger<LoginService> logger, ContextGo context, IOptions<AppSettings> appSettings) : ILoginService
@@ -68,7 +70,6 @@ public class LoginService(ILogger<LoginService> logger, ContextGo context, IOpti
         }
 
         var tokenHandler = new JwtSecurityTokenHandler();
-        var key = appSecret;
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = claims,

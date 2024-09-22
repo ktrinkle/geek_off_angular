@@ -35,12 +35,22 @@ public class LoginController(ILogger<LoginController> logger, IMediator mediator
     [AllowAnonymous]
     [HttpPost("geekomatic")]
     [SwaggerOperation(Summary = "Login from GeekOMatic")]
-    public async Task<ActionResult<BearerDto>> GeekLoginAsync([FromRoute] GeekOMaticLoginHandler.Request request) =>
+    public async Task<ActionResult<BearerDto>> GeekLoginAsync([FromBody] GeekOMaticLoginHandler.Request request) =>
         await _mediator.Send(request) switch
         {
             { Status: QueryStatus.Success } result => Ok(result.Value),
             { Status: QueryStatus.NotFound } => NotFound(),
             { Status: QueryStatus.NoContent } => NoContent(),
+            _ => throw new InvalidOperationException()
+        };
+
+    [HttpPost("admin/setPassword")]
+    [SwaggerOperation(Summary = "Update a password for an existing user.")]
+    public async Task<ActionResult<string>> UpdatePasswordAsync([FromBody] SetPasswordHandler.Request request) =>
+        await _mediator.Send(request) switch
+        {
+            { Status: QueryStatus.Success } result => Ok(result.Value.Message),
+            { Status: QueryStatus.NotFound } => NotFound(),
             _ => throw new InvalidOperationException()
         };
 }
