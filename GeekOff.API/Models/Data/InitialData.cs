@@ -7,13 +7,7 @@ public static class ModelBuilderExtensions
         new EventMaster()
         {
             Yevent = "t24",
-            EventName = "Employee 2021",
-            SelEvent = true
-        },
-        new EventMaster()
-        {
-            Yevent = "e21",
-            EventName = "Employee 2021",
+            EventName = "Test 2024",
             SelEvent = true
         },
         new EventMaster()
@@ -27,7 +21,7 @@ public static class ModelBuilderExtensions
     [
         new QuestionAns()
         {
-            Yevent = "e21",
+            Yevent = "t24",
             QuestionNum = 201,
             RoundNum = 2,
             TextQuestion = "Name your favorite developer."
@@ -38,7 +32,7 @@ public static class ModelBuilderExtensions
     [
         new Scoreposs()
         {
-            Yevent = "e21",
+            Yevent = "t24",
             RoundNum = 2,
             QuestionNum = 201,
             SurveyOrder = 1,
@@ -47,7 +41,7 @@ public static class ModelBuilderExtensions
         },
         new Scoreposs()
         {
-            Yevent = "e21",
+            Yevent = "t24",
             RoundNum = 2,
             QuestionNum = 201,
             SurveyOrder = 2,
@@ -56,7 +50,7 @@ public static class ModelBuilderExtensions
         },
         new Scoreposs()
         {
-            Yevent = "e21",
+            Yevent = "t24",
             RoundNum = 2,
             QuestionNum = 201,
             SurveyOrder = 3,
@@ -65,7 +59,7 @@ public static class ModelBuilderExtensions
         },
         new Scoreposs()
         {
-            Yevent = "e21",
+            Yevent = "t24",
             RoundNum = 2,
             QuestionNum = 201,
             SurveyOrder = 5,
@@ -74,7 +68,7 @@ public static class ModelBuilderExtensions
         },
         new Scoreposs()
         {
-            Yevent = "e21",
+            Yevent = "t24",
             RoundNum = 2,
             QuestionNum = 201,
             SurveyOrder = 4,
@@ -87,10 +81,18 @@ public static class ModelBuilderExtensions
     [
         new Teamreference()
         {
-            Yevent = "e21",
+            Yevent = "t24",
             TeamNum = 1,
             Teamname = "Go Aggies",
             Dollarraised = 1000,
+            TeamGuid = new Guid()
+        },
+        new Teamreference()
+        {
+            Yevent = "t24",
+            TeamNum = 2,
+            Teamname = "Go Planes",
+            Dollarraised = 50,
             TeamGuid = new Guid()
         }
     ];
@@ -100,7 +102,7 @@ public static class ModelBuilderExtensions
         new TeamUser()
         {
             Id = 104,
-            Yevent = "e21",
+            Yevent = "t24",
             TeamNum = 1,
             PlayerName = "Grant Hill",
             PlayerNum = 1,
@@ -109,7 +111,7 @@ public static class ModelBuilderExtensions
         new TeamUser()
         {
             Id = 106,
-            Yevent = "e21",
+            Yevent = "t24",
             TeamNum = 1,
             PlayerName = "Brandon Heath",
             PlayerNum = 2,
@@ -118,7 +120,7 @@ public static class ModelBuilderExtensions
         new TeamUser()
         {
             Id = 107,
-            Yevent = "e21",
+            Yevent = "t24",
             TeamNum = 2,
             PlayerName = "Roger Marsolek",
             PlayerNum = 1,
@@ -131,32 +133,37 @@ public static class ModelBuilderExtensions
         new ()
         {
             Id = 100,
-            Username = "362525",
+            Username = "ktrinkle",
             AdminName = "Kevin Trinkle",
+            UserGuid = Guid.NewGuid(),
         },
         new ()
         {
             Id = 101,
-            Username = "446792",
+            Username = "krussell",
             AdminName = "Kristin Russell",
+            UserGuid = Guid.NewGuid(),
         },
         new ()
         {
             Id = 102,
-            Username = "226250",
+            Username = "damnral",
             AdminName = "Diyalo Manral",
+            UserGuid = Guid.NewGuid(),
         },
         new AdminUser()
         {
             Id = 103,
-            Username = "288132",
+            Username = "dmullings",
             AdminName = "Dan Mullings",
+            UserGuid = Guid.NewGuid(),
         },
         new AdminUser()
         {
             Id = 105,
             Username = "jaycox",
             AdminName = "Jay Cox",
+            UserGuid = Guid.NewGuid(),
         },
     ];
 
@@ -165,7 +172,7 @@ public static class ModelBuilderExtensions
         new ()
         {
             Id = 1,
-            Yevent = "e21",
+            Yevent = "t24",
             RoundNum = 3,
             CategoryName = "Potent Potables",
             SubCategoryNum = 10,
@@ -173,7 +180,7 @@ public static class ModelBuilderExtensions
         new ()
         {
             Id = 2,
-            Yevent = "e21",
+            Yevent = "t24",
             RoundNum = 3,
             CategoryName = "Therapists",
             SubCategoryNum = 20,
@@ -181,7 +188,7 @@ public static class ModelBuilderExtensions
         new ()
         {
             Id = 3,
-            Yevent = "e21",
+            Yevent = "t24",
             RoundNum = 3,
             CategoryName = "An Album",
             SubCategoryNum = 30,
@@ -189,7 +196,7 @@ public static class ModelBuilderExtensions
         new ()
         {
             Id = 4,
-            Yevent = "e21",
+            Yevent = "t24",
             RoundNum = 3,
             CategoryName = "Potpourri",
             SubCategoryNum = 40,
@@ -197,7 +204,7 @@ public static class ModelBuilderExtensions
         new ()
         {
             Id = 5,
-            Yevent = "e21",
+            Yevent = "t24",
             RoundNum = 3,
             CategoryName = "Words that begin with G",
             SubCategoryNum = 50,

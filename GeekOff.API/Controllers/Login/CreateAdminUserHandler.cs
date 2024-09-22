@@ -2,12 +2,12 @@ using Microsoft.AspNetCore.Identity;
 
 namespace GeekOff.Handlers;
 
-public class SetPasswordHandler
+public class CreateAdminUserHandler
 {
     public class Request : IRequest<ApiResponse<StringReturn>>
     {
         public string UserName { get; set; } = string.Empty;
-        public Guid Id { get; set; }
+        public string AdminName { get; set; } = string.Empty;
         public string Password { get; set; } = string.Empty;
     }
 
@@ -17,13 +17,20 @@ public class SetPasswordHandler
 
         public async Task<ApiResponse<StringReturn>> Handle(Request request, CancellationToken cancellationToken)
         {
-            var loginInfo = await _contextGo.AdminUser
-                .FirstOrDefaultAsync(u => u.Username == request.UserName && u.UserGuid == request.Id, cancellationToken: cancellationToken);
-
-            if (loginInfo is null)
+            if (string.IsNullOrEmpty(request.Password))
             {
-                return ApiResponse<StringReturn>.NotFound();
+                return ApiResponse<StringReturn>.BadRequest();
             }
+
+            var loginInfo = await _contextGo.AdminUser
+                .FirstOrDefaultAsync(u => u.Username == request.UserName, cancellationToken: cancellationToken);
+
+            if (loginInfo is not null)
+            {
+                return ApiResponse<StringReturn>.Conflict();
+            }
+
+            var newUserGuid = Guid.NewGuid();
 
             var loginDto = new AdminLogin()
             {
@@ -34,13 +41,19 @@ public class SetPasswordHandler
             var passwordHasher = new PasswordHasher<AdminLogin>();
             var hashedPassword = passwordHasher.HashPassword(loginDto, request.Password);
 
-            loginInfo.Password = hashedPassword;
+            var newUserInfo = new AdminUser()
+            {
+                Username = request.UserName,
+                AdminName = request.AdminName,
+                Password = hashedPassword,
+                UserGuid = newUserGuid
+            };
 
-            _contextGo.AdminUser.Update(loginInfo);
+            await _contextGo.AdminUser.AddAsync(newUserInfo, cancellationToken);
             await _contextGo.SaveChangesAsync(cancellationToken);
 
             var returnObj = new StringReturn() {
-                Message = "The password was successfully saved."
+                Message = "The user was successfully created."
             };
 
             return ApiResponse<StringReturn>.Success(returnObj);

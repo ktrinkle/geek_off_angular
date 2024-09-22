@@ -111,6 +111,69 @@ public class Round3Controller(ILogger<Round3Controller> logger,
 
     // future controller - reset board state since we have this in the DB, in case we get out of sync.
 
+    /*
+    Geek-O-Matic
+
+    Create APIs to perform the following:
+
+    Send scores to Geek-O-Matic
+
+    */
+
+    #region GeekOMatic
+
+    [Authorize(Roles = "geekomatic")]
+    [HttpGet("getTeamColors/{YEvent}")]
+    [SwaggerOperation(Summary = "Saves the team answer with points")]
+    public async Task<ActionResult<string>> GetRound3TeamColorsAsync([FromRoute] RoundThreeTeamColorHandler.Request request)
+    {
+        return await _mediator.Send(request) switch
+        {
+            { Status: QueryStatus.Success } result => Ok(result.Value),
+            { Status: QueryStatus.NotFound } => NotFound(),
+            { Status: QueryStatus.BadRequest } => BadRequest(),
+            _ => throw new InvalidOperationException()
+        };
+    }
+
+    [Authorize(Roles = "admin")]
+    [HttpGet("buzzer/init")]
+    [SwaggerOperation(Summary = "Sends message to initialize the buzzers.")]
+    public async Task<ActionResult> InitBuzzerAsync()
+    {
+        await _eventHub.Clients.All.SendAsync("round3InitBuzzer");
+        return Ok();
+    }
+
+    [Authorize(Roles = "admin")]
+    [HttpGet("buzzer/unlock")]
+    [SwaggerOperation(Summary = "Sends message to unlock the buzzers.")]
+    public async Task<ActionResult> UnlockBuzzerAsync()
+    {
+        await _eventHub.Clients.All.SendAsync("round3Buzzer", "U");
+        return Ok();
+    }
+
+    [Authorize(Roles = "admin, geekomatic")]
+    [HttpGet("buzzer/answer/{teamColor}")]
+    [SwaggerOperation(Summary = "Send message that a team answered the board.")]
+    public async Task<ActionResult> BuzzerAnswerAsync(char teamColor)
+    {
+        await _eventHub.Clients.All.SendAsync("round3Buzzer", teamColor);
+        // this will also lock out the other buzzers
+        return Ok();
+    }
+
+    [Authorize(Roles = "admin")]
+    [HttpGet("buzzer/lock")]
+    [SwaggerOperation(Summary = "Send message to lock the buzzers.")]
+    public async Task<ActionResult> BuzzerLockAsync(int teamNum)
+    {
+        await _eventHub.Clients.All.SendAsync("round3Buzzer", "L");
+        return Ok();
+    }
+
+    #endregion
     #region SignalR
 
     [Authorize(Roles = "admin")]

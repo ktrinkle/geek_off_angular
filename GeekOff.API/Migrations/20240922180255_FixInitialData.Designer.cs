@@ -3,6 +3,7 @@ using System;
 using GeekOff.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace geek_off_angular.Migrations
 {
     [DbContext(typeof(ContextGo))]
-    partial class contextGoModelSnapshot : ModelSnapshot
+    [Migration("20240922180255_FixInitialData")]
+    partial class FixInitialData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -43,13 +46,9 @@ namespace geek_off_angular.Migrations
                         .HasColumnType("text")
                         .HasColumnName("password");
 
-                    b.Property<Guid>("UserGuid")
-                        .HasColumnType("uuid")
-                        .HasColumnName("user_guid");
-
                     b.Property<string>("Username")
-                        .HasMaxLength(25)
-                        .HasColumnType("character varying(25)")
+                        .HasMaxLength(6)
+                        .HasColumnType("character varying(6)")
                         .HasColumnName("username");
 
                     b.HasKey("Id");
@@ -62,7 +61,6 @@ namespace geek_off_angular.Migrations
                             Id = 100L,
                             AdminName = "Kevin Trinkle",
                             LoginTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UserGuid = Guid.NewGuid(),
                             Username = "ktrinkle"
                         },
                         new
@@ -70,7 +68,6 @@ namespace geek_off_angular.Migrations
                             Id = 101L,
                             AdminName = "Kristin Russell",
                             LoginTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UserGuid = Guid.NewGuid(),
                             Username = "krussell"
                         },
                         new
@@ -78,7 +75,6 @@ namespace geek_off_angular.Migrations
                             Id = 102L,
                             AdminName = "Diyalo Manral",
                             LoginTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UserGuid = Guid.NewGuid(),
                             Username = "damnral"
                         },
                         new
@@ -86,7 +82,6 @@ namespace geek_off_angular.Migrations
                             Id = 103L,
                             AdminName = "Dan Mullings",
                             LoginTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UserGuid = Guid.NewGuid(),
                             Username = "dmullings"
                         },
                         new
@@ -94,7 +89,6 @@ namespace geek_off_angular.Migrations
                             Id = 105L,
                             AdminName = "Jay Cox",
                             LoginTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UserGuid = Guid.NewGuid(),
                             Username = "jaycox"
                         });
                 });

@@ -3,6 +3,7 @@ using System;
 using GeekOff.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace geek_off_angular.Migrations
 {
     [DbContext(typeof(ContextGo))]
-    partial class contextGoModelSnapshot : ModelSnapshot
+    [Migration("20240922173704_PasswordStorage")]
+    partial class PasswordStorage
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -43,13 +46,9 @@ namespace geek_off_angular.Migrations
                         .HasColumnType("text")
                         .HasColumnName("password");
 
-                    b.Property<Guid>("UserGuid")
-                        .HasColumnType("uuid")
-                        .HasColumnName("user_guid");
-
                     b.Property<string>("Username")
-                        .HasMaxLength(25)
-                        .HasColumnType("character varying(25)")
+                        .HasMaxLength(6)
+                        .HasColumnType("character varying(6)")
                         .HasColumnName("username");
 
                     b.HasKey("Id");
@@ -62,39 +61,34 @@ namespace geek_off_angular.Migrations
                             Id = 100L,
                             AdminName = "Kevin Trinkle",
                             LoginTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UserGuid = Guid.NewGuid(),
-                            Username = "ktrinkle"
+                            Username = "362525"
                         },
                         new
                         {
                             Id = 101L,
                             AdminName = "Kristin Russell",
                             LoginTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UserGuid = Guid.NewGuid(),
-                            Username = "krussell"
+                            Username = "446792"
                         },
                         new
                         {
                             Id = 102L,
                             AdminName = "Diyalo Manral",
                             LoginTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UserGuid = Guid.NewGuid(),
-                            Username = "damnral"
+                            Username = "226250"
                         },
                         new
                         {
                             Id = 103L,
                             AdminName = "Dan Mullings",
                             LoginTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UserGuid = Guid.NewGuid(),
-                            Username = "dmullings"
+                            Username = "288132"
                         },
                         new
                         {
                             Id = 105L,
                             AdminName = "Jay Cox",
                             LoginTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UserGuid = Guid.NewGuid(),
                             Username = "jaycox"
                         });
                 });
@@ -184,7 +178,15 @@ namespace geek_off_angular.Migrations
                         new
                         {
                             Yevent = "t24",
-                            EventName = "Test 2024",
+                            EventName = "Employee 2021",
+                            Round2Control = 0,
+                            Round3Control = 3,
+                            SelEvent = true
+                        },
+                        new
+                        {
+                            Yevent = "e21",
+                            EventName = "Employee 2021",
                             Round2Control = 0,
                             Round3Control = 3,
                             SelEvent = true
@@ -298,7 +300,7 @@ namespace geek_off_angular.Migrations
                     b.HasData(
                         new
                         {
-                            Yevent = "t24",
+                            Yevent = "e21",
                             RoundNum = 2,
                             QuestionNum = 201,
                             DailyDouble = false,
@@ -337,7 +339,7 @@ namespace geek_off_angular.Migrations
                     b.HasData(
                         new
                         {
-                            Yevent = "t24",
+                            Yevent = "e21",
                             RoundNum = 3,
                             SubCategoryNum = 10,
                             CategoryName = "Potent Potables",
@@ -345,7 +347,7 @@ namespace geek_off_angular.Migrations
                         },
                         new
                         {
-                            Yevent = "t24",
+                            Yevent = "e21",
                             RoundNum = 3,
                             SubCategoryNum = 20,
                             CategoryName = "Therapists",
@@ -353,7 +355,7 @@ namespace geek_off_angular.Migrations
                         },
                         new
                         {
-                            Yevent = "t24",
+                            Yevent = "e21",
                             RoundNum = 3,
                             SubCategoryNum = 30,
                             CategoryName = "An Album",
@@ -361,7 +363,7 @@ namespace geek_off_angular.Migrations
                         },
                         new
                         {
-                            Yevent = "t24",
+                            Yevent = "e21",
                             RoundNum = 3,
                             SubCategoryNum = 40,
                             CategoryName = "Potpourri",
@@ -369,7 +371,7 @@ namespace geek_off_angular.Migrations
                         },
                         new
                         {
-                            Yevent = "t24",
+                            Yevent = "e21",
                             RoundNum = 3,
                             SubCategoryNum = 50,
                             CategoryName = "Words that begin with G",
@@ -439,7 +441,7 @@ namespace geek_off_angular.Migrations
                     b.HasData(
                         new
                         {
-                            Yevent = "t24",
+                            Yevent = "e21",
                             RoundNum = 2,
                             QuestionNum = 201,
                             SurveyOrder = 1,
@@ -448,7 +450,7 @@ namespace geek_off_angular.Migrations
                         },
                         new
                         {
-                            Yevent = "t24",
+                            Yevent = "e21",
                             RoundNum = 2,
                             QuestionNum = 201,
                             SurveyOrder = 2,
@@ -457,7 +459,7 @@ namespace geek_off_angular.Migrations
                         },
                         new
                         {
-                            Yevent = "t24",
+                            Yevent = "e21",
                             RoundNum = 2,
                             QuestionNum = 201,
                             SurveyOrder = 3,
@@ -466,7 +468,7 @@ namespace geek_off_angular.Migrations
                         },
                         new
                         {
-                            Yevent = "t24",
+                            Yevent = "e21",
                             RoundNum = 2,
                             QuestionNum = 201,
                             SurveyOrder = 5,
@@ -475,7 +477,7 @@ namespace geek_off_angular.Migrations
                         },
                         new
                         {
-                            Yevent = "t24",
+                            Yevent = "e21",
                             RoundNum = 2,
                             QuestionNum = 201,
                             SurveyOrder = 4,
@@ -593,7 +595,7 @@ namespace geek_off_angular.Migrations
                             SessionId = new Guid("00000000-0000-0000-0000-000000000000"),
                             TeamNum = 1,
                             WorkgroupName = "Information Technology",
-                            Yevent = "t24"
+                            Yevent = "e21"
                         },
                         new
                         {
@@ -604,7 +606,7 @@ namespace geek_off_angular.Migrations
                             SessionId = new Guid("00000000-0000-0000-0000-000000000000"),
                             TeamNum = 1,
                             WorkgroupName = "Information Technology",
-                            Yevent = "t24"
+                            Yevent = "e21"
                         },
                         new
                         {
@@ -615,7 +617,7 @@ namespace geek_off_angular.Migrations
                             SessionId = new Guid("00000000-0000-0000-0000-000000000000"),
                             TeamNum = 2,
                             WorkgroupName = "Information Technology",
-                            Yevent = "t24"
+                            Yevent = "e21"
                         });
                 });
 
@@ -653,21 +655,12 @@ namespace geek_off_angular.Migrations
                     b.HasData(
                         new
                         {
-                            Yevent = "t24",
+                            Yevent = "e21",
                             TeamNum = 1,
                             Dollarraised = 1000m,
                             LoginTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             TeamGuid = new Guid("00000000-0000-0000-0000-000000000000"),
                             Teamname = "Go Aggies"
-                        },
-                        new
-                        {
-                            Yevent = "t24",
-                            TeamNum = 2,
-                            Dollarraised = 50m,
-                            LoginTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            TeamGuid = new Guid("00000000-0000-0000-0000-000000000000"),
-                            Teamname = "Go Planes"
                         });
                 });
 

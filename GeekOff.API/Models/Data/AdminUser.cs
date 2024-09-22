@@ -8,10 +8,11 @@ namespace GeekOff.Data
     {
         [Key]
         public long Id { get; set; }
-        [MaxLength(6)]
+        [MaxLength(25)]
         public string? Username { get; set; }
         public string? AdminName { get; set; }
         public string? Password { get; set; }
+        public Guid UserGuid { get; set; }
         public DateTime LoginTime { get; set; }
     }
 }
