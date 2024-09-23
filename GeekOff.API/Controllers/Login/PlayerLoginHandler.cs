@@ -8,8 +8,6 @@ public class PlayerLoginHandler
         public Guid TeamGuid { get; init; }
     }
 
-    //public record PlayerLoginCommand(string YEvent, Guid TeamGuid) : IRequest<ApiResponse<BearerDto>>;
-
     public class Handler(ContextGo contextGo, ILoginService loginService) : IRequestHandler<Request, ApiResponse<BearerDto>>
     {
         private readonly ContextGo _contextGo = contextGo;

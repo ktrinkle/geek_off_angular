@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Identity;
+
 namespace GeekOff.Handlers;
 
 public class AdminLoginHandler
@@ -12,21 +14,39 @@ public class AdminLoginHandler
         private readonly ContextGo _contextGo = contextGo;
         private readonly ILoginService _loginService = loginService;
 
-        public async Task<ApiResponse<BearerDto>> Handle(Request request, CancellationToken token)
+        public async Task<ApiResponse<BearerDto>> Handle(Request request, CancellationToken cancellationToken)
         {
             var loginInfo = await _contextGo.AdminUser
-                .FirstOrDefaultAsync(u => u.Username == request.UserLogin.UserName, cancellationToken: token);
+                .FirstOrDefaultAsync(u => u.Username == request.UserLogin.UserName, cancellationToken: cancellationToken);
 
             if (loginInfo is null)
             {
                 return ApiResponse<BearerDto>.NotFound();
             }
 
-            // insert password handling here
+            if (loginInfo.Password is null)
+            {
+                return ApiResponse<BearerDto>.BadRequest();
+            }
+
+            var passwordHasher = new PasswordHasher<AdminLogin>();
+            var passwordTest = passwordHasher.VerifyHashedPassword(request.UserLogin, loginInfo.Password, request.UserLogin.Password);
+
+            if (passwordTest is PasswordVerificationResult.Failed)
+            {
+                return ApiResponse<BearerDto>.BadRequest();
+            }
+
+            if (passwordTest is PasswordVerificationResult.SuccessRehashNeeded)
+            {
+                // recreate password
+                var rehashedPassword = passwordHasher.HashPassword(request.UserLogin, request.UserLogin.Password);
+                loginInfo.Password = rehashedPassword;
+            }
 
             loginInfo.LoginTime = DateTime.UtcNow;
             _contextGo.AdminUser.Update(loginInfo);
-            await _contextGo.SaveChangesAsync(token);
+            await _contextGo.SaveChangesAsync(cancellationToken);
 
             var tokenCall = new LoginTokenRequest()
             {

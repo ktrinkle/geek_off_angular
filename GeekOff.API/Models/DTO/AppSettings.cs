@@ -10,5 +10,6 @@ namespace GeekOff.Models
         public string Audience { get; set; } = string.Empty;
         public string JWTKeyId { get; set; } = string.Empty;
         public string GeekOMaticUser { get; set; } = string.Empty;
+        public int HashCount { get; set; }
     }
 }

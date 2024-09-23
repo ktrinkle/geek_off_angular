@@ -1,4 +1,6 @@
+using System.Security.Cryptography;
 using GeekOff.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -11,6 +13,16 @@ public class AdminLoginHandlerTest
     private readonly IServiceCollection _services = new ServiceCollection();
     private readonly ServiceProvider _serviceProvider;
     private readonly ILogger<LoginService> _logger;
+
+    private static readonly string badPasswordTest = RandomNumberGenerator.GetString(
+        choices: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789$!@#%^&",
+        length: 10);
+
+    private static readonly string goodPasswordTest = RandomNumberGenerator.GetString(
+        choices: "!@#$%^&*()ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789",
+        length: 12);
+
+    private static PasswordHasher<AdminLogin> passwordHasher = new ();
 
     private static readonly AppSettings testSettings = new() 
     {
@@ -28,7 +40,19 @@ public class AdminLoginHandlerTest
                 Id = 1,
                 Username = "admintest",
                 AdminName = "Admin Name",
+                Password = passwordHasher.HashPassword(
+                    new AdminLogin(){
+                        UserName = "admintest",
+                        Password = goodPasswordTest
+                    }, 
+                goodPasswordTest),
                 LoginTime = DateTime.Now
+            },
+            new()
+            {
+                Id = 2,
+                Username = "badpasswordtest",
+                AdminName = "BadPassword Name",
             }
         ];
 
@@ -60,7 +84,7 @@ public class AdminLoginHandlerTest
         {
             UserLogin = new() {
                 UserName = "admintest",
-                Password = "admintest"
+                Password = goodPasswordTest
             }
         };
 
@@ -89,7 +113,7 @@ public class AdminLoginHandlerTest
         {
             UserLogin = new() {
                 UserName = "notatest",
-                Password = "admintest"
+                Password = badPasswordTest
             }
         };
 

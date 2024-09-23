@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,6 +31,10 @@ var postgresConn = builder.Configuration.GetConnectionString("GeekOff") ?? throw
 
 builder.Services.AddDbContext<ContextGo>(options =>
     options.UseNpgsql(postgresConn));
+
+var appSettings = builder.Configuration.GetSection("AppSettings").Get<AppSettings>() ?? throw new InvalidOperationException("AppSettings are not properly set.");
+
+builder.Services.Configure<PasswordHasherOptions>(options => options.IterationCount = appSettings.HashCount);
 
 builder.Services.AddControllersWithViews();
 
@@ -70,14 +75,14 @@ builder.Services.AddAuthentication(auth =>
     options.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuer = true,
-        ValidIssuer = builder.Configuration["AppSettings:Issuer"],
+        ValidIssuer = appSettings.Issuer,
         ValidateAudience = true,
-        ValidAudience = builder.Configuration["AppSettings:Audience"],
+        ValidAudience = appSettings.Audience,
         ValidateIssuerSigningKey = true,
         RequireSignedTokens = true,
         RequireExpirationTime = true, // <- JWTs are required to have "exp" property set
         ValidateLifetime = true,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["AppSettings:Secret"]!)) {KeyId = builder.Configuration["AppSettings:JWTKeyId"]}
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(appSettings.Secret!)) {KeyId = appSettings.JWTKeyId}
     };
 });
 
@@ -177,4 +182,4 @@ app.MapControllerRoute(
 
 app.MapFallbackToFile("index.html");
 
-app.Run();
+await app.RunAsync();

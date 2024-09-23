@@ -7,11 +7,15 @@ public class JwtMiddleware
     private readonly RequestDelegate _next;
     private readonly AppSettings _appSettings;
 
-public JwtMiddleware(RequestDelegate next, IOptions<AppSettings> appSettings)
-{
-    _next = next;
-    _appSettings = appSettings.Value;
-}
+    private const string ADMINROLE = "admin";
+    private const string PLAYERROLE = "player";
+    private const string GEEKOMATICROLE = "geekomatic";
+
+    public JwtMiddleware(RequestDelegate next, IOptions<AppSettings> appSettings)
+    {
+        _next = next;
+        _appSettings = appSettings.Value;
+    }
 
     public async Task InvokeAsync(HttpContext context)
     {
@@ -67,33 +71,33 @@ public JwtMiddleware(RequestDelegate next, IOptions<AppSettings> appSettings)
 
         var username = roleType switch
         {
-            "admin" => jwtToken.Claims.First(x => x.Type == "username").Value,
-            "geekomatic" => null,
-            "player" => null,
+            ADMINROLE => jwtToken.Claims.First(x => x.Type == "username").Value,
+            GEEKOMATICROLE => null,
+            PLAYERROLE => null,
             _ => null
         };
 
         var adminName = roleType switch
         {
-            "admin" => jwtToken.Claims.FirstOrDefault(x => x.Type == "realname")!.Value,
-            "geekomatic" => null,
-            "player" => null,
+            ADMINROLE => jwtToken.Claims.FirstOrDefault(x => x.Type == "realname")!.Value,
+            GEEKOMATICROLE => null,
+            PLAYERROLE => null,
             _ => null
         };
 
         var teamNumStr = roleType switch
         {
-            "admin" => "0",
-            "geekomatic" => "0",
-            "player" => jwtToken.Claims.FirstOrDefault(x => x.Type == "teamnum")!.Value,
+            ADMINROLE => "0",
+            GEEKOMATICROLE => "0",
+            PLAYERROLE => jwtToken.Claims.FirstOrDefault(x => x.Type == "teamnum")!.Value,
             _ => "0"
         };
 
         var geekomatic = roleType switch
         {
-            "admin" => false,
-            "geekomatic" => jwtToken.Claims.FirstOrDefault(x => x.Type == "geekomatic")!.Value == "true" || false,
-            "player" => false,
+            ADMINROLE => false,
+            GEEKOMATICROLE => jwtToken.Claims.FirstOrDefault(x => x.Type == "geekomatic")!.Value == "true",
+            PLAYERROLE => false,
             _ => false
         };
 
@@ -105,9 +109,9 @@ public JwtMiddleware(RequestDelegate next, IOptions<AppSettings> appSettings)
         // return user id from JWT token if validation successful
         return new JWTDto() {
             TeamNum = teamNum,
-            UserName = geekomatic == true ? "GeekOMatic" : username,
+            UserName = geekomatic ? "GeekOMatic" : username,
             SessionGuid = Guid.Parse(teamSessionGuid),
-            AdminName = geekomatic == true ? "GeekOMatic" : adminName,
+            AdminName = geekomatic ? "GeekOMatic" : adminName,
             Role = roleType
         };
     }

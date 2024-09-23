@@ -58,9 +58,33 @@ public class Round3Controller(ILogger<Round3Controller> logger,
     [SwaggerOperation(Summary = "Saves the team answer with points")]
     public async Task<ActionResult<string>> SetRound3AnswerAsync([FromBody] RoundThreeTeamAnswerHandler.Request request)
     {
-        await _eventHub.Clients.All.SendAsync("round3ScoreUpdate");
+        var saveStatus = await _mediator.Send(request) ?? throw new InvalidOperationException();
 
-        return await _mediator.Send(request) switch
+        if (saveStatus.Status == QueryStatus.Success)
+        {
+            var yEvent = request.Round3Answers[0].YEvent;
+
+            RoundThreeGeekOMaticScoreHandler.Request newRequest = new ()
+            {
+                YEvent = yEvent
+            };
+
+            var sendStatus = await _mediator.Send(newRequest) ?? throw new InvalidOperationException();
+
+            switch (sendStatus.Status)
+            {
+                case QueryStatus.Success:
+                    foreach (var team in sendStatus.Value!)
+                    {
+                        await _eventHub.Clients.All.SendAsync("round3Score", team.TeamColor + team.TeamScore);
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        return saveStatus switch
         {
             { Status: QueryStatus.Success } result => Ok(result.Value.Message),
             { Status: QueryStatus.NotFound } => NotFound(),
@@ -84,7 +108,7 @@ public class Round3Controller(ILogger<Round3Controller> logger,
         return await _mediator.Send(request) switch
         {
             { Status: QueryStatus.Success } result => Ok(result.Value),
-            { Status: QueryStatus.BadRequest } result => BadRequest(),
+            { Status: QueryStatus.BadRequest } => BadRequest(),
             _ => throw new InvalidOperationException()
         };
     }
@@ -111,10 +135,78 @@ public class Round3Controller(ILogger<Round3Controller> logger,
 
     // future controller - reset board state since we have this in the DB, in case we get out of sync.
 
+    #region GeekOMatic
+
+    [Authorize(Roles = "geekomatic")]
+    [HttpGet("getTeamColors/{YEvent}")]
+    [SwaggerOperation(Summary = "Saves the team answer with points")]
+    public async Task<ActionResult<string>> GetRound3TeamColorsAsync([FromRoute] RoundThreeTeamColorHandler.Request request)
+    {
+        return await _mediator.Send(request) switch
+        {
+            { Status: QueryStatus.Success } result => Ok(result.Value),
+            { Status: QueryStatus.NotFound } => NotFound(),
+            { Status: QueryStatus.BadRequest } => BadRequest(),
+            _ => throw new InvalidOperationException()
+        };
+    }
+
+    [Authorize(Roles = "admin")]
+    [HttpPut("buzzer/init")]
+    [SwaggerOperation(Summary = "Sends message to initialize the buzzers.")]
+    public async Task<ActionResult> InitBuzzerAsync()
+    {
+        await _eventHub.Clients.All.SendAsync("round3InitBuzzer");
+        return Ok();
+    }
+
+    [Authorize(Roles = "admin")]
+    [HttpPut("buzzer/unlock")]
+    [SwaggerOperation(Summary = "Sends message to unlock the buzzers.")]
+    public async Task<ActionResult> UnlockBuzzerAsync()
+    {
+        await _eventHub.Clients.All.SendAsync("round3Buzzer", "U");
+        return Ok();
+    }
+
+    [Authorize(Roles = "admin, geekomatic")]
+    [HttpPut("buzzer/answer/{teamColor}")]
+    [SwaggerOperation(Summary = "Send message that a team answered the board.")]
+    public async Task<ActionResult> BuzzerAnswerAsync(char teamColor)
+    {
+        await _eventHub.Clients.All.SendAsync("round3Buzzer", teamColor);
+        // this will also lock out the other buzzers
+        return Ok();
+    }
+
+    [Authorize(Roles = "admin")]
+    [HttpPut("buzzer/lock")]
+    [SwaggerOperation(Summary = "Send message to lock the buzzers.")]
+    public async Task<ActionResult> BuzzerLockAsync(int teamNum)
+    {
+        await _eventHub.Clients.All.SendAsync("round3Buzzer", "L");
+        return Ok();
+    }
+
+    [Authorize(Roles = "geekomatic")]
+    [HttpGet("getTeamScores/{YEvent}")]
+    [SwaggerOperation(Summary = "Saves the team answer with points")]
+    public async Task<ActionResult<string>> GetRound3TeamScoresColorsAsync([FromRoute] RoundThreeGeekOMaticScoreHandler.Request request)
+    {
+        return await _mediator.Send(request) switch
+        {
+            { Status: QueryStatus.Success } result => Ok(result.Value),
+            { Status: QueryStatus.NotFound } => NotFound(),
+            { Status: QueryStatus.BadRequest } => BadRequest(),
+            _ => throw new InvalidOperationException()
+        };
+    }
+
+    #endregion
     #region SignalR
 
     [Authorize(Roles = "admin")]
-    [HttpGet("updateScoreboard")]
+    [HttpPut("updateScoreboard")]
     [SwaggerOperation(Summary = "Sends message to update the scoreboard.")]
     public async Task<ActionResult> UpdateScoreboardAsync()
     {
@@ -123,7 +215,7 @@ public class Round3Controller(ILogger<Round3Controller> logger,
     }
 
     [Authorize(Roles = "admin")]
-    [HttpGet("bigboard/animate")]
+    [HttpPut("bigboard/animate")]
     [SwaggerOperation(Summary = "Send message to animate big board.")]
     public async Task<ActionResult> AnimateBigBoardAsync()
     {
@@ -132,7 +224,7 @@ public class Round3Controller(ILogger<Round3Controller> logger,
     }
 
     [Authorize(Roles = "admin")]
-    [HttpGet("bigboard/show")]
+    [HttpPut("bigboard/show")]
     [SwaggerOperation(Summary = "Show the big board. Note that the state of the board is managed purely in the UI.")]
     public async Task<ActionResult> ShowBigBoardAsync()
     {
@@ -141,7 +233,7 @@ public class Round3Controller(ILogger<Round3Controller> logger,
     }
 
     [Authorize(Roles = "admin")]
-    [HttpGet("bigboard/reveal/{entryNum}")]
+    [HttpPut("bigboard/reveal/{entryNum}")]
     [SwaggerOperation(Summary = "Send message to reveal big board answer.")]
     public async Task<ActionResult> RevealAnswerAsync(int entryNum)
     {
@@ -150,7 +242,7 @@ public class Round3Controller(ILogger<Round3Controller> logger,
     }
 
     [Authorize(Roles = "admin")]
-    [HttpGet("bigboard/showFinalScreen/{screenNum}")]
+    [HttpPut("bigboard/showFinalScreen/{screenNum}")]
     [SwaggerOperation(Summary = "Send message to show final question screen for final Jeopardy.")]
     public async Task<ActionResult> ShowFinalIntroScreenAsync(int screenNum)
     {
@@ -159,7 +251,7 @@ public class Round3Controller(ILogger<Round3Controller> logger,
     }
 
     [Authorize(Roles = "admin")]
-    [HttpGet("bigboard/playFinalMusic")]
+    [HttpPut("bigboard/playFinalMusic")]
     [SwaggerOperation(Summary = "Play final Jeopardy music.")]
     public async Task<ActionResult> PlayFinalJepMusicAsync()
     {
@@ -168,7 +260,7 @@ public class Round3Controller(ILogger<Round3Controller> logger,
     }
 
     [Authorize(Roles = "admin")]
-    [HttpGet("bigboard/showPrizeScreen/{screenNum}")]
+    [HttpPut("bigboard/showPrizeScreen/{screenNum}")]
     [SwaggerOperation(Summary = "Send message to show prize screen for final Jeopardy.")]
     public async Task<ActionResult> ShowFinalPrizeScreenAsync(int screenNum)
     {
@@ -177,7 +269,7 @@ public class Round3Controller(ILogger<Round3Controller> logger,
     }
 
     [Authorize(Roles = "admin")]
-    [HttpGet("bigboard/startCredits")]
+    [HttpPut("bigboard/startCredits")]
     [SwaggerOperation(Summary = "Send message to start the credit roll.")]
     public async Task<ActionResult> StartCreditAsync()
     {

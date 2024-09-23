@@ -11,7 +11,7 @@ public class RoundThreeTeamAnswerHandler
     {
         private readonly ContextGo _contextGo = contextGo;
 
-        public async Task<ApiResponse<StringReturn>> Handle(Request request, CancellationToken token)
+        public async Task<ApiResponse<StringReturn>> Handle(Request request, CancellationToken cancellationToken)
         {
             var returnString = new StringReturn();
 
@@ -23,26 +23,26 @@ public class RoundThreeTeamAnswerHandler
 
             var dbAnswer = new List<Scoring>();
 
-            foreach (var submitAnswer in request.Round3Answers)
+            var validAnswers = request.Round3Answers
+                .Where(submitAnswer => submitAnswer.Score is >0 or <0);
+
+            foreach (var submitAnswer in validAnswers)
             {
-                if (submitAnswer.Score is not null and (>0 or <0) ) {
-                    var scoreRecord = new Scoring()
-                    {
-                        Yevent = submitAnswer.YEvent,
-                        TeamNum = submitAnswer.TeamNum,
-                        RoundNum = 3,
-                        QuestionNum = submitAnswer.QuestionNum,
-                        PointAmt = submitAnswer.Score,
-                        Updatetime = DateTime.UtcNow
-                    };
+                var scoreRecord = new Scoring()
+                {
+                    Yevent = submitAnswer.YEvent,
+                    TeamNum = submitAnswer.TeamNum,
+                    RoundNum = 3,
+                    QuestionNum = submitAnswer.QuestionNum,
+                    PointAmt = submitAnswer.Score,
+                    Updatetime = DateTime.UtcNow
+                };
 
-                    dbAnswer.Add(scoreRecord);
-                }
-
+                dbAnswer.Add(scoreRecord);
             }
 
-            await _contextGo.Scoring.AddRangeAsync(dbAnswer, token);
-            await _contextGo.SaveChangesAsync(token);
+            await _contextGo.Scoring.AddRangeAsync(dbAnswer, cancellationToken);
+            await _contextGo.SaveChangesAsync(cancellationToken);
 
             returnString.Message = "Scores were added to the system.";
 
