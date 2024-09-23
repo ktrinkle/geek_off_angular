@@ -206,7 +206,7 @@ public class Round3Controller(ILogger<Round3Controller> logger,
     #region SignalR
 
     [Authorize(Roles = "admin")]
-    [HttpGet("updateScoreboard")]
+    [HttpPut("updateScoreboard")]
     [SwaggerOperation(Summary = "Sends message to update the scoreboard.")]
     public async Task<ActionResult> UpdateScoreboardAsync()
     {
@@ -215,7 +215,7 @@ public class Round3Controller(ILogger<Round3Controller> logger,
     }
 
     [Authorize(Roles = "admin")]
-    [HttpGet("bigboard/animate")]
+    [HttpPut("bigboard/animate")]
     [SwaggerOperation(Summary = "Send message to animate big board.")]
     public async Task<ActionResult> AnimateBigBoardAsync()
     {
@@ -224,7 +224,7 @@ public class Round3Controller(ILogger<Round3Controller> logger,
     }
 
     [Authorize(Roles = "admin")]
-    [HttpGet("bigboard/show")]
+    [HttpPut("bigboard/show")]
     [SwaggerOperation(Summary = "Show the big board. Note that the state of the board is managed purely in the UI.")]
     public async Task<ActionResult> ShowBigBoardAsync()
     {
@@ -233,7 +233,7 @@ public class Round3Controller(ILogger<Round3Controller> logger,
     }
 
     [Authorize(Roles = "admin")]
-    [HttpGet("bigboard/reveal/{entryNum}")]
+    [HttpPut("bigboard/reveal/{entryNum}")]
     [SwaggerOperation(Summary = "Send message to reveal big board answer.")]
     public async Task<ActionResult> RevealAnswerAsync(int entryNum)
     {
@@ -242,7 +242,7 @@ public class Round3Controller(ILogger<Round3Controller> logger,
     }
 
     [Authorize(Roles = "admin")]
-    [HttpGet("bigboard/showFinalScreen/{screenNum}")]
+    [HttpPut("bigboard/showFinalScreen/{screenNum}")]
     [SwaggerOperation(Summary = "Send message to show final question screen for final Jeopardy.")]
     public async Task<ActionResult> ShowFinalIntroScreenAsync(int screenNum)
     {
@@ -251,7 +251,7 @@ public class Round3Controller(ILogger<Round3Controller> logger,
     }
 
     [Authorize(Roles = "admin")]
-    [HttpGet("bigboard/playFinalMusic")]
+    [HttpPut("bigboard/playFinalMusic")]
     [SwaggerOperation(Summary = "Play final Jeopardy music.")]
     public async Task<ActionResult> PlayFinalJepMusicAsync()
     {
@@ -260,7 +260,7 @@ public class Round3Controller(ILogger<Round3Controller> logger,
     }
 
     [Authorize(Roles = "admin")]
-    [HttpGet("bigboard/showPrizeScreen/{screenNum}")]
+    [HttpPut("bigboard/showPrizeScreen/{screenNum}")]
     [SwaggerOperation(Summary = "Send message to show prize screen for final Jeopardy.")]
     public async Task<ActionResult> ShowFinalPrizeScreenAsync(int screenNum)
     {
@@ -269,7 +269,7 @@ public class Round3Controller(ILogger<Round3Controller> logger,
     }
 
     [Authorize(Roles = "admin")]
-    [HttpGet("bigboard/startCredits")]
+    [HttpPut("bigboard/startCredits")]
     [SwaggerOperation(Summary = "Send message to start the credit roll.")]
     public async Task<ActionResult> StartCreditAsync()
     {
