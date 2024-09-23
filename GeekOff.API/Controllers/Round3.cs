@@ -58,9 +58,33 @@ public class Round3Controller(ILogger<Round3Controller> logger,
     [SwaggerOperation(Summary = "Saves the team answer with points")]
     public async Task<ActionResult<string>> SetRound3AnswerAsync([FromBody] RoundThreeTeamAnswerHandler.Request request)
     {
-        await _eventHub.Clients.All.SendAsync("round3ScoreUpdate");
+        var saveStatus = await _mediator.Send(request) ?? throw new InvalidOperationException();
 
-        return await _mediator.Send(request) switch
+        if (saveStatus.Status == QueryStatus.Success)
+        {
+            var yEvent = request.Round3Answers[0].YEvent;
+
+            RoundThreeGeekOMaticScoreHandler.Request newRequest = new ()
+            {
+                YEvent = yEvent
+            };
+
+            var sendStatus = await _mediator.Send(newRequest) ?? throw new InvalidOperationException();
+
+            switch (sendStatus.Status)
+            {
+                case QueryStatus.Success:
+                    foreach (var team in sendStatus.Value!)
+                    {
+                        await _eventHub.Clients.All.SendAsync("round3Score", team.TeamColor + team.TeamScore);
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        return saveStatus switch
         {
             { Status: QueryStatus.Success } result => Ok(result.Value.Message),
             { Status: QueryStatus.NotFound } => NotFound(),
@@ -84,7 +108,7 @@ public class Round3Controller(ILogger<Round3Controller> logger,
         return await _mediator.Send(request) switch
         {
             { Status: QueryStatus.Success } result => Ok(result.Value),
-            { Status: QueryStatus.BadRequest } result => BadRequest(),
+            { Status: QueryStatus.BadRequest } => BadRequest(),
             _ => throw new InvalidOperationException()
         };
     }
@@ -110,15 +134,6 @@ public class Round3Controller(ILogger<Round3Controller> logger,
     }
 
     // future controller - reset board state since we have this in the DB, in case we get out of sync.
-
-    /*
-    Geek-O-Matic
-
-    Create APIs to perform the following:
-
-    Send scores to Geek-O-Matic
-
-    */
 
     #region GeekOMatic
 
@@ -171,6 +186,20 @@ public class Round3Controller(ILogger<Round3Controller> logger,
     {
         await _eventHub.Clients.All.SendAsync("round3Buzzer", "L");
         return Ok();
+    }
+
+    [Authorize(Roles = "geekomatic")]
+    [HttpGet("getTeamScores/{YEvent}")]
+    [SwaggerOperation(Summary = "Saves the team answer with points")]
+    public async Task<ActionResult<string>> GetRound3TeamScoresColorsAsync([FromRoute] RoundThreeGeekOMaticScoreHandler.Request request)
+    {
+        return await _mediator.Send(request) switch
+        {
+            { Status: QueryStatus.Success } result => Ok(result.Value),
+            { Status: QueryStatus.NotFound } => NotFound(),
+            { Status: QueryStatus.BadRequest } => BadRequest(),
+            _ => throw new InvalidOperationException()
+        };
     }
 
     #endregion
