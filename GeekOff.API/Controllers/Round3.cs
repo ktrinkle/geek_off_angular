@@ -152,7 +152,7 @@ public class Round3Controller(ILogger<Round3Controller> logger,
     }
 
     [Authorize(Roles = "admin")]
-    [HttpGet("buzzer/init")]
+    [HttpPut("buzzer/init")]
     [SwaggerOperation(Summary = "Sends message to initialize the buzzers.")]
     public async Task<ActionResult> InitBuzzerAsync()
     {
@@ -161,7 +161,7 @@ public class Round3Controller(ILogger<Round3Controller> logger,
     }
 
     [Authorize(Roles = "admin")]
-    [HttpGet("buzzer/unlock")]
+    [HttpPut("buzzer/unlock")]
     [SwaggerOperation(Summary = "Sends message to unlock the buzzers.")]
     public async Task<ActionResult> UnlockBuzzerAsync()
     {
@@ -170,7 +170,7 @@ public class Round3Controller(ILogger<Round3Controller> logger,
     }
 
     [Authorize(Roles = "admin, geekomatic")]
-    [HttpGet("buzzer/answer/{teamColor}")]
+    [HttpPut("buzzer/answer/{teamColor}")]
     [SwaggerOperation(Summary = "Send message that a team answered the board.")]
     public async Task<ActionResult> BuzzerAnswerAsync(char teamColor)
     {
@@ -180,7 +180,7 @@ public class Round3Controller(ILogger<Round3Controller> logger,
     }
 
     [Authorize(Roles = "admin")]
-    [HttpGet("buzzer/lock")]
+    [HttpPut("buzzer/lock")]
     [SwaggerOperation(Summary = "Send message to lock the buzzers.")]
     public async Task<ActionResult> BuzzerLockAsync(int teamNum)
     {
