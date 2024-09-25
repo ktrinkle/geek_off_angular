@@ -1,16 +1,19 @@
 import { Action, createReducer, on } from '@ngrx/store';
-import { round23Scores } from 'src/app/data/data';
-import { round3ScoreSuccess, round3BigDisplaySuccess } from './round3.actions';
+import { round1QDisplay, round23Scores, roundCategory } from 'src/app/data/data';
+import { round3ScoreSuccess, round3BigDisplaySuccess, round3CategoriesSuccess } from './round3.actions';
 
 export const round3FeatureKey = 'round3';
 
 export interface State {
   teamScores: Array<round23Scores>,
-
+  bigDisplay: Array<round1QDisplay>,
+  categories: Array<roundCategory>
 }
 
 export const initialState: State = {
-  teamScores: new Array<round23Scores>()
+  teamScores: new Array<round23Scores>(),
+  bigDisplay: new Array<round1QDisplay>(),
+  categories: new Array<roundCategory>()
 };
 
 export const round3Reducer = createReducer(
@@ -24,6 +27,11 @@ export const round3Reducer = createReducer(
   on(round3BigDisplaySuccess, (state, { allQuestions }) => ({
     ...state,
     bigDisplay: allQuestions
+  })),
+
+  on(round3CategoriesSuccess, (state, { allCategories }) => ({
+    ...state,
+    categories: allCategories
   }))
 );
 

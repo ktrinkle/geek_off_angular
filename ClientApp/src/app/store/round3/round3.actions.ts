@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { round1QDisplay, round23Scores } from 'src/app/data/data';
+import { round1QDisplay, round23Scores, roundCategory } from 'src/app/data/data';
 
 export const round3Score = createAction(
   '[Round3] GetAllScores',
@@ -12,11 +12,21 @@ export const round3ScoreSuccess = createAction(
 );
 
 export const round3BigDisplay = createAction(
-  '[Round1] GetRound3BigDisplay',
+  '[Round3] GetRound3BigDisplay',
   props<{ yEvent: string }>()
 );
 
 export const round3BigDisplaySuccess = createAction(
-  '[Round1] LoadRound3BigDisplay',
+  '[Round3] LoadRound3BigDisplay',
   props<{ allQuestions: round1QDisplay[] }>()
 );
+
+export const round3Categories = createAction(
+  '[Round3] GetRound3Categories',
+  props<{ yEvent: string }>()
+)
+
+export const round3CategoriesSuccess = createAction(
+  '[Round3] LoadRound3Categories',
+  props<{ allCategories: roundCategory[] }>()
+)

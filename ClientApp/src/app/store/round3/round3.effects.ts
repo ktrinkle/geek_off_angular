@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { map, switchMap } from 'rxjs/operators';
-import { round3Score, round3ScoreSuccess, round3BigDisplay, round3BigDisplaySuccess } from './round3.actions';
+import { round3Score, round3ScoreSuccess, round3BigDisplay, round3BigDisplaySuccess, round3Categories, round3CategoriesSuccess } from './round3.actions';
 import { DataService } from 'src/app/data.service';
 
 @Injectable()
@@ -20,7 +20,14 @@ export class Round3Effects {
     getRound3BigDisplay$ = createEffect(() => this.actions$.pipe(
       ofType(round3BigDisplay),
       switchMap(payload =>
-        this.dataService.getRound1BigDisplay(payload.yEvent).pipe(map(allQuestions =>
+        this.dataService.getRound3BigDisplay(payload.yEvent).pipe(map(allQuestions =>
           round3BigDisplaySuccess({ allQuestions: allQuestions }) // todo: add catchError
+        )))));
+
+    getRound3Categories$ = createEffect(() => this.actions$.pipe(
+      ofType(round3Categories),
+      switchMap(payload =>
+        this.dataService.getRound3Categories(payload.yEvent).pipe(map(categories =>
+          round3CategoriesSuccess({ allCategories: categories })
         )))));
 }

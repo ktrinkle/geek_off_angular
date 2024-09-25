@@ -1,0 +1,21 @@
+<!--Intro video-->
+<div id="introVideo" class="container" *ngIf="introVideoVisible">
+  <video id="introVid" preload="auto" src="https://geekoff2021static.blob.core.windows.net/snd/jep.m4v" type="video/mp4" controls #introVideo></video>
+</div>
+
+<!--Question board-->
+<div id="questionBoard" class="container" *ngIf="boardVisible">
+  <div class="row" *ngFor="let category of this.categoryList">
+    <div class="col jepBoardSquare">
+      {{ category.categoryName }}
+    </div>
+  </div>
+</div>
+
+<!--Question board-->
+<div id="question" class="container" *ngIf="questionVisible" [@fadeIn]>
+  <div class="jepQuestion">
+    {{currentQuestionText}}
+    <div class="mediaBox" *ngIf="showMedia"></div>
+  </div>
+</div>
