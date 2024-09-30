@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import * as signalR from '@microsoft/signalr';
 import { environment } from 'src/environments/environment';
 import { Store } from '@ngrx/store';
@@ -8,6 +8,7 @@ import { DataService } from 'src/app/data.service';
 import { round2Answers, round2Display } from 'src/app/data/data';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 import { selectCurrentEvent } from 'src/app/store';
+import { Router } from '@angular/router';
 
 export interface displayRow {
   player1: round2Answers;
@@ -46,6 +47,11 @@ export interface displayRow {
 export class Round2displayComponent implements OnInit, OnDestroy {
 
   destroy$: Subject<boolean> = new Subject<boolean>();
+
+  dataService = inject(DataService);
+  store = inject(Store);
+  router = inject(Router);
+
   yEvent = '';
   displayStatus = 0;
   teamNumber = 2;
@@ -60,10 +66,6 @@ export class Round2displayComponent implements OnInit, OnDestroy {
   };
   currentScreen = 'question';
   displayRows: displayRow[] = [];
-
-
-  constructor(private dataService: DataService, private store: Store) {
-  }
 
   ngOnInit(): void {
     const connection = new signalR.HubConnectionBuilder()
@@ -98,6 +100,10 @@ export class Round2displayComponent implements OnInit, OnDestroy {
 
     connection.on("round2ChangePage", (data) => {
       this.changePage(data);
+    });
+
+    connection.on("round3Animate", () => {
+      this.router.navigate(['/round3/intro'])
     });
 
     this.store.select(selectCurrentEvent).pipe(takeUntil(this.destroy$)).subscribe(currentEvent => {

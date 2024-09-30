@@ -188,3 +188,10 @@ export interface roundCategory {
   categoryName: string,
   subCategoryNum: number
 }
+
+export interface roundThreeCategoryPoints {
+  yEvent: string,
+  questionNum: number,
+  ptsposs: number,
+  enabled: boolean
+}

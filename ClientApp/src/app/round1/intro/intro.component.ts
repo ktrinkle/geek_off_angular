@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ElementRef, ViewChild, inject } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 import { introDto } from '../../data/data';
@@ -37,26 +37,22 @@ export class Round1IntroComponent implements OnInit, OnDestroy {
   public teamMasterList: introDto[] = [];
   destroy$: Subject<boolean> = new Subject<boolean>();
 
-  // introVid = new HTMLVideoElement();
-  constructor(private route: ActivatedRoute,
-    private router: Router,
-    private matIconRegistry: MatIconRegistry,
-    private domSanitzer: DomSanitizer,
-    private dataService: DataService,
-    private store: Store) {
-    //this.store.dispatch(round1AllTeams({ yEvent: 'e21' }));
-
-    this.matIconRegistry
-      .addSvgIcon('geekplane', this.domSanitzer.bypassSecurityTrustResourceUrl('/assets/icon/icon_plane_aa.svg'))
-      .addSvgIcon('geekphone', this.domSanitzer.bypassSecurityTrustResourceUrl('/assets/icon/icon_phone_aa.svg'))
-      .addSvgIcon('geekmask', this.domSanitzer.bypassSecurityTrustResourceUrl('/assets/icon/icon_facemask_blue.svg'))
-      .addSvgIcon('geekasterisk', this.domSanitzer.bypassSecurityTrustResourceUrl('/assets/icon/icon_gtasterisk.svg'));
-  }
+  route = inject(ActivatedRoute);
+  router = inject(Router);
+  matIconRegistry = inject(MatIconRegistry);
+  domSanitizer = inject(DomSanitizer);
+  dataService = inject(DataService);
+  store = inject(Store);
 
   ngOnInit(): void {
     //this.store.select(selectRound1Teams).pipe(takeUntil(this.destroy$)).subscribe(x =>
     //  this.teamMasterList = x
     //);
+
+    this.matIconRegistry
+    .addSvgIcon('geekplane', this.domSanitizer.bypassSecurityTrustResourceUrl('/assets/icon/icon_plane_aa.svg'))
+    .addSvgIcon('geekphone', this.domSanitizer.bypassSecurityTrustResourceUrl('/assets/icon/icon_phone_aa.svg'))
+    .addSvgIcon('geekasterisk', this.domSanitizer.bypassSecurityTrustResourceUrl('/assets/icon/icon_gtasterisk.svg'));
 
     this.route.params.subscribe(params => {
       this.currentScreen = params['page'];

@@ -30,7 +30,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './bigdisplay.component.html',
   styleUrl: './bigdisplay.component.scss'
 })
-export class BigdisplayComponent implements OnInit, OnDestroy{
+export class Round3BigdisplayComponent implements OnInit, OnDestroy{
   destroy$: Subject<boolean> = new Subject<boolean>();
 
   // dependencies
@@ -92,12 +92,6 @@ export class BigdisplayComponent implements OnInit, OnDestroy{
       console.log('SignalR Connected!');
     }).catch(function (err) {
       return console.error(err.toString());
-    });
-
-    connection.on("round3Animate", () => {
-      this.introVideoVisible = false;
-      this.boardFlyIn = true;
-      this.boardFlyInCounter();
     });
 
     connection.on("round3BigBoard", () => {

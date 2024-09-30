@@ -34,6 +34,7 @@ export const selectRound3State = createFeatureSelector<fromRound3.State>(fromRou
 export const selectRound3Scores = createSelector(selectRound3State, (state: fromRound3.State) => state.teamScores);
 export const selectRound3BigDisplay = createSelector(selectRound3State, (state: fromRound3.State) => state.bigDisplay);
 export const selectRound3Categories = createSelector(selectRound3State, (state: fromRound3.State) => state.categories);
+export const selectRound3CategoryPoints = createSelector(selectRound3State, (state: fromRound3.State) => state.questions);
 export const selectRound1AllQuestionsAndAnswers = createSelector(selectRound1State, (state: fromRound1.State) => state.allQuestions);
 export const selectRound1BigDisplay = createSelector(selectRound1State, (state: fromRound1.State) => state.bigDisplay);
 

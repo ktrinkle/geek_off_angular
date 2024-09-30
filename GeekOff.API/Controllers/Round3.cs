@@ -66,6 +66,18 @@ public class Round3Controller(ILogger<Round3Controller> logger,
         };
 
     [Authorize(Roles = "admin")]
+    [HttpGet("allCategoryPoints/{YEvent}")]
+    [SwaggerOperation(Summary = "Get all of the round 3 question numbers and points.")]
+    public async Task<ActionResult<List<RoundThreeCategoryPoints>>> GetRound3QuestionPointsAsync([FromRoute] RoundThreeCategoryPointsHandler.Request request)
+        => await _mediator.Send(request) switch
+        {
+            { Status: QueryStatus.Success } result => Ok(result.Value),
+            { Status: QueryStatus.NotFound } => NotFound(),
+            { Status: QueryStatus.BadRequest } => BadRequest(),
+            _ => throw new InvalidOperationException()
+        };
+
+    [Authorize(Roles = "admin")]
     [HttpPost("teamanswer")]
     [SwaggerOperation(Summary = "Saves the team answer with points")]
     public async Task<ActionResult<string>> SetRound3AnswerAsync([FromBody] RoundThreeTeamAnswerHandler.Request request)

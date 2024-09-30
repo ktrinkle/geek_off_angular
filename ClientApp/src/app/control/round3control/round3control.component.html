@@ -13,7 +13,7 @@
         </div>
         <div class="clear: all;">
         </div>
-        <hr width="90%">
+        <hr class="jep">
         <div formArrayName="teams" class="flexWrap container">
           <div class="teamBox detailItem25" *ngFor="let team of getTeamsFromForm(round3Form); let i = index">
             <div [formGroupName]="i">
@@ -67,5 +67,9 @@
       </div>
       <button type="submit" class="answer-choice" id="saveUserAnswer">Save answer</button>
     </form>
+  </div>
+  <div class="detailItem100">
+    <button id="animateBoard" (click)="animateBigBoard()">Animate Big Board</button>
+    <button id="showBigBoard" (click)="showBigBoard()">Show Big Board</button>
   </div>
 </div>

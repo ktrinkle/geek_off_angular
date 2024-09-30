@@ -152,6 +152,14 @@ export class Round3controlComponent implements OnInit, OnDestroy {
     this.updateScoreboard();
   }
 
+  async animateBigBoard() {
+    await this._dataService.animateRound3Board();
+  }
+
+  async showBigBoard() {
+    await this._dataService.showRound3Board();
+  }
+
   updateScoreboard() {
     this.store.select(selectRound3Scores).pipe(takeUntil(this.destroy$)).subscribe((data: round23Scores[]) => {
       this.scoreboard = data;

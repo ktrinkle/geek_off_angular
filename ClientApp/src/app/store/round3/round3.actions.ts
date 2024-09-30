@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { round1QDisplay, round23Scores, roundCategory } from 'src/app/data/data';
+import { round1QDisplay, round23Scores, roundCategory, roundThreeCategoryPoints } from 'src/app/data/data';
 
 export const round3Score = createAction(
   '[Round3] GetAllScores',
@@ -29,4 +29,14 @@ export const round3Categories = createAction(
 export const round3CategoriesSuccess = createAction(
   '[Round3] LoadRound3Categories',
   props<{ allCategories: roundCategory[] }>()
+)
+
+export const round3CategoryPoints = createAction(
+  '[Round3] GetRound3CategoriesPoints',
+  props<{ yEvent: string }>()
+)
+
+export const round3CategoryPointsSuccess = createAction(
+  '[Round3] LoadRound3CategoriesPoints',
+  props<{ allQuestions: roundThreeCategoryPoints[] }>()
 )

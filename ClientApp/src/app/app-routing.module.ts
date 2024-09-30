@@ -22,6 +22,8 @@ import { EventchooserComponent } from './eventsetup/eventchooser/eventchooser.co
 
 import { PlayerGuard } from './player.guard';
 import { PlayerComponent } from './login/player/player.component';
+import { JepIntroComponent } from './round3/jepintro/jepintro.component';
+import { Round3BigdisplayComponent } from './round3/bigdisplay/bigdisplay.component';
 
 const roles = {
   "Player": "player",
@@ -95,6 +97,27 @@ const routes: Routes = [
     }
   },
   {
+    path: 'round2feud/scoreboard',
+    component: Round2scoreboardComponent,
+    pathMatch: 'full',
+    canActivate: [PlayerGuard],
+    data: {
+      expectedRole: roles.Admin
+    }
+  },
+  {
+    path: 'round2feud/scoreboard',
+    component: Round2scoreboardComponent,
+    pathMatch: 'full',
+    canActivate: [PlayerGuard]
+  },
+  {
+    path: 'round2feud/scoreboard',
+    component: Round2scoreboardComponent,
+    pathMatch: 'full',
+    canActivate: [PlayerGuard]
+  },
+  {
     path: 'round3/scoreboard',
     component: Round3scoreboardComponent,
     pathMatch: 'full',
@@ -104,8 +127,8 @@ const routes: Routes = [
     }
   },
   {
-    path: 'round2feud/scoreboard',
-    component: Round2scoreboardComponent,
+    path: 'round3jep/intro',
+    component: JepIntroComponent,
     pathMatch: 'full',
     canActivate: [PlayerGuard],
     data: {
@@ -113,16 +136,13 @@ const routes: Routes = [
     }
   },
   {
-    path: 'round2feud/scoreboard',
-    component: Round2scoreboardComponent,
+    path: 'round3jep/board',
+    component: Round3BigdisplayComponent,
     pathMatch: 'full',
-    canActivate: [PlayerGuard]
-  },
-  {
-    path: 'round2feud/scoreboard',
-    component: Round2scoreboardComponent,
-    pathMatch: 'full',
-    canActivate: [PlayerGuard]
+    canActivate: [PlayerGuard],
+    data: {
+      expectedRole: roles.Admin
+    }
   },
   {
     path: 'control/round1',

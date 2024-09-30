@@ -1,0 +1,51 @@
+<!--Intro video-->
+<!-- @if(introVideoVisible)
+{
+  <div id="introVideo" class="container">
+    <video id="introVid" preload="auto" src="https://geekoff2021static.blob.core.windows.net/snd/jep.m4v" type="video/mp4" controls #introVideo></video>
+  </div>
+} -->
+
+
+@if(boardFlyIn) {
+  <div id="boardFlyIn" class="jepboard">
+    <!-- this is probably going to be an issue-->
+    <div class="jepHeader">
+      <div class="jepBoardSquare jepHeaderImage">
+        &nbsp;
+      </div>
+      <div class="jepBoardSquare jepHeaderImage">
+        &nbsp;
+      </div>
+      <div class="jepBoardSquare jepHeaderImage">
+        &nbsp;
+      </div>
+      <div class="jepBoardSquare jepHeaderImage">
+        &nbsp;
+      </div>
+      <div class="jepBoardSquare jepHeaderImage">
+        &nbsp;
+      </div>
+    </div>
+    <div class="column-order">
+    @for (question of bigDisplay; track question.questionNum; let idx = $index) {
+      <div class="jepBoardSquare" id="{{question.questionNum}}">
+        <div class="jepText">
+          @if(question.enabled)
+            {
+              {{ question.ptsposs }}
+            }
+        </div>
+      </div>
+    }
+    </div>
+  </div>
+}
+
+@if(categoryShow) {
+  @for(category of categoryList; track category.id; let idx = $index) {
+    <div class="jepCategory">
+      {{ category.categoryName }}
+    </div>
+  }
+}
