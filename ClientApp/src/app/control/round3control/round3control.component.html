@@ -3,6 +3,16 @@
   <div class="detailItem60">
     <form [formGroup]="round3Form" (ngSubmit)="saveUserAnswer(round3Form)">
       <div class="container flexWrap">
+        <div class="detailItem100">
+          <button id="animateBoard" (click)="animateBigBoard()">Animate Big Board</button>
+          <!-- @TODO: this needs to be dynamic -->
+          <button id="animateCat1" (click)="animateCategory(1)">Category 1</button>
+          <button id="animateCat2" (click)="animateCategory(2)">Category 2</button>
+          <button id="animateCat3" (click)="animateCategory(3)">Category 3</button>
+          <button id="animateCat4" (click)="animateCategory(4)">Category 4</button>
+          <button id="animateCat5" (click)="animateCategory(5)">Category 5</button>
+          <button id="showBigBoard" (click)="showBigBoard()">Show Big Board</button>
+        </div>
         <div class="detailItem15" *ngFor="let question of round3Questions">
           <input type="radio" name="questionNum" id="{{ question.questionNum }}" value="{{ question.questionNum }}"
             formControlName="questionNum" class="bigbtnblue"
@@ -67,9 +77,5 @@
       </div>
       <button type="submit" class="answer-choice" id="saveUserAnswer">Save answer</button>
     </form>
-  </div>
-  <div class="detailItem100">
-    <button id="animateBoard" (click)="animateBigBoard()">Animate Big Board</button>
-    <button id="showBigBoard" (click)="showBigBoard()">Show Big Board</button>
   </div>
 </div>

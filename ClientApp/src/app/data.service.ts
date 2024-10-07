@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from './../environments/environment';
 import { newTeamEntry, round2SubmitAnswer, round3AnswerDto, eventMaster, apiResponse, adminLogin, bearerDto, teamLogin, round1QDisplay, round23Scores, roundCategory, roundThreeCategoryPoints } from './data/data';
-import { Observable } from 'rxjs';
+import { firstValueFrom, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -296,7 +296,12 @@ export class DataService {
 
   public async animateRound3Board(): Promise<void> {
     const uri = this.REST_API_SERVER + '/api/round3/bigboard/animate';
-    await this.httpClient.put(uri, {}).toPromise();
+    await firstValueFrom(this.httpClient.put(uri, {}));
+  }
+
+  public async animateRound3Category(id: number): Promise<void> {
+    const uri = this.REST_API_SERVER + '/api/round3/bigboard/category/' + encodeURIComponent(id);
+    await firstValueFrom(this.httpClient.put(uri, {}));
   }
 
   public async showRound3Board(): Promise<void> {

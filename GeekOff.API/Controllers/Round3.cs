@@ -248,6 +248,16 @@ public class Round3Controller(ILogger<Round3Controller> logger,
     }
 
     [Authorize(Roles = "admin")]
+    [HttpPut("bigboard/category/{id}")]
+    [SwaggerOperation(Summary = "Send message to animate big board categories for intro.")]
+    public async Task<ActionResult> AnimateCategoryAsync(int id)
+    {
+        await _eventHub.Clients.All.SendAsync("round3CategoryChange", id);
+        Console.Write($"Sent message round3CategoryChange Id: {id}", id);
+        return Ok();
+    }
+
+    [Authorize(Roles = "admin")]
     [HttpPut("bigboard/show")]
     [SwaggerOperation(Summary = "Show the big board. Note that the state of the board is managed purely in the UI.")]
     public async Task<ActionResult> ShowBigBoardAsync()

@@ -152,6 +152,11 @@ export class Round3controlComponent implements OnInit, OnDestroy {
     this.updateScoreboard();
   }
 
+  async animateCategory(categoryId: number) {
+    console.log('called animateCategory');
+    await this._dataService.animateRound3Category(categoryId);
+  }
+
   async animateBigBoard() {
     await this._dataService.animateRound3Board();
   }
