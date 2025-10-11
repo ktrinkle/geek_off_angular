@@ -1,0 +1,25 @@
+<body>
+  <br>
+  <h1>HIGH SCORE</h1>
+  <mat-grid-list cols="13">
+    <mat-grid-list colspan="12" cols="12" rowHeight="35px">
+      <mat-grid-tile colspan="1"></mat-grid-tile>
+      <mat-grid-tile colspan="4">
+        <h3>SCORE</h3>
+      </mat-grid-tile>
+      <mat-grid-tile colspan="7">
+        <h3>NAME</h3>
+      </mat-grid-tile>
+      <div *ngFor="let score of scores" [ngStyle]="{'color': score.color}">
+        <mat-grid-tile colspan="1"></mat-grid-tile>
+        <mat-grid-tile colspan="4">
+          <h3>{{score.teamScore}}</h3>
+        </mat-grid-tile>
+        <mat-grid-tile colspan="7">
+          <h3>{{score.teamName.toUpperCase()}}</h3>
+        </mat-grid-tile>
+      </div>
+    </mat-grid-list>
+  </mat-grid-list>
+  <br>
+</body>

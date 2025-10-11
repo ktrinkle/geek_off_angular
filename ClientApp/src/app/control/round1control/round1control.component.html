@@ -1,0 +1,98 @@
+<div id="r1header">
+    <p>Question {{currentQuestion}}: {{currentFilterQuestion.questionText}}</p>
+</div>
+<div class="content container">
+  <div class="flexWrap">
+    <div id="currentAnswer" class="detailItem" [formGroup]="answerForm">
+        <h3>Round 1 - Current team answers</h3>
+        <mat-table class="round1ControlScoreboard" [dataSource]="teamAnswers">
+            <ng-container matColumnDef="teamButton">
+                <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                <mat-cell *matCellDef="let row">
+                    <mat-slide-toggle color="primary" id="{{row.teamNum}}" name="{{row.teamNum}}" formControlName="{{row.teamNum}}" (change)="scoreManual(row.teamNum)"></mat-slide-toggle>
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="sbteamNum">
+                <mat-header-cell *matHeaderCellDef> Team # </mat-header-cell>
+                <mat-cell *matCellDef="let row">
+                    {{row.teamNum}}
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="sbteamAnswer">
+                <mat-header-cell *matHeaderCellDef> Team Answer </mat-header-cell>
+                <mat-cell *matCellDef="let row">
+                    {{row.textAnswer}}
+                </mat-cell>
+            </ng-container>
+
+            <!-- Header and Row Declarations -->
+            <mat-header-row *matHeaderRowDef="['teamButton','sbteamNum', 'sbteamAnswer']"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: ['teamButton','sbteamNum', 'sbteamAnswer']"></mat-row>
+        </mat-table>
+        <button id="updateScoreboard" (click)="updateRemoteScoreboard()">Send scoreboard update</button>
+        <button id="autoScore" (click)="autoScore()">Auto-Score</button> {{scoreResponse}}
+        <div clear="both"></div>
+    </div>
+    <div id="currentScoreboard" class="detailItem">
+        <h3>Round 1 Scoreboard</h3>
+        <mat-table class="round1ControlScoreboard" [dataSource]="scoreboard">
+            <ng-container matColumnDef="teamNum">
+                <mat-header-cell *matHeaderCellDef> Team # </mat-header-cell>
+                <mat-cell *matCellDef="let row">
+                    {{row.teamNum}}
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="teamScore">
+                <mat-header-cell *matHeaderCellDef> Team Score </mat-header-cell>
+                <mat-cell *matCellDef="let row">
+                    {{row.teamScore}}
+                </mat-cell>
+            </ng-container>
+
+            <!-- Header and Row Declarations -->
+            <mat-header-row *matHeaderRowDef="['teamNum', 'teamScore']"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: ['teamNum', 'teamScore']"></mat-row>
+        </mat-table>
+
+    </div>
+    <div id="controlCorner" class="detailItem100">
+        <h3>Controls</h3>
+        Current question status: {{selectedQuestion}} - {{statusText}}
+        <div clear="all"></div>
+        <form [formGroup]="answerForm">
+            <label for="selectedQuestion">Select a question:</label>
+            <select id="selectedQuestion" formControlName="selectedQuestion">
+          <option>--</option>
+          <option *ngFor="let answer of possibleAnswers" [value]="answer.questionNum">
+            {{answer.questionNum}}
+          </option>
+        </select> {{answerForm.value.selectedQuestion}}
+            <button id="showAnswer" (click)="sendClientMessage(1)">Show Answer</button>
+            <button id="openAnswer" (click)="sendClientMessage(2)">Open Answer</button>
+            <button id="closeAnswer" (click)="sendClientMessage(3)">Close Answer</button>
+            <button id="resyncPhone" (click)="resyncStatus()">Resync contestants</button>
+            <button id="goToQuestion" (click)="sendClientMessage(0)">Go to selected question</button>
+            <button id="goToNextQuestion" class="buttonblue" (click)="sendNextClientMessage(0)">Go to next question</button>
+
+        </form>
+        <div clear="all"></div>
+        Think cues:
+        <button id="think1" (click)="playThink(1)">1</button>
+        <button id="think2" (click)="playThink(2)">2</button>
+        <button id="think3" (click)="playThink(3)">3</button>
+        <button id="think4" (click)="playThink(4)">4</button>
+        <button id="think5" (click)="playThink(5)">5</button>
+        <button id="think6" (click)="playThink(6)">6</button>
+        <div clear="all"></div>
+        Finalize round:
+        <button id="finalizeRound" class="buttonred" (click)="finalizeRound()">{{finalizeState}}</button>
+        <button id="showPrize1" (click)="changeScreen('prize1')">Prize screen 1</button>
+        <button id="showPrize2" (click)="changeScreen('prize2')">Prize screen 2</button>
+        <button id="round2" class="buttondarkblue" (click)="goToRound2()">Go to round 2 control</button>
+
+    </div>
+  </div>
+</div>

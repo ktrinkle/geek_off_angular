@@ -1,0 +1,64 @@
+<div id="bb">
+  <div *ngIf="currentScreen === 'question'">
+    <table>
+        <tr>
+            <th colspan="6">TEAM NUMBER: {{ teamNumber }}</th>
+            <th class="countdown">
+                <app-round2countdown class="countdown"></app-round2countdown>
+            </th>
+        </tr>
+        <tr *ngFor="let row of displayRows; let i = index">
+            <td class="answercell">
+                <span *ngIf="displayStatus >= (i*2)+1" class="answer">{{row.player1.answer}}</span>
+                <span *ngIf="displayStatus < (i*2)+1" class="hide" [@fadeInOut]> ©©©©©©©©©©©</span>
+            </td>
+            <td class="spacer">
+                &nbsp;
+            </td>
+            <td class="scorecell">
+                <span *ngIf="displayStatus < (i*2)+2" class="hidescore" [@fadeInOut]> ©©</span>
+                <span *ngIf="displayStatus >= (i*2)+2" class="score">{{row.player1.score}}</span>
+            </td>
+            <td class="scorecell">
+                &nbsp;
+            </td>
+            <td class="scorecell">
+                <span *ngIf="displayStatus < (i*2)+12" class="hidescore" [@fadeInOut]> ©©</span>
+                <span *ngIf="displayStatus >= (i*2)+12" class="score">{{row.player2.score}}</span>
+            </td>
+            <td class="spacer">
+                &nbsp;
+            </td>
+            <td class="answercell">
+                <span *ngIf="displayStatus >= (i*2)+11" class="answer">{{row.player2.answer}}</span>
+                <span *ngIf="displayStatus < (i*2)+11" class="hide" [@fadeInOut]> ©©©©©©©©©©©</span>
+            </td>
+        </tr>
+        <tr>
+            <td class="answercell">
+                &nbsp;
+            </td>
+            <td class="spacer">
+                &nbsp;
+            </td>
+            <td class="scorecell">
+                &nbsp;
+            </td>
+
+            <td class="bigscore">
+                <span *ngIf="displayStatus < showTotalPlayer1 || (displayStatus > showTotalPlayer1 && displayStatus < showTotalPlayer2)" class="hidescore3" [@fadeInOut]> ©©©</span>
+                <span *ngIf="displayStatus === showTotalPlayer1 || displayStatus === showTotalPlayer2" class="score3">{{totalScore}}</span>
+            </td>
+            <td class="spacer">
+            </td>
+            <td class="answercell textRight">
+                TOTAL
+            </td>
+        </tr>
+    </table>
+    </div>
+
+  <div class="prize" *ngIf="currentScreen === 'prize1'" [@slideLeft]>
+    <img src="https://geekoff2021static.blob.core.windows.net/images/r2_consolation.jpg" class="fullscreen" alt="Round 2 consolation prize"/>
+  </div>
+</div>

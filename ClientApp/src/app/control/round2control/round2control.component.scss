@@ -1,0 +1,166 @@
+mat-grid-list {
+    font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", "Lucida Sans", Arial, sans-serif;
+}
+
+.question-title {
+    position: absolute;
+    left: 10px;
+    font-size: large;
+}
+
+input.answer-choice {
+    width: 150px;
+}
+
+.answer-choice {
+    position: absolute;
+    left: 10px;
+    font-size: medium;
+}
+
+mat-row,
+mat-footer-row {
+    min-height: 24px;
+}
+
+mat-grid-list.top-row {
+    flex: 1 1 auto;
+}
+
+mat-grid-list.question {
+    // width: 50vw;
+    height: fit-content;
+    overflow: visible;
+}
+
+div.scoreboard {
+    padding: 10px;
+}
+
+div.vl {
+    border-left: 1px solid black;
+    height: 300px;
+    position: absolute;
+    left: 50%;
+    margin-left: -3px;
+    top: 50px;
+}
+
+.boxed {
+    border: 5em;
+}
+
+.question-title {
+    position: absolute;
+    left: 10px;
+    font-size: large;
+}
+
+.answer-choice {
+    position: absolute;
+    left: 10px;
+    font-size: small;
+}
+
+button {
+    color: #ffffff !important;
+    text-transform: uppercase;
+    text-decoration: none;
+    background: #02856b;
+    border: 2px solid #00b989 !important;
+    display: inline-block;
+    transition: all 0.4s ease 0s;
+}
+
+button:hover {
+    color: #000000 !important;
+    background: #d1d532;
+    border-color: #d1d532 !important;
+    transition: all 0.4s ease 0s;
+    cursor: pointer;
+}
+
+div.container {
+    vertical-align: top;
+    min-height: 75px;
+    padding: 10px;
+    mat-row,
+    mat-footer-row {
+        min-height: 24px;
+    }
+}
+
+// Little space in between the start and stop button.
+.divider {
+    width: 5px;
+    height: auto;
+    min-height: 1px;
+    display: inline-block;
+}
+
+.countdownScreen {
+    font-size: 5vh;
+    color: #ffff00;
+    text-align: center;
+    font-family: sportstype !important;
+    border: 10px;
+    border-color: #000;
+}
+
+.countdownButtons {
+    text-align: center;
+}
+
+#startButton {
+    background-color: #02856b !important;
+    color: white !important;
+}
+
+#stopButton {
+    background-color: #c30019 !important;
+    color: white !important;
+}
+
+#setButton {
+    background-color: #0078d2 !important;
+    color: white !important;
+}
+
+.formControlDiv {
+  vertical-align: top;
+  min-height: 75px;
+  max-height: fit-content;
+  padding: 10px;
+}
+
+.flexWrap {
+  gap: 0px;
+  display: flex;
+  flex-flow: row wrap;
+  align-items: flex-start;
+  align-content: flex-start;
+}
+
+// desktop
+@media only screen and (min-width: 960px) {
+  .detailItem {
+    width: 19% !important;
+    text-align: left;
+    vertical-align: top;
+    padding: 1px;
+  }
+}
+
+// small and xsmall
+@media only screen and (max-width: 959px) {
+  .flexWrap {
+    flex-direction: column;
+  }
+
+  .detailItem .detailItem100 {
+    width: 100%;
+    vertical-align: top;
+    text-align: left;
+    padding: 1px;
+  }
+}

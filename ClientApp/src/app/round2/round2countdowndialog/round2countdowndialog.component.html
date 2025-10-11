@@ -1,0 +1,11 @@
+<div mat-dialog-content>
+  <p>Please enter number of seconds:</p>
+  <mat-form-field appearance="fill">
+    <mat-label>Seconds</mat-label>
+    <input matInput [(ngModel)]="data.countdownValue">
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">No Thanks</button>
+  <button mat-button [mat-dialog-close]="data.countdownValue" cdkFocusInitial>Ok</button>
+</div>
