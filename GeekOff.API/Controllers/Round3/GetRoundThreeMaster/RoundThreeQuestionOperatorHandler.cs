@@ -34,7 +34,7 @@ public class RoundThreeQuestionOperatorHandler
             }
 
             var round3Return = round3Questions
-                .OrderBy(s => s.QuestionNum).OrderBy(s => s.SortOrder).ToList();
+                .OrderBy(s => s.QuestionNum).ThenBy(s => s.SortOrder).ToList();
 
             return ApiResponse<List<Round3QuestionDto>>.Success(round3Return);
         }

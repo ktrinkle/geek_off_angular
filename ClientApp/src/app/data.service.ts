@@ -2,8 +2,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from './../environments/environment';
-import { newTeamEntry, round2SubmitAnswer, round3AnswerDto, eventMaster, apiResponse, adminLogin, bearerDto, teamLogin, round1QDisplay, round23Scores } from './data/data';
-import { Observable } from 'rxjs';
+import { newTeamEntry, round2SubmitAnswer, round3AnswerDto, eventMaster, apiResponse, adminLogin, bearerDto, teamLogin, round1QDisplay, round23Scores, roundCategory, roundThreeCategoryPoints } from './data/data';
+import { firstValueFrom, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +12,7 @@ export class DataService {
 
   private REST_API_SERVER = environment.api_url;
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private readonly httpClient: HttpClient) { }
 
   // login stuff
   // need to embed in AdminLogin:{ userLogin fields }
@@ -263,9 +263,19 @@ export class DataService {
     return this.httpClient.get(uri);
   }
 
-  public getRound3BigDisplay(yEvent: string): Observable<round1QDisplay> {
+  public getRound3BigDisplay(yEvent: string): Observable<round1QDisplay[]> {
     const uri = this.REST_API_SERVER + '/api/round3/bigDisplay/' + encodeURIComponent(yEvent) + '';
-    return this.httpClient.get<round1QDisplay>(uri);
+    return this.httpClient.get<round1QDisplay[]>(uri);
+  }
+
+  public getRound3Categories(yEvent: string): Observable<roundCategory[]> {
+    const uri = this.REST_API_SERVER + '/api/round3/allCategories/' + encodeURIComponent(yEvent) + '';
+    return this.httpClient.get<roundCategory[]>(uri);
+  }
+
+  public getRound3CategoryPoints(yEvent: string): Observable<roundThreeCategoryPoints[]> {
+    const uri = this.REST_API_SERVER + '/api/round3/allCategoryPoints/' + encodeURIComponent(yEvent) + '';
+    return this.httpClient.get<roundThreeCategoryPoints[]>(uri);
   }
 
   public getAllRound3Teams(yEvent: string): Observable<any> {
@@ -282,6 +292,21 @@ export class DataService {
   public async updateScoreboardRound3(): Promise<void> {
     const uri = this.REST_API_SERVER + '/api/round3/updateScoreboard';
     await this.httpClient.get(uri).toPromise();
+  }
+
+  public async animateRound3Board(): Promise<void> {
+    const uri = this.REST_API_SERVER + '/api/round3/bigboard/animate';
+    await firstValueFrom(this.httpClient.put(uri, {}));
+  }
+
+  public async animateRound3Category(id: number): Promise<void> {
+    const uri = this.REST_API_SERVER + '/api/round3/bigboard/category/' + encodeURIComponent(id);
+    await firstValueFrom(this.httpClient.put(uri, {}));
+  }
+
+  public async showRound3Board(): Promise<void> {
+    const uri = this.REST_API_SERVER + '/api/round3/bigboard/show';
+    await this.httpClient.put(uri, {}).toPromise();
   }
 
   public finalizeRound3(yEvent: string): Observable<any> {

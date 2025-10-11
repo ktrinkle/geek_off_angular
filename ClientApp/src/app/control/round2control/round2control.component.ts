@@ -32,7 +32,7 @@ export class Round2controlComponent implements OnInit, OnDestroy {
   public firstPlayerAnswers: round2Answers[] = [];
   buzzer = new Audio();
   dings = new Audio();
-  consolation = new Audio('https://geekoff2021static.blob.core.windows.net/snd/r2_consolation.m4a');
+  consolation = new Audio('https://geekoffstatic.blob.core.windows.net/snd/r2_consolation.m4a');
   destroy$: Subject<boolean> = new Subject<boolean>();
   countdownValue = 0;   // Countdown timer duration.
 
@@ -87,8 +87,8 @@ export class Round2controlComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.buzzer.src = 'https://geekoff2021static.blob.core.windows.net/snd/feud-fm-buzzer.mp3';
-    this.dings.src = 'https://geekoff2021static.blob.core.windows.net/snd/feud-fm-dings.mp3';
+    this.buzzer.src = 'https://geekoffstatic.blob.core.windows.net/snd/feud-fm-buzzer.mp3';
+    this.dings.src = 'https://geekoffstatic.blob.core.windows.net/snd/feud-fm-dings.mp3';
     this.buzzer.load();
     this.dings.load();
     this.consolation.load();

@@ -5,7 +5,8 @@
 export const environment = {
   production: false,
   api_url: "http://localhost:5000",
-  app_url: "http://localhost:4200"
+  app_url: "http://localhost:4200",
+  static_url: "https://geekoffstatic.blob.core.windows.net"
 };
 
 /*

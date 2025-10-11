@@ -1,0 +1,11 @@
+.column-order {
+  column-count: 5;
+  column-gap: 0;
+}
+
+.jepHeaderImage, .jepCategoryImage {
+  background-image: url('../../../assets/img/jep_basic_logo.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}

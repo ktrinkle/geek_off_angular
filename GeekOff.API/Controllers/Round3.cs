@@ -54,6 +54,30 @@ public class Round3Controller(ILogger<Round3Controller> logger,
         };
 
     [Authorize(Roles = "admin")]
+    [HttpGet("allCategories/{YEvent}")]
+    [SwaggerOperation(Summary = "Get all of the round 3 categories.")]
+    public async Task<ActionResult<List<RoundCategory>>> GetRound3CategoriesAsync([FromRoute] RoundThreeCategoryHandler.Request request)
+        => await _mediator.Send(request) switch
+        {
+            { Status: QueryStatus.Success } result => Ok(result.Value),
+            { Status: QueryStatus.NotFound } => NotFound(),
+            { Status: QueryStatus.BadRequest } => BadRequest(),
+            _ => throw new InvalidOperationException()
+        };
+
+    [Authorize(Roles = "admin")]
+    [HttpGet("allCategoryPoints/{YEvent}")]
+    [SwaggerOperation(Summary = "Get all of the round 3 question numbers and points.")]
+    public async Task<ActionResult<List<RoundThreeCategoryPoints>>> GetRound3QuestionPointsAsync([FromRoute] RoundThreeCategoryPointsHandler.Request request)
+        => await _mediator.Send(request) switch
+        {
+            { Status: QueryStatus.Success } result => Ok(result.Value),
+            { Status: QueryStatus.NotFound } => NotFound(),
+            { Status: QueryStatus.BadRequest } => BadRequest(),
+            _ => throw new InvalidOperationException()
+        };
+
+    [Authorize(Roles = "admin")]
     [HttpPost("teamanswer")]
     [SwaggerOperation(Summary = "Saves the team answer with points")]
     public async Task<ActionResult<string>> SetRound3AnswerAsync([FromBody] RoundThreeTeamAnswerHandler.Request request)
@@ -220,6 +244,16 @@ public class Round3Controller(ILogger<Round3Controller> logger,
     public async Task<ActionResult> AnimateBigBoardAsync()
     {
         await _eventHub.Clients.All.SendAsync("round3Animate");
+        return Ok();
+    }
+
+    [Authorize(Roles = "admin")]
+    [HttpPut("bigboard/category/{id}")]
+    [SwaggerOperation(Summary = "Send message to animate big board categories for intro.")]
+    public async Task<ActionResult> AnimateCategoryAsync(int id)
+    {
+        await _eventHub.Clients.All.SendAsync("round3CategoryChange", id);
+        Console.Write($"Sent message round3CategoryChange Id: {id}", id);
         return Ok();
     }
 

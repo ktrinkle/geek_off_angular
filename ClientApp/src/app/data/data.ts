@@ -180,3 +180,18 @@ export interface newTeamEntry {
   teamGuid : Guid,
   teamName : string
 }
+
+export interface roundCategory {
+  id: number,
+  yEvent: string,
+  roundNum: number,
+  categoryName: string,
+  subCategoryNum: number
+}
+
+export interface roundThreeCategoryPoints {
+  yEvent: string,
+  questionNum: number,
+  ptsposs: number,
+  enabled: boolean
+}

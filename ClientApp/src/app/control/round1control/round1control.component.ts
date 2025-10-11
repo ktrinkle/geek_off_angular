@@ -31,13 +31,13 @@ export class Round1ControlComponent implements OnInit, OnDestroy {
   destroy$: Subject<boolean> = new Subject<boolean>();
 
   // think cues
-  think1 = new Audio('https://geekoff2021static.blob.core.windows.net/snd/think1.mp3');
-  think2 = new Audio('https://geekoff2021static.blob.core.windows.net/snd/think2.mp3');
-  think3 = new Audio('https://geekoff2021static.blob.core.windows.net/snd/think3.mp3');
-  think4 = new Audio('https://geekoff2021static.blob.core.windows.net/snd/think4.mp3');
-  think5 = new Audio('https://geekoff2021static.blob.core.windows.net/snd/think5.mp3');
-  think6 = new Audio('https://geekoff2021static.blob.core.windows.net/snd/think6.mp3');
-  consolation = new Audio('https://geekoff2021static.blob.core.windows.net/snd/r1_consolation.m4a');
+  think1 = new Audio('https://geekoffstatic.blob.core.windows.net/snd/think1.mp3');
+  think2 = new Audio('https://geekoffstatic.blob.core.windows.net/snd/think2.mp3');
+  think3 = new Audio('https://geekoffstatic.blob.core.windows.net/snd/think3.mp3');
+  think4 = new Audio('https://geekoffstatic.blob.core.windows.net/snd/think4.mp3');
+  think5 = new Audio('https://geekoffstatic.blob.core.windows.net/snd/think5.mp3');
+  think6 = new Audio('https://geekoffstatic.blob.core.windows.net/snd/think6.mp3');
+  consolation = new Audio('https://geekoffstatic.blob.core.windows.net/snd/r1_consolation.m4a');
 
   currentFilterQuestion: any;
 

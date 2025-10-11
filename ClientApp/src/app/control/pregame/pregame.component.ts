@@ -60,8 +60,8 @@ export class PregameComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.audio.src = 'https://geekoff2021static.blob.core.windows.net/snd/top_of_hour.mp3';
-    this.seatBeltSound.src = 'https://geekoff2021static.blob.core.windows.net/snd/seatbelt.mp3';
+    this.audio.src = 'https://geekoffstatic.blob.core.windows.net/snd/top_of_hour.mp3';
+    this.seatBeltSound.src = 'https://geekoffstatic.blob.core.windows.net/snd/seatbelt.mp3';
     this.audio.load();
     this.seatBeltSound.load();
 

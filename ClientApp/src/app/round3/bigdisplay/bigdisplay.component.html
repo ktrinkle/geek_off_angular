@@ -1,0 +1,31 @@
+@if(boardVisible) {
+  <div id="jepBoard" class="jepboard">
+    <div class="jepHeader">
+      @for (category of categoryList; track category.subCategoryNum; let idx = $index) {
+        <div class="jepBoardSquare jepHeaderImage">
+          {{ category.categoryName }}
+        </div>
+      }
+    </div>
+    <div class="column-order">
+    @for (question of categoryScoreMaster; track question.questionNum; let idx = $index) {
+      <div class="jepBoardSquare" id="{{question.questionNum}}">
+        <div class="jepText">
+          @if(question.enabled)
+            {
+              {{ question.ptsposs }}
+            }
+        </div>
+      </div>
+    }
+    </div>
+  </div>
+}
+
+<!--Question board-->
+<div id="question" class="container" *ngIf="questionVisible" [@fadeIn]>
+  <div class="jepQuestion">
+    {{currentQuestionText}}
+    <div class="mediaBox" *ngIf="showMedia"></div>
+  </div>
+</div>
